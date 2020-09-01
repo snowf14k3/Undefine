@@ -1,0 +1,313 @@
+---- Minecraft Crash Report ----
+// There are four lights!
+
+Time: 20-8-31 下午2:39
+Description: Rendering screen
+
+java.lang.VerifyError: Bad local variable type
+Exception Details:
+  Location:
+    net/minecraft/entity/Entity.moveEntity(DDD)V @4: aload_1
+  Reason:
+    Type double (current frame, locals[1]) is not assignable to reference type
+  Current Frame:
+    bci: @4
+    flags: { }
+    locals: { 'net/minecraft/entity/Entity', double, double_2nd, double, double_2nd, double, double_2nd }
+    stack: { uninitialized 0, uninitialized 0 }
+  Bytecode:
+    0x0000000: bb02 7059 2b28 1804 1806 b702 723a 0b19
+    0x0000010: 0bb8 0278 5719 0bb6 027c 4919 0bb6 027f
+    0x0000020: 3904 190b b602 8239 062a b402 8499 0057
+    0x0000030: 2ab4 00a0 2729 1805 b602 8757 2a2a b400
+    0x0000040: a0b4 0144 2ab4 00a0 b401 4763 1402 886f
+    0x0000050: b501 292a 2ab4 00a0 b401 502a b401 7f8d
+    0x0000060: 632a b401 818d 67b5 0127 2a2a b400 a0b4
+    0x0000070: 014a 2ab4 00a0 b401 4d63 1402 886f b501
+    0x0000080: 2ba7 07d0 2ab4 00c2 b401 a213 028b b601
+    0x0000090: aa2a 59b4 0181 1302 8c6a b501 812a b401
+    0x00000a0: 2939 072a b401 2739 092a b401 2b39 0b2a
+    0x00000b0: b402 8e99 002b 2a03 b502 8e27 1402 8f6b
+    0x00000c0: 4829 1402 916b 4a18 0514 028f 6b39 052a
+    0x00000d0: 0eb5 013a 2a0e b501 382a 0eb5 0136 2739
+    0x00000e0: 0d29 390f 1805 3911 2ab4 00a0 b602 963a
+    0x00000f0: 132a b402 9899 0015 2ab6 029b 9900 0e2a
+    0x0000100: c102 9d99 0007 04a7 0004 0336 1415 1499
+    0x0000110: 013b 1402 9e39 1527 0e97 9900 4c2a b400
+    0x0000120: c22a 2ab4 00a0 2714 02a0 0eb6 025f b601
+    0x0000130: 2fb9 0134 0100 9900 3027 1815 989c 0010
+    0x0000140: 2718 1577 979b 0008 0e48 a700 1627 0e97
+    0x0000150: 9e00 0b27 1815 6748 a700 0827 1815 6348
+    0x0000160: 2739 0da7 ffb4 1805 0e97 9900 562a b400
+    0x0000170: c22a 2ab4 00a0 0e14 02a0 1805 b602 5fb6
+    0x0000180: 012f b901 3401 0099 0039 1805 1815 989c
+    0x0000190: 0012 1805 1815 7797 9b00 090e 3905 a700
+    0x00001a0: 1b18 050e 979e 000d 1805 1815 6739 05a7
+    0x00001b0: 000a 1805 1815 6339 0518 0539 11a7 ffa9
+    0x00001c0: 270e 9799 0087 1805 0e97 9900 802a b400
+    0x00001d0: c22a 2ab4 00a0 2714 02a0 1805 b602 5fb6
+    0x00001e0: 012f b901 3401 0099 0063 2718 1598 9c00
+    0x00001f0: 1027 1815 7797 9b00 080e 48a7 0016 270e
+    0x0000200: 979e 000b 2718 1567 48a7 0008 2718 1563
+    0x0000210: 4818 0518 1598 9c00 1218 0518 1577 979b
+    0x0000220: 0009 0e39 05a7 001b 1805 0e97 9e00 0d18
+    0x0000230: 0518 1567 3905 a700 0a18 0518 1563 3905
+    0x0000240: 2739 0d18 0539 11a7 ff79 2ab4 00c2 2a2a
+    0x0000250: b400 a027 2918 05b6 02a4 b601 2f3a 1503
+    0x0000260: 3616 1516 1915 b902 a701 00a2 001e 1915
+    0x0000270: 1516 b902 ab02 00c0 009a 2ab4 00a0 29b6
+    0x0000280: 02af 4a84 1601 a7ff dc2a b400 a00e 290e
+    0x0000290: b602 8757 2ab4 00a2 9a00 1118 0f29 9799
+    0x00002a0: 000a 0e39 050e 4a0e 482a b402 989a 0011
+    0x00002b0: 180f 2997 9900 0e18 0f0e 989c 0007 04a7
+    0x00002c0: 0004 0336 1603 3617 1517 1915 b902 a701
+    0x00002d0: 00a2 001e 1915 1517 b902 ab02 00c0 009a
+    0x00002e0: 2ab4 00a0 27b6 02b2 4884 1701 a7ff dc2a
+    0x00002f0: b400 a027 0e0e b602 8757 2ab4 00a2 9a00
+    0x0000300: 1118 0d27 9799 000a 0e39 050e 4a0e 4803
+    0x0000310: 3617 1517 1915 b902 a701 00a2 0020 1915
+    0x0000320: 1517 b902 ab02 00c0 009a 2ab4 00a0 1805
+    0x0000330: b602 b539 0584 1701 a7ff da2a b400 a00e
+    0x0000340: 0e18 05b6 0287 572a b400 a29a 0012 1811
+    0x0000350: 1805 9799 000a 0e39 050e 4a0e 482a b402
+    0x0000360: b70b 959e 01c7 1516 9901 c215 149a 000e
+    0x0000370: 2ab4 0181 1302 b896 9c01 b218 0d27 979a
+    0x0000380: 000b 1811 1805 9799 01a3 2739 1d29 3918
+    0x0000390: 1805 391a 180d 482a b402 b78d 4a18 1139
+    0x00003a0: 052a b400 a0b6 0296 3a1f 2ab4 00a0 1913
+    0x00003b0: b602 bc2a b400 c22a 2ab4 00a0 180d 2918
+    0x00003c0: 11b6 02a4 b601 2f3a 1503 361c 151c 1915
+    0x00003d0: b902 a701 00a2 001e 1915 151c b902 ab02
+    0x00003e0: 00c0 009a 2ab4 00a0 29b6 02af 4a84 1c01
+    0x00003f0: a7ff dc2a b400 a00e 290e b602 8757 2ab4
+    0x0000400: 00a2 9a00 1118 0f29 9799 000a 0e39 050e
+    0x0000410: 4a0e 4803 361c 151c 1915 b902 a701 00a2
+    0x0000420: 001e 1915 151c b902 ab02 00c0 009a 2ab4
+    0x0000430: 00a0 27b6 02b2 4884 1c01 a7ff dc2a b400
+    0x0000440: a027 0e0e b602 8757 2ab4 00a2 9a00 1118
+    0x0000450: 0d27 9799 000a 0e39 050e 4a0e 4803 361c
+    0x0000460: 151c 1915 b902 a701 00a2 0020 1915 151c
+    0x0000470: b902 ab02 00c0 009a 2ab4 00a0 1805 b602
+    0x0000480: b539 0584 1c01 a7ff da2a b400 a00e 0e18
+    0x0000490: 05b6 0287 572a b400 a29a 0012 1811 1805
+    0x00004a0: 9799 000a 0e39 050e 4a0e 482a b400 a29a
+    0x00004b0: 0014 180f 2997 9900 0d0e 3905 0e4a 0e48
+    0x00004c0: a700 3f2a b402 b776 8d4a 0336 1c15 1c19
+    0x00004d0: 15b9 02a7 0100 a200 1e19 1515 1cb9 02ab
+    0x00004e0: 0200 c000 9a2a b400 a029 b602 af4a 841c
+    0x00004f0: 01a7 ffdc 2ab4 00a0 0e29 0eb6 0287 5718
+    0x0000500: 1d18 1d6b 181a 181a 6b63 2727 6b18 0518
+    0x0000510: 056b 6397 9b00 1618 1d48 1818 4a18 1a39
+    0x0000520: 052a b400 a019 1fb6 02bc 2ab4 00c2 b401
+    0x0000530: a2b6 01d5 2ab4 00c2 b401 a213 02be b601
+    0x0000540: aa2a 2ab4 00a0 b401 442a b400 a0b4 0147
+    0x0000550: 6314 0288 6fb5 0129 2a2a b400 a0b4 0150
+    0x0000560: 2ab4 017f 8d63 2ab4 0181 8d67 b501 272a
+    0x0000570: 2ab4 00a0 b401 4a2a b400 a0b4 014d 6314
+    0x0000580: 0288 6fb5 012b 2a18 0d27 979a 000b 1811
+    0x0000590: 1805 9799 0007 04a7 0004 03b5 02c0 2a18
+    0x00005a0: 0f29 9799 0007 04a7 0004 03b5 02c2 2a18
+    0x00005b0: 0f29 9799 000e 180f 0e98 9c00 0704 a700
+    0x00005c0: 0403 b502 982a 2ab4 02c0 9a00 0a2a b402
+    0x00005d0: c299 0007 04a7 0004 03b5 02c4 2a29 2ab4
+    0x00005e0: 0298 b602 c818 0d27 9799 0008 2a0e b501
+    0x00005f0: 3a18 0f29 9799 0008 2a0e b501 3818 1118
+    0x0000600: 0597 9900 082a 0eb5 0136 2ab4 0129 1807
+    0x0000610: 6739 1d2a b401 2718 0967 3918 2ab4 012b
+    0x0000620: 180b 6739 1a2a b602 cb99 0167 1514 9a01
+    0x0000630: 622a b401 acc7 015b 2ab4 0129 b801 e136
+    0x0000640: 1f2a b401 2714 01e2 672a b401 7f8d 67b8
+    0x0000650: 01e1 361c 2ab4 012b b801 e136 202a b400
+    0x0000660: c215 1f15 1c15 20b6 01e7 3a21 2ab4 00c2
+    0x0000670: 151f 151c 0464 1520 b601 e7b6 02ce 3622
+    0x0000680: 1522 100b 9f00 1115 2210 209f 000a 1522
+    0x0000690: 1015 a000 142a b400 c215 1f15 1c04 6415
+    0x00006a0: 20b6 01e7 3a21 1921 b202 d3a5 0006 0e39
+    0x00006b0: 182a 2ab4 01ae 8d18 1d18 1d6b 181a 181a
+    0x00006c0: 6b63 b802 d78d 1402 d86b 6390 b501 ae2a
+    0x00006d0: 2ab4 02db 8d18 1d18 1d6b 1818 1818 6b63
+    0x00006e0: 181a 181a 6b63 b802 d78d 1402 d86b 6390
+    0x00006f0: b502 db2a b402 db2a b400 aa86 959e 0093
+    0x0000700: 1921 b601 ebb2 01f1 a500 882a 2ab4 02db
+    0x0000710: 8b04 60b5 00aa 2ab6 01db 9900 5a2a b401
+    0x0000720: 3a2a b401 3a6b 1401 e26b 2ab4 0138 2ab4
+    0x0000730: 0138 6b63 2ab4 0136 2ab4 0136 6b14 01e2
+    0x0000740: 6b63 b802 d713 02dc 6a38 2317 230c 959e
+    0x0000750: 0006 0c38 232a 2ab6 02df 1723 0c2a b400
+    0x0000760: afb6 020f 2ab4 00af b602 0f66 1302 8c6a
+    0x0000770: 62b6 02e3 2a15 1f15 1c15 2019 21b6 02e7
+    0x0000780: 1921 2ab4 00c2 151f 151c 1520 2ab6 02eb
+    0x0000790: 2ab6 02ee a700 293a 1f19 1f13 02f0 b802
+    0x00007a0: f63a 2019 2013 02f8 b602 fc3a 212a 1921
+    0x00007b0: b603 00bb 0302 5919 20b7 0305 bf2a b603
+    0x00007c0: 0836 1f2a b400 c22a b400 a014 0309 1403
+    0x00007d0: 0914 0309 b603 0db6 0310 9900 272a 04b6
+    0x00007e0: 0313 151f 9a00 2d2a 59b4 0220 0460 b502
+    0x00007f0: 202a b402 209a 001c 2a10 08b6 024e a700
+    0x0000800: 132a b402 209d 000c 2a2a b400 b174 b502
+    0x0000810: 2015 1f99 0034 2ab4 0220 9e00 2d2a 1303
+    0x0000820: 1513 0316 1303 172a b400 afb6 020f 2ab4
+    0x0000830: 00af b602 0f66 1302 8c6a 62b6 02e3 2a2a
+    0x0000840: b400 b174 b502 202a b400 c2b4 01a2 b601
+    0x0000850: d5b1                                   
+  Exception Handler Table:
+    bci [1936, 1940] => handler: 1943
+  Stackmap Table:
+    same_frame_extended(@132)
+    append_frame(@222,Double,Double,Double)
+    full_frame(@266,{Object[#2],Double,Double,Double,Double,Double,Double,Double,Double,Double,Object[#154]},{})
+    same_locals_1_stack_item_frame(@267,Integer)
+    append_frame(@279,Integer,Double)
+    same_frame(@333)
+    same_frame(@347)
+    same_frame(@352)
+    same_frame(@358)
+    same_frame(@417)
+    same_frame(@434)
+    same_frame(@441)
+    same_frame(@448)
+    same_frame(@510)
+    same_frame(@524)
+    same_frame(@529)
+    same_frame(@552)
+    same_frame(@569)
+    same_frame(@576)
+    chop_frame(@586,1)
+    append_frame(@610,Object[#305],Integer)
+    chop_frame(@649,1)
+    same_frame(@681)
+    same_frame(@702)
+    same_frame(@706)
+    same_locals_1_stack_item_frame(@707,Integer)
+    append_frame(@712,Integer,Integer)
+    same_frame(@751)
+    same_frame(@783)
+    same_frame(@786)
+    same_frame(@827)
+    same_frame(@861)
+    same_frame(@891)
+    same_frame(@906)
+    full_frame(@972,{Object[#2],Double,Double,Double,Double,Double,Double,Double,Double,Double,Object[#154],Integer,Object[#305],Integer,Integer,Double,Double,Integer,Double,Object[#154]},{})
+    same_frame(@1011)
+    same_frame(@1043)
+    same_frame(@1046)
+    same_frame(@1085)
+    same_frame(@1117)
+    same_frame(@1120)
+    same_frame(@1161)
+    same_frame(@1195)
+    same_frame(@1219)
+    same_frame(@1229)
+    same_frame(@1268)
+    same_frame(@1279)
+    full_frame(@1322,{Object[#2],Double,Double,Double,Double,Double,Double,Double,Double,Double,Object[#154],Integer,Object[#305],Integer,Integer},{})
+    same_locals_1_stack_item_extended(@1430,Object[#2])
+    same_locals_1_stack_item_frame(@1434,Object[#2])
+    full_frame(@1435,{Object[#2],Double,Double,Double,Double,Double,Double,Double,Double,Double,Object[#154],Integer,Object[#305],Integer,Integer},{Object[#2],Integer})
+    same_locals_1_stack_item_frame(@1450,Object[#2])
+    full_frame(@1451,{Object[#2],Double,Double,Double,Double,Double,Double,Double,Double,Double,Object[#154],Integer,Object[#305],Integer,Integer},{Object[#2],Integer})
+    same_locals_1_stack_item_frame(@1473,Object[#2])
+    full_frame(@1474,{Object[#2],Double,Double,Double,Double,Double,Double,Double,Double,Double,Object[#154],Integer,Object[#305],Integer,Integer},{Object[#2],Integer})
+    same_locals_1_stack_item_frame(@1492,Object[#2])
+    same_locals_1_stack_item_frame(@1496,Object[#2])
+    full_frame(@1497,{Object[#2],Double,Double,Double,Double,Double,Double,Double,Double,Double,Object[#154],Integer,Object[#305],Integer,Integer},{Object[#2],Integer})
+    same_frame(@1521)
+    same_frame(@1533)
+    same_frame(@1546)
+    full_frame(@1685,{Object[#2],Double,Double,Double,Double,Double,Double,Double,Double,Double,Object[#154],Integer,Object[#305],Integer,Integer,Double,Double,Integer,Double,Integer,Integer,Object[#19],Integer},{})
+    same_frame(@1702)
+    same_frame(@1713)
+    append_frame(@1877,Float)
+    chop_frame(@1908,1)
+    full_frame(@1936,{Object[#2],Double,Double,Double,Double,Double,Double,Double,Double,Double,Object[#154],Integer,Object[#305],Integer,Integer,Double,Double,Top,Double},{})
+    same_locals_1_stack_item_frame(@1943,Object[#622])
+    same_frame(@1981)
+    append_frame(@2049,Integer)
+    same_frame(@2065)
+    same_frame(@2119)
+    full_frame(@2129,{Object[#2],Double,Double,Double},{})
+
+	at net.minecraft.util.Session.func_148256_e(Session.java:70)
+	at net.minecraft.client.Minecraft.launchIntegratedServer(Minecraft.java:2140)
+	at cpw.mods.fml.client.FMLClientHandler.tryLoadExistingWorld(FMLClientHandler.java:696)
+	at net.minecraft.client.gui.GuiSelectWorld.func_146615_e(GuiSelectWorld.java:183)
+	at net.minecraft.client.gui.GuiSelectWorld$List.elementClicked(GuiSelectWorld.java:257)
+	at net.minecraft.client.gui.GuiSlot.drawScreen(GuiSlot.java:209)
+	at net.minecraft.client.gui.GuiSelectWorld.drawScreen(GuiSelectWorld.java:216)
+	at net.minecraft.client.renderer.EntityRenderer.updateCameraAndRender(EntityRenderer.java:1061)
+	at net.minecraft.client.Minecraft.runGameLoop(Minecraft.java:1001)
+	at net.minecraft.client.Minecraft.run(Minecraft.java:898)
+	at net.minecraft.client.main.Main.main(SourceFile:148)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135)
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28)
+	at net.minecraftforge.gradle.GradleStartCommon.launch(Unknown Source)
+	at GradleStart.main(Unknown Source)
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Stacktrace:
+	at net.minecraft.util.Session.func_148256_e(Session.java:70)
+	at net.minecraft.client.Minecraft.launchIntegratedServer(Minecraft.java:2140)
+	at cpw.mods.fml.client.FMLClientHandler.tryLoadExistingWorld(FMLClientHandler.java:696)
+	at net.minecraft.client.gui.GuiSelectWorld.func_146615_e(GuiSelectWorld.java:183)
+	at net.minecraft.client.gui.GuiSelectWorld$List.elementClicked(GuiSelectWorld.java:257)
+	at net.minecraft.client.gui.GuiSlot.drawScreen(GuiSlot.java:209)
+	at net.minecraft.client.gui.GuiSelectWorld.drawScreen(GuiSelectWorld.java:216)
+
+-- Screen render details --
+Details:
+	Screen name: net.minecraft.client.gui.GuiMainMenu
+	Mouse location: Scaled: (156, 102). Absolute: (313, 273)
+	Screen size: Scaled: (427, 240). Absolute: (854, 480). Scale factor of 2
+Stacktrace:
+	at net.minecraft.client.renderer.EntityRenderer.updateCameraAndRender(EntityRenderer.java:1061)
+	at net.minecraft.client.Minecraft.runGameLoop(Minecraft.java:1001)
+	at net.minecraft.client.Minecraft.run(Minecraft.java:898)
+	at net.minecraft.client.main.Main.main(SourceFile:148)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at net.minecraft.launchwrapper.Launch.launch(Launch.java:135)
+	at net.minecraft.launchwrapper.Launch.main(Launch.java:28)
+	at net.minecraftforge.gradle.GradleStartCommon.launch(Unknown Source)
+	at GradleStart.main(Unknown Source)
+
+-- System Details --
+Details:
+	Minecraft Version: 1.7.10
+	Operating System: Windows 7 (amd64) version 6.1
+	Java Version: 1.8.0_261, Oracle Corporation
+	Java VM Version: Java HotSpot(TM) 64-Bit Server VM (mixed mode), Oracle Corporation
+	Memory: 180279112 bytes (171 MB) / 388497408 bytes (370 MB) up to 928514048 bytes (885 MB)
+	JVM Flags: 0 total; 
+	AABB Pool Size: 0 (0 bytes; 0 MB) allocated, 0 (0 bytes; 0 MB) used
+	IntCache: cache: 0, tcache: 0, allocated: 29, tallocated: 77
+	FML: MCP v9.05 FML v7.10.99.99 Minecraft Forge 10.13.4.1614 3 mods loaded, 3 mods active
+	States: 'U' = Unloaded 'L' = Loaded 'C' = Constructed 'H' = Pre-initialized 'I' = Initialized 'J' = Post-initialized 'A' = Available 'D' = Disabled 'E' = Errored
+	UCHIJAAA	mcp{9.05} [Minecraft Coder Pack] (minecraft.jar) 
+	UCHIJAAA	FML{7.10.99.99} [Forge Mod Loader] (forgeBin-1.7.10-10.13.4.1614-1.7.10.jar) 
+	UCHIJAAA	Forge{10.13.4.1614} [Minecraft Forge] (forgeBin-1.7.10-10.13.4.1614-1.7.10.jar) 
+	GL info: ' Vendor: 'Intel' Version: '4.4.0 - Build 21.20.16.4508' Renderer: 'Intel(R) HD Graphics 620'
+	Launched Version: 1.7.10
+	LWJGL: 2.9.1
+	OpenGL: Intel(R) HD Graphics 620 GL version 4.4.0 - Build 21.20.16.4508, Intel
+	GL Caps: Using GL 1.3 multitexturing.
+Using framebuffer objects because OpenGL 3.0 is supported and separate blending is supported.
+Anisotropic filtering is supported and maximum anisotropy is 16.
+Shaders are available because OpenGL 2.1 is supported.
+
+	Is Modded: Definitely; Client brand changed to 'fml,forge'
+	Type: Client (map_client.txt)
+	Resource Packs: []
+	Current Language: English (UK)
+	Profiler Position: N/A (disabled)
+	Vec3 Pool Size: 0 (0 bytes; 0 MB) allocated, 0 (0 bytes; 0 MB) used
+	Anisotropic Filtering: Off (1)

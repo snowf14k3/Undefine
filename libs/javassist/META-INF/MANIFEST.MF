@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.10.7
+Created-By: 12.0.2+10 (Oracle Corporation)
+Specification-Title: Javassist
+Specification-Vendor: Shigeru Chiba, www.javassist.org
+Specification-Version: 3.27.0-GA
+Main-Class: javassist.CtClass
+Automatic-Module-Name: org.javassist
+
