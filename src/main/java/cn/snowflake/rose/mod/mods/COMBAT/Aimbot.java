@@ -139,7 +139,7 @@ public class Aimbot extends Module {
     }
 
     public boolean shouldAim(){
-        if(mc.thePlayer.inventory.getCurrentItem() == null || !(Objects.requireNonNull(JReflectUtility.getGunItem()).isInstance(mc.thePlayer.inventory.getCurrentItem().getItem()))){
+        if(mc.thePlayer.inventory.getCurrentItem() == null){
             return false;
         }
         if(mc.thePlayer.isUsingItem())
@@ -164,14 +164,7 @@ public class Aimbot extends Module {
         if (loaded.isEmpty()) {
             return null;
         }
-        loaded.sort((o1, o2) -> {
-            float[] rot1 = RotationUtil.getRotations(o1);
-            float[] rot2 = RotationUtil.getRotations(o2);
-            return (int) ((RotationUtil.getDistanceBetweenAngles(mc.thePlayer.rotationYaw, rot1[0])
-                    + RotationUtil.getDistanceBetweenAngles(mc.thePlayer.rotationPitch, rot1[1]))
-                    - (RotationUtil.getDistanceBetweenAngles(mc.thePlayer.rotationYaw, rot2[0])
-                    + RotationUtil.getDistanceBetweenAngles(mc.thePlayer.rotationPitch, rot2[1])));
-        });
+        loaded.sort((o1, o2) -> (int) (o1.getDistanceToEntity(mc.thePlayer) - o2.getDistanceToEntity(mc.thePlayer)));
         EntityLivingBase target = loaded.get(0);
         return target;
     }
