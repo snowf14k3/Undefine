@@ -4,10 +4,7 @@ import cn.snowflake.rose.Client;
 import cn.snowflake.rose.events.impl.EventMotion;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.ChatUtil;
-import cn.snowflake.rose.utils.JReflectUtility;
-import cn.snowflake.rose.utils.RotationUtil;
-import cn.snowflake.rose.utils.Value;
+import cn.snowflake.rose.utils.*;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -27,6 +24,7 @@ import java.util.Objects;
 
 public class Aimbot extends Module {
     public Value<Boolean> SILENT = new Value("Aimbot_Silent", true);
+    public Value<Boolean> AUTO_FIRE = new Value("Aimbot_AutoFire", true);
 
 
     public static Value<Double> range= new Value<Double>("Aimbot_Reach", 10.5D, 3.0D, 65.0D,0.1D);
@@ -74,6 +72,9 @@ public class Aimbot extends Module {
                     }else{
                         mc.thePlayer.rotationYaw = rotations[0];
                         mc.thePlayer.rotationPitch = rotations[1];
+                    }
+                    if(AUTO_FIRE.getValueState()){
+                        MouseUtil.sendClick(0,true);
                     }
                 }
             }
