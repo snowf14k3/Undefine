@@ -21,6 +21,7 @@ public class ModManager {
         addMod(new Aura());
         addMod(new Regen());
         addMod(new Criticals());
+        addMod(new AntiAim());
         addMod(new TPAura());
         addMod(new SuperKnockback());
         addMod(new Aimbot());

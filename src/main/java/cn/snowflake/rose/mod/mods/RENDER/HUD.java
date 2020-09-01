@@ -149,7 +149,7 @@ public class HUD extends Module {
                     color = new Color(col.getRed() /1, col.getGreen() / 4, col.getBlue() / 2).brighter().getRGB();
                 }
                 font.drawStringWithShadow(m.getName(), sr.getScaledWidth() - font.getStringWidth(m.getName() + disname) -1, (int)yAxis ,color);
-                font.drawStringWithShadow(disname, sr.getScaledWidth() - font.getStringWidth(disname) - 2, (int) (yAxis),-1);
+                font.drawStringWithShadow(disname, sr.getScaledWidth() - font.getStringWidth(disname) - 1, (int) (yAxis),-1);
 
                 int[] arrn = var3;
                 arrn[0] = arrn[0] + 2;

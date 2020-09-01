@@ -36,9 +36,9 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 		ClassNode classNode = new ClassNode();
 		classReader.accept(classNode, 0);
 		LogManager.getLogger().info("transform "+classNode.name);
-		classNode.methods.forEach(m -> {
-					transformer.accept(classNode, m);
-				}
+		classNode.methods.forEach(m ->
+					transformer.accept(classNode, m)
+
 		);
 		ClassWriter classWriter = new ClassWriter(0);
 		classNode.accept(classWriter);
@@ -71,7 +71,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 	}
 
 	//  TODO SHIT OF runtimeDeobfuscationEnabled
-	public static  boolean runtimeDeobfuscationEnabled = true;
+	public static  boolean runtimeDeobfuscationEnabled = false;
 
 //	public static  boolean runtimeDeobfuscationEnabled = false;
 
@@ -91,56 +91,12 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 				return transformMethods(classByte, this::transformRenderEntityRenderer);
 			}
 			else if(name.equals("net.minecraft.client.entity.EntityPlayerSP")){  //fixed
-				byte[] b = transformMethods(classByte, this::transformEntityPlayerSP);
-				return b;
+				return  transformMethods(classByte, this::transformEntityPlayerSP);
 			}
 			else if (name.equalsIgnoreCase("net.minecraftforge.client.GuiIngameForge")){
 				return this.transformMethods(classByte,this::transform2D);
 			}
 			else if (name.equals("net.minecraft.client.entity.EntityClientPlayerMP")) {
-//				ClassReader classReader = new ClassReader(classByte);
-//				ClassNode classNode = new ClassNode();
-//				classReader.accept(classNode, 0);
-//
-//				MethodNode mainMethod = new MethodNode(Opcodes.ASM5, ACC_PUBLIC, runtimeDeobfuscationEnabled ? "func_70091_d" : "moveEntity", "(DDD)V", null, null);
-//				mainMethod.instructions.add(new TypeInsnNode(NEW, "cn/snowflake/rose/events/impl/EventMove"));
-//				mainMethod.instructions.add(new InsnNode(DUP));//NEW, "cn/snowflake/rose/events/impl/EventMove"
-//				mainMethod.instructions.add(new VarInsnNode(DLOAD,1));
-//				mainMethod.instructions.add(new VarInsnNode(DLOAD,3));
-//				mainMethod.instructions.add(new VarInsnNode(DLOAD,5));
-//				mainMethod.instructions.add(new MethodInsnNode(INVOKESPECIAL, "cn/snowflake/rose/events/impl/EventMove", "<init>", "(DDD)V", false));
-//				mainMethod.instructions.add(new VarInsnNode(ASTORE,7));
-//
-//				mainMethod.instructions.add(new VarInsnNode(ALOAD,7));
-//				mainMethod.instructions.add(new MethodInsnNode(INVOKESTATIC, "com/darkmagician6/eventapi/EventManager", "call", "(Lcom/darkmagician6/eventapi/events/Event;)Lcom/darkmagician6/eventapi/events/Event;", false));
-//				mainMethod.instructions.add(new InsnNode(POP));
-//
-//				mainMethod.instructions.add(new VarInsnNode(ALOAD,7));
-//				mainMethod.instructions.add(new FieldInsnNode(GETFIELD, "cn/snowflake/rose/events/impl/EventMove", "x", "D"));
-//				mainMethod.instructions.add(new VarInsnNode(DSTORE,1));
-//
-//				mainMethod.instructions.add(new VarInsnNode(ALOAD,7));
-//				mainMethod.instructions.add(new FieldInsnNode(GETFIELD, "cn/snowflake/rose/events/impl/EventMove", "y", "D"));
-//				mainMethod.instructions.add(new VarInsnNode(DSTORE,3));
-//
-//
-//				mainMethod.instructions.add(new VarInsnNode(ALOAD,7));
-//				mainMethod.instructions.add(new FieldInsnNode(GETFIELD, "cn/snowflake/rose/events/impl/EventMove", "z", "D"));
-//				mainMethod.instructions.add(new VarInsnNode(DSTORE,5));
-//
-//
-//				mainMethod.instructions.add(new VarInsnNode(ALOAD,0));
-//				mainMethod.instructions.add(new VarInsnNode(DLOAD,1));
-//				mainMethod.instructions.add(new VarInsnNode(DLOAD,3));
-//				mainMethod.instructions.add(new VarInsnNode(DLOAD,5));
-//				mainMethod.instructions.add(new MethodInsnNode(INVOKESPECIAL, "net/minecraft/entity/Entity", runtimeDeobfuscationEnabled ? "func_70091_d" : "moveEntity", "(DDD)V", false));
-//				mainMethod.instructions.add(new InsnNode(Opcodes.RETURN));
-//				classNode.methods.add(mainMethod);
-//
-//				ClassWriter classWriter = new ClassWriter(0);
-//				classNode.accept(classWriter);
-//				byte[] bytes = classWriter.toByteArray();
-//				return bytes;
 				return this.transformMethods(classByte,this::transformEntityClientPlayerMP);
 			}
 			else if (name.equalsIgnoreCase("net.minecraft.network.NetHandlerPlayServer")){
@@ -342,7 +298,39 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 				}
 			}
 		}
-
+//		MethodNode mainMethod = new MethodNode( ACC_PUBLIC, runtimeDeobfuscationEnabled ? "func_70091_d" : "moveEntity", "(DDD)V", null, null);
+//		mainMethod.instructions.add(new TypeInsnNode(NEW, "cn/snowflake/rose/events/impl/EventMove"));
+//		mainMethod.instructions.add(new InsnNode(DUP));
+//		mainMethod.instructions.add(new VarInsnNode(DLOAD,1));
+//		mainMethod.instructions.add(new VarInsnNode(DLOAD,3));
+//		mainMethod.instructions.add(new VarInsnNode(DLOAD,5));
+//		mainMethod.instructions.add(new MethodInsnNode(INVOKESPECIAL, "cn/snowflake/rose/events/impl/EventMove", "<init>", "(DDD)V", false));
+//		mainMethod.instructions.add(new VarInsnNode(ASTORE,7));
+//
+//		mainMethod.instructions.add(new VarInsnNode(ALOAD,7));
+//		mainMethod.instructions.add(new MethodInsnNode(INVOKESTATIC, "com/darkmagician6/eventapi/EventManager", "call", "(Lcom/darkmagician6/eventapi/events/Event;)Lcom/darkmagician6/eventapi/events/Event;", false));
+//		mainMethod.instructions.add(new InsnNode(POP));
+//
+//		mainMethod.instructions.add(new VarInsnNode(ALOAD,7));
+//		mainMethod.instructions.add(new FieldInsnNode(GETFIELD, "cn/snowflake/rose/events/impl/EventMove", "x", "D"));
+//		mainMethod.instructions.add(new VarInsnNode(DSTORE,1));
+//
+//		mainMethod.instructions.add(new VarInsnNode(ALOAD,7));
+//		mainMethod.instructions.add(new FieldInsnNode(GETFIELD, "cn/snowflake/rose/events/impl/EventMove", "y", "D"));
+//		mainMethod.instructions.add(new VarInsnNode(DSTORE,3));
+//
+//		mainMethod.instructions.add(new VarInsnNode(ALOAD,7));
+//		mainMethod.instructions.add(new FieldInsnNode(GETFIELD, "cn/snowflake/rose/events/impl/EventMove", "z", "D"));
+//		mainMethod.instructions.add(new VarInsnNode(DSTORE,5));
+//
+//
+//		mainMethod.instructions.add(new VarInsnNode(ALOAD,0));
+//		mainMethod.instructions.add(new VarInsnNode(DLOAD,1));
+//		mainMethod.instructions.add(new VarInsnNode(DLOAD,3));
+//		mainMethod.instructions.add(new VarInsnNode(DLOAD,5));
+//		mainMethod.instructions.add(new MethodInsnNode(INVOKESPECIAL, "net/minecraft/client/entity/AbstractClientPlayer", runtimeDeobfuscationEnabled ? "func_70091_d" : "moveEntity", "(DDD)V", false));
+//		mainMethod.instructions.add(new InsnNode(Opcodes.RETURN));
+//		clazz.methods.add(mainMethod);
 	}
 	private void transformEntityClientPlayerMP(ClassNode clazz, MethodNode method) {
 		if (method.name.equals("onUpdate") || method.name.equals("func_70071_h_") ) {

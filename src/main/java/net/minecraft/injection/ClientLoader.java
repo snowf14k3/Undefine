@@ -7,8 +7,7 @@ import java.util.Map;
 
 
 public class ClientLoader implements IFMLLoadingPlugin {
-	public ClientLoader(){
-	}
+
 	@Override
 	public String[] getASMTransformerClass() {
 		return new String[] {"cn.snowflake.rose.asm.ClassTransformer"};

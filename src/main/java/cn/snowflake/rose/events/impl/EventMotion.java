@@ -5,6 +5,7 @@ import com.darkmagician6.eventapi.types.EventType;
 import com.darkmagician6.eventapi.events.Cancellable;
 import com.darkmagician6.eventapi.events.Event;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.play.client.C03PacketPlayer;
 
 public class EventMotion implements Event, Cancellable
 {
@@ -65,7 +66,8 @@ public class EventMotion implements Event, Cancellable
     }
 
     public void setYaw(final float yaw) {
-        this.yaw = yaw;
+        Minecraft.getMinecraft().getNetHandler().addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(yaw,Minecraft.getMinecraft().thePlayer.rotationPitch,Minecraft.getMinecraft().thePlayer.onGround));
+//        this.yaw = yaw;
     }
 
     public float getPitch() {
@@ -73,7 +75,7 @@ public class EventMotion implements Event, Cancellable
     }
 
     public void setPitch(final float pitch) {
-        this.pitch = pitch;
+        Minecraft.getMinecraft().getNetHandler().addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(Minecraft.getMinecraft().thePlayer.rotationYaw, pitch,Minecraft.getMinecraft().thePlayer.onGround));
     }
 
     public boolean isOnGround() {

@@ -97,7 +97,6 @@ jar {
 			"Agent-Class": 'cn.snowflake.rose.Agent',
 			"Can-Retransform-Classes": true,
 			"Can-Redefine-Classes": true,
-			"FMLCorePlugin": 'net.minecraft.injection.RegisterPlugin',
             "FMLCorePluginContainsFMLMod": 'true'
     )
 }
