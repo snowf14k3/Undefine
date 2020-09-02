@@ -10,6 +10,7 @@ import cn.snowflake.rose.manager.CommandManager;
 import cn.snowflake.rose.manager.FontManager;
 import cn.snowflake.rose.manager.ModManager;
 import cn.snowflake.rose.mod.Module;
+import cn.snowflake.rose.mod.mods.PLAYER.NoSlow;
 import cn.snowflake.rose.mod.mods.RENDER.ViewClip;
 import cn.snowflake.rose.mod.mods.WORLD.NoCommand;
 import cn.snowflake.rose.mod.mods.WORLD.Xray;
@@ -58,6 +59,10 @@ public class MinecraftHook {
     //noslow start
     private static float cacheStrafe;
     private static float cacheForward;
+
+    public static boolean onNoSlowEnable2() {
+        return NoSlow.no;
+    }
 
     public static boolean isSlow() {
         return Minecraft.getMinecraft().thePlayer.isUsingItem() && !Minecraft.getMinecraft().thePlayer.isRiding();

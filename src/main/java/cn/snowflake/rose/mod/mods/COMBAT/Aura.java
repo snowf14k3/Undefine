@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.Random;
 
 import cn.snowflake.rose.Client;
+import cn.snowflake.rose.asm.ClassTransformer;
 import cn.snowflake.rose.events.impl.EventAura;
 import cn.snowflake.rose.events.impl.EventMotion;
 import cn.snowflake.rose.mod.Category;

@@ -15,7 +15,7 @@ public class PlayerUtil {
         return false;
     }
     public static boolean MovementInput() {
-        return PlayerUtil.mc.gameSettings.keyBindForward.isPressed() || PlayerUtil.mc.gameSettings.keyBindLeft.isPressed() || PlayerUtil.mc.gameSettings.keyBindRight.isPressed() || PlayerUtil.mc.gameSettings.keyBindBack.isPressed();
+        return PlayerUtil.mc.gameSettings.keyBindForward.getIsKeyPressed() || PlayerUtil.mc.gameSettings.keyBindLeft.getIsKeyPressed() || PlayerUtil.mc.gameSettings.keyBindRight.getIsKeyPressed() || PlayerUtil.mc.gameSettings.keyBindBack.getIsKeyPressed();
     }
 
     public static ArrayList<Vector3f> vanillaTeleportPositions(double tpX, double tpY, double tpZ, double speed) {
@@ -76,7 +76,7 @@ public class PlayerUtil {
     }
 
     public static float getDirection() {
-        float yaw = Minecraft.getMinecraft().thePlayer.rotationYawHead;
+        float yaw = Minecraft.getMinecraft().thePlayer.rotationYaw;
         float forward = Minecraft.getMinecraft().thePlayer.moveForward;
         float strafe = Minecraft.getMinecraft().thePlayer.moveStrafing;
         yaw += (forward < 0.0F ? 180 : 0);

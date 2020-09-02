@@ -11,6 +11,7 @@ import cn.snowflake.rose.utils.verify.ShitUtil;
 import com.darkmagician6.eventapi.EventManager;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import org.apache.logging.log4j.LogManager;
@@ -88,7 +89,6 @@ public class Client {
                 Loader.instance().getModList().forEach(modContainer -> {
                     if (modContainer.getModId().equalsIgnoreCase("catanticheat") && modContainer.getVersion().equalsIgnoreCase("1.2.7")){
                         catanticheat = true;
-//                        catanticheatnetwork127 = true;
                     }
                     if (modContainer.getModId().equalsIgnoreCase("customnpcs")){
                         customnpcs = true;
@@ -99,22 +99,24 @@ public class Client {
                     if (modContainer.getModId().equalsIgnoreCase("deci")){
                         deci = true;
                     }
-
+                    if (modContainer.getModId().equalsIgnoreCase("mw")){
+                        mw = true;
+                    }
                 });
 
             }
     }
 
+
+
     public static boolean catanticheat = false;
-//    public static boolean catanticheatnetwork127 = false;
     public static boolean catanticheatnetwork130 = false;
 
     public static boolean deci = false;
+    public static boolean mw = false;
 
     public static boolean customnpcs = false;
     public static boolean nshowmod = false;// shit of number mob
-
-
 
 
 

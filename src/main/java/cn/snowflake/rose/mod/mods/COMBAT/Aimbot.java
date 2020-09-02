@@ -1,12 +1,14 @@
 package cn.snowflake.rose.mod.mods.COMBAT;
 
 import cn.snowflake.rose.Client;
+import cn.snowflake.rose.asm.ClassTransformer;
 import cn.snowflake.rose.events.impl.EventMotion;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.*;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
@@ -18,6 +20,7 @@ import net.minecraft.item.ItemBow;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.util.MathHelper;
 
+import java.lang.instrument.ClassFileTransformer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -33,8 +36,10 @@ public class Aimbot extends Module {
     public Value<Boolean> customnpcsteam = new Value("Aimbot_CustomNPCTeam", false);
 
     public Value<Boolean> decientity = new Value("Aimbot_DeciEntity", true);
+    public Value<Boolean> deci = new Value("Aimbot_DeciGun", true);
 
 
+    public Value<Boolean> throughwall = new Value("Aimbot_ThroughWall", false);
 
     public Value<Boolean> players = new Value("Aimbot_Player", true);
     public Value<Boolean> otherentity = new Value("Aimbot_OtherEntity", false);
@@ -50,6 +55,7 @@ public class Aimbot extends Module {
     public Aimbot() {
         super("Aimbot", Category.COMBAT);
         this.aimmode.addValue("Head");
+        this.aimmode.addValue("Neck");
         this.aimmode.addValue("Body");
         this.aimmode.addValue("Feet");
         this.aimmode.addValue("Auto");
@@ -64,6 +70,7 @@ public class Aimbot extends Module {
         if (em.isPre()) {
             target = getTarget();
             if(shouldAim()){
+
                 if (target != null) {
                     float[] rotations = getEntityRotations(target);
                     boolean silent = SILENT.getValueState();
@@ -74,14 +81,18 @@ public class Aimbot extends Module {
                         mc.thePlayer.rotationPitch = rotations[1];
                     }
                     if(AUTO_FIRE.getValueState()){
-                        MouseUtil.sendClick(0,true);
+                        KeyBinding.setKeyBindState(mc.gameSettings.keyBindAttack.getKeyCode(),true);
+//                        KeyBinding.setKeyBindState(mc.gameSettings.keyBindAttack.getKeyCode(),false);
+
+//                        MouseUtil.sendClick(0,true);
                     }
                 }
+
             }
         }
     }
     private boolean canTarget(Entity entity) {
-        if (!mc.thePlayer.canEntityBeSeen(entity)){
+        if (!mc.thePlayer.canEntityBeSeen(entity) && throughwall.getValueState()){
             return false;
         }
         if (entity instanceof EntityPlayer && !players.getValueState()) {
@@ -139,7 +150,7 @@ public class Aimbot extends Module {
     }
 
     public boolean shouldAim(){
-        if(mc.thePlayer.inventory.getCurrentItem() == null){
+        if(mc.thePlayer.inventory.getCurrentItem() == null || !(deci.getValueState() && Objects.requireNonNull(JReflectUtility.getGunItem()).isInstance(mc.thePlayer.inventory.getCurrentItem().getItem()))){
             return false;
         }
         if(mc.thePlayer.isUsingItem())
@@ -181,7 +192,9 @@ public class Aimbot extends Module {
             pitch = (float)((- Math.atan2(target.posY + (double)target.getEyeHeight() / HitLocation.CHEST.getOffset() - (mc.thePlayer.posY + (double)mc.thePlayer.getEyeHeight()), Math.hypot(xDiff, zDiff))) * 180.0 / 3.141592653589793);
         } else if (this.aimmode.isCurrentMode("Feet")) {
             pitch = (float)((- Math.atan2(target.posY + (double)target.getEyeHeight() / HitLocation.FEET.getOffset() - (mc.thePlayer.posY + (double)mc.thePlayer.getEyeHeight()), Math.hypot(xDiff, zDiff))) * 180.0 / 3.141592653589793);
-        } else if (this.aimmode.isCurrentMode("Head")) {
+        } else if (this.aimmode.isCurrentMode("Head") || (Client.mw && target instanceof EntityPlayer && JReflectUtility.getProning((EntityPlayer) target)) ) {
+            pitch = (float)((- Math.atan2(target.posY + (double)target.getEyeHeight() / HitLocation.HEAD.getOffset() - (mc.thePlayer.posY + (double)mc.thePlayer.getEyeHeight()), Math.hypot(xDiff, zDiff))) * 180.0 / 3.141592653589793);
+        }else if (this.aimmode.isCurrentMode("Neck")) {
             pitch = (float)((- Math.atan2(target.posY + (double)target.getEyeHeight() / HitLocation.HEAD.getOffset() - (mc.thePlayer.posY + (double)mc.thePlayer.getEyeHeight()), Math.hypot(xDiff, zDiff))) * 180.0 / 3.141592653589793);
         }
         return new float[]{yaw, pitch};
@@ -191,8 +204,8 @@ public class Aimbot extends Module {
         AUTO(0.0),
         HEAD(1.0),
         CHEST(1.5),
-        FEET(3.5);
-
+        FEET(3.5),
+        NECK(1.25);
         private double offset;
 
         private HitLocation(double offset, int n3, double d2) {

@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.net.URL;
 
 import cn.snowflake.rose.asm.ClassTransformer;
+import cn.snowflake.rose.utils.JReflectUtility;
 import net.minecraft.launchwrapper.LaunchClassLoader;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.Level;

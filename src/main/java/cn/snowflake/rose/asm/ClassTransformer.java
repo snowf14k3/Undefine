@@ -11,9 +11,11 @@ import cn.snowflake.rose.Client;
 import cn.snowflake.rose.events.impl.EventMove;
 import cn.snowflake.rose.events.impl.EventPacket;
 import cn.snowflake.rose.mod.mods.WORLD.Xray;
+import cn.snowflake.rose.utils.JReflectUtility;
 import cn.snowflake.rose.utils.asm.ASMUtil;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.types.EventType;
+import cpw.mods.fml.common.Loader;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -55,11 +57,19 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 				"net.minecraft.block.Block",
 				"net.minecraft.client.renderer.EntityRenderer",
 				"net.minecraftforge.client.GuiIngameForge",
+				"com.vicmatskiv.weaponlib.ClientEventHandler",
+				"luohuayu.anticheat.message.CPacketInjectDetect"
 		};
 		for (int i=0; i<nameArray.length; i++) {
-			classNameSet.add(nameArray[i]);
+				classNameSet.add(nameArray[i]);
 		}
 	}
+
+
+
+
+
+
 
 	public static boolean needTransform(String name) {
 		return classNameSet.contains(name);
@@ -108,14 +118,37 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			else if (name.equalsIgnoreCase("net.minecraft.block.Block")){
 				return this.transformMethods(classByte,this::transformBlock);
 			}
-			else if (name.equalsIgnoreCase("luohuayu.anticheat.message.CPacketInjectDetect")){
+
+			else if (name.equalsIgnoreCase("luohuayu.anticheat.message.CPacketInjectDetect") && Client.catanticheat){
 				return this.transformMethods(classByte,this::transformCPacketInjectDetect);
+			}
+			else if (name.equalsIgnoreCase("com.vicmatskiv.weaponlib.ClientEventHandler") && Client.mw){
+				return this.transformMethods(classByte,this::transformClientEventHandler);
 			}
 		}catch(Exception e) {
 			LogManager.getLogger().log(Level.ERROR, ExceptionUtils.getStackTrace(e));
 			
 		}
 		return classByte;
+	}
+
+	private void transformClientEventHandler(ClassNode classNode, MethodNode methodNode) {
+		if (methodNode.name.equalsIgnoreCase("slowPlayerDown")){
+			AbstractInsnNode fist = methodNode.instructions.getFirst();
+			InsnList insnList = new InsnList();
+			insnList.add(new VarInsnNode(ALOAD,1));
+			insnList.add(new MethodInsnNode(INVOKESTATIC, "net/minecraft/client/Minecraft", "getMinecraft", "()Lnet/minecraft/client/Minecraft;", false));
+			//field_71439_g thePlayer
+			insnList.add(new FieldInsnNode(GETFIELD, "net/minecraft/client/Minecraft", "field_71439_g", "Lnet/minecraft/client/entity/EntityClientPlayerMP;"));
+			LabelNode labelNode = new LabelNode();
+			insnList.add(new JumpInsnNode(IF_ACMPNE,labelNode));
+			insnList.add(new MethodInsnNode(INVOKESTATIC, "cn/snowflake/rose/asm/MinecraftHook", "onNoSlowEnable2", "()Z", false));
+			insnList.add(new JumpInsnNode(IFEQ,labelNode));
+			insnList.add(new InsnNode(RETURN));
+			insnList.add(labelNode);
+			insnList.add(new FrameNode(F_SAME, 0, null, 0, null));
+			methodNode.instructions.insertBefore(fist.getNext(),insnList);
+		}
 	}
 
 	private void transformCPacketInjectDetect(ClassNode classNode, MethodNode methodNode) {
@@ -374,6 +407,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 	@Override
 	public byte[] transform(ClassLoader arg0, String name, Class<?> clazz, ProtectionDomain arg3, byte[] classByte)
 			throws IllegalClassFormatException {
+		runtimeDeobfuscationEnabled = true;
 		return transform(clazz.getName(), classByte);
 	}
 

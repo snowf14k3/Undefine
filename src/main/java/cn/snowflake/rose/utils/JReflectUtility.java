@@ -1,9 +1,9 @@
 package cn.snowflake.rose.utils;
 
-import cn.snowflake.rose.Client;
 import cn.snowflake.rose.asm.ClassTransformer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
+import net.minecraft.entity.player.EntityPlayer;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -162,6 +162,31 @@ public class JReflectUtility {
     }
     }
 
+    public static Class<?>[] getInterfaces(Object clazz){
+        Class<?> c = clazz.getClass();
+        Class<?> interfaces[] = c.getInterfaces();
+        return interfaces;
+    }
+    public static boolean isSRG() {
+        try {
+            if(getField(Minecraft.class,"theMinecraft",true) != null) {
+                return false;
+            }
+            return true;
+        } catch(Exception ex) {
+            return true;
+        }
+    }
+
+    public static boolean getProning(EntityPlayer entityPlayer){
+        try {
+            Class<?> clazz = Class.forName("com.vicmatskiv.weaponlib.ClientEventHandler");
+            Method m = clazz.getDeclaredMethod("isProning");
+            return (boolean) m.invoke(clazz,entityPlayer);
+        }catch (Exception ev){
+        }
+        return false;
+    }
 
 
         public static void setCurBlockDamageMP(int i) {

@@ -1,42 +1,33 @@
 package cn.snowflake.rose;
 
 
+import cn.snowflake.rose.asm.MinecraftHook;
 import cn.snowflake.rose.events.impl.EventMove;
+import cn.snowflake.rose.mod.mods.PLAYER.NoSlow;
 import com.darkmagician6.eventapi.EventManager;
+import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-public class Test extends Entity {
+public class Test  {
 
 
-    public Test(World p_i1582_1_) {
-        super(p_i1582_1_);
-    }
 
-    @Override
-    protected void entityInit() {
+    private void slowPlayerDown(EntityPlayer entityPlayer, AttributeModifier modifier) {
+        if (entityPlayer == Minecraft.getMinecraft().thePlayer && MinecraftHook.onNoSlowEnable2()){
+            return;
+        }
 
-    }
-
-    @Override
-    protected void readEntityFromNBT(NBTTagCompound nbtTagCompound) {
-
-    }
-
-    @Override
-    protected void writeEntityToNBT(NBTTagCompound nbtTagCompound) {
-
+        if (entityPlayer.forceSpawn) {
+            entityPlayer.setAbsorptionAmount(1);
+        }
+        System.out.println("ASdasdad");
     }
 
 
-    @Override
-    public void moveEntity(double x, double y, double z) {
-        EventMove eventMove = new EventMove(x,y,z);
-        EventManager.call(eventMove);
-        x = eventMove.x;
-        y = eventMove.y;
-        z = eventMove.z;
-        super.moveEntity(x, y, z);
-    }
 }
