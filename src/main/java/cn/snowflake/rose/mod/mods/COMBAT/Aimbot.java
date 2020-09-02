@@ -50,6 +50,7 @@ public class Aimbot extends Module {
     public Aimbot() {
         super("Aimbot", Category.COMBAT);
         this.aimmode.addValue("Head");
+        this.aimmode.addValue("Neck");
         this.aimmode.addValue("Body");
         this.aimmode.addValue("Feet");
         this.aimmode.addValue("Auto");
@@ -183,6 +184,8 @@ public class Aimbot extends Module {
             pitch = (float)((- Math.atan2(target.posY + (double)target.getEyeHeight() / HitLocation.FEET.getOffset() - (mc.thePlayer.posY + (double)mc.thePlayer.getEyeHeight()), Math.hypot(xDiff, zDiff))) * 180.0 / 3.141592653589793);
         } else if (this.aimmode.isCurrentMode("Head")) {
             pitch = (float)((- Math.atan2(target.posY + (double)target.getEyeHeight() / HitLocation.HEAD.getOffset() - (mc.thePlayer.posY + (double)mc.thePlayer.getEyeHeight()), Math.hypot(xDiff, zDiff))) * 180.0 / 3.141592653589793);
+        } else if (this.aimmode.isCurrentMode("Neck")) {
+            pitch = (float)((- Math.atan2(target.posY + (double)target.getEyeHeight() / HitLocation.HEAD.getOffset() - (mc.thePlayer.posY + (double)mc.thePlayer.getEyeHeight()), Math.hypot(xDiff, zDiff))) * 180.0 / 3.141592653589793);
         }
         return new float[]{yaw, pitch};
     }
@@ -190,6 +193,7 @@ public class Aimbot extends Module {
     private static enum HitLocation {
         AUTO(0.0),
         HEAD(1.0),
+        NECK(1.25),
         CHEST(1.5),
         FEET(3.5);
 
