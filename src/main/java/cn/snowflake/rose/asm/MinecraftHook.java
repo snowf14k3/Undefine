@@ -24,6 +24,13 @@ import net.minecraft.network.play.client.C01PacketChatMessage;
 import org.lwjgl.input.Keyboard;
 
 public class MinecraftHook {
+    public static boolean anticat = true;
+
+
+    public static boolean cat(){
+        return anticat;
+    }
+
     //Client Start
     public static void runClient() {
         if (!Client.init){

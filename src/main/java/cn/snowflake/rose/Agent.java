@@ -59,7 +59,7 @@ public class Agent {
 				try {
 					cl.loadClass(name);
 				} catch (ClassNotFoundException e) {
-					LogManager.getLogger().log(Level.ERROR, "can not load class " + name);
+//					LogManager.getLogger().log(Level.ERROR, "can not load class " + name);
 				}
 			}
 		}

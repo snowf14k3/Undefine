@@ -47,7 +47,6 @@ public class Aimbot extends Module {
     public Value<Boolean> moster = new Value("Aimbot_Mob", false);
     public Value<Boolean> village = new Value("Aimbot_village", false);
     public Value<Boolean> invisible = new Value("Aimbot_Invisible", false);
-
     public Value<Boolean> aimmode = new Value("Aimbot","Mode", 0);
 
     public static EntityLivingBase target;
@@ -92,7 +91,7 @@ public class Aimbot extends Module {
         }
     }
     private boolean canTarget(Entity entity) {
-        if (!mc.thePlayer.canEntityBeSeen(entity) && throughwall.getValueState()){
+        if (mc.thePlayer.canEntityBeSeen(entity) && !throughwall.getValueState()){
             return false;
         }
         if (entity instanceof EntityPlayer && !players.getValueState()) {
@@ -148,9 +147,9 @@ public class Aimbot extends Module {
         }
         return entity != mc.thePlayer && entity.isEntityAlive();
     }
-
+//|| !(deci.getValueState() && Objects.requireNonNull(JReflectUtility.getGunItem()).isInstance(mc.thePlayer.inventory.getCurrentItem().getItem()))
     public boolean shouldAim(){
-        if(mc.thePlayer.inventory.getCurrentItem() == null || !(deci.getValueState() && Objects.requireNonNull(JReflectUtility.getGunItem()).isInstance(mc.thePlayer.inventory.getCurrentItem().getItem()))){
+        if(mc.thePlayer.inventory.getCurrentItem() == null ){
             return false;
         }
         if(mc.thePlayer.isUsingItem())

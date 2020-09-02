@@ -14,20 +14,18 @@ import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class Test  {
+    public List foundClassList;
 
-
-
-    private void slowPlayerDown(EntityPlayer entityPlayer, AttributeModifier modifier) {
-        if (entityPlayer == Minecraft.getMinecraft().thePlayer && MinecraftHook.onNoSlowEnable2()){
+    public Test(List foundClassList) {
+        if (MinecraftHook.anticat){
             return;
         }
-
-        if (entityPlayer.forceSpawn) {
-            entityPlayer.setAbsorptionAmount(1);
-        }
-        System.out.println("ASdasdad");
+        this.foundClassList = foundClassList;
     }
+
 
 
 }

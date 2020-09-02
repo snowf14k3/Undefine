@@ -119,12 +119,12 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 				return this.transformMethods(classByte,this::transformBlock);
 			}
 
-			else if (name.equalsIgnoreCase("luohuayu.anticheat.message.CPacketInjectDetect") && Client.catanticheat){
+			else if (name.equalsIgnoreCase("luohuayu.anticheat.message.CPacketInjectDetect")){
 				return this.transformMethods(classByte,this::transformCPacketInjectDetect);
 			}
-			else if (name.equalsIgnoreCase("com.vicmatskiv.weaponlib.ClientEventHandler") && Client.mw){
-				return this.transformMethods(classByte,this::transformClientEventHandler);
-			}
+//			else if (name.equalsIgnoreCase("com.vicmatskiv.weaponlib.ClientEventHandler")){
+//				return this.transformMethods(classByte,this::transformClientEventHandler);
+//			}
 		}catch(Exception e) {
 			LogManager.getLogger().log(Level.ERROR, ExceptionUtils.getStackTrace(e));
 			
@@ -150,24 +150,24 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			methodNode.instructions.insertBefore(fist.getNext(),insnList);
 		}
 	}
-
 	private void transformCPacketInjectDetect(ClassNode classNode, MethodNode methodNode) {
-		if (methodNode.name.equalsIgnoreCase("<init>") && methodNode.desc.equalsIgnoreCase("(Ljava/util/List<Ljava/lang/String;>;)V")){
-			Iterator<AbstractInsnNode> iterator = methodNode.instructions.iterator();
-			if (iterator.hasNext()){
-				AbstractInsnNode insnNode = (AbstractInsnNode) iterator.next();
-				if (insnNode instanceof VarInsnNode && insnNode.getOpcode() == ALOAD &&
-						insnNode.getNext() instanceof VarInsnNode && insnNode.getNext().getOpcode() == ALOAD &&
-						insnNode.getNext().getNext() instanceof FieldInsnNode && insnNode.getNext().getNext().getOpcode() == PUTFIELD){
+		if (methodNode.name.equalsIgnoreCase("<init>")){
 
+			for (int i = 0; i < methodNode.instructions.toArray().length; i++) {
+				AbstractInsnNode insnNode =  methodNode.instructions.get(i);
+				if (insnNode instanceof VarInsnNode &&
+						insnNode.getNext() instanceof VarInsnNode &&
+						insnNode.getNext().getNext() instanceof FieldInsnNode){
 					methodNode.instructions.remove(insnNode.getNext().getNext());
 					methodNode.instructions.remove(insnNode.getNext());
 					methodNode.instructions.remove(insnNode);
-					JOptionPane.showConfirmDialog(null,"猫反已击杀","提示",1);
+					LogManager.getLogger().info("insnNode" + Arrays.toString(methodNode.instructions.toArray()));
+//					JOptionPane.showConfirmDialog(null,"猫反已击杀");
 				}
 			}
 		}
 	}
+
 
 	private void transformBlock(ClassNode classNode, MethodNode methodNode) {
 		if (methodNode.name.equalsIgnoreCase("shouldSideBeRendered") || methodNode.name.equalsIgnoreCase("func_149646_a")){

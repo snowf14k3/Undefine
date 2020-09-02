@@ -25,7 +25,7 @@ import java.lang.reflect.Method;
 public class Client {
     public static String shitname =null;
     public static String name = "Season";
-    public static String version = "beta";
+    public static String version = "0.1";
     public static Client instance;
     public static boolean init = false;
     private static boolean loaded =false;
