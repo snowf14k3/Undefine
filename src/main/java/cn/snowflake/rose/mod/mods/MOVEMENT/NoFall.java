@@ -21,8 +21,8 @@ public class NoFall extends Module {
     @EventTarget
     public void OnPre(EventUpdate e) {
         if(mode.isCurrentMode("onGround")) {
-            if(mc.thePlayer.fallDistance > 3.0f) {
-                mc.getNetHandler().addToSendQueue(new C03PacketPlayer(true));
+            if(mc.thePlayer.fallDistance > 2) {
+                mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX,mc.thePlayer.boundingBox.minY,mc.thePlayer.posY,mc.thePlayer.posZ,!mc.thePlayer.onGround));
             }
         }
     }

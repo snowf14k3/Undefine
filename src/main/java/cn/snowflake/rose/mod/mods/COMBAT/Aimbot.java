@@ -174,7 +174,9 @@ public class Aimbot extends Module {
         if (loaded.isEmpty()) {
             return null;
         }
-        loaded.sort((o1, o2) -> (int) (o1.getDistanceToEntity(mc.thePlayer) - o2.getDistanceToEntity(mc.thePlayer)));
+        loaded.sort((o1, o2) ->
+                (int) (o1.getDistanceToEntity(mc.thePlayer) - o2.getDistanceToEntity(mc.thePlayer))
+        );
         EntityLivingBase target = loaded.get(0);
         return target;
     }

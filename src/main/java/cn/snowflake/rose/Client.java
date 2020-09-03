@@ -14,6 +14,7 @@ import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -23,13 +24,15 @@ import org.lwjgl.opengl.Display;
 import javax.swing.*;
 import java.awt.*;
 import java.lang.management.ManagementFactory;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 
 public class Client {
     public static String shitname =null;
     public static String name = "Season";
-    public static String version = "0.1";
+    public static String version = "0.2";
     public static Client instance;
     public static boolean init = false;
     private static boolean loaded =false;
@@ -127,7 +130,25 @@ public class Client {
 
     @EventTarget
     public void onFml(EventFMLChannels eventFMLChannels){
-        if (eventFMLChannels.iMessage.equals(JReflectUtility.getCPacketInjectDetect())){
+        Constructor constructor = null;// 1.3猫反
+        try {
+            constructor = eventFMLChannels.iMessage.getClass().getConstructor(List.class);
+        } catch (NoSuchMethodException e) {
+        }
+        if (constructor != null
+                && eventFMLChannels.iMessage.getClass().getInterfaces()[0].equals(IMessage.class)
+                && eventFMLChannels.iMessage.getClass().getInterfaces().length == 1
+                && eventFMLChannels.iMessage.getClass().getDeclaredFields().length == 1
+                && eventFMLChannels.iMessage.getClass().getDeclaredFields()[0].toString().contains("java.util.List")
+        ){
+            eventFMLChannels.setCancelled(true); //     拦截检测注入包
+            try {
+                eventFMLChannels.sendToServer(eventFMLChannels.iMessage.getClass().getDeclaredConstructor().newInstance());//发送无参packet
+            } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            }
+        }
+        //====================================================================================================================================
+        if (eventFMLChannels.iMessage.equals(JReflectUtility.getCPacketInjectDetect())){// 1.2.7 以下猫反
             eventFMLChannels.setCancelled(true); //     拦截检测注入包
             try {
                 eventFMLChannels.sendToServer(eventFMLChannels.iMessage.getClass().getDeclaredConstructor().newInstance());//发送无参packet

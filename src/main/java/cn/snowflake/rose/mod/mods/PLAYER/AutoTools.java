@@ -4,6 +4,7 @@ package cn.snowflake.rose.mod.mods.PLAYER;
 import java.util.Objects;
 
 import cn.snowflake.rose.events.impl.EventMotion;
+import cn.snowflake.rose.events.impl.EventPacket;
 import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
@@ -20,6 +21,7 @@ import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.item.ItemTool;
+import net.minecraft.network.play.client.C07PacketPlayerDigging;
 
 public class AutoTools extends Module {
 
@@ -29,10 +31,12 @@ public class AutoTools extends Module {
 
 
     @EventTarget
-    public void onClickBlock(EventUpdate eventPostMotion) {
-            if (!mc.thePlayer.isEating() && JReflectUtility.getHittingBlock()) {
+    public void onClickBlock(EventPacket e) {
+        if (e.getPacket() instanceof C07PacketPlayerDigging){
+            if (!mc.thePlayer.isEating()) {
                 this.bestTool(mc.objectMouseOver.blockX, mc.objectMouseOver.blockY, mc.objectMouseOver.blockZ);
             }
+        }
     }
 
     public void bestTool(int n, int n2, int n3) {

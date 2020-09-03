@@ -20,29 +20,35 @@ public class InvMove extends Module {
 
     @EventTarget
     public void call(EventUpdate event) {
-        KeyBinding[] moveKeys = new KeyBinding[]{mc.gameSettings.keyBindRight, mc.gameSettings.keyBindLeft, mc.gameSettings.keyBindBack, mc.gameSettings.keyBindForward, mc.gameSettings.keyBindJump, mc.gameSettings.keyBindSprint};
-        KeyBinding[] array2;
-        int length2;
-        int j;
-        KeyBinding bind;
-        if (this.mc.currentScreen != null && !(this.mc.currentScreen instanceof GuiChat)) {
-            array2 = moveKeys;
-            length2 = moveKeys.length;
-            for(j = 0; j < length2; ++j) {
-                bind = array2[j];
-                KeyBinding.setKeyBindState(bind.getKeyCode(),Keyboard.isKeyDown(bind.getKeyCode()));
-            }
-        } else if (Objects.isNull(mc.currentScreen)) {
-            array2 = moveKeys;
-            length2 = moveKeys.length;
+        if ((this.mc.currentScreen != null) && (!(this.mc.currentScreen instanceof GuiChat)))
+        {
 
-            for(j = 0; j < length2; ++j) {
-                bind = array2[j];
-                if (!Keyboard.isKeyDown(bind.getKeyCode())) {
-                    KeyBinding.setKeyBindState(bind.getKeyCode(), false);
-                }
+            KeyBinding[] key = { this.mc.gameSettings.keyBindForward, this.mc.gameSettings.keyBindBack,
+                    this.mc.gameSettings.keyBindLeft, this.mc.gameSettings.keyBindRight, this.mc.gameSettings.keyBindSprint, this.mc.gameSettings.keyBindJump };
+            KeyBinding[] arrayOfKeyBinding1;
+            int j = (arrayOfKeyBinding1 = key).length;
+            for (int i = 0; i < j; i++)
+            {
+                KeyBinding b = arrayOfKeyBinding1[i];
+                KeyBinding.setKeyBindState(b.getKeyCode(), Keyboard.isKeyDown(b.getKeyCode()));
             }
+
+
+            if (Keyboard.isKeyDown(200)) {
+                mc.thePlayer.rotationPitch -= 1;
+            }
+            if (Keyboard.isKeyDown(208)) {
+                mc.thePlayer.rotationPitch += 1;
+            }
+            if (Keyboard.isKeyDown(203)) {
+                mc.thePlayer.rotationYaw -= 3;
+            }
+            if (Keyboard.isKeyDown(205)) {
+                mc.thePlayer.rotationYaw += 3;
+            }
+
         }
     }
+    
 
 }

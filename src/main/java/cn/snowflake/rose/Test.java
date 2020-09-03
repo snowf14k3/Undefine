@@ -11,6 +11,7 @@ import cpw.mods.fml.common.network.FMLOutboundHandler;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelFutureListener;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -23,24 +24,26 @@ import net.minecraft.world.World;
 import java.util.EnumMap;
 import java.util.List;
 
-public class Test  {
-    public EnumMap<Side, FMLEmbeddedChannel> channels;
+public class Test implements IMessage {
+    public List<String> t;
+    public static void main(String[] args) {
+        System.out.println(Test.class.getDeclaredFields()[0].toString());
+
+    }
 
     public Test(List<String> foundClassList){
-
     }
 
 
-    public void sendToServer(IMessage message)
-    {
-        EventFMLChannels eventFMLChannels = new EventFMLChannels(message,channels);
-        EventManager.call(eventFMLChannels);
-        if (eventFMLChannels.isCancelled()){
-            return;
-        }
-        channels.get(Side.CLIENT).attr(FMLOutboundHandler.FML_MESSAGETARGET).set(FMLOutboundHandler.OutboundTarget.TOSERVER);
-        channels.get(Side.CLIENT).writeAndFlush(message).addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
+
+
+    @Override
+    public void fromBytes(ByteBuf byteBuf) {
+
     }
 
+    @Override
+    public void toBytes(ByteBuf byteBuf) {
 
+    }
 }
