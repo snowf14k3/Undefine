@@ -58,9 +58,11 @@ public class MinecraftHook {
     }
 
     public static void Event2D(){
+        GlStateManager.pushMatrix();
         EventRender2D er = new EventRender2D();
         EventManager.call(er);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.popMatrix();
     }
 
     //noslow start
@@ -122,7 +124,7 @@ public class MinecraftHook {
 
     public static void command(String message){
         String s = CommandManager.removeSpaces(message);
-        if (message.startsWith("-")) {
+        if (message.startsWith("-") && !NoCommand.n) {
             for (Command cmd : CommandManager.getCommands()) {
                 int i = 0;
                 while (i < cmd.getCommands().length) {

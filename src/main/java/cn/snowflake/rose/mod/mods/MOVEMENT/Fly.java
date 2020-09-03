@@ -27,7 +27,7 @@ public class Fly extends Module {
     }
 
     @EventTarget
-    public void OnUpdate(EventMotion e) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public void OnUpdate(EventMotion e) {
         if (this.mode.isCurrentMode("Motion")) {
             this.mc.thePlayer.motionY = 0.0;
             if (this.mc.gameSettings.keyBindForward.getIsKeyPressed()
@@ -46,7 +46,10 @@ public class Fly extends Module {
                 ++thePlayer2.motionY;
             }
         }
-        handleVanillaKickBypass();
+        if (mc.thePlayer.ticksExisted % 5 == 0) {
+            mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(mc.thePlayer.posX, mc.thePlayer.boundingBox.minY, mc.thePlayer.posY - 0.03125D, mc.thePlayer.posZ, mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch, true));
+        }
+//        handleVanillaKickBypass();
     }
 
     private void handleVanillaKickBypass() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {

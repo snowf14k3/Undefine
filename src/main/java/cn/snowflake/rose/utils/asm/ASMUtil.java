@@ -8,9 +8,7 @@ import org.objectweb.asm.tree.*;
 
 import javax.annotation.Nullable;
 
-import java.util.Comparator;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
@@ -188,17 +186,33 @@ public final class ASMUtil {
         }
         return null;
     }
+
     public static AbstractInsnNode findFieldInsnNode(MethodNode mn, int opcode, String owner, String name, String desc) {
         for(AbstractInsnNode insn : mn.instructions.toArray()) {
             if(insn instanceof FieldInsnNode) {
-                final FieldInsnNode method = (FieldInsnNode)insn;
-                if(method.getOpcode() == opcode && method.owner.equals(owner) && method.name.equals(name) && method.desc.equals(desc)) {
+                final FieldInsnNode field = (FieldInsnNode)insn;
+                if(field.getOpcode() == opcode && field.owner.equals(owner) && field.name.equals(name) && field.desc.equals(desc)) {
                     return insn;
                 }
             }
         }
         return null;
     }
+
+
+    public static List<AbstractInsnNode> getFieldList(MethodNode mn, int opcode, String owner, String name, String desc) {
+        List<AbstractInsnNode> list = new ArrayList<>();
+        for(AbstractInsnNode insn : mn.instructions.toArray()) {
+            if(insn instanceof FieldInsnNode) {
+                final FieldInsnNode field = (FieldInsnNode)insn;
+                if(field.getOpcode() == opcode && field.owner.equals(owner) && field.name.equals(name) && field.desc.equals(desc)) {
+                    list.add(field);
+                }
+            }
+        }
+        return list;
+    }
+
     public static AbstractInsnNode findPatternInsn(MethodNode mn, int[] pattern) {
         for(AbstractInsnNode insn : mn.instructions.toArray()) {
             for (final int opcode : pattern) {
@@ -224,7 +238,9 @@ public final class ASMUtil {
         }
         return null;
     }
-
+    public static AbstractInsnNode head(MethodNode method) {
+        return method.instructions.getFirst().getNext();
+    }
     public static AbstractInsnNode bottom(MethodNode method) {
         return method.instructions.get(method.instructions.size() - 2);
     }

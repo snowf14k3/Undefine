@@ -4,7 +4,10 @@ import cn.snowflake.rose.asm.ClassTransformer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Timer;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -160,6 +163,55 @@ public class JReflectUtility {
     {
         throw new RuntimeException(e);
     }
+    }
+
+
+    public static AxisAlignedBB newAxisAlignedBBInstance(double x1, double y1, double z1, double x2, double y2, double z2){
+        Class<?> clazz = null;
+        try {
+            clazz = Class.forName("net.minecraft.util.AxisAlignedBB");
+        } catch (ClassNotFoundException e) {
+        }
+        Constructor<?> constructor = null;
+        try {
+            assert clazz != null;
+            constructor = clazz.getDeclaredConstructor(double.class,double.class,double.class,double.class,double.class,double.class);
+        } catch (NoSuchMethodException e) {
+        }
+        try {
+            return (AxisAlignedBB)constructor.newInstance(x1,y1,z1,x2,y2,z2);
+        } catch (InstantiationException e) {
+        } catch (IllegalAccessException e) {
+        } catch (InvocationTargetException e) {
+        }
+        return null;
+    }
+
+    public static float getRenderPartialTicks(){
+        Field fTimer = null;
+        try {
+            fTimer = mc.getClass().getDeclaredField(
+                    ClassTransformer.runtimeDeobfuscationEnabled ? "field_71428_T" : "timer");
+            fTimer.setAccessible(true);
+        } catch (NoSuchFieldException ev) {
+            return 0;
+        }
+        Field frenderPartialTicks = null;
+        try {
+            frenderPartialTicks = Timer.class.getDeclaredField(
+                    ClassTransformer.runtimeDeobfuscationEnabled ? "field_74281_c" : "renderPartialTicks");
+        } catch (NoSuchFieldException v) {
+            return 0;
+        }
+
+        float pTicks = 0;
+        try {
+            frenderPartialTicks.setAccessible(true);
+            pTicks = (float) frenderPartialTicks.get(fTimer.get(mc));
+        } catch (IllegalAccessException ev) {
+            return 0;
+        }
+        return pTicks;
     }
 
     public static Class<?>[] getInterfaces(Object clazz){

@@ -39,6 +39,9 @@ public class Jesus extends Module {
 
     @EventTarget
     public void onMotionUpdate(EventMove e) {
+        if (e.getEntity() != mc.thePlayer){
+            return;
+        }
         if (this.mode.isCurrentMode("AAC")) {
             this.setDisplayName("AAC");
             if (this.isInsideBlock()) {

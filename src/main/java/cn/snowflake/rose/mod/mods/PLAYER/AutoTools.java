@@ -4,6 +4,7 @@ package cn.snowflake.rose.mod.mods.PLAYER;
 import java.util.Objects;
 
 import cn.snowflake.rose.events.impl.EventMotion;
+import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.BlockPos;
@@ -26,32 +27,13 @@ public class AutoTools extends Module {
         super("AutoTools", Category.PLAYER);
     }
 
-    public Entity getItems(double n) {
-        Entity entity = null;
-        double n2 = n;
-        for (Object entity2 : mc.theWorld.loadedEntityList) {
-            if (mc.thePlayer.onGround && mc.thePlayer.isCollidedVertically && entity2 instanceof EntityItem) {
-                double n3 = mc.thePlayer.getDistanceToEntity((Entity)entity2);
-                if (n3 > n2) {
-                    continue;
-                }
-                n2 = n3;
-                entity = (Entity)entity2;
-            }
-        }
-        return entity;
-    }
 
     @EventTarget
-    public void onClickBlock(EventMotion eventPostMotion) {
-        if (eventPostMotion.getEventType() == EventType.POST){
-            if (!mc.thePlayer.isEating() && JReflectUtility.getHittingBlock() && !Objects.isNull(new BlockPos(mc.objectMouseOver.blockX,mc.objectMouseOver.blockY,mc.objectMouseOver.blockZ))) {
+    public void onClickBlock(EventUpdate eventPostMotion) {
+            if (!mc.thePlayer.isEating() && JReflectUtility.getHittingBlock()) {
                 this.bestTool(mc.objectMouseOver.blockX, mc.objectMouseOver.blockY, mc.objectMouseOver.blockZ);
             }
-        }
     }
-
-
 
     public void bestTool(int n, int n2, int n3) {
         int getIdFromBlock = Block.getIdFromBlock(mc.theWorld.getBlock(n, n2, n3));

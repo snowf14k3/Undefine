@@ -204,7 +204,6 @@ public class Aimbot extends Module {
     private static enum HitLocation {
         AUTO(0.0),
         HEAD(1.0),
-        NECK(1.25),
         CHEST(1.5),
         FEET(3.5),
         NECK(1.25);

@@ -1,12 +1,15 @@
 package cn.snowflake.rose.utils;
 
 import java.awt.Color;
+import java.lang.reflect.Field;
 
 
+import cn.snowflake.rose.asm.ClassTransformer;
 import cn.snowflake.rose.manager.ModManager;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.Entity;
 
+import net.minecraft.util.Timer;
 import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
 
@@ -491,5 +494,23 @@ public enum	 RenderUtil {
         }
 
         return scaleFactor;
+    }
+
+    public static void pre() {
+        GL11.glDisable((int) 2929);
+        GL11.glDisable((int) 3553);
+        GL11.glEnable((int) 3042);
+        GL11.glBlendFunc((int) 770, (int) 771);
+    }
+
+    public static void post() {
+        GL11.glDisable((int) 3042);
+        GL11.glEnable((int) 3553);
+        GL11.glEnable((int) 2929);
+        GL11.glColor3d((double) 1.0, (double) 1.0, (double) 1.0);
+    }
+
+    public static double interpolate(double newPos, double oldPos,float renderPartialTicks) {
+        return oldPos + (newPos - oldPos) * renderPartialTicks;
     }
 }

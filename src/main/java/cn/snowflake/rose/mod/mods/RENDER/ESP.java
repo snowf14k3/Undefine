@@ -9,6 +9,7 @@ import cn.snowflake.rose.utils.*;
 import com.darkmagician6.eventapi.EventTarget;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -27,13 +28,14 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ESP extends Module {
     public Value<Boolean> players = new Value("ESP_Player", true);
-    private static int switchIndex;
+
     public Value<Boolean> otherentity = new Value("ESP_OtherEntity", true);
     public Value<Boolean> animal = new Value("ESP_Animal", false);
     public Value<Boolean> moster = new Value("ESP_Mob", false);
@@ -47,110 +49,108 @@ public class ESP extends Module {
         this.mode.addValue("Box");
 
     }
-    private boolean doesntContain(EntityPlayer var0) {
-        return !this.mc.theWorld.playerEntities.contains(var0);
+
+    public void renderBox(Entity entity,double r,double g, double b) {
+        if(entity.isInvisible() && !invisible.getValueState().booleanValue()) {
+            return;
+        }
+        Field fTimer = null;
+        try {
+            fTimer = mc.getClass().getDeclaredField(
+                    ClassTransformer.runtimeDeobfuscationEnabled ? "field_71428_T" : "timer");
+            fTimer.setAccessible(true);
+        } catch (NoSuchFieldException ev) {
+        }
+        Field frenderPartialTicks = null;
+        try {
+            frenderPartialTicks = Timer.class.getDeclaredField(
+                    ClassTransformer.runtimeDeobfuscationEnabled ? "field_74281_c" : "renderPartialTicks");
+        } catch (NoSuchFieldException v) {
+        }
+
+        float pTicks = 0;
+        try {
+            frenderPartialTicks.setAccessible(true);
+            pTicks = (float) frenderPartialTicks.get(fTimer.get(mc));
+        } catch (IllegalAccessException ev) {
+        }
+        double x = RenderUtil.interpolate((double)entity.posX, (double)entity.lastTickPosX,pTicks);
+        double y = RenderUtil.interpolate((double)entity.posY, (double)entity.lastTickPosY,pTicks);
+        double z = RenderUtil.interpolate((double)entity.posZ, (double)entity.lastTickPosZ,pTicks);
+        GL11.glPushMatrix();
+        RenderUtil.pre();
+        GL11.glLineWidth((float)1.0f);
+        GL11.glEnable((int)2848);
+        GL11.glColor3d(r,g,b);
+        RenderUtil.drawOutlinedBoundingBox(new AltAxisAlignedBB(
+                entity.boundingBox.minX
+                        - 0.05
+                        - entity.posX
+                        + (entity.posX - RenderManager.renderPosX),
+                entity.boundingBox.minY
+                        - entity.posY
+                        + (entity.posY - RenderManager.renderPosY),
+                entity.boundingBox.minZ
+                        - 0.05
+                        - entity.posZ
+                        + (entity.posZ - RenderManager.renderPosZ),
+                entity.boundingBox.maxX
+                        + 0.05
+                        - entity.posX
+                        + (entity.posX - RenderManager.renderPosX),
+                entity.boundingBox.maxY
+                        + 0.1
+                        - entity.posY
+                        + (entity.posY - RenderManager.renderPosY),
+                entity.boundingBox.maxZ
+                        + 0.05
+                        - entity.posZ
+                        + (entity.posZ - RenderManager.renderPosZ)));
+        GL11.glDisable((int)2848);
+        RenderUtil.post();
+        GL11.glPopMatrix();
     }
 
-    public void drawESP(Entity entity, int color) {
-        AxisAlignedBB boundingBox = entity.getBoundingBox();
-        Timer timer = null;
-        if (ClassTransformer.runtimeDeobfuscationEnabled){
-            timer  = (Timer) JReflectUtility.getFieldAsObject(mc.getClass(),mc,"field_71428_T");
-        }else{
-            timer  = (Timer) JReflectUtility.getFieldAsObject(mc.getClass(),mc,"timer");
-        }
-        double x = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * timer.renderPartialTicks;
-        double y = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * timer.renderPartialTicks;
-        double z = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * timer.renderPartialTicks;
-        double width = Math.abs(boundingBox.maxX - boundingBox.minX);
-        double height = Math.abs(boundingBox.maxY - boundingBox.minY);
-        Vec3Util vec = new Vec3Util(x - width / 2.0, y, z - width / 2.0);
-        Vec3Util vec2 = new Vec3Util(x + width / 2.0, y + height, z + width / 2.0);
-        RenderUtil.pre3D();
-        RenderUtil.glColor(color);
-        RenderUtil.drawBoundingBox(new AltAxisAlignedBB(vec.getX() - RenderManager.renderPosX, vec.getY() - RenderManager.renderPosY, vec.getZ() - RenderManager.renderPosZ, vec2.getX() - RenderManager.renderPosX, vec2.getY() - RenderManager.renderPosY, vec2.getZ() - RenderManager.renderPosZ));
-        GL11.glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
-        RenderUtil.post3D();
-    }
     @EventTarget
     public void onRender(EventRender3D e){
-        Timer timer = null;
-        if (ClassTransformer.runtimeDeobfuscationEnabled){
-            timer  = (Timer) JReflectUtility.getFieldAsObject(mc.getClass(),mc,"field_71428_T");
-        }else{
-            timer  = (Timer) JReflectUtility.getFieldAsObject(mc.getClass(),mc,"timer");
+        Field fTimer = null;
+        try {
+            fTimer = mc.getClass().getDeclaredField(
+                    ClassTransformer.runtimeDeobfuscationEnabled ? "field_71428_T" : "timer");
+            fTimer.setAccessible(true);
+        } catch (NoSuchFieldException ev) {
+        }
+        Field frenderPartialTicks = null;
+        try {
+            frenderPartialTicks = Timer.class.getDeclaredField(
+                    ClassTransformer.runtimeDeobfuscationEnabled ? "field_74281_c" : "renderPartialTicks");
+        } catch (NoSuchFieldException v) {
+        }
+
+        float pTicks = 0;
+        try {
+            frenderPartialTicks.setAccessible(true);
+            pTicks = (float) frenderPartialTicks.get(fTimer.get(mc));
+        } catch (IllegalAccessException ev) {
         }
         for (Object object : mc.theWorld.loadedEntityList) {
             Entity entity = (Entity) object;
             if (entity instanceof EntityLivingBase) {
                 Entity entity1 = entity;
                 if (canTarget(entity1)) {
-                    double posX = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * timer.renderPartialTicks - RenderManager.renderPosX;
-                    double posY = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * timer.renderPartialTicks - RenderManager.renderPosY;
-                    double posZ = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * timer.renderPartialTicks - RenderManager.renderPosZ;
+                    double posX = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * pTicks - RenderManager.renderPosX;
+                    double posY = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * pTicks - RenderManager.renderPosY;
+                    double posZ = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * pTicks - RenderManager.renderPosZ;
                     if (this.mode.isCurrentMode("Box")){
-                        drawESP(entity, ColorUtil.getClickGUIColora().getRGB());
-                    }
-                    if (this.mode.isCurrentMode("2DBox")) {
-                        GL11.glPushMatrix();
-                        GL11.glColor4d((double) 1.0, (double) 1.0, (double) 1.0, (double) 0.0);
-                        double size = 0.25;
-                        double boundindY = entity.getBoundingBox().maxY - entity.getBoundingBox().minY;
-                        RenderUtil.drawBoundingBox(new AltAxisAlignedBB(posX - size, (double) posY, posZ - size, posX + size, (double) (posY + boundindY), posZ + size));
-                        RenderUtil.renderOne();//renderOne
-                        RenderUtil.drawBoundingBox(new AltAxisAlignedBB(posX - size, (double) posY, posZ - size, posX + size, (double) (posY + boundindY), posZ + size));
-                        GL11.glStencilFunc((int) 512, (int) 0, (int) 15);
-                        GL11.glStencilOp((int) 7681, (int) 7681, (int) 7681);
-                        GL11.glPolygonMode((int) 1032, (int) 6914);
-                        RenderUtil.drawBoundingBox(new AltAxisAlignedBB(posX - size, (double) posY, posZ - size, posX + size, (double) (posY + boundindY), posZ + size));
-                        GL11.glStencilFunc((int) 514, (int) 1, (int) 15);
-                        GL11.glStencilOp((int) 7680, (int) 7680, (int) 7680);
-                        GL11.glPolygonMode((int) 1032, (int) 6913);
-                        RenderUtil.setColor(entity1);//draw
-                        RenderUtil.drawBoundingBox(new AltAxisAlignedBB(posX - size, (double) posY, posZ - size, posX + size, (double) (posY + boundindY), posZ + size));
-                        GL11.glPolygonOffset((float) 1.0f, (float) 2000000.0f);
-                        GL11.glDisable((int) 10754);
-                        GL11.glEnable((int) 2929);
-                        GL11.glDepthMask((boolean) true);
-                        GL11.glDisable((int) 2960);
-                        GL11.glDisable((int) 2848);
-                        GL11.glHint((int) 3154, (int) 4352);
-                        GL11.glEnable((int) 3042);
-                        GL11.glEnable((int) 2896);
-                        GL11.glEnable((int) 3553);
-                        GL11.glEnable((int) 3008);
-                        GL11.glPopAttrib();
-                        GL11.glColor4d((double) 1.0, (double) 1.0, (double) 1.0, (double) 1.0);
-                        GL11.glPopMatrix();
+                        renderBox(entity, ColorUtil.getClickGUIColora().getRed(),ColorUtil.getClickGUIColora().getGreen(),ColorUtil.getClickGUIColora().getBlue());
                     }
                 }
             }
         }
     }
-    private Vec3 getVec3(RenderHandEvent event, EntityPlayer var0) throws IllegalAccessException, InvocationTargetException, InstantiationException {
-        float timer = event.partialTicks;
-        double x = var0.lastTickPosX + (var0.posX - var0.lastTickPosX) * (double)timer;
-        double y = var0.lastTickPosY + (var0.posY - var0.lastTickPosY) * (double)timer;
-        double z = var0.lastTickPosZ + (var0.posZ - var0.lastTickPosZ) * (double)timer;
-        Class clazz = null;
-        try {
-            clazz = Class.forName("net.minecraft.util.Vec3");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        Constructor c = null;
-        try {
-            c = clazz.getDeclaredConstructor(double.class,double.class,double.class);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-        c.setAccessible(true);
-        return (Vec3)c.newInstance(x,y,z);
-    }
+
     private boolean canTarget(Entity entity) {
-        if (!(entity instanceof EntityMob || entity instanceof EntityAnimal) && entity instanceof EntityCreature && !otherentity.getValueState()) {
-            return false;
-        }
+
         if (entity instanceof EntityPlayer && !players.getValueState()) {
             return false;
         }
@@ -164,6 +164,9 @@ public class ESP extends Module {
             return false;
         }
         if (entity.isInvisible() && !invisible.getValueState()) {
+            return false;
+        }
+        if (entity instanceof EntityCreature && !otherentity.getValueState()) {
             return false;
         }
         if (entity == mc.thePlayer){

@@ -38,13 +38,16 @@ public class Speed extends Module {
                 if(this.mc.thePlayer.onGround) {
                     this.mc.thePlayer.jump();
                 }
-                PlayerUtil.setSpeed(boost.getValueState().doubleValue());
+                PlayerUtil.setSpeed(boost.getValueState());
             }
         }
     }
 
     @EventTarget
     public void OnMove(EventMove e) {
+        if (e.getEntity() != mc.thePlayer){
+            return;
+        }
         this.setDisplayName(mode.getModeName());
         if (this.mode.isCurrentMode("Bhop1")) {
             if (mc.thePlayer.isCollidedHorizontally) {
