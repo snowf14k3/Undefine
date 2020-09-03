@@ -8,6 +8,7 @@ import java.util.*;
 import java.util.function.BiConsumer;
 
 import cn.snowflake.rose.Client;
+import cn.snowflake.rose.events.impl.EventFMLChannels;
 import cn.snowflake.rose.events.impl.EventMove;
 import cn.snowflake.rose.events.impl.EventPacket;
 import cn.snowflake.rose.mod.mods.WORLD.Xray;
@@ -59,7 +60,8 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 				"net.minecraftforge.client.GuiIngameForge",
 				"com.vicmatskiv.weaponlib.ClientEventHandler",
 				"luohuayu.anticheat.message.CPacketInjectDetect",
-				"net.minecraft.entity.Entity"
+				"net.minecraft.entity.Entity",
+				"cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper"
 		};
 		for (int i=0; i<nameArray.length; i++) {
 				classNameSet.add(nameArray[i]);
@@ -122,17 +124,42 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			else if (name.equalsIgnoreCase("net.minecraft.entity.Entity")){
 				return this.transformMethods(classByte,this::transformEntity);
 			}
-			else if (name.equalsIgnoreCase("luohuayu.anticheat.message.CPacketInjectDetect")){
-				return this.transformMethods(classByte,this::transformCPacketInjectDetect);
+			else if (name.equalsIgnoreCase("cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper")){
+				return this.transformMethods(classByte,this::transformSimpleNetworkWrapper);
 			}
-//			else if (name.equalsIgnoreCase("com.vicmatskiv.weaponlib.ClientEventHandler")){
-//				return this.transformMethods(classByte,this::transformClientEventHandler);
-//			}
+
 		}catch(Exception e) {
 			LogManager.getLogger().log(Level.ERROR, ExceptionUtils.getStackTrace(e));
 			
 		}
 		return classByte;
+	}
+
+	private void transformSimpleNetworkWrapper(ClassNode classNode, MethodNode methodNode) {
+		if (methodNode.name.equalsIgnoreCase("sendToServer")) {
+			JOptionPane.showMessageDialog(null, "Successfully initialized FML hook !","提示", 1);
+
+			InsnList insnList = new InsnList();
+			insnList.add(new VarInsnNode(ALOAD,1));
+
+			insnList.add(new VarInsnNode(ALOAD,0));
+			insnList.add(new FieldInsnNode(GETFIELD, "cpw/mods/fml/common/network/simpleimpl/SimpleNetworkWrapper", "channels", "Ljava/util/EnumMap;"));
+
+			insnList.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(ClassTransformer.class), "simpleNetworkWrapperHook", "(Ljava/lang/Object;Ljava/util/EnumMap;)Z", false));
+			LabelNode labelNode = new LabelNode();
+			insnList.add(new JumpInsnNode(IFEQ,labelNode));
+			insnList.add(new InsnNode(RETURN));
+			insnList.add(labelNode);
+//			insnList.add(new FrameNode(F_APPEND, 1, new Object[]{"cn/snowflake/rose/events/impl/EventFMLChannels"}, 0, null));
+			methodNode.instructions.insert(insnList);
+		}
+	}
+
+
+	public static boolean simpleNetworkWrapperHook(Object object,EnumMap enumMap){
+		EventFMLChannels eventFMLChannels = new EventFMLChannels(object,enumMap);
+		EventManager.call(eventFMLChannels);
+		return eventFMLChannels.isCancelled();
 	}
 
 	private void transformEntity(ClassNode classNode, MethodNode methodNode) {
@@ -180,23 +207,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			methodNode.instructions.insertBefore(fist.getNext(),insnList);
 		}
 	}
-	private void transformCPacketInjectDetect(ClassNode classNode, MethodNode methodNode) {
-		if (methodNode.name.equalsIgnoreCase("<init>")){
 
-			for (int i = 0; i < methodNode.instructions.toArray().length; i++) {
-				AbstractInsnNode insnNode =  methodNode.instructions.get(i);
-				if (insnNode instanceof VarInsnNode &&
-						insnNode.getNext() instanceof VarInsnNode &&
-						insnNode.getNext().getNext() instanceof FieldInsnNode){
-					methodNode.instructions.remove(insnNode.getNext().getNext());
-					methodNode.instructions.remove(insnNode.getNext());
-					methodNode.instructions.remove(insnNode);
-					LogManager.getLogger().info("insnNode" + Arrays.toString(methodNode.instructions.toArray()));
-//					JOptionPane.showConfirmDialog(null,"猫反已击杀");
-				}
-			}
-		}
-	}
 
 
 	private void transformBlock(ClassNode classNode, MethodNode methodNode) {

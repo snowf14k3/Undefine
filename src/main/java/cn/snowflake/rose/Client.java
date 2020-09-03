@@ -1,14 +1,17 @@
 package cn.snowflake.rose;
 
+import cn.snowflake.rose.events.impl.EventFMLChannels;
 import cn.snowflake.rose.manager.CommandManager;
 import cn.snowflake.rose.manager.FileManager;
 import cn.snowflake.rose.manager.FontManager;
 import cn.snowflake.rose.manager.ModManager;
 import cn.snowflake.rose.mod.mods.WORLD.Xray;
+import cn.snowflake.rose.utils.JReflectUtility;
 import cn.snowflake.rose.utils.verify.AntiReflex;
 import cn.snowflake.rose.utils.verify.HWIDUtils;
 import cn.snowflake.rose.utils.verify.ShitUtil;
 import com.darkmagician6.eventapi.EventManager;
+import com.darkmagician6.eventapi.EventTarget;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -17,6 +20,7 @@ import net.minecraft.client.Minecraft;
 import org.apache.logging.log4j.LogManager;
 import org.lwjgl.opengl.Display;
 
+import javax.swing.*;
 import java.awt.*;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.InvocationTargetException;
@@ -38,6 +42,7 @@ public class Client {
 
 
     public Client(){
+        EventManager.register(this);
         username = HWIDUtils.getUserName();
         this.init = true;
         instance = this;
@@ -119,5 +124,17 @@ public class Client {
     public static boolean nshowmod = false;// shit of number mob
 
 
+
+    @EventTarget
+    public void onFml(EventFMLChannels eventFMLChannels){
+        if (eventFMLChannels.iMessage.equals(JReflectUtility.getCPacketInjectDetect())){
+            eventFMLChannels.setCancelled(true); //     拦截检测注入包
+            try {
+                eventFMLChannels.sendToServer(eventFMLChannels.iMessage.getClass().getDeclaredConstructor().newInstance());//发送无参packet
+            } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 }
