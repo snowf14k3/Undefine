@@ -8,6 +8,7 @@ import java.util.Random;
 
 import cn.snowflake.rose.Client;
 import cn.snowflake.rose.asm.ClassTransformer;
+import cn.snowflake.rose.asm.MinecraftHook;
 import cn.snowflake.rose.events.impl.EventAura;
 import cn.snowflake.rose.events.impl.EventMotion;
 import cn.snowflake.rose.mod.Category;
@@ -97,9 +98,11 @@ public class Aura extends Module {
                     return;
                 }
                 float[] rotations = RotationUtil.getRotations(target);
-                mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(rotations[0], rotations[1], mc.thePlayer.onGround));
-                mc.thePlayer.rotationYawHead = rotations[0];
-                mc.thePlayer.renderYawOffset = rotations[0];
+                e.setYaw(rotations[0]);
+                e.setPitch(rotations[1]);
+                mc.thePlayer.rotationYawHead = e.getYaw();
+                mc.thePlayer.renderYawOffset = e.getYaw();
+                MinecraftHook.serverRotation = new Rotation(e.getYaw(),e.getPitch());
             }
             if (mode.getModeName().equalsIgnoreCase("Switch")) {
                 setDisplayName("Switch");
@@ -116,11 +119,11 @@ public class Aura extends Module {
                     this.switchtime.reset();
                 }
                 float[] rotations = RotationUtil.getRotations(target);
-                mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(rotations[0], rotations[1], mc.thePlayer.onGround));
-                mc.thePlayer.rotationYawHead = rotations[0];
-                mc.thePlayer.renderYawOffset = rotations[0];
-//                e.setYaw(rotations[0]);
-//                e.setPitch(rotations[1]);
+                e.setYaw(rotations[0]);
+                e.setPitch(rotations[1]);
+                mc.thePlayer.rotationYawHead = e.getYaw();
+                mc.thePlayer.renderYawOffset = e.getYaw();
+                MinecraftHook.serverRotation = new Rotation(e.getYaw(),e.getPitch());
             }
         }else if (e.getEventType() == EventType.POST){
             if(target != null) {

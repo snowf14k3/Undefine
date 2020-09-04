@@ -3,6 +3,7 @@ package cn.snowflake.rose.utils;
 
 import java.util.Random;
 
+import cn.snowflake.rose.asm.MinecraftHook;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

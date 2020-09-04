@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class HUD extends Module {
-    //    public Value<String> text = new Value<>("HUD_Text","","Season");
+    public Value<String> text = new Value<>("HUD_Text","","Season");
     public Value<Boolean> logo = new Value<>("HUD_Logo",false);
     public Value<Boolean> info = new Value<>("HUD_Info",true);
     public Value<Boolean> rainbow = new Value<>("HUD_Rainbow",true);
@@ -85,11 +85,10 @@ public class HUD extends Module {
 //            GL11.glPushMatrix();
 //            GL11.glScalef(1.5f, 1.5f, 1.5f);
 //            GL11.glColor3d(-1,-1,-1);
-//            String name = text.getText().isEmpty() ? "Season" : text.getText();
-            String name = "Season";
+            String name = text.getText().isEmpty() ? "Season" : text.getText();
 
             renderStringWave(name.substring(0,1), 7, 7, 1);
-            font.drawStringWithColor(name.substring(1),7 + font.getStringWidth(name.substring(0,1)), 7, -1,0);
+            font.drawStringWithColor(name.substring(1),9 + font.getStringWidth(name.substring(0,1)), 7, -1,0);
 //            GL11.glPopMatrix();
         }
         RenderArraylist();

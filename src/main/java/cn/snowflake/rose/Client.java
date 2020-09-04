@@ -27,6 +27,7 @@ import java.lang.management.ManagementFactory;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Client {
@@ -84,6 +85,9 @@ public class Client {
                 this.modManager = new ModManager();
 
                 this.commandMgr = new CommandManager();//Command
+
+                this.fileMgr = new FileManager();
+
                 if (Xray.block.size() == 0) {
                     for (Integer id : Xray.blocks) {
                         Block block = Block.getBlockById(id);
@@ -91,7 +95,6 @@ public class Client {
                     }
                 }
 
-                this.fileMgr = new FileManager();
                 loaded = true;
 
                 Loader.instance().getModList().forEach(modContainer -> {
@@ -130,28 +133,29 @@ public class Client {
 
     @EventTarget
     public void onFml(EventFMLChannels eventFMLChannels){
-        Constructor constructor = null;// 1.3猫反
-        try {
-            constructor = eventFMLChannels.iMessage.getClass().getConstructor(List.class);
-        } catch (NoSuchMethodException e) {
-        }
-        if (constructor != null
-                && eventFMLChannels.iMessage.getClass().getInterfaces()[0].equals(IMessage.class)
-                && eventFMLChannels.iMessage.getClass().getInterfaces().length == 1
-                && eventFMLChannels.iMessage.getClass().getDeclaredFields().length == 1
-                && eventFMLChannels.iMessage.getClass().getDeclaredFields()[0].toString().contains("java.util.List")
-        ){
-            eventFMLChannels.setCancelled(true); //     拦截检测注入包
-            try {
-                eventFMLChannels.sendToServer(eventFMLChannels.iMessage.getClass().getDeclaredConstructor().newInstance());//发送无参packet
-            } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-            }
-        }
+//        Constructor constructor = null;// 1.3猫反
+//        try {
+//            constructor = eventFMLChannels.iMessage.getClass().getConstructor(List.class);
+//        } catch (NoSuchMethodException e) {
+//        }
+//        if (constructor != null
+//                && eventFMLChannels.iMessage.getClass().getInterfaces()[0].equals(IMessage.class)
+//                && eventFMLChannels.iMessage.getClass().getInterfaces().length == 1
+//                && eventFMLChannels.iMessage.getClass().getDeclaredFields().length == 1
+//                && eventFMLChannels.iMessage.getClass().getDeclaredFields()[0].toString().contains("java.util.List")
+//        ){
+//            eventFMLChannels.setCancelled(true); //     拦截检测注入包
+//            try {
+//                eventFMLChannels.sendToServer(eventFMLChannels.iMessage.getClass().getDeclaredConstructor().newInstance());//发送无参packet
+//            } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+//            }
+//        }
         //====================================================================================================================================
-        if (eventFMLChannels.iMessage.equals(JReflectUtility.getCPacketInjectDetect())){// 1.2.7 以下猫反
+        if (eventFMLChannels.iMessage.getClass().toString().contains("CPacketInjectDetect")){// 1.2.7 以下猫反
             eventFMLChannels.setCancelled(true); //     拦截检测注入包
+            List<String> list = new ArrayList();
             try {
-                eventFMLChannels.sendToServer(eventFMLChannels.iMessage.getClass().getDeclaredConstructor().newInstance());//发送无参packet
+                eventFMLChannels.sendToServer(eventFMLChannels.iMessage.getClass().getDeclaredConstructor(List.class).newInstance(list));//发送无参packet
             } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
                 e.printStackTrace();
             }

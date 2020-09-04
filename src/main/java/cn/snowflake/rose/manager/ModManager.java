@@ -6,10 +6,7 @@ import cn.snowflake.rose.mod.mods.MOVEMENT.*;
 import cn.snowflake.rose.mod.mods.PLAYER.*;
 import cn.snowflake.rose.mod.mods.MOVEMENT.Teleport;
 import cn.snowflake.rose.mod.mods.RENDER.*;
-import cn.snowflake.rose.mod.mods.WORLD.Bot;
-import cn.snowflake.rose.mod.mods.WORLD.NoCommand;
-import cn.snowflake.rose.mod.mods.WORLD.ServerCrasher;
-import cn.snowflake.rose.mod.mods.WORLD.Xray;
+import cn.snowflake.rose.mod.mods.WORLD.*;
 
 import java.util.ArrayList;
 
@@ -21,6 +18,7 @@ public class ModManager {
         addMod(new Aura());
         addMod(new Regen());
         addMod(new Criticals());
+        addMod(new FastBow());
         addMod(new AntiAim());
         addMod(new TPAura());
         addMod(new SuperKnockback());
@@ -43,11 +41,13 @@ public class ModManager {
         addMod(new ClickGui());
         addMod(new ViewClip());
         addMod(new ChestESP());
+        addMod(new BlockOverlay());
         addMod(new ESP());
         //PLAYER
         addMod(new NoSlow());
         addMod(new AutoTools());
         addMod(new FastBreak());
+        addMod(new FastEat());
         addMod(new FastPlace());
         addMod(new FastUse());
         addMod(new InvMove());
@@ -55,6 +55,7 @@ public class ModManager {
         addMod(new ServerCrasher());
         addMod(new Bot());
         addMod(new Xray());
+        addMod(new MCF());
         addMod(new NoCommand());
     }
 

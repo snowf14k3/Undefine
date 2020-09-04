@@ -301,6 +301,10 @@ public class CSGOGUI extends GuiScreen{
             if(isHovered(startX + 60, startY + 5, startX + 150, startY  + 185, mouseX, mouseY) && isHovered(x, y - 2 + modscrollY, x + 82, y+12 + modscrollY, mouseX, mouseY) && handlerMid.canExcecute()) {
                 binding = true;
                 bmod = mod;
+            }else if (binding && handlerRight.canExcecute()){
+                binding = false;
+                bmod.setKey(Keyboard.KEY_NONE);
+                ChatUtil.sendClientMessage("Unbound '" + this.bmod.getName() + "'");
             }
 
             //mod open
@@ -342,149 +346,148 @@ public class CSGOGUI extends GuiScreen{
                 }
                 //openValues ?
                 if(mod.openValues) {
-                    if(BBoolean && value.isValueDouble) {
-                        this.width = 100;
-                        float lastMouseX = -1.0f;
-                        final double val = (double)value.getValueState();
-                        final double min = (double)value.getValueMin();
-                        final double max = (double)value.getValueMax();
-                        double percSlider = ((double)value.getValueState() - (double)value.getValueMin()) / ((double)value.getValueMax() - (double)value.getValueMin());
+                    if (BBoolean) {
+                        if (value.isValueString) {
+                            GL11.glPushMatrix();
+                            GL11.glEnable(3089);
+                            RenderUtil.doGlScissor(x + 145, vY + scrollY, x + 230, vY + 8 + scrollY);
+                            RenderUtil.drawRect(x + 145, vY + scrollY, x + 230, vY + 8 + scrollY, caninput ? new Color(158, 200, 234).getRGB() : new Color(115, 130, 140).getRGB());
+                            font2.drawBoldString(value.getText() + "", x + 147, vY + 1 + scrollY, -1);
+                            font2.drawBoldString("_", x + 144 + width, vY + 1 + scrollY, -1);
 
-                        final double valAbs = mouseX - (x + 145);
-                        double perc = valAbs / 85;
-                        perc = Math.min(Math.max(0.0, perc), 1.0);
-                        final double valRel = ((double)value.getValueMax() - (double)value.getValueMin()) * perc;
-                        double valuu = (double)value.getValueMin() + valRel;
-                        double valu = (x + 145) + 85 * percSlider;
-                        //down bar
-                        RenderUtil.drawRect(x + 145, vY + 3 + scrollY, x + 230, vY + 5 + scrollY,new Color(115,130,140).getRGB());
-                        //
-                        RenderUtil.drawRect(valu,
-                                vY + 2 + scrollY,
-                                valu + 2,
-                                vY + 6 + scrollY,
-                                new Color(253, 105, 229).getRGB());
+                            GL11.glDisable(3089);
+                            GL11.glPopMatrix();
 
-                        RenderUtil.drawRect(x + 145,
-                                vY + 3 + scrollY,
-                                valu + 2,
-                                vY + 5 + scrollY,
-                                new Color(253, 105, 229).getRGB());
-
-                        font2.drawBoldString(""+(Double)value.getValueState(), x + 145, vY - 4+ scrollY, new Color(153,153,169).getRGB());
-
-                        font2.drawBoldString(StrValue , x + 90, vY + scrollY, new Color(153,153,169).getRGB());
-                        //TODO Double Hovered
-                        if(isHovered(startX + 151, startY + 5, startX + 300, startY  + 185, mouseX, mouseY) && isHovered(x + 145, vY + 1 + scrollY, x + 230, vY + 7 + scrollY, mouseX, mouseY) && Mouse.isButtonDown(0)) {
-                            lastMouseX = (Math.min(Math.max(x + 155, mouseX), x + 145 + 100) - (float)x + 145) / 100;
-                            valuu = Math.round(valuu * (1.0 / value.getSteps())) / (1.0 / value.getSteps());
-                            value.setValueState(valuu);
-                            Client.instance.fileMgr.saveValues();
-                        }else {
-                            valuu = Math.round((double)value.getValueState() * (1.0 / value.getSteps())) / (1.0 / value.getSteps());
-                            value.setValueState(valuu);
-                        }
-                        vY+=15;
-                    }
-                    //MODE Recode by SuChen
-                    if(BBoolean && value.isValueMode) {
-                        String modeName = value.getModeAt(value.getCurrentMode());
-                        String NameText = String.valueOf((Object)value.getModeTitle());
-                        String modeCountText = String.valueOf((int)(value.getCurrentMode() + 1)) + "/" + value.mode.size();
-                        RenderUtil.drawRect(x + 145, vY + scrollY - 1, x + 151, vY + 7 + scrollY,new Color(253, 105, 229).getRGB());
-
-                        GlStateManager.pushMatrix();
-                        GlStateManager.translate((double)(x + 148.0F), (double)vY + scrollY + 4, 0.0D);
-                        GlStateManager.rotate(mod.openValues ? 180.0F : 90.0F, 0.0F, 0.0F, 90.0F);
-                        RenderUtil.rectangle(-1.0D, 0.0D, -0.5D, 2.5D, Colors.getColor(151));
-                        RenderUtil.rectangle(-0.5D, 0.0D, 0.0D, 2.5D, Colors.getColor(151));
-                        RenderUtil.rectangle(0.0D, 0.5D, 0.5D, 2.0D, Colors.getColor(151));
-                        RenderUtil.rectangle(0.5D, 1.0D, 1.0D, 1.5D, Colors.getColor(151));
-                        GlStateManager.popMatrix();
-
-                        RenderUtil.drawRect(x + 152, vY + scrollY - 1, x + 208, vY + 7 + scrollY,Colors.GREY.c);
-
-                        RenderUtil.drawRect(x + 209, vY + scrollY - 1, x + 215, vY + 7 + scrollY,new Color(253, 105, 229).getRGB());
-
-                        GlStateManager.pushMatrix();
-                        GlStateManager.translate((double)(x + 212.0F), (double)vY + scrollY + 1.8, 0.0D);
-                        GlStateManager.rotate(mod.openValues ? 360.0F : 90.0F, 0.0F, 0.0F, 90.0F);
-                        RenderUtil.rectangle(-1.0D, 0.0D, -0.5D, 2.5D, Colors.getColor(151));
-                        RenderUtil.rectangle(-0.5D, 0.0D, 0.0D, 2.5D, Colors.getColor(151));
-                        RenderUtil.rectangle(0.0D, 0.5D, 0.5D, 2.0D, Colors.getColor(151));
-                        RenderUtil.rectangle(0.5D, 1.0D, 1.0D, 1.5D, Colors.getColor(151));
-                        GlStateManager.popMatrix();
-
-                        font2.drawBoldString(modeName , x + 180- font2.getStringWidth("" + modeName)/2, vY + scrollY-1, -1);
-
-                        font2.drawBoldString(NameText , x + 90, vY + scrollY-1, new Color(153,153,169).getRGB());
-
-                        font2.drawBoldString(modeCountText , x + 230- font2.getStringWidth(modeCountText), vY + scrollY, new Color(153,153,169).getRGB());
-
-                        if(isHovered(startX + 151, startY + 5, startX + 300, startY  + 184, mouseX, mouseY) &&isHovered(x + 145, vY + scrollY - 1, x + 151, vY + 7 + scrollY, mouseX, mouseY) && handler.canExcecute()) {
-
-                            if (value.getCurrentMode() > 0 && value.getCurrentMode() != 0) {
-                                value.setCurrentMode(value.getCurrentMode() -1 );
-                                Client.instance.fileMgr.saveValues();
-                            } else {
-                                value.setCurrentMode(value.mode.size()-1);
-                                Client.instance.fileMgr.saveValues();
+                            if (isHovered(x + 145, vY + scrollY, x + 230, vY + 8 + scrollY, mouseX, mouseY) && Mouse.isButtonDown(0)) {
+                               this.caninput = true;
                             }
-                        }
-
-                        if(isHovered(startX + 151, startY + 5, startX + 300, startY  + 184, mouseX, mouseY) &&isHovered(x + 209, vY + scrollY - 1, x + 215, vY + 7 + scrollY, mouseX, mouseY) && handler.canExcecute()) {
-
-                            if (value.getCurrentMode() < value.mode.size() - 1) {
-                                value.setCurrentMode(value.getCurrentMode() +1);
-                                Client.instance.fileMgr.saveValues();
-                            } else {
-                                value.setCurrentMode(0);
-                                Client.instance.fileMgr.saveValues();
-                            }
-                        }
-
-                        vY+=15;
-                    }
-
-                    //TODO Boolean
-                    if(BBoolean && value.isValueBoolean) {
-                        RenderUtil.drawRect(x + 210, vY + scrollY - 1, x + 230, vY + 7 + scrollY,new Color(115,130,140).getRGB());
-                        if((Boolean)value.getValueState()) {
-                            RenderUtil.drawRect(x + 220, vY + scrollY, x + 229, vY + 6 + scrollY,new Color(253, 105, 229).getRGB());
-                        }else {
-                            RenderUtil.drawRect(x + 211, vY + scrollY, x + 220, vY + 6 + scrollY,new Color(153,153,153).getRGB());
-                        }
-                        //Boolean
-                        if(isHovered(startX + 151, startY + 5, startX + 300, startY  + 185, mouseX, mouseY)
-                                && isHovered(x + 210, vY + scrollY - 1, x + 230, vY + 7 + scrollY, mouseX, mouseY) && handler.canExcecute()) {
-                            value.setValueState(!(Boolean)value.getValueState());
-                            Client.instance.fileMgr.saveValues();
-                        }
-
-                        font2.drawBoldString(StrValue , x + 90, vY + scrollY, new Color(153,153,169).getRGB());
-                        vY+=15;
-                    }
-                    if (BBoolean && value.isValueString){
-                        GL11.glPushMatrix();
-                        GL11.glEnable(3089);
-                        RenderUtil.doGlScissor(x + 145, vY + scrollY, x + 230, vY + 8 + scrollY);
-                        RenderUtil.drawRect(x + 145, vY + scrollY, x + 230, vY + 8 + scrollY,caninput ? new Color(158, 200, 234).getRGB() : new Color(115,130,140).getRGB());
-                        font2.drawBoldString(value.getText()+"" , x + 147, vY + 1 + scrollY, -1);
-                        font2.drawBoldString("_" , x + 144 + width, vY + 1 + scrollY, -1);
-
-                        GL11.glDisable(3089);
-                        GL11.glPopMatrix();
-                        if (this.handler.canExcecute()){
-                            if (isHovered(x + 145, vY + scrollY, x + 230, vY + 8 + scrollY,mouseX,mouseY)){
-                                this.caninput = true;
-                            }
-                            if (!isHovered(x + 145, vY + scrollY, x + 230, vY + 8 + scrollY,mouseX,mouseY)){
+                            if (caninput && this.handlerRight.canExcecute()){
                                 this.caninput = false;
                                 Client.instance.fileMgr.saveValues();
                             }
+                            font2.drawBoldString(StrValue, x + 90, vY + scrollY, new Color(153, 153, 169).getRGB());
+                            vY += 15;
+                        } else
+                            if (value.isValueDouble) {
+                            this.width = 100;
+                            float lastMouseX = -1.0f;
+                            final double val = (double) value.getValueState();
+                            final double min = (double) value.getValueMin();
+                            final double max = (double) value.getValueMax();
+                            double percSlider = ((double) value.getValueState() - (double) value.getValueMin()) / ((double) value.getValueMax() - (double) value.getValueMin());
+
+                            final double valAbs = mouseX - (x + 145);
+                            double perc = valAbs / 85;
+                            perc = Math.min(Math.max(0.0, perc), 1.0);
+                            final double valRel = ((double) value.getValueMax() - (double) value.getValueMin()) * perc;
+                            double valuu = (double) value.getValueMin() + valRel;
+                            double valu = (x + 145) + 85 * percSlider;
+                            //down bar
+                            RenderUtil.drawRect(x + 145, vY + 3 + scrollY, x + 230, vY + 5 + scrollY, new Color(115, 130, 140).getRGB());
+                            //
+                            RenderUtil.drawRect(valu,
+                                    vY + 2 + scrollY,
+                                    valu + 2,
+                                    vY + 6 + scrollY,
+                                    new Color(253, 105, 229).getRGB());
+
+                            RenderUtil.drawRect(x + 145,
+                                    vY + 3 + scrollY,
+                                    valu + 2,
+                                    vY + 5 + scrollY,
+                                    new Color(253, 105, 229).getRGB());
+
+                            font2.drawBoldString("" + (Double) value.getValueState(), x + 145, vY - 4 + scrollY, new Color(153, 153, 169).getRGB());
+
+                            font2.drawBoldString(StrValue, x + 90, vY + scrollY, new Color(153, 153, 169).getRGB());
+                            //TODO Double Hovered
+                            if (isHovered(startX + 151, startY + 5, startX + 300, startY + 185, mouseX, mouseY) && isHovered(x + 145, vY + 1 + scrollY, x + 230, vY + 7 + scrollY, mouseX, mouseY) && Mouse.isButtonDown(0)) {
+                                lastMouseX = (Math.min(Math.max(x + 155, mouseX), x + 145 + 100) - (float) x + 145) / 100;
+                                valuu = Math.round(valuu * (1.0 / value.getSteps())) / (1.0 / value.getSteps());
+                                value.setValueState(valuu);
+                                Client.instance.fileMgr.saveValues();
+                            } else {
+                                valuu = Math.round((double) value.getValueState() * (1.0 / value.getSteps())) / (1.0 / value.getSteps());
+                                value.setValueState(valuu);
+                            }
+                            vY += 15;
                         }
-                        font2.drawBoldString(StrValue , x + 90, vY + scrollY, new Color(153,153,169).getRGB());
-                        vY+=15;
+                        //MODE Recode by SuChen
+                        if (value.isValueMode) {
+                            String modeName = value.getModeAt(value.getCurrentMode());
+                            String NameText = String.valueOf((Object) value.getModeTitle());
+                            String modeCountText = String.valueOf((int) (value.getCurrentMode() + 1)) + "/" + value.mode.size();
+                            RenderUtil.drawRect(x + 145, vY + scrollY - 1, x + 151, vY + 7 + scrollY, new Color(253, 105, 229).getRGB());
+
+                            GlStateManager.pushMatrix();
+                            GlStateManager.translate((double) (x + 148.0F), (double) vY + scrollY + 4, 0.0D);
+                            GlStateManager.rotate(mod.openValues ? 180.0F : 90.0F, 0.0F, 0.0F, 90.0F);
+                            RenderUtil.rectangle(-1.0D, 0.0D, -0.5D, 2.5D, Colors.getColor(151));
+                            RenderUtil.rectangle(-0.5D, 0.0D, 0.0D, 2.5D, Colors.getColor(151));
+                            RenderUtil.rectangle(0.0D, 0.5D, 0.5D, 2.0D, Colors.getColor(151));
+                            RenderUtil.rectangle(0.5D, 1.0D, 1.0D, 1.5D, Colors.getColor(151));
+                            GlStateManager.popMatrix();
+
+                            RenderUtil.drawRect(x + 152, vY + scrollY - 1, x + 208, vY + 7 + scrollY, Colors.GREY.c);
+
+                            RenderUtil.drawRect(x + 209, vY + scrollY - 1, x + 215, vY + 7 + scrollY, new Color(253, 105, 229).getRGB());
+
+                            GlStateManager.pushMatrix();
+                            GlStateManager.translate((double) (x + 212.0F), (double) vY + scrollY + 1.8, 0.0D);
+                            GlStateManager.rotate(mod.openValues ? 360.0F : 90.0F, 0.0F, 0.0F, 90.0F);
+                            RenderUtil.rectangle(-1.0D, 0.0D, -0.5D, 2.5D, Colors.getColor(151));
+                            RenderUtil.rectangle(-0.5D, 0.0D, 0.0D, 2.5D, Colors.getColor(151));
+                            RenderUtil.rectangle(0.0D, 0.5D, 0.5D, 2.0D, Colors.getColor(151));
+                            RenderUtil.rectangle(0.5D, 1.0D, 1.0D, 1.5D, Colors.getColor(151));
+                            GlStateManager.popMatrix();
+
+                            font2.drawBoldString(modeName, x + 180 - font2.getStringWidth("" + modeName) / 2, vY + scrollY - 1, -1);
+
+                            font2.drawBoldString(NameText, x + 90, vY + scrollY - 1, new Color(153, 153, 169).getRGB());
+
+                            font2.drawBoldString(modeCountText, x + 230 - font2.getStringWidth(modeCountText), vY + scrollY, new Color(153, 153, 169).getRGB());
+
+                            if (isHovered(startX + 151, startY + 5, startX + 300, startY + 184, mouseX, mouseY) && isHovered(x + 145, vY + scrollY - 1, x + 151, vY + 7 + scrollY, mouseX, mouseY) && handler.canExcecute()) {
+
+                                if (value.getCurrentMode() > 0 && value.getCurrentMode() != 0) {
+                                    value.setCurrentMode(value.getCurrentMode() - 1);
+                                    Client.instance.fileMgr.saveValues();
+                                } else {
+                                    value.setCurrentMode(value.mode.size() - 1);
+                                    Client.instance.fileMgr.saveValues();
+                                }
+                            }
+
+                            if (isHovered(startX + 151, startY + 5, startX + 300, startY + 184, mouseX, mouseY) && isHovered(x + 209, vY + scrollY - 1, x + 215, vY + 7 + scrollY, mouseX, mouseY) && handler.canExcecute()) {
+                                if (value.getCurrentMode() < value.mode.size() - 1) {
+                                    value.setCurrentMode(value.getCurrentMode() + 1);
+                                    Client.instance.fileMgr.saveValues();
+                                } else {
+                                    value.setCurrentMode(0);
+                                    Client.instance.fileMgr.saveValues();
+                                }
+                            }
+
+                            vY += 15;
+                        }
+
+                        //TODO Boolean
+                        if (value.isValueBoolean) {
+                            RenderUtil.drawRect(x + 210, vY + scrollY - 1, x + 230, vY + 7 + scrollY, new Color(115, 130, 140).getRGB());
+                            if ((Boolean) value.getValueState()) {
+                                RenderUtil.drawRect(x + 220, vY + scrollY, x + 229, vY + 6 + scrollY, new Color(253, 105, 229).getRGB());
+                            } else {
+                                RenderUtil.drawRect(x + 211, vY + scrollY, x + 220, vY + 6 + scrollY, new Color(153, 153, 153).getRGB());
+                            }
+                            //Boolean
+                            if (isHovered(x + 210, vY + scrollY - 1, x + 230, vY + 7 + scrollY, mouseX, mouseY) && handler.canExcecute()) {
+                                value.setValueState(!(Boolean) value.getValueState());
+                                Client.instance.fileMgr.saveValues();
+                            }
+
+                            font2.drawBoldString(StrValue, x + 90, vY + scrollY, new Color(153, 153, 169).getRGB());
+                            vY += 15;
+                        }
                     }
                 }
             }

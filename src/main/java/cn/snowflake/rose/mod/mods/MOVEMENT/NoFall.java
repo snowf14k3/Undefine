@@ -1,6 +1,7 @@
 package cn.snowflake.rose.mod.mods.MOVEMENT;
 
 import cn.snowflake.rose.events.impl.EventMotion;
+import cn.snowflake.rose.events.impl.EventMove;
 import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
@@ -19,10 +20,10 @@ public class NoFall extends Module {
     }
 
     @EventTarget
-    public void OnPre(EventUpdate e) {
+    public void OnPre(EventMotion e) {
         if(mode.isCurrentMode("onGround")) {
             if(mc.thePlayer.fallDistance > 2) {
-                mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX,mc.thePlayer.boundingBox.minY,mc.thePlayer.posY,mc.thePlayer.posZ,!mc.thePlayer.onGround));
+                e.setOnGround(true);
             }
         }
     }

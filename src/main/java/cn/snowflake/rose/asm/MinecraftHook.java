@@ -16,6 +16,7 @@ import cn.snowflake.rose.mod.mods.WORLD.NoCommand;
 import cn.snowflake.rose.mod.mods.WORLD.Xray;
 import cn.snowflake.rose.utils.ChatUtil;
 import cn.snowflake.rose.utils.GlStateManager;
+import cn.snowflake.rose.utils.Rotation;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.types.EventType;
 import net.minecraft.client.Minecraft;
@@ -24,12 +25,8 @@ import net.minecraft.network.play.client.C01PacketChatMessage;
 import org.lwjgl.input.Keyboard;
 
 public class MinecraftHook {
-    public static boolean anticat = true;
+    public static Rotation serverRotation = new Rotation(0F, 0F);
 
-
-    public static boolean cat(){
-        return anticat;
-    }
 
     //Client Start
     public static void runClient() {
@@ -105,7 +102,6 @@ public class MinecraftHook {
 
 
     public static void runTick(){
-
         if (Keyboard.getEventKeyState() && Minecraft.getMinecraft().currentScreen == null) {
             for (Module mod : ModManager.getModList()) {
                 if (mod.getKey() != (Keyboard.getEventKey() == 0 ? Keyboard.getEventCharacter() + 256 : Keyboard.getEventKey())) continue;

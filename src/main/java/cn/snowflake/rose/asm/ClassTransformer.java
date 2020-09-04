@@ -13,6 +13,7 @@ import cn.snowflake.rose.events.impl.EventMove;
 import cn.snowflake.rose.events.impl.EventPacket;
 import cn.snowflake.rose.mod.mods.WORLD.Xray;
 import cn.snowflake.rose.utils.JReflectUtility;
+import cn.snowflake.rose.utils.Rotation;
 import cn.snowflake.rose.utils.asm.ASMUtil;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.types.EventType;
@@ -61,7 +62,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 				"com.vicmatskiv.weaponlib.ClientEventHandler",
 				"luohuayu.anticheat.message.CPacketInjectDetect",
 				"net.minecraft.entity.Entity",
-				"cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper"
+				"cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper",
 		};
 		for (int i=0; i<nameArray.length; i++) {
 				classNameSet.add(nameArray[i]);
@@ -127,7 +128,9 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			else if (name.equalsIgnoreCase("cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper")){
 				return this.transformMethods(classByte,this::transformSimpleNetworkWrapper);
 			}
-
+//			else if (name.equalsIgnoreCase("net.minecraft.client.model.ModelBiped")){
+//				return this.transformMethods(classByte,this::transformModelBiped);
+//			}
 		}catch(Exception e) {
 			LogManager.getLogger().log(Level.ERROR, ExceptionUtils.getStackTrace(e));
 			
@@ -135,9 +138,63 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 		return classByte;
 	}
 
+
+	public static boolean isheldItemRight(int heldItemRight){
+		return heldItemRight == 3;
+	}
+
+//	private void transformModelBiped(ClassNode classNode, MethodNode methodNode) {
+//		if (methodNode.name.equalsIgnoreCase("setRotationAngles") || methodNode.name.equalsIgnoreCase("func_78087_a")){
+//			AbstractInsnNode target = ASMUtil.findFieldInsnNode(methodNode,GETFIELD, "net/minecraft/client/model/ModelBiped", runtimeDeobfuscationEnabled ? "field_70122_E" : "onGround", "F");
+//			if (target != null){
+//				InsnList insnList = new InsnList();
+//				insnList.add(new VarInsnNode(ALOAD,0));
+//				insnList.add(new FieldInsnNode(GETFIELD, "net/minecraft/client/model/ModelBiped", runtimeDeobfuscationEnabled ?  "field_78120_m" : "heldItemRight", "I"));
+//				insnList.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(ClassTransformer.class), "isheldItemRight", "(I)Z", false));
+//				LabelNode l1 = new LabelNode();
+//				insnList.add(new JumpInsnNode(IFEQ,l1));
+//				insnList.add(new VarInsnNode(ALOAD,0));
+//				insnList.add(new FieldInsnNode(GETFIELD, "net/minecraft/client/model/ModelBiped", runtimeDeobfuscationEnabled ? "field_78112_f":"bipedRightArm", "Lnet/minecraft/client/model/ModelRenderer;"));
+//				insnList.add(new InsnNode(FCONST_0));
+//				insnList.add(new FieldInsnNode(PUTFIELD, "net/minecraft/client/model/ModelRenderer", runtimeDeobfuscationEnabled ? "field_78796_g" : "rotateAngleY", "F"));
+//				insnList.add(l1);
+//				insnList.add(new FrameNode(F_SAME, 0, null, 0, null));
+//
+//				LabelNode l2 = new LabelNode();
+//				// serverRotation != null
+//				insnList.add(new FieldInsnNode(GETSTATIC, "cn/snowflake/rose/asm/MinecraftHook", "serverRotation", "Lcn/snowflake/rose/utils/Rotation;"));
+//				insnList.add(new JumpInsnNode(IFNULL,l2));
+//
+//				// var7 instanceof EntityPlayer
+//				insnList.add(new VarInsnNode(ALOAD,7));
+//				insnList.add(new TypeInsnNode(INSTANCEOF, "net/minecraft/entity/player/EntityPlayer"));
+//				insnList.add(new JumpInsnNode(IFEQ,l2));
+//
+//				//			var7.equals(Minecraft.getMinecraft().thePlayer)
+//				insnList.add(new VarInsnNode(ALOAD,7));
+//				insnList.add(new MethodInsnNode(INVOKESTATIC, "net/minecraft/client/Minecraft", runtimeDeobfuscationEnabled ? "func_71410_x" : "getMinecraft", "()Lnet/minecraft/client/Minecraft;", false));
+//				insnList.add(new FieldInsnNode(GETFIELD, "net/minecraft/client/Minecraft", runtimeDeobfuscationEnabled ? "field_71439_g" : "thePlayer", "Lnet/minecraft/client/entity/EntityClientPlayerMP;"));
+//				insnList.add(new MethodInsnNode(INVOKEVIRTUAL, "net/minecraft/entity/Entity", "equals", "(Ljava/lang/Object;)Z", false));
+//				insnList.add(new JumpInsnNode(IFEQ,l2));
+//
+//				insnList.add(new VarInsnNode(ALOAD,0));
+//				insnList.add(new FieldInsnNode(GETFIELD, "net/minecraft/client/model/ModelRenderer", runtimeDeobfuscationEnabled ? "field_78116_c" : "bipedHead", "Lnet/minecraft/client/model/ModelRenderer;"));
+//
+//				insnList.add(new FieldInsnNode(GETSTATIC, "cn/snowflake/rose/asm/MinecraftHook", "serverRotation", "Lcn/snowflake/rose/utils/Rotation;"));
+//				insnList.add(new MethodInsnNode(INVOKEVIRTUAL, "cn/snowflake/rose/utils/Rotation", "getPitch", "()F", false));
+//				insnList.add(new LdcInsnNode("57.295776"));
+//				insnList.add(new InsnNode(FDIV));
+//				insnList.add(new FieldInsnNode(PUTFIELD, "net/minecraft/client/model/ModelRenderer", runtimeDeobfuscationEnabled ? "field_78795_f" : "rotateAngleX", "F"));
+//
+//				insnList.add(l2);
+//				insnList.add(new FrameNode(F_SAME, 0, null, 0, null));
+//				methodNode.instructions.insert(target,insnList);
+//			}
+//		}
+//	}
+
 	private void transformSimpleNetworkWrapper(ClassNode classNode, MethodNode methodNode) {
 		if (methodNode.name.equalsIgnoreCase("sendToServer")) {
-			JOptionPane.showMessageDialog(null, "Successfully initialized FML hook !","提示", 1);
 
 			InsnList insnList = new InsnList();
 			insnList.add(new VarInsnNode(ALOAD,1));
@@ -152,6 +209,8 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			insnList.add(labelNode);
 //			insnList.add(new FrameNode(F_APPEND, 1, new Object[]{"cn/snowflake/rose/events/impl/EventFMLChannels"}, 0, null));
 			methodNode.instructions.insert(insnList);
+			JOptionPane.showMessageDialog(null, "Successfully initialized FML hook !","提示", 1);
+
 		}
 	}
 
@@ -302,17 +361,21 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			}
 		}
 		if ((method.name.equalsIgnoreCase("orientCamera") || method.name.equalsIgnoreCase("func_78467_g")) && method.desc.equalsIgnoreCase("(F)V")){
-			
+
 			AbstractInsnNode target = ASMUtil.findMethodInsn(method, INVOKEVIRTUAL,"net/minecraft/util/Vec3", runtimeDeobfuscationEnabled ?"func_72438_d" : "distanceTo","(Lnet/minecraft/util/Vec3;)D");
 			if (target != null){
-				final InsnList insnList = new InsnList();
+				InsnList insnList2 = new InsnList();
+
+				InsnList insnList = new InsnList();
 				insnList.add(new MethodInsnNode(INVOKESTATIC,"cn/snowflake/rose/asm/MinecraftHook","isViewClipEnabled","()Z",false));
-				final LabelNode jmp = new LabelNode();
-				insnList.add(new JumpInsnNode(IFEQ, jmp));
-				insnList.add(new InsnNode(ACONST_NULL));
-				insnList.add(new VarInsnNode(ASTORE, 24));
-				insnList.add(jmp);
-				method.instructions.insert(target.getNext(), insnList);
+				LabelNode labelNode = new LabelNode();
+				insnList.add(new JumpInsnNode(IFNE,labelNode));
+				method.instructions.insertBefore(ASMUtil.forward(target,8)
+						,insnList);
+				insnList2.add(labelNode);
+				insnList2.add(new FrameNode(Opcodes.F_SAME, 0, null, 0, null));
+				method.instructions.insert(ASMUtil.forward(target,13)
+						,insnList2);
 				//   dump net.minecraft.client.renderer.EntityRenderer
 				// jad net.minecraft.client.renderer.EntityRenderer
 			}
@@ -368,142 +431,100 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 				}
 			}
 		}
-//		MethodNode mainMethod = new MethodNode( ACC_PUBLIC, runtimeDeobfuscationEnabled ? "func_70091_d" : "moveEntity", "(DDD)V", null, null);
-//		mainMethod.instructions.add(new TypeInsnNode(NEW, "cn/snowflake/rose/events/impl/EventMove"));
-//		mainMethod.instructions.add(new InsnNode(DUP));
-//		mainMethod.instructions.add(new VarInsnNode(DLOAD,1));
-//		mainMethod.instructions.add(new VarInsnNode(DLOAD,3));
-//		mainMethod.instructions.add(new VarInsnNode(DLOAD,5));
-//		mainMethod.instructions.add(new MethodInsnNode(INVOKESPECIAL, "cn/snowflake/rose/events/impl/EventMove", "<init>", "(DDD)V", false));
-//		mainMethod.instructions.add(new VarInsnNode(ASTORE,7));
-//
-//		mainMethod.instructions.add(new VarInsnNode(ALOAD,7));
-//		mainMethod.instructions.add(new MethodInsnNode(INVOKESTATIC, "com/darkmagician6/eventapi/EventManager", "call", "(Lcom/darkmagician6/eventapi/events/Event;)Lcom/darkmagician6/eventapi/events/Event;", false));
-//		mainMethod.instructions.add(new InsnNode(POP));
-//
-//		mainMethod.instructions.add(new VarInsnNode(ALOAD,7));
-//		mainMethod.instructions.add(new FieldInsnNode(GETFIELD, "cn/snowflake/rose/events/impl/EventMove", "x", "D"));
-//		mainMethod.instructions.add(new VarInsnNode(DSTORE,1));
-//
-//		mainMethod.instructions.add(new VarInsnNode(ALOAD,7));
-//		mainMethod.instructions.add(new FieldInsnNode(GETFIELD, "cn/snowflake/rose/events/impl/EventMove", "y", "D"));
-//		mainMethod.instructions.add(new VarInsnNode(DSTORE,3));
-//
-//		mainMethod.instructions.add(new VarInsnNode(ALOAD,7));
-//		mainMethod.instructions.add(new FieldInsnNode(GETFIELD, "cn/snowflake/rose/events/impl/EventMove", "z", "D"));
-//		mainMethod.instructions.add(new VarInsnNode(DSTORE,5));
-//
-//
-//		mainMethod.instructions.add(new VarInsnNode(ALOAD,0));
-//		mainMethod.instructions.add(new VarInsnNode(DLOAD,1));
-//		mainMethod.instructions.add(new VarInsnNode(DLOAD,3));
-//		mainMethod.instructions.add(new VarInsnNode(DLOAD,5));
-//		mainMethod.instructions.add(new MethodInsnNode(INVOKESPECIAL, "net/minecraft/client/entity/AbstractClientPlayer", runtimeDeobfuscationEnabled ? "func_70091_d" : "moveEntity", "(DDD)V", false));
-//		mainMethod.instructions.add(new InsnNode(Opcodes.RETURN));
-//		clazz.methods.add(mainMethod);
 	}
 	private void transformEntityClientPlayerMP(ClassNode clazz, MethodNode method) {
+
 		if (method.name.equals("onUpdate") || method.name.equals("func_70071_h_") ) {
 			method.instructions.insert(new MethodInsnNode(Opcodes.INVOKESTATIC, "cn/snowflake/rose/asm/MinecraftHook", "onUpdate", "()V", false));
 		}
 		if (method.name.equalsIgnoreCase("sendMotionUpdates") || method.name.equalsIgnoreCase("func_71166_b")){
-//			InsnList preInsn = new InsnList();
-//
-//			preInsn.add(new FieldInsnNode(GETSTATIC, "com/darkmagician6/eventapi/types/EventType", "PRE", "Lcom/darkmagician6/eventapi/types/EventType;"));
-//			preInsn.add(new MethodInsnNode(INVOKESTATIC, "cn/snowflake/rose/asm/MinecraftHook", "onUpdateWalkingPlayerHook","(Lcom/darkmagician6/eventapi/types/EventType;)V", false));
-//
-//			//new EventMotion();
-//			preInsn.add(new TypeInsnNode(NEW,"cn/snowflake/rose/events/impl/EventMotion"));
-//			preInsn.add(new InsnNode(DUP));
-//
-//			//this.posY
-//			preInsn.add(new VarInsnNode(ALOAD,0));
-//			preInsn.add(new FieldInsnNode(GETFIELD,"net/minecraft/client/entity/EntityClientPlayerMP",runtimeDeobfuscationEnabled ? "field_70163_u" : "posY","D"));
-//
-//			//this.rotationYaw
-//			preInsn.add(new VarInsnNode(ALOAD,0));
-//			preInsn.add(new FieldInsnNode(GETFIELD,"net/minecraft/client/entity/EntityClientPlayerMP",runtimeDeobfuscationEnabled ? "field_70177_z" : "rotationYaw","F"));
-//
-//			//this.rotationPitch
-//			preInsn.add(new VarInsnNode(ALOAD,0));//this
-//			preInsn.add(new FieldInsnNode(GETFIELD,"net/minecraft/client/entity/EntityClientPlayerMP", runtimeDeobfuscationEnabled ? "field_70125_A" : "rotationPitch","F"));
-//
-//			//this.onGround
-//			preInsn.add(new VarInsnNode(ALOAD,0));//this
-//			preInsn.add(new FieldInsnNode(GETFIELD,"net/minecraft/client/entity/EntityClientPlayerMP",runtimeDeobfuscationEnabled ? "field_70122_E" : "onGround","Z"));
-//			//EventType.PRE
-//			preInsn.add(new FieldInsnNode(GETSTATIC,Type.getInternalName(EventType.class),"PRE","Lcom/darkmagician6/eventapi/types/EventType;"));
-//			// EventMotion(this.posY,this.rotationYaw,this.rotationPitch,this.onGround,EventType.PRE);
-//			preInsn.add(new MethodInsnNode(INVOKESPECIAL,"cn/snowflake/rose/events/impl/EventMotion" ,"<init>", "(DFFZLcom/darkmagician6/eventapi/types/EventType;)V", false));
-//			// var18
-//			preInsn.add(new VarInsnNode(ASTORE,18));
-//
-//			//EventManager.call( var18 );
-//			preInsn.add(new VarInsnNode(ALOAD,18));
-//			preInsn.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(EventManager.class), "call", "(Lcom/darkmagician6/eventapi/events/Event;)Lcom/darkmagician6/eventapi/events/Event;", false));
-//			preInsn.add(new InsnNode(POP));
-//
-//			// jad net.minecraft.client.entity.EntityPlayerSP
-//			// if(var18.isCancel()){
-//			//   MinecraftHook.onUpdateWalkingPlayerHookPOST(EventType.POST);
-//			// }
-//			preInsn.add(new VarInsnNode(ALOAD,18));
-//			preInsn.add(new MethodInsnNode(INVOKEVIRTUAL, "cn/snowflake/rose/events/impl/EventMotion", "isCancel", "()Z", false));
-//			LabelNode jmp1 = new LabelNode();
-//			preInsn.add(new JumpInsnNode(IFEQ,jmp1));
-//			preInsn.add(new FieldInsnNode(GETSTATIC, "com/darkmagician6/eventapi/types/EventType", "POST", "Lcom/darkmagician6/eventapi/types/EventType;"));
-//			preInsn.add(new MethodInsnNode(INVOKESTATIC, "cn/snowflake/rose/asm/MinecraftHook", "onUpdateWalkingPlayerHookPOST","(Lcom/darkmagician6/eventapi/types/EventType;)V", false));
-//			preInsn.add(new InsnNode(RETURN));
-//			preInsn.add(jmp1);
-//			preInsn.add(new FrameNode(F_SAME, 4, null, 0, null));
-//
-//			method.instructions.insert(preInsn);
-//			InsnList insnList1 = new InsnList();
-//			for (AbstractInsnNode abstractInsnNode : method.instructions.toArray()){
-//				AbstractInsnNode target1 = null;
-//				if (abstractInsnNode.getOpcode() == ALOAD &
-//					abstractInsnNode.getNext() instanceof FieldInsnNode
-//				){
-//					if (((FieldInsnNode) abstractInsnNode.getNext()).name.equalsIgnoreCase(runtimeDeobfuscationEnabled ? "field_70177_z" : "rotationYaw")){
-//						target1 = abstractInsnNode;
-//
-//						insnList1.add(new VarInsnNode(ALOAD,18));
-//						insnList1.add(new FieldInsnNode(GETSTATIC,"cn/snowflake/rose/events/impl/EventMotion","yaw","F"));
-//						method.instructions.insertBefore(target1,insnList1);
-//
-//						method.instructions.remove(target1.getNext().getNext());
-//						method.instructions.remove(target1);
-//						//	  jad net.minecraft.client.entity.EntityClientPlayerMP
-//						// 	  dump net.minecraft.client.entity.EntityClientPlayerMP
-//
-//					}
-//				}
-//			}
+			//replace the shit of old
+			for (AbstractInsnNode abstractInsnNode : method.instructions.toArray()){
+				if (abstractInsnNode.getOpcode() == ALOAD &
+						abstractInsnNode.getNext() instanceof FieldInsnNode
+				){
+					if ( ((FieldInsnNode) abstractInsnNode.getNext()).name.equalsIgnoreCase(runtimeDeobfuscationEnabled ? "field_70163_u" : "posY")
+					){
+						method.instructions.set(abstractInsnNode.getNext(),new FieldInsnNode(GETFIELD,"cn/snowflake/rose/events/impl/EventMotion","y","D"));
+						method.instructions.set(abstractInsnNode,new VarInsnNode(ALOAD,18));
+					}else if ( ((FieldInsnNode) abstractInsnNode.getNext()).name.equalsIgnoreCase(runtimeDeobfuscationEnabled ? "field_70177_z" : "rotationYaw")
+					){
+						method.instructions.set(abstractInsnNode.getNext(),new FieldInsnNode(GETFIELD,"cn/snowflake/rose/events/impl/EventMotion","yaw","F"));
+						method.instructions.set(abstractInsnNode,new VarInsnNode(ALOAD,18));
+					}else if ( ((FieldInsnNode) abstractInsnNode.getNext()).name.equalsIgnoreCase(runtimeDeobfuscationEnabled ? "field_70125_A" : "rotationPitch")
+					){
+						method.instructions.set(abstractInsnNode.getNext(),new FieldInsnNode(GETFIELD,"cn/snowflake/rose/events/impl/EventMotion","pitch","F"));
+						method.instructions.set(abstractInsnNode,new VarInsnNode(ALOAD,18));
+					}else if ( ((FieldInsnNode) abstractInsnNode.getNext()).name.equalsIgnoreCase(runtimeDeobfuscationEnabled ? "field_70122_E" : "onGround")
+					){
+						method.instructions.set(abstractInsnNode.getNext(),new FieldInsnNode(GETFIELD,"cn/snowflake/rose/events/impl/EventMotion","onGround","Z"));
+						method.instructions.set(abstractInsnNode,new VarInsnNode(ALOAD,18));
+					}
 
-//			preInsn.add(new VarInsnNode(ALOAD,0));//this
-//			preInsn.add(new VarInsnNode(ALOAD,18));//pre
-//			preInsn.add(new FieldInsnNode(GETFIELD, "cn/snowflake/rose/events/impl/EventMotion", "y", "D"));
-//			preInsn.add(new FieldInsnNode(PUTFIELD, "net/minecraft/client/entity/EntityPlayerSP", runtimeDeobfuscationEnabled ? "field_70165_t" : "posY", "D"));
-//
-//			preInsn.add(new VarInsnNode(ALOAD,0));//this
-//			preInsn.add(new VarInsnNode(ALOAD,18)); // pre
-//			preInsn.add(new FieldInsnNode(GETFIELD, "cn/snowflake/rose/events/impl/EventMotion", "yaw", "F"));
-//			preInsn.add(new FieldInsnNode(PUTFIELD, "net/minecraft/client/entity/EntityPlayerSP", runtimeDeobfuscationEnabled ? "field_70177_z" : "rotationYaw", "F"));
-//
-//			preInsn.add(new VarInsnNode(ALOAD,0));//this
-//			preInsn.add(new VarInsnNode(ALOAD,18));//pre
-//			preInsn.add(new FieldInsnNode(GETFIELD, "cn/snowflake/rose/events/impl/EventMotion", "pitch", "F"));
-//			preInsn.add(new FieldInsnNode(PUTFIELD, "net/minecraft/client/entity/EntityPlayerSP",  runtimeDeobfuscationEnabled ? "field_70125_A" : "rotationPitch", "F"));
-//
-//			preInsn.add(new VarInsnNode(ALOAD,0));//this
-//			preInsn.add(new VarInsnNode(ALOAD,18));//pre
-//			preInsn.add(new FieldInsnNode(GETFIELD, "cn/snowflake/rose/events/impl/EventMotion", "onGround", "Z"));//onGround
-//			preInsn.add(new FieldInsnNode(PUTFIELD, "net/minecraft/client/entity/EntityPlayerSP", runtimeDeobfuscationEnabled ? "field_70122_E" : "onGround","Z"));
+				}
+			}
+
 			InsnList preInsn = new InsnList();
+
 			preInsn.add(new FieldInsnNode(GETSTATIC, "com/darkmagician6/eventapi/types/EventType", "PRE", "Lcom/darkmagician6/eventapi/types/EventType;"));
 			preInsn.add(new MethodInsnNode(INVOKESTATIC, "cn/snowflake/rose/asm/MinecraftHook", "onUpdateWalkingPlayerHook","(Lcom/darkmagician6/eventapi/types/EventType;)V", false));
+
+			//new EventMotion();
+			preInsn.add(new TypeInsnNode(NEW,"cn/snowflake/rose/events/impl/EventMotion"));
+			preInsn.add(new InsnNode(DUP));
+
+			//this.posY
+			preInsn.add(new VarInsnNode(ALOAD,0));
+			preInsn.add(new FieldInsnNode(GETFIELD,"net/minecraft/client/entity/EntityClientPlayerMP",runtimeDeobfuscationEnabled ? "field_70163_u" : "posY","D"));
+
+			//this.rotationYaw
+			preInsn.add(new VarInsnNode(ALOAD,0));
+			preInsn.add(new FieldInsnNode(GETFIELD,"net/minecraft/client/entity/EntityClientPlayerMP",runtimeDeobfuscationEnabled ? "field_70177_z" : "rotationYaw","F"));
+
+			//this.rotationPitch
+			preInsn.add(new VarInsnNode(ALOAD,0));//this
+			preInsn.add(new FieldInsnNode(GETFIELD,"net/minecraft/client/entity/EntityClientPlayerMP", runtimeDeobfuscationEnabled ? "field_70125_A" : "rotationPitch","F"));
+
+			//this.onGround
+			preInsn.add(new VarInsnNode(ALOAD,0));//this
+			preInsn.add(new FieldInsnNode(GETFIELD,"net/minecraft/client/entity/EntityClientPlayerMP",runtimeDeobfuscationEnabled ? "field_70122_E" : "onGround","Z"));
+			//EventType.PRE
+			preInsn.add(new FieldInsnNode(GETSTATIC,Type.getInternalName(EventType.class),"PRE","Lcom/darkmagician6/eventapi/types/EventType;"));
+			// EventMotion(this.posY,this.rotationYaw,this.rotationPitch,this.onGround,EventType.PRE);
+			preInsn.add(new MethodInsnNode(INVOKESPECIAL,"cn/snowflake/rose/events/impl/EventMotion" ,"<init>", "(DFFZLcom/darkmagician6/eventapi/types/EventType;)V", false));
+			// var18
+			preInsn.add(new VarInsnNode(ASTORE,18));
+
+			//EventManager.call( var18 );
+			preInsn.add(new VarInsnNode(ALOAD,18));
+			preInsn.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(EventManager.class), "call", "(Lcom/darkmagician6/eventapi/events/Event;)Lcom/darkmagician6/eventapi/events/Event;", false));
+			preInsn.add(new InsnNode(POP));
+
+			// jad net.minecraft.client.entity.EntityPlayerSP
+			// if(var18.isCancel()){
+			//   MinecraftHook.onUpdateWalkingPlayerHookPOST(EventType.POST);
+			// }
+			preInsn.add(new VarInsnNode(ALOAD,18));
+			preInsn.add(new MethodInsnNode(INVOKEVIRTUAL, "cn/snowflake/rose/events/impl/EventMotion", "isCancel", "()Z", false));
+			LabelNode jmp1 = new LabelNode();
+			preInsn.add(new JumpInsnNode(IFEQ,jmp1));
+			preInsn.add(new FieldInsnNode(GETSTATIC, "com/darkmagician6/eventapi/types/EventType", "POST", "Lcom/darkmagician6/eventapi/types/EventType;"));
+			preInsn.add(new MethodInsnNode(INVOKESTATIC, "cn/snowflake/rose/asm/MinecraftHook", "onUpdateWalkingPlayerHookPOST","(Lcom/darkmagician6/eventapi/types/EventType;)V", false));
+			preInsn.add(new InsnNode(RETURN));
+			preInsn.add(jmp1);
+			preInsn.add(new FrameNode(F_SAME, 4, null, 0, null));
+
 			method.instructions.insert(preInsn);
+
+
+
+//			InsnList preInsn = new InsnList();
+//			preInsn.add(new FieldInsnNode(GETSTATIC, "com/darkmagician6/eventapi/types/EventType", "PRE", "Lcom/darkmagician6/eventapi/types/EventType;"));
+//			preInsn.add(new MethodInsnNode(INVOKESTATIC, "cn/snowflake/rose/asm/MinecraftHook", "onUpdateWalkingPlayerHook","(Lcom/darkmagician6/eventapi/types/EventType;)V", false));
+//			method.instructions.insert(preInsn);
 			//EventMotionPost2
+
+
 			InsnList postInsn = new InsnList();
 			postInsn.add(new FieldInsnNode(GETSTATIC, "com/darkmagician6/eventapi/types/EventType", "POST", "Lcom/darkmagician6/eventapi/types/EventType;"));
 			postInsn.add(new MethodInsnNode(INVOKESTATIC, "cn/snowflake/rose/asm/MinecraftHook", "onUpdateWalkingPlayerHook","(Lcom/darkmagician6/eventapi/types/EventType;)V", false));
