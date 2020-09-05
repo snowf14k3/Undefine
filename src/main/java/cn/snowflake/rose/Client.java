@@ -33,7 +33,7 @@ import java.util.List;
 public class Client {
     public static String shitname =null;
     public static String name = "Season";
-    public static String version = "0.2";
+    public static String version = "0.3";
     public static Client instance;
     public static boolean init = false;
     private static boolean loaded =false;

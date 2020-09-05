@@ -28,6 +28,8 @@ import cn.snowflake.rose.asm.ClassTransformer;
 import cn.snowflake.rose.events.impl.EventPacket;
 import cn.snowflake.rose.events.impl.EventMotion;
 import cn.snowflake.rose.events.impl.EventRender3D;
+import cn.snowflake.rose.manager.FriendManager;
+import cn.snowflake.rose.manager.ModManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.*;
@@ -76,6 +78,7 @@ public class TPAura extends Module
     public static boolean canReach;
     private Value<Boolean> block;
     private Value<Boolean> onground;
+    public Value<Boolean> wall = new Value<Boolean>("TPAura_ThroughWall", true);
 
     public TPAura() {
         super("TPAura", Category.COMBAT);
@@ -361,7 +364,12 @@ public class TPAura extends Module
         if (entity instanceof EntityMob && !MOB.getValueState()) {
             return false;
         }
-
+        if (!ModManager.getModByName("NoFriend").isEnabled() && FriendManager.isFriend(entity.getCommandSenderName())){
+            return false;
+        }
+        if(!mc.thePlayer.canEntityBeSeen(entity) && !wall.getValueState().booleanValue()) {
+            return false;
+        }
         if (entity.isInvisible() && !INVISIBLES.getValueState()) {
             return false;
         }

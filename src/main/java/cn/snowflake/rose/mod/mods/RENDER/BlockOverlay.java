@@ -7,6 +7,7 @@ import cn.snowflake.rose.events.impl.EventRender3D;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.*;
+import net.minecraft.client.resources.I18n;
 import org.lwjgl.opengl.GL11;
 
 import com.darkmagician6.eventapi.EventTarget;
@@ -40,7 +41,7 @@ public class BlockOverlay extends Module {
             int x = res.getScaledWidth() / 2 - font.getStringWidth(s1) / 2;
             int y = res.getScaledHeight() / 2 + 8;
             RenderUtil.drawRect((float)x, (float)y, (float)(x + font.getStringWidth(s1) + 3), (float)((float)(y + font.FONT_HEIGHT) + 0.5f), (int)RenderUtil.reAlpha(Colors.BLACK.c, (float)0.4f));
-            font.drawString(s1, (x + 1), y + 1, -1, true);
+            font.drawString(I18n.format(s1), (x + 1), y + 1, -1, true);
         }
     }
 

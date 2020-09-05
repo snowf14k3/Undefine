@@ -11,6 +11,8 @@ import cn.snowflake.rose.asm.ClassTransformer;
 import cn.snowflake.rose.asm.MinecraftHook;
 import cn.snowflake.rose.events.impl.EventAura;
 import cn.snowflake.rose.events.impl.EventMotion;
+import cn.snowflake.rose.manager.FriendManager;
+import cn.snowflake.rose.manager.ModManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.*;
@@ -55,7 +57,7 @@ public class Aura extends Module {
     public static Value<Double> range= new Value<Double>("Aura_Reach", 4.5D, 1.0D, 7.0D,0.1D);
     public Value<Double> cps = new Value<Double>("Aura_CPS", 12.0D, 1.0D, 20.0D, 1.0D);
     public Value<String> mode = new Value<String>("Aura","Mode", 0);
-
+    public Value<Boolean> wall = new Value<Boolean>("Aura_ThroughWall", true);
 
     public Value<Boolean> customnpcs = new Value("Aura_CustomNPCs", false);
     public Value<Boolean> customnpcsteam = new Value("Aura_CustomNPCTeam", false);
@@ -98,11 +100,14 @@ public class Aura extends Module {
                     return;
                 }
                 float[] rotations = RotationUtil.getRotations(target);
-                e.setYaw(rotations[0]);
-                e.setPitch(rotations[1]);
-                mc.thePlayer.rotationYawHead = e.getYaw();
-                mc.thePlayer.renderYawOffset = e.getYaw();
-                MinecraftHook.serverRotation = new Rotation(e.getYaw(),e.getPitch());
+                mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(rotations[0], rotations[1], mc.thePlayer.onGround));
+                mc.thePlayer.rotationYawHead = rotations[0];
+                mc.thePlayer.renderYawOffset = rotations[0];
+//                e.setYaw(rotations[0]);
+//                e.setPitch(rotations[1]);
+//                mc.thePlayer.rotationYawHead = e.getYaw();
+//                mc.thePlayer.renderYawOffset = e.getYaw();
+//                MinecraftHook.serverRotation = new Rotation(e.getYaw(),e.getPitch());
             }
             if (mode.getModeName().equalsIgnoreCase("Switch")) {
                 setDisplayName("Switch");
@@ -119,11 +124,14 @@ public class Aura extends Module {
                     this.switchtime.reset();
                 }
                 float[] rotations = RotationUtil.getRotations(target);
-                e.setYaw(rotations[0]);
-                e.setPitch(rotations[1]);
-                mc.thePlayer.rotationYawHead = e.getYaw();
-                mc.thePlayer.renderYawOffset = e.getYaw();
-                MinecraftHook.serverRotation = new Rotation(e.getYaw(),e.getPitch());
+                mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(rotations[0], rotations[1], mc.thePlayer.onGround));
+                mc.thePlayer.rotationYawHead = rotations[0];
+                mc.thePlayer.renderYawOffset = rotations[0];
+//                e.setYaw(rotations[0]);
+//                e.setPitch(rotations[1]);
+//                mc.thePlayer.rotationYawHead = e.getYaw();
+//                mc.thePlayer.renderYawOffset = e.getYaw();
+//                MinecraftHook.serverRotation = new Rotation(e.getYaw(),e.getPitch());
             }
         }else if (e.getEventType() == EventType.POST){
             if(target != null) {
@@ -262,7 +270,12 @@ public class Aura extends Module {
                 ChatUtil.sendClientMessage("You have no install the customeNPCs");
             }
         }
-
+        if (!ModManager.getModByName("NoFriend").isEnabled() && FriendManager.isFriend(entity.getCommandSenderName())){
+            return false;
+        }
+        if(!mc.thePlayer.canEntityBeSeen(entity) && !wall.getValueState().booleanValue()) {
+            return false;
+        }
         if (entity instanceof EntityPlayer && !players.getValueState()) {
             return false;
         }

@@ -11,18 +11,27 @@ import cn.snowflake.rose.manager.FontManager;
 import cn.snowflake.rose.manager.ModManager;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.mod.mods.PLAYER.NoSlow;
+import cn.snowflake.rose.mod.mods.RENDER.Chams;
 import cn.snowflake.rose.mod.mods.RENDER.ViewClip;
 import cn.snowflake.rose.mod.mods.WORLD.NoCommand;
 import cn.snowflake.rose.mod.mods.WORLD.Xray;
 import cn.snowflake.rose.utils.ChatUtil;
+import cn.snowflake.rose.utils.GLUProjection;
 import cn.snowflake.rose.utils.GlStateManager;
 import cn.snowflake.rose.utils.Rotation;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.types.EventType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiSelectWorld;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GLAllocation;
+import net.minecraft.entity.Entity;
 import net.minecraft.network.play.client.C01PacketChatMessage;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
+
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
 public class MinecraftHook {
     public static Rotation serverRotation = new Rotation(0F, 0F);
@@ -43,6 +52,18 @@ public class MinecraftHook {
         }
     }
 
+    public static void chamsHook1(Object object){
+        if (ModManager.getModByName("Chams").isEnabled() && Chams.canTarget((Entity) object)){
+            GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
+            GL11.glPolygonOffset(1.0F, -1000000F);
+        }
+    }
+    public static void chamsHook2(Object object){
+        if (ModManager.getModByName("Chams").isEnabled() && Chams.canTarget((Entity) object)){
+            GL11.glPolygonOffset(1.0F, 1000000F);
+            GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
+        }
+    }
     public static void onUpdateWalkingPlayerHook(EventType stage) {
         EventMotion em = new EventMotion(stage);
         EventManager.call(em);
@@ -50,13 +71,22 @@ public class MinecraftHook {
 
     ///Client End
     public static void Event3D(){
+        GLUProjection projection = GLUProjection.getInstance();
+        IntBuffer viewPort = GLAllocation.createDirectIntBuffer(16);
+        FloatBuffer modelView = GLAllocation.createDirectFloatBuffer(16);
+        FloatBuffer projectionPort = GLAllocation.createDirectFloatBuffer(16);
+        GL11.glGetFloat((int)2982, (FloatBuffer)modelView);
+        GL11.glGetFloat((int)2983, (FloatBuffer)projectionPort);
+        GL11.glGetInteger((int)2978, (IntBuffer)viewPort);
+        ScaledResolution scaledResolution = new ScaledResolution(Minecraft.getMinecraft(),Minecraft.getMinecraft().displayWidth,Minecraft.getMinecraft().displayHeight);
+        projection.updateMatrices(viewPort, modelView, projectionPort, (double)scaledResolution.getScaledWidth() / (double)Minecraft.getMinecraft().displayWidth, (double)scaledResolution.getScaledHeight() / (double)Minecraft.getMinecraft().displayHeight);
         EventRender3D er3 = new EventRender3D();
         EventManager.call(er3);
     }
 
-    public static void Event2D(){
+    public static void Event2D(float r){
         GlStateManager.pushMatrix();
-        EventRender2D er = new EventRender2D();
+        EventRender2D er = new EventRender2D(r);
         EventManager.call(er);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.popMatrix();

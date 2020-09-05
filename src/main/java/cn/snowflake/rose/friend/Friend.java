@@ -10,7 +10,9 @@ public class Friend {
         this.name = name;
         this.friend = friend;
     }
-
+    public Friend(String name){
+        this.name = name;
+    }
     public EntityLivingBase getFriend() {
         return friend;
     }

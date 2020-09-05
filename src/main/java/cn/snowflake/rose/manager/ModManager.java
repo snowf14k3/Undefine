@@ -1,5 +1,6 @@
 package cn.snowflake.rose.manager;
 
+import cn.snowflake.rose.friend.Friend;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.mod.mods.COMBAT.*;
 import cn.snowflake.rose.mod.mods.MOVEMENT.*;
@@ -31,6 +32,7 @@ public class ModManager {
         addMod(new AirJump());
         addMod(new Fly());
         addMod(new Speed());
+        addMod(new Scaffold());
         addMod(new NoFall());
         addMod(new Jesus());
         addMod(new Step());
@@ -38,7 +40,9 @@ public class ModManager {
         addMod(new HUD());
         addMod(new Animation());
         addMod(new FullBright());
+//        addMod(new ItemESP());
         addMod(new ClickGui());
+        addMod(new Chams());
         addMod(new ViewClip());
         addMod(new ChestESP());
         addMod(new BlockOverlay());
@@ -55,6 +59,7 @@ public class ModManager {
         addMod(new ServerCrasher());
         addMod(new Bot());
         addMod(new Xray());
+        addMod(new NoFriend());
         addMod(new MCF());
         addMod(new NoCommand());
     }

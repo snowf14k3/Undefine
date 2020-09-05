@@ -94,13 +94,11 @@ public class CSGOGUI extends GuiScreen{
 //                                   }
                                    selectedChar = this.selectedChar - 1;
 
-//                                   System.out.println("L selectedChar " + selectedChar + " str " + textString.substring(0, selectedChar));
                                    break;
                                case Keyboard.KEY_RIGHT:
                                    if (selectedChar < textString.length()) {
                                        ++selectedChar;
                                    }
-//                                   System.out.println("R selectedChar " + selectedChar + " str " + textString.substring(0, selectedChar));
                                    break;
                            }
                            width = font2.getStringWidth(textString.substring(0, selectedChar));
@@ -125,10 +123,6 @@ public class CSGOGUI extends GuiScreen{
             if (keyCode != 1) {
                 ChatUtil.sendClientMessage("Bound '" + this.bmod.getName() + "'" + " to '" + Keyboard.getKeyName(keyCode) + "'");
                 this.bmod.setKey(keyCode);
-            }else {
-                this.mc.displayGuiScreen(null);
-                ChatUtil.sendClientMessage("Unbound '" + this.bmod.getName() + "'");
-                this.bmod.setKey(Keyboard.KEY_NONE);
             }
             binding = false;
             Client.instance.fileMgr.saveKeys();
@@ -137,6 +131,7 @@ public class CSGOGUI extends GuiScreen{
     }
     boolean move;
     private boolean dragging;
+
 
     @Override
     public void mouseMovedOrUp(int mouseX, int mouseY, int mouseButton) {
@@ -150,9 +145,13 @@ public class CSGOGUI extends GuiScreen{
 
         super.mouseClicked(mouseX, mouseY, mouseButton);
     }
+    public float anim = 700f;
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        anim = AnimationUtil.moveUD(anim, 0, 0.6f, 0.04f);
+//        GlStateManager.rotate(anim, 0, 0, 1);
+        GlStateManager.translate(anim,anim,anim);
         ScaledResolution rs = new ScaledResolution(Minecraft.getMinecraft(),Minecraft.getMinecraft().displayWidth,Minecraft.getMinecraft().displayHeight);
         if (isHovered(startX, startY - 8, startX + 300, startY + 5, mouseX, mouseY) && !isHovered(startX+289, startY-8, startX+296, startY+0, mouseX, mouseY)) {
             if(handler.canExcecute())
@@ -190,7 +189,6 @@ public class CSGOGUI extends GuiScreen{
         GL11.glEnable(3089);
         //GLScissor
         RenderUtil.doGlScissor(startX,startY - 8, startX +300, startY + 185);
-
         //Category
         RenderUtil.drawRect(startX, startY - 8, startX + 60, startY  + 185,new Color(245,245,245).getRGB());
         //Mods

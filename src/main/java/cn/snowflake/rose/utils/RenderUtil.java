@@ -6,9 +6,12 @@ import java.lang.reflect.Field;
 
 import cn.snowflake.rose.asm.ClassTransformer;
 import cn.snowflake.rose.manager.ModManager;
+import net.minecraft.client.renderer.culling.Frustrum;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.Entity;
 
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Timer;
 import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
@@ -509,8 +512,35 @@ public enum	 RenderUtil {
         GL11.glEnable((int) 2929);
         GL11.glColor3d((double) 1.0, (double) 1.0, (double) 1.0);
     }
+    private static Frustrum frustrum = new Frustrum();
 
     public static double interpolate(double newPos, double oldPos,float renderPartialTicks) {
         return oldPos + (newPos - oldPos) * renderPartialTicks;
+    }
+    public static boolean isInViewFrustrum(Entity entity) {
+        return isInViewFrustrum(entity.getBoundingBox()) || entity.ignoreFrustumCheck;
+    }
+    public static boolean isInViewFrustrum(AxisAlignedBB bb) {
+        Entity current = Minecraft.getMinecraft().renderViewEntity;
+        frustrum.setPosition(current.posX, current.posY, current.posZ);
+        return frustrum.isBoundingBoxInFrustum(bb);
+    }
+    public static void drawHorizontalLine(float x, float y, float x1, float thickness, int color) {
+        RenderUtil.drawRect2(x, y, x1, y + thickness, color);
+    }
+
+    public static void drawRect2(double x, double y, double x2, double y2, int color) {
+        RenderUtil.drawRect(x, y, x2, y2, color);
+    }
+
+    public static void drawVerticalLine(float x, float y, float y1, float thickness, int color) {
+        RenderUtil.drawRect2(x, y, x + thickness, y1, color);
+    }
+
+    public static void drawHollowBox(float x, float y, float x1, float y1, float thickness, int color) {
+        RenderUtil.drawHorizontalLine(x, y, x1, thickness, color);
+        RenderUtil.drawHorizontalLine(x, y1, x1, thickness, color);
+        RenderUtil.drawVerticalLine(x, y, y1, thickness, color);
+        RenderUtil.drawVerticalLine(x1 - thickness, y, y1, thickness, color);
     }
 }

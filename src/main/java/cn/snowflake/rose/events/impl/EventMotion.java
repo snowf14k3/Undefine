@@ -19,14 +19,20 @@ public class EventMotion implements Event, Cancellable
     public boolean isCancel() {
         return cancel;
     }
-
-    public EventMotion(final double y, float yaw, float pitch, boolean onGround, EventType type) {
+    public EventMotion(final double y, float yaw, float pitch) {
+        super();
+        this.y = y;
+        this.yaw = yaw;
+        this.pitch = pitch;
+        this.type = EventType.PRE;
+    }
+    public EventMotion(final double y, float yaw, float pitch, boolean onGround) {
         super();
         this.y = y;
         this.yaw = yaw;
         this.pitch = pitch;
         this.onGround = onGround;
-        this.type = type;
+        this.type = EventType.PRE;
     }
 
     public EventType getEventType() {

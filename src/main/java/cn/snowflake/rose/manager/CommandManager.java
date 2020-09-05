@@ -14,6 +14,7 @@ public class CommandManager {
         add(new CommandBind(new String[] {"bind"}));
         add(new CommandWalkTo(new String[]{"to"}));
         add(new CommandXray(new String[]{"xray"}));
+        add(new CommandFriend(new String[]{"friend","f"}));
     }
 
     public void add(Command c) {

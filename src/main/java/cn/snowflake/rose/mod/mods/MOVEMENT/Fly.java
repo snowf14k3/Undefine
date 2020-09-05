@@ -24,6 +24,8 @@ public class Fly extends Module {
     public Fly() {
         super("Fly", Category.MOVEMENT);
         this.mode.addValue("Motion");
+        this.mode.addValue("Creative");
+
     }
 
     @EventTarget
@@ -46,6 +48,11 @@ public class Fly extends Module {
                 ++thePlayer2.motionY;
             }
         }
+
+        if (this.mode.isCurrentMode("Creative")){
+            mc.thePlayer.capabilities.isFlying = true;
+        }
+
         if (mc.thePlayer.ticksExisted % 5 == 0) {
             mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(mc.thePlayer.posX, mc.thePlayer.boundingBox.minY, mc.thePlayer.posY - 0.03125D, mc.thePlayer.posZ, mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch, true));
         }
@@ -103,6 +110,9 @@ public class Fly extends Module {
     public void onDisable() {
         mc.thePlayer.motionX =0;
         mc.thePlayer.motionZ =0;
+        if (this.mode.isCurrentMode("Creative")){
+            mc.thePlayer.capabilities.isFlying = false;
+        }
         super.onDisable();
     }
 }

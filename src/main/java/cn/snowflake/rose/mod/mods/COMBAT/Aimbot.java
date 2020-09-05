@@ -3,6 +3,8 @@ package cn.snowflake.rose.mod.mods.COMBAT;
 import cn.snowflake.rose.Client;
 import cn.snowflake.rose.asm.ClassTransformer;
 import cn.snowflake.rose.events.impl.EventMotion;
+import cn.snowflake.rose.manager.FriendManager;
+import cn.snowflake.rose.manager.ModManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.*;
@@ -91,10 +93,13 @@ public class Aimbot extends Module {
         }
     }
     private boolean canTarget(Entity entity) {
-        if (mc.thePlayer.canEntityBeSeen(entity) && !throughwall.getValueState()){
+        if(!mc.thePlayer.canEntityBeSeen(entity) && !throughwall.getValueState()) {
             return false;
         }
         if (entity instanceof EntityPlayer && !players.getValueState()) {
+            return false;
+        }
+        if (!ModManager.getModByName("NoFriend").isEnabled() && FriendManager.isFriend(entity.getCommandSenderName())){
             return false;
         }
         if (entity instanceof EntityAnimal && !animal.getValueState()) {
