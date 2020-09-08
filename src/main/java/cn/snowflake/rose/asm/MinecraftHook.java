@@ -53,13 +53,13 @@ public class MinecraftHook {
     }
 
     public static void chamsHook1(Object object){
-        if (ModManager.getModByName("Chams").isEnabled() && Chams.canTarget((Entity) object)){
+        if (Chams.c && Chams.canTarget((Entity) object)){
             GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
             GL11.glPolygonOffset(1.0F, -1000000F);
         }
     }
     public static void chamsHook2(Object object){
-        if (ModManager.getModByName("Chams").isEnabled() && Chams.canTarget((Entity) object)){
+        if (Chams.c && Chams.canTarget((Entity) object)){
             GL11.glPolygonOffset(1.0F, 1000000F);
             GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
         }

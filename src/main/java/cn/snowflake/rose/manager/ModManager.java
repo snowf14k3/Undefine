@@ -60,6 +60,7 @@ public class ModManager {
         addMod(new Bot());
         addMod(new Xray());
         addMod(new NoFriend());
+        addMod(new MineBot());
         addMod(new MCF());
         addMod(new NoCommand());
     }

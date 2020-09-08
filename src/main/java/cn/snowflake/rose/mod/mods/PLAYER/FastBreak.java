@@ -26,9 +26,10 @@ public class FastBreak extends Module {
     @EventTarget
     public void OnUpdata(EventUpdate e) {
         this.setDisplayName(""+speed.getValueState());
-        if(JReflectUtility.getCurBlockDamageMP() > speed.getValueState().floatValue())
+        if(JReflectUtility.getCurBlockDamageMP() > speed.getValueState().floatValue()){
             JReflectUtility.setCurBlockDamageMP(1);
             JReflectUtility.setBlockHitDelay(0);
+        }
     }
 }
 

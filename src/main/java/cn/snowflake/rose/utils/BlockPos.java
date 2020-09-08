@@ -180,7 +180,9 @@ public class BlockPos extends Vec3i
     {
         return this.offset(facing, 1);
     }
-
+    public BlockPos offset(cn.snowflake.rose.utils.EnumFacing facing) {
+        return this.offset(facing, 1);
+    }
     /**
      * Offsets this BlockPos n blocks in the given direction
      */
@@ -188,7 +190,10 @@ public class BlockPos extends Vec3i
     {
         return n == 0 ? this : new BlockPos(this.getX() + facing.getFrontOffsetX() * n, this.getY() + facing.getFrontOffsetY() * n, this.getZ() + facing.getFrontOffsetZ() * n);
     }
-
+    public BlockPos offset(cn.snowflake.rose.utils.EnumFacing facing, int n)
+    {
+        return n == 0 ? this : new BlockPos(this.getX() + facing.getFrontOffsetX() * n, this.getY() + facing.getFrontOffsetY() * n, this.getZ() + facing.getFrontOffsetZ() * n);
+    }
     /**
      * Calculate the cross product of this and the given Vector
      */
@@ -323,6 +328,8 @@ public class BlockPos extends Vec3i
             }
         };
     }
+
+
 
     public static final class MutableBlockPos extends BlockPos
     {

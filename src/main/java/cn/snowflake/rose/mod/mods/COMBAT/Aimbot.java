@@ -16,6 +16,7 @@ import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBow;
@@ -33,6 +34,7 @@ public class Aimbot extends Module {
 
 
     public static Value<Double> range= new Value<Double>("Aimbot_Reach", 10.5D, 3.0D, 65.0D,0.1D);
+    public Value<Boolean> bat = new Value("Aimbot_Bat", false);
 
     public Value<Boolean> customnpcs = new Value("Aimbot_CustomNPCs", false);
     public Value<Boolean> customnpcsteam = new Value("Aimbot_CustomNPCTeam", false);
@@ -106,6 +108,9 @@ public class Aimbot extends Module {
             return false;
         }
         if (entity instanceof EntityMob && !moster.getValueState()) {
+            return false;
+        }
+        if (entity instanceof EntityBat && !bat.getValueState()){
             return false;
         }
         if (entity instanceof EntityVillager && !village.getValueState()) {

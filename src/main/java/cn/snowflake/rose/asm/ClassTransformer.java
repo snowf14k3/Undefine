@@ -86,7 +86,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 	}
 
 	//  TODO SHIT OF runtimeDeobfuscationEnabled
-	public static  boolean runtimeDeobfuscationEnabled = false;
+	public static  boolean runtimeDeobfuscationEnabled = true;
 
 //	public static  boolean runtimeDeobfuscationEnabled = false;
 
@@ -148,11 +148,11 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			InsnList insnList1 = new InsnList();
 			InsnList insnList2 = new InsnList();
 			insnList1.add(new VarInsnNode(ALOAD,1));
-			insnList1.add(new MethodInsnNode(INVOKESTATIC, "cn/snowflake/rose/asm/MinecraftHook", "chamsHook1", "(Ljava/lang/Object;)V", false));
+			insnList1.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(MinecraftHook.class), "chamsHook1", "(Ljava/lang/Object;)V", false));
 			methodNode.instructions.insert(insnList1);
 
 			insnList2.add(new VarInsnNode(ALOAD,1));
-			insnList2.add(new MethodInsnNode(INVOKESTATIC, "cn/snowflake/rose/asm/MinecraftHook", "chamsHook2", "(Ljava/lang/Object;)V", false));
+			insnList2.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(MinecraftHook.class), "chamsHook2", "(Ljava/lang/Object;)V", false));
 			methodNode.instructions.insertBefore(ASMUtil.bottom(methodNode),insnList2);
 		}
 	}
@@ -224,7 +224,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			insnList.add(new FieldInsnNode(GETFIELD, "net/minecraft/client/Minecraft", "field_71439_g", "Lnet/minecraft/client/entity/EntityClientPlayerMP;"));
 			LabelNode labelNode = new LabelNode();
 			insnList.add(new JumpInsnNode(IF_ACMPNE,labelNode));
-			insnList.add(new MethodInsnNode(INVOKESTATIC, "cn/snowflake/rose/asm/MinecraftHook", "onNoSlowEnable2", "()Z", false));
+			insnList.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(MinecraftHook.class), "onNoSlowEnable2", "()Z", false));
 			insnList.add(new JumpInsnNode(IFEQ,labelNode));
 			insnList.add(new InsnNode(RETURN));
 			insnList.add(labelNode);
@@ -239,7 +239,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 		if (methodNode.name.equalsIgnoreCase("shouldSideBeRendered") || methodNode.name.equalsIgnoreCase("func_149646_a")){
 			LogManager.getLogger().info(methodNode.name);
 			final InsnList insnList = new InsnList();
-			insnList.add(new MethodInsnNode(INVOKESTATIC, "cn/snowflake/rose/asm/MinecraftHook", "isXrayEnabled", "()Z", false));
+			insnList.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(MinecraftHook.class), "isXrayEnabled", "()Z", false));
 			LabelNode jmp = new LabelNode();
 			insnList.add(new JumpInsnNode(IFEQ,jmp));
 			insnList.add(new FieldInsnNode(GETSTATIC, Type.getInternalName(Xray.class), "block", "Ljava/util/ArrayList;"));
@@ -253,11 +253,10 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 	}
 	//transformNetworkManager start
 	private void transformNetworkManager(ClassNode classNode, MethodNode methodNode) {
-		if (methodNode.name.equalsIgnoreCase("channelRead0")){
-			LogManager.getLogger().info(methodNode.name);
+		if (methodNode.name.equalsIgnoreCase("scheduleOutboundPacket") || methodNode.name.equalsIgnoreCase("func_150725_a")){
 			final InsnList preInsn = new InsnList();
-			preInsn.add(new VarInsnNode(Opcodes.ALOAD, 2));
-			preInsn.add(new FieldInsnNode(Opcodes.GETSTATIC, "com/darkmagician6/eventapi/types/EventType", "PRE", "Lcom/darkmagician6/eventapi/types/EventType;"));
+			preInsn.add(new VarInsnNode(Opcodes.ALOAD, 1));//方法的第一个参数
+			preInsn.add(new FieldInsnNode(Opcodes.GETSTATIC, "com/darkmagician6/eventapi/types/EventType", "SEND", "Lcom/darkmagician6/eventapi/types/EventType;"));
 			preInsn.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(this.getClass()), "channelRead0Hook","(Ljava/lang/Object;Lcom/darkmagician6/eventapi/types/EventType;)Z", false));
 			final LabelNode jmp = new LabelNode();
 			preInsn.add(new JumpInsnNode(Opcodes.IFEQ, jmp));
@@ -265,23 +264,21 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			preInsn.add(jmp);
 			preInsn.add(new FrameNode(Opcodes.F_SAME, 0, null, 0, null));
 			methodNode.instructions.insert(preInsn);
-
-			/**
-			 * if(channelRead0Hook(packet,EventType.PRE)){
-			 *  return ;
-			 * }
-			 */
-
-			final InsnList postInsn = new InsnList();
-			postInsn.add(new VarInsnNode(Opcodes.ALOAD, 2));
-			postInsn.add(new FieldInsnNode(Opcodes.GETSTATIC, "com/darkmagician6/eventapi/types/EventType", "POST", "Lcom/darkmagician6/eventapi/types/EventType;"));
-			postInsn.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(this.getClass()), "channelRead0Hook","(Ljava/lang/Object;Lcom/darkmagician6/eventapi/types/EventType;)Z", false));
+		}
+		if (methodNode.name.equalsIgnoreCase("channelRead0") && methodNode.desc.equalsIgnoreCase("(Lio/netty/channel/ChannelHandlerContext;Lnet/minecraft/network/Packet;)V")){
+			final InsnList preInsn = new InsnList();
+			preInsn.add(new VarInsnNode(Opcodes.ALOAD, 2));
+			preInsn.add(new FieldInsnNode(Opcodes.GETSTATIC, "com/darkmagician6/eventapi/types/EventType", "RECIEVE", "Lcom/darkmagician6/eventapi/types/EventType;"));
+			preInsn.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(this.getClass()), "channelRead0Hook","(Ljava/lang/Object;Lcom/darkmagician6/eventapi/types/EventType;)Z", false));
+			final LabelNode jmp = new LabelNode();
+			preInsn.add(new JumpInsnNode(Opcodes.IFEQ, jmp));
+			preInsn.add(new InsnNode(Opcodes.RETURN));
+			preInsn.add(jmp);
 			preInsn.add(new FrameNode(Opcodes.F_SAME, 0, null, 0, null));
-			methodNode.instructions.insertBefore(ASMUtil.bottom(methodNode), postInsn);
-
+			methodNode.instructions.insert(preInsn);
 			/**
-			 * if(channelRead0Hook(packet,EventType.POST)){
-			 *      return;
+			 * if(channelRead0Hook(packet,EventType.RECIEVE)){
+			 *  return ;
 			 * }
 			 */
 		}
@@ -321,7 +318,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 				if (insn.getOpcode() == Opcodes.INVOKESTATIC) {
 					MethodInsnNode methodInsn = (MethodInsnNode) insn;
 					if (methodInsn.name.equals("dispatchRenderLast")) {
-						method.instructions.insertBefore(insn, new MethodInsnNode(Opcodes.INVOKESTATIC, "cn/snowflake/rose/asm/MinecraftHook", "Event3D", "()V", false));
+						method.instructions.insertBefore(insn, new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(MinecraftHook.class), "Event3D", "()V", false));
 					}
 				}
 			}
@@ -333,7 +330,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 				InsnList insnList2 = new InsnList();
 
 				InsnList insnList = new InsnList();
-				insnList.add(new MethodInsnNode(INVOKESTATIC,"cn/snowflake/rose/asm/MinecraftHook","isViewClipEnabled","()Z",false));
+				insnList.add(new MethodInsnNode(INVOKESTATIC,Type.getInternalName(MinecraftHook.class),"isViewClipEnabled","()Z",false));
 				LabelNode labelNode = new LabelNode();
 				insnList.add(new JumpInsnNode(IFNE,labelNode));
 				method.instructions.insertBefore(ASMUtil.forward(target,8)
@@ -352,7 +349,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 		if (method.name.equalsIgnoreCase("func_73830_a") || method.name.equalsIgnoreCase("renderGameOverlay")){
 			InsnList insnList = new InsnList();
 			insnList.add(new VarInsnNode(FLOAD,1));
-			insnList.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "cn/snowflake/rose/asm/MinecraftHook", "Event2D", "(F)V", false));
+			insnList.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(MinecraftHook.class), "Event2D", "(F)V", false));
 			method.instructions.insert(ASMUtil.bottom(method).getPrevious().getPrevious().getPrevious().getPrevious().getPrevious().getPrevious().getPrevious().getPrevious().getPrevious().getPrevious().getPrevious().getPrevious(),insnList);
 
 		}
@@ -366,10 +363,10 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			if (insn.getOpcode() == Opcodes.INVOKEVIRTUAL) {
 				MethodInsnNode methodInsn = (MethodInsnNode) insn;
 				if (methodInsn.name.equals("func_71407_l") || methodInsn.name.equals("runTick")){
-					method.instructions.insert(insn,new MethodInsnNode(Opcodes.INVOKESTATIC, "cn/snowflake/rose/asm/MinecraftHook", "runClient", "()V", false));
+					method.instructions.insert(insn,new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(MinecraftHook.class), "runClient", "()V", false));
 				}
 				if (methodInsn.name.equals("func_152348_aa")) {
-					method.instructions.insert(insn,new MethodInsnNode(Opcodes.INVOKESTATIC, "cn/snowflake/rose/asm/MinecraftHook", "runTick", "()V", false));
+					method.instructions.insert(insn,new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(MinecraftHook.class), "runTick", "()V", false));
 				}
 			}
 		}
@@ -385,10 +382,10 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 				if (insn.getOpcode() == Opcodes.INVOKEVIRTUAL) {
 					MethodInsnNode methodInsn = (MethodInsnNode) insn;
 					if (methodInsn.name.equals("updatePlayerMoveState") || methodInsn.name.equals("func_78898_a")) {
-						method.instructions.insert(insn, new MethodInsnNode(Opcodes.INVOKESTATIC, "cn/snowflake/rose/asm/MinecraftHook", "onNoSlowEnable", "()V", false));
+						method.instructions.insert(insn, new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(MinecraftHook.class), "onNoSlowEnable", "()V", false));
 					}
 					if (methodInsn.name.equals("func_145771_j")) {
-						method.instructions.insertBefore(insn, new MethodInsnNode(Opcodes.INVOKESTATIC, "cn/snowflake/rose/asm/MinecraftHook", "onToggledTimerZero", "()V", false));
+						method.instructions.insertBefore(insn, new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(MinecraftHook.class), "onToggledTimerZero", "()V", false));
 					}
 				}
 			}
@@ -397,7 +394,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 	private void transformEntityClientPlayerMP(ClassNode clazz, MethodNode method) {
 
 		if (method.name.equals("onUpdate") || method.name.equals("func_70071_h_") ) {
-			method.instructions.insert(new MethodInsnNode(Opcodes.INVOKESTATIC, "cn/snowflake/rose/asm/MinecraftHook", "onUpdate", "()V", false));
+			method.instructions.insert(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(MinecraftHook.class), "onUpdate", "()V", false));
 		}
 		if (method.name.equalsIgnoreCase("sendMotionUpdates") || method.name.equalsIgnoreCase("func_71166_b")){
 			//replace the shit of old
@@ -462,24 +459,24 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 
 			InsnList preInsn = new InsnList();
 			preInsn.add(new FieldInsnNode(GETSTATIC, "com/darkmagician6/eventapi/types/EventType", "PRE", "Lcom/darkmagician6/eventapi/types/EventType;"));
-			preInsn.add(new MethodInsnNode(INVOKESTATIC, "cn/snowflake/rose/asm/MinecraftHook", "onUpdateWalkingPlayerHook","(Lcom/darkmagician6/eventapi/types/EventType;)V", false));
+			preInsn.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(MinecraftHook.class), "onUpdateWalkingPlayerHook","(Lcom/darkmagician6/eventapi/types/EventType;)V", false));
 			method.instructions.insert(preInsn);
 
 
 			InsnList postInsn = new InsnList();
 			postInsn.add(new FieldInsnNode(GETSTATIC, "com/darkmagician6/eventapi/types/EventType", "POST", "Lcom/darkmagician6/eventapi/types/EventType;"));
-			postInsn.add(new MethodInsnNode(INVOKESTATIC, "cn/snowflake/rose/asm/MinecraftHook", "onUpdateWalkingPlayerHook","(Lcom/darkmagician6/eventapi/types/EventType;)V", false));
+			postInsn.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(MinecraftHook.class), "onUpdateWalkingPlayerHook","(Lcom/darkmagician6/eventapi/types/EventType;)V", false));
 			method.instructions.insertBefore(ASMUtil.bottom(method), postInsn);
 		}
 		if (method.name.equalsIgnoreCase("func_71165_d") || method.name.equalsIgnoreCase("sendChatMessage")) {
 
 			final InsnList insnList = new InsnList();
 			insnList.add(new VarInsnNode(Opcodes.ALOAD, 1));
-			insnList.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "cn/snowflake/rose/asm/MinecraftHook", "command", "(Ljava/lang/String;)V", false));
+			insnList.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(MinecraftHook.class), "command", "(Ljava/lang/String;)V", false));
 
 			insnList.add(new VarInsnNode(Opcodes.ALOAD, 1));
 			insnList.add(new LdcInsnNode("-"));
-			insnList.add(new MethodInsnNode(Opcodes.INVOKESTATIC, "cn/snowflake/rose/asm/MinecraftHook", "isNoCommandEnabled", "(Ljava/lang/String;Ljava/lang/String;)Z", false));
+			insnList.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(MinecraftHook.class), "isNoCommandEnabled", "(Ljava/lang/String;Ljava/lang/String;)Z", false));
 
 			final LabelNode jmp = new LabelNode();
 			insnList.add(new JumpInsnNode(Opcodes.IFEQ, jmp));

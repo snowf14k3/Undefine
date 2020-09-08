@@ -1,6 +1,7 @@
 package cn.snowflake.rose.mod;
 
 import cn.snowflake.rose.Client;
+import cn.snowflake.rose.mod.mods.RENDER.Chams;
 import cn.snowflake.rose.utils.Value;
 import com.darkmagician6.eventapi.EventManager;
 import net.minecraft.client.Minecraft;
