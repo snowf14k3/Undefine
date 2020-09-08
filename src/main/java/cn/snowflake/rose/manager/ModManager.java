@@ -26,6 +26,7 @@ public class ModManager {
         addMod(new Aimbot());
         addMod(new Velocity());
         addMod(new AutoFish());
+        addMod(new Blink());
         //MOVEMENT
         addMod(new Teleport());
         addMod(new Sprint());
