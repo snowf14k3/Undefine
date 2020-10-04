@@ -19,7 +19,7 @@ public class Agent {
 		try {
 			Agent.instrumentation = instrumentation;
 			loadThisJar();
-			addToMinecraftClassLoader(ClassTransformer.class);
+//			addToMinecraftClassLoader(ClassTransformer.class);
 			forceloadclass();
 			retransform();
 		}catch (Exception e){
@@ -47,6 +47,7 @@ public class Agent {
 	public static void loadThisJar() {
 		LaunchClassLoader cl = getLaunchClassLoader();
 		if (cl != null) {
+
 			URL url = Agent.class.getProtectionDomain().getCodeSource().getLocation();
 			cl.addURL(url);
 		}
@@ -76,27 +77,27 @@ public class Agent {
 		return null;
 	}
 
-	public static void addToMinecraftClassLoader(Class... classes) {
-		for (Class c : instrumentation.getAllLoadedClasses()) {
-			if (c.getClassLoader() != null
-					&& c.getClassLoader().getClass().getName().equals("net.minecraft.launchwrapper.LaunchClassLoader")) {
-				Object cl = c.getClassLoader();
-				try {
-					Method addUrl = cl.getClass().getDeclaredMethod("addURL", URL.class);
-					addUrl.setAccessible(true);
-					for (Class clazz : classes )
-						addUrl.invoke(cl, clazz.getProtectionDomain().getCodeSource().getLocation());
-				} catch (NoSuchMethodException e) {
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				}
-				break;
-			}
-		}
-	}
+//	public static void addToMinecraftClassLoader(Class... classes) {
+//		for (Class c : instrumentation.getAllLoadedClasses()) {
+//			if (c.getClassLoader() != null
+//					&& c.getClassLoader().getClass().getName().equals("net.minecraft.launchwrapper.LaunchClassLoader")) {
+//				Object cl = c.getClassLoader();
+//				try {
+//					Method addUrl = cl.getClass().getDeclaredMethod("addURL", URL.class);
+//					addUrl.setAccessible(true);
+//					for (Class clazz : classes )
+//						addUrl.invoke(cl, clazz.getProtectionDomain().getCodeSource().getLocation());
+//				} catch (NoSuchMethodException e) {
+//					e.printStackTrace();
+//				} catch (InvocationTargetException e) {
+//					e.printStackTrace();
+//				} catch (IllegalAccessException e) {
+//					e.printStackTrace();
+//				}
+//				break;
+//			}
+//		}
+//	}
 
 
 }

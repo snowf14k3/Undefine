@@ -18,11 +18,11 @@ import java.lang.reflect.InvocationTargetException;
 public class Fly extends Module {
     public Value<Double> boost = new Value<Double>("Fly_MoitonBoost", 4.5, 1.0, 7.0, 0.1);
     public Value<String> mode = new Value("Fly_Mode", "Mode", 0);
-    public Value<Boolean> antikick = new Value<>("Fly_AntiKick",true);
     private TimeHelper groundTimer = new TimeHelper();
 
     public Fly() {
         super("Fly", Category.MOVEMENT);
+        this.mode.addValue("AntiKick");
         this.mode.addValue("Motion");
         this.mode.addValue("Creative");
 
@@ -48,7 +48,19 @@ public class Fly extends Module {
                 ++thePlayer2.motionY;
             }
         }
-
+        if (this.mode.isCurrentMode("AntiKick")){
+            float speed =  this.boost.getValueState().floatValue() * 0.9f;
+            this.mc.thePlayer.capabilities.setFlySpeed(0.35f * speed);
+            if (this.mc.gameSettings.keyBindJump.getIsKeyPressed()) {
+                mc.thePlayer.motionY += speed;
+            }
+            else {
+                mc.thePlayer.motionY -= ((speed * 0.02 > 0.08) ? 0.08 : (speed * 0.02));
+            }
+            if (this.mc.gameSettings.keyBindSneak.getIsKeyPressed()) {
+                mc.thePlayer.motionY -= speed;
+            }
+        }
         if (this.mode.isCurrentMode("Creative")){
             mc.thePlayer.capabilities.isFlying = true;
         }
@@ -57,52 +69,6 @@ public class Fly extends Module {
             mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(mc.thePlayer.posX, mc.thePlayer.boundingBox.minY, mc.thePlayer.posY - 0.03125D, mc.thePlayer.posZ, mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch, true));
         }
 //        handleVanillaKickBypass();
-    }
-
-    private void handleVanillaKickBypass() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
-        if(!antikick.getValueState().booleanValue() || !groundTimer.isDelayComplete(1000)) return;
-
-        double ground = calculateGround();
-
-        for(double posY = mc.thePlayer.posY; posY > ground; posY -= 8D) {
-            mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX,mc.thePlayer.boundingBox.minY, posY, mc.thePlayer.posZ, true));
-
-            if(posY - 8D < ground) break; // Prevent next step
-        }
-
-        mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX,mc.thePlayer.boundingBox.minY, ground, mc.thePlayer.posZ, true));
-
-
-        for(double posY = ground; posY < mc.thePlayer.posY; posY += 8D) {
-            mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX,mc.thePlayer.boundingBox.minY, posY, mc.thePlayer.posZ, true));
-
-            if(posY + 8D > mc.thePlayer.posY) break; // Prevent next step
-        }
-
-        mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX,mc.thePlayer.boundingBox.minY, mc.thePlayer.posY, mc.thePlayer.posZ, true));
-
-        groundTimer.reset();
-    }
-
-    // TODO: Make better and faster calculation lol
-    private double calculateGround() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        Class clazz = Class.forName("net.minecraft.util.AxisAlignedBB");
-        Constructor aabb = clazz.getDeclaredConstructor(double.class,double.class,double.class,double.class,double.class,double.class);
-        AxisAlignedBB playerBoundingBox = mc.thePlayer.getBoundingBox();
-
-        double blockHeight = 1D;
-
-        for(double ground = mc.thePlayer.posY; ground > 0D; ground -= blockHeight) {
-            AxisAlignedBB customBox = (AxisAlignedBB)aabb.newInstance(playerBoundingBox.maxX, ground + blockHeight, playerBoundingBox.maxZ, playerBoundingBox.minX, ground, playerBoundingBox.minZ);
-            if(mc.theWorld.checkBlockCollision(customBox)) {
-                if(blockHeight <= 0.05D)
-                    return ground + blockHeight;
-                ground += blockHeight;
-                blockHeight = 0.05D;
-            }
-        }
-
-        return 0F;
     }
 
 

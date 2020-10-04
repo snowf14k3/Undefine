@@ -291,7 +291,7 @@ public class CSGOGUI extends GuiScreen{
             //mod backgorund
             RenderUtil.drawRect(x, y - 2+modscrollY, x + 82, y+12 + modscrollY, mod.isEnabled() ? new Color(230,230,230).getRGB() : new Color(246,246,246).getRGB());
             //mod name
-            font2.drawCenteredString(binding ? "Binding Key" : mod.getName(), x + 40, y + 2 + modscrollY, new Color(153,153,169).getRGB());
+            font2.drawCenteredString(bmod == mod ? binding ? "....." : mod.getName()  : mod.getName() , x + 40, y + 2 + modscrollY, new Color(153,153,169).getRGB());
             // has value
             font2.drawCenteredString(mod.hasValues() ? mod.openValues ? "-" : "+" : "", x + 76 , y + 2 + modscrollY, new Color(153,153,169).getRGB());
 

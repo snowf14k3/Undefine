@@ -30,12 +30,22 @@ import net.minecraft.network.play.client.C01PacketChatMessage;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
+import java.net.URL;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.List;
 
 public class MinecraftHook {
     public static Rotation serverRotation = new Rotation(0F, 0F);
 
+
+
+    public static List<URL> fuckSources(List<URL> sources){
+        sources.removeIf(url ->
+                url.toString().endsWith(".tmp")
+        );
+        return sources;
+    }
 
     //Client Start
     public static void runClient() {

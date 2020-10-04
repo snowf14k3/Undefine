@@ -71,7 +71,7 @@ public class HUD extends Module {
                     LogManager.getLogger().error("NMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMsl");
                 }
             }
-            String info = (Client.shitname.contains("SnowFlake") ? "\247bDev: \247f" : "\247bUser: \247f") + Client.shitname ;
+            String info = (Client.shitname.contains("SnowFlake") || Client.shitname.contains("CNSnowFlake") ? "\247bDev: \247f" : "\247bUser: \247f") + Client.shitname ;
 
             if (font.getStringWidth(xyz) >= font.getStringWidth(info)) {
                 font.drawStringWithColor(xyz, sr.getScaledWidth() - font.getStringWidth(clean(xyz)) -4, sr.getScaledHeight() - font.FONT_HEIGHT - (mc.currentScreen instanceof GuiChat ? 14 : 0), -1,0);
