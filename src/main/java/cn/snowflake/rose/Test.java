@@ -25,28 +25,17 @@ import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.EnumMap;
 import java.util.List;
 
 public class Test{
-    static List<URL> sources;
+    public double posY;
+    public float yaw;
+    public float pitch;
+    public boolean onGround;
 
-    public static List<URL> getSources() {
-        return fuckSources(sources);
+    private void test() {
+        EventMotion e =new EventMotion(posY,yaw,pitch,onGround);
+        EventManager.call(e);
     }
-
-    public static List<URL> getSources2() {
-        return sources;
-    }
-
-    public static List<URL> fuckSources(List<URL> sources){
-        sources.removeIf(url ->
-           url.toString().endsWith(".tmp")
-        );
-        return sources;
-    }
-
 }

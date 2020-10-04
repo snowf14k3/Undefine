@@ -63,8 +63,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 				"luohuayu.anticheat.message.CPacketInjectDetect",
 				"net.minecraft.entity.Entity",
 				"cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper",
-				"net.minecraft.client.renderer.entity.RendererLivingEntity",
-				"net.minecraft.launchwrapper.LaunchClassLoader"
+				"net.minecraft.client.renderer.entity.RendererLivingEntity"
 		};
 		for (int i=0; i<nameArray.length; i++) {
 				classNameSet.add(nameArray[i]);
@@ -134,26 +133,14 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			else if (name.equalsIgnoreCase("net.minecraft.client.renderer.entity.RendererLivingEntity")){
 				return this.transformMethods(classByte,this::transformRendererLivingEntity);
 			}
-			else if (name.equalsIgnoreCase("net.minecraft.launchwrapper.LaunchClassLoader")){
-				return this.transformMethods(classByte,this::transformLaunchClassLoader);
-			}
+//			else if (name.equalsIgnoreCase("net.minecraft.client.model.ModelBiped")){
+//				return this.transformMethods(classByte,this::transformModelBiped);
+//			}
 		}catch(Exception e) {
 			LogManager.getLogger().log(Level.ERROR, ExceptionUtils.getStackTrace(e));
 			
 		}
 		return classByte;
-	}
-
-	private void transformLaunchClassLoader(ClassNode classNode, MethodNode methodNode) {
-		if (methodNode.name.equalsIgnoreCase("getSources")) {
-			for (AbstractInsnNode abstractInsnNode : methodNode.instructions.toArray()){
-				if (abstractInsnNode instanceof FieldInsnNode){
-					if (((FieldInsnNode) abstractInsnNode).name.equalsIgnoreCase("sources") && ((FieldInsnNode) abstractInsnNode).desc.equalsIgnoreCase("Ljava/util/List;")) {
-						methodNode.instructions.insert(abstractInsnNode,new MethodInsnNode(INVOKESTATIC, Type.getInternalName(MinecraftHook.class), "fuckSources", "(Ljava/util/List;)Ljava/util/List;", false));
-					}
-				}
-			}
-		}
 	}
 
 	private void transformRendererLivingEntity(ClassNode classNode, MethodNode methodNode) {
