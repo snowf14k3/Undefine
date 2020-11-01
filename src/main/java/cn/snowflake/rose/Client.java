@@ -33,10 +33,11 @@ import java.util.List;
 public class Client {
     public static String shitname =null;
     public static String name = "Season";
-    public static String version = "0.4";
+    public static String version = "0.5";
     public static Client instance;
     public static boolean init = false;
     private static boolean loaded =false;
+    public static boolean canCancle =false;
     public boolean font = false;
     public FileManager fileMgr;
     public ModManager modManager;

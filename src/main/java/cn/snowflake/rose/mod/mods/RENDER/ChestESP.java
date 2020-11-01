@@ -24,6 +24,7 @@ import net.minecraft.tileentity.TileEntityChest;
 import java.awt.*;
 
 public class ChestESP extends Module {
+    public static Value<String> mode = new Value("ChestESP", "Mode", 0);
     public Value<Double> alpha = new Value<Double>( "ChestESP_Alpha", 0.1d, 0.1d, 1.0d);
     public Value<Double> Width = new Value<Double>("ChestESP_Width", 0.5d, 0.5d, 5d);
     public Value<Boolean> Alpha = new Value<Boolean>("ChestESP_Alpha", true);
@@ -31,11 +32,17 @@ public class ChestESP extends Module {
 
     public ChestESP() {
         super("ChestESP", Category.RENDER);
+        this.mode.addValue("Model");
+        this.mode.addValue("ESP");
     }
 
     @EventTarget
     public void onRender(EventRender3D e) throws ClassNotFoundException {
-        for (final Object o : mc.theWorld.loadedTileEntityList) {
+        if (mode.isCurrentMode("ESP")){
+
+
+
+            for (final Object o : mc.theWorld.loadedTileEntityList) {
             if (o instanceof TileEntityChest) {
                 TileEntity tileEntity = (TileEntity) o;
                 float renderX = (float) (tileEntity.xCoord - RenderManager.instance.viewerPosX);
@@ -74,7 +81,7 @@ public class ChestESP extends Module {
             }
         }
     }
-
+    }
 
     public static void drawBlockESP(AltAxisAlignedBB axisAlignedBB, float red, float green, float blue, float alpha, float lineRed, float lineGreen, float lineBlue, float lineAlpha, float lineWidth, boolean bounding, boolean line) {
         GL11.glPushMatrix();

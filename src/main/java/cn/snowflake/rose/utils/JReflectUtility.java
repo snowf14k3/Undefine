@@ -308,6 +308,7 @@ public class JReflectUtility {
         }
         field.setAccessible(true);
         try {
+//            System.out.println(field.getFloat(mc.playerController));
             return field.getFloat(mc.playerController);
         } catch (IllegalAccessException e) {
         }
@@ -343,7 +344,14 @@ public class JReflectUtility {
         }
         return null;
     }
+    public static Class getCorpse(){
+        try {
+            return Class.forName("deci.af.a");
+        } catch (ClassNotFoundException e) {
 
+        }
+        return null;
+    }
     public static Class getEntityNumber(){
         try {
             return Class.forName("nianshow.nshowmod.entity.EntityNumber");

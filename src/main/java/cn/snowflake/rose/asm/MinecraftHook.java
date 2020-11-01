@@ -2,16 +2,14 @@ package cn.snowflake.rose.asm;
 
 import cn.snowflake.rose.Client;
 import cn.snowflake.rose.command.Command;
-import cn.snowflake.rose.events.impl.EventMotion;
-import cn.snowflake.rose.events.impl.EventRender2D;
-import cn.snowflake.rose.events.impl.EventRender3D;
-import cn.snowflake.rose.events.impl.EventUpdate;
+import cn.snowflake.rose.events.impl.*;
 import cn.snowflake.rose.manager.CommandManager;
 import cn.snowflake.rose.manager.FontManager;
 import cn.snowflake.rose.manager.ModManager;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.mod.mods.PLAYER.NoSlow;
 import cn.snowflake.rose.mod.mods.RENDER.Chams;
+import cn.snowflake.rose.mod.mods.RENDER.ChestESP;
 import cn.snowflake.rose.mod.mods.RENDER.ViewClip;
 import cn.snowflake.rose.mod.mods.WORLD.NoCommand;
 import cn.snowflake.rose.mod.mods.WORLD.Xray;
@@ -32,6 +30,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.Objects;
 
 public class MinecraftHook {
     public static Rotation serverRotation = new Rotation(0F, 0F);
@@ -51,16 +50,27 @@ public class MinecraftHook {
                 Client.instance.font = true;
         }
     }
-
-    public static void chamsHook1(Object object){
-        if (Chams.c && Chams.canTarget((Entity) object)){
+    public static void chestesphook1(){
+        if (ModManager.getModByName("ChestESP").isEnabled() && ChestESP.mode.isCurrentMode("Model")){
             GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
-            GL11.glPolygonOffset(1.0F, -1000000F);
+            GL11.glPolygonOffset(1.0F, -2000000F);
+        }
+    }
+    public static void chestesphook2(){
+        if (ModManager.getModByName("ChestESP").isEnabled() && ChestESP.mode.isCurrentMode("Model")){
+            GL11.glPolygonOffset(1.0F, 2000000F);
+            GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
+        }
+    }
+    public static void chamsHook1(Object object){
+        if (ModManager.getModByName("Chams").isEnabled() && Chams.canTarget((Entity) object)){
+            GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
+            GL11.glPolygonOffset(1.0F, -2000000F);
         }
     }
     public static void chamsHook2(Object object){
-        if (Chams.c && Chams.canTarget((Entity) object)){
-            GL11.glPolygonOffset(1.0F, 1000000F);
+        if (ModManager.getModByName("Chams").isEnabled() && Chams.canTarget((Entity) object)){
+            GL11.glPolygonOffset(1.0F, 2000000F);
             GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
         }
     }
@@ -84,6 +94,16 @@ public class MinecraftHook {
         EventManager.call(er3);
     }
 
+    public static boolean insideHook(){
+        EventInsideBlock event = new EventInsideBlock();
+        EventManager.call(event);
+        return !event.cancel;
+    }
+    public static boolean pushOutOfBlocksHooks(){
+        EventPushOut event = new EventPushOut();
+        EventManager.call(event);
+        return !event.cancel;
+    }
     public static void Event2D(float r){
         GlStateManager.pushMatrix();
         EventRender2D er = new EventRender2D(r);
@@ -103,6 +123,14 @@ public class MinecraftHook {
     public static boolean isSlow() {
         return Minecraft.getMinecraft().thePlayer.isUsingItem() && !Minecraft.getMinecraft().thePlayer.isRiding();
     }
+
+    public static void eventStepHook1(float stepheight){
+        EventManager.call(new EventStep(EventType.PRE,stepheight));
+    }
+    public static void eventStepHook2(float stepheight){
+        EventManager.call(new EventStep(EventType.POST,stepheight));
+    }
+
     public static void onNoSlowEnable() {
         if (!isSlow()) {
             return;
@@ -123,7 +151,7 @@ public class MinecraftHook {
     }
     //noslow end
     public static boolean isViewClipEnabled() {
-        return ViewClip.x;
+        return Objects.requireNonNull(ModManager.getModByName("ViewClip")).isEnabled();
     }
 
     public static boolean isXrayEnabled() {

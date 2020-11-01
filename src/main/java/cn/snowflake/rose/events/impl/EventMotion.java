@@ -70,6 +70,8 @@ public class EventMotion implements Event, Cancellable
     }
 
     public void setYaw(final float yaw) {
+        Minecraft.getMinecraft().getNetHandler().addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(yaw, Minecraft.getMinecraft().thePlayer.rotationPitch, Minecraft.getMinecraft().thePlayer.onGround));
+
         this.yaw = yaw;
     }
 
@@ -78,6 +80,8 @@ public class EventMotion implements Event, Cancellable
     }
 
     public void setPitch(final float pitch) {
+        Minecraft.getMinecraft().getNetHandler().addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(Minecraft.getMinecraft().thePlayer.rotationYaw, pitch, Minecraft.getMinecraft().thePlayer.onGround));
+
         this.pitch = pitch;
     }
 

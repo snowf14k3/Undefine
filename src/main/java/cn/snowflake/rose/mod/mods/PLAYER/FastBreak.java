@@ -18,17 +18,17 @@ public class FastBreak extends Module {
     public FastBreak() {
         super("FastBreak", Category.PLAYER);
     }
-    private boolean bzs = false;
-    private float bzx = 0.0f;
-    public BlockPos blockPos;
-    public int facing;
+
 
     @EventTarget
     public void OnUpdata(EventUpdate e) {
         this.setDisplayName(""+speed.getValueState());
-        if(JReflectUtility.getCurBlockDamageMP() > speed.getValueState().floatValue()){
+        JReflectUtility.setBlockHitDelay(0);
+
+        if(JReflectUtility.getCurBlockDamageMP() >= speed.getValueState().floatValue()){
+            System.out.println(JReflectUtility.getCurBlockDamageMP()+" !!!");
+
             JReflectUtility.setCurBlockDamageMP(1);
-            JReflectUtility.setBlockHitDelay(0);
         }
     }
 }

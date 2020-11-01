@@ -6,6 +6,7 @@ import cn.snowflake.rose.mod.mods.COMBAT.*;
 import cn.snowflake.rose.mod.mods.MOVEMENT.*;
 import cn.snowflake.rose.mod.mods.PLAYER.*;
 import cn.snowflake.rose.mod.mods.MOVEMENT.Teleport;
+import cn.snowflake.rose.mod.mods.PLAYER.Blink;
 import cn.snowflake.rose.mod.mods.RENDER.*;
 import cn.snowflake.rose.mod.mods.WORLD.*;
 
@@ -22,7 +23,7 @@ public class ModManager {
         addMod(new FastBow());
         addMod(new AntiAim());
         addMod(new TPAura());
-        addMod(new SuperKnockback());
+        //addMod(new SuperKnockback());
         addMod(new Aimbot());
         addMod(new Velocity());
         addMod(new AutoFish());
@@ -33,15 +34,15 @@ public class ModManager {
         addMod(new AirJump());
         addMod(new Fly());
         addMod(new Speed());
-        addMod(new Scaffold());
+//        addMod(new Scaffold());
         addMod(new NoFall());
         addMod(new Jesus());
         addMod(new Step());
         //RENDER
         addMod(new HUD());
-        addMod(new Animation());
+        //addMod(new Animation());
         addMod(new FullBright());
-//        addMod(new ItemESP());
+        addMod(new ItemESP());
         addMod(new ClickGui());
         addMod(new Chams());
         addMod(new ViewClip());
@@ -51,11 +52,14 @@ public class ModManager {
         //PLAYER
         addMod(new NoSlow());
         addMod(new AutoTools());
+        addMod(new Stealer());
         addMod(new FastBreak());
+        addMod(new Freecam());
         addMod(new FastEat());
         addMod(new FastPlace());
         addMod(new FastUse());
         addMod(new InvMove());
+//        addMod(new GhostHand());
         //WORLD
         addMod(new ServerCrasher());
         addMod(new Bot());

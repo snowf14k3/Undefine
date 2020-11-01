@@ -5,6 +5,7 @@ import cn.snowflake.rose.asm.MinecraftHook;
 import cn.snowflake.rose.events.impl.EventFMLChannels;
 import cn.snowflake.rose.events.impl.EventMotion;
 import cn.snowflake.rose.events.impl.EventMove;
+import cn.snowflake.rose.events.impl.EventPushOut;
 import cn.snowflake.rose.mod.mods.PLAYER.NoSlow;
 import cn.snowflake.rose.utils.RotationUtil;
 import com.darkmagician6.eventapi.EventManager;
@@ -29,13 +30,19 @@ import java.util.EnumMap;
 import java.util.List;
 
 public class Test{
-    public double posY;
-    public float yaw;
-    public float pitch;
-    public boolean onGround;
+    boolean sleeping;
 
-    private void test() {
-        EventMotion e =new EventMotion(posY,yaw,pitch,onGround);
-        EventManager.call(e);
+
+    private boolean test(boolean s) {
+        EventPushOut event = new EventPushOut();
+        EventManager.call(event);
+        if (event.cancel) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isEntityInsideOpaqueBlock() {
+        return false;
     }
 }

@@ -3,6 +3,7 @@ package cn.snowflake.rose.mod.mods.COMBAT;
 import cn.snowflake.rose.Client;
 import cn.snowflake.rose.asm.ClassTransformer;
 import cn.snowflake.rose.events.impl.EventMotion;
+import cn.snowflake.rose.events.impl.EventRender2D;
 import cn.snowflake.rose.manager.FriendManager;
 import cn.snowflake.rose.manager.ModManager;
 import cn.snowflake.rose.mod.Category;
@@ -10,6 +11,7 @@ import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.*;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -29,8 +31,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class Aimbot extends Module {
-    public Value<Boolean> SILENT = new Value("Aimbot_Silent", true);
-    public Value<Boolean> AUTO_FIRE = new Value("Aimbot_AutoFire", true);
 
 
     public static Value<Double> range= new Value<Double>("Aimbot_Reach", 10.5D, 3.0D, 65.0D,0.1D);
@@ -68,6 +68,15 @@ public class Aimbot extends Module {
         target = null;
     }
 
+
+    @EventTarget
+    public void on2D(EventRender2D eventRender2D){
+        mc.fontRenderer.drawStringWithShadow(target.getClass().getName() ,
+                100, 90, 16777215); // 测试模式画Entity信息
+         mc.fontRenderer.drawStringWithShadow( target.toString(),
+         100, 100, 16777215); // 测试模式画Entity信息
+    }
+
     @EventTarget
     public void onEvent(EventMotion em) {
         if (em.isPre()) {
@@ -76,20 +85,20 @@ public class Aimbot extends Module {
 
                 if (target != null) {
                     float[] rotations = getEntityRotations(target);
-                    boolean silent = SILENT.getValueState();
-                    if(silent){
-                        mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(rotations[0], rotations[1], mc.thePlayer.onGround));
-                    }else{
+//                    boolean silent = SILENT.getValueState();
+//                    if(silent){
+//                        mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(rotations[0], rotations[1], mc.thePlayer.onGround));
+//                    }else{
                         mc.thePlayer.rotationYaw = rotations[0];
                         mc.thePlayer.rotationPitch = rotations[1];
                     }
-                    if(AUTO_FIRE.getValueState()){
-                        KeyBinding.setKeyBindState(mc.gameSettings.keyBindAttack.getKeyCode(),true);
-//                        KeyBinding.setKeyBindState(mc.gameSettings.keyBindAttack.getKeyCode(),false);
-
-//                        MouseUtil.sendClick(0,true);
-                    }
-                }
+//                    if(AUTO_FIRE.getValueState()){
+//                        KeyBinding.setKeyBindState(mc.gameSettings.keyBindAttack.getKeyCode(),true);
+////                        KeyBinding.setKeyBindState(mc.gameSettings.keyBindAttack.getKeyCode(),false);
+//
+////                        MouseUtil.sendClick(0,true);
+//                    }
+//                }
 
             }
         }
@@ -143,6 +152,9 @@ public class Aimbot extends Module {
         }
 
         if (Client.deci){
+            if (Objects.requireNonNull(JReflectUtility.getCorpse()).isInstance(entity)){
+                return false;
+            }
             if (!Objects.requireNonNull(JReflectUtility.getDeciEntity()).isInstance(entity) && !decientity.getValueState()){
                 return false;
             }
