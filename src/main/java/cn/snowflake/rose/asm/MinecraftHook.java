@@ -47,18 +47,20 @@ public class MinecraftHook {
         }
         if (!Client.instance.font){
                 Client.instance.fontManager = new FontManager();
+                Client.fs = Client.instance.fontManager.simpleton11;
+                Client.fss = Client.instance.fontManager.simpleton10;
                 Client.instance.font = true;
         }
     }
     public static void chestesphook1(){
         if (ModManager.getModByName("ChestESP").isEnabled() && ChestESP.mode.isCurrentMode("Model")){
             GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
-            GL11.glPolygonOffset(1.0F, -2000000F);
+            GL11.glPolygonOffset(1.0F, -1100000F);
         }
     }
     public static void chestesphook2(){
         if (ModManager.getModByName("ChestESP").isEnabled() && ChestESP.mode.isCurrentMode("Model")){
-            GL11.glPolygonOffset(1.0F, 2000000F);
+            GL11.glPolygonOffset(1.0F, 1100000F);
             GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
         }
     }
@@ -78,7 +80,9 @@ public class MinecraftHook {
         EventMotion em = new EventMotion(stage);
         EventManager.call(em);
     }
-
+    public static boolean isNohurtcamEnable(){
+        return ModManager.getModByName("NoHurtcam").isEnabled();
+    }
     ///Client End
     public static void Event3D(){
         GLUProjection projection = GLUProjection.getInstance();
@@ -97,7 +101,7 @@ public class MinecraftHook {
     public static boolean insideHook(){
         EventInsideBlock event = new EventInsideBlock();
         EventManager.call(event);
-        return !event.cancel;
+        return event.cancel;
     }
     public static boolean pushOutOfBlocksHooks(){
         EventPushOut event = new EventPushOut();

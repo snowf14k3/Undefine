@@ -53,8 +53,8 @@ public class Fly extends Module {
             mc.thePlayer.capabilities.isFlying = true;
         }
 
-        if (mc.thePlayer.ticksExisted % 5 == 0) {
-            mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(mc.thePlayer.posX, mc.thePlayer.boundingBox.minY, mc.thePlayer.posY - 0.03125D, mc.thePlayer.posZ, mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch, true));
+        if (antikick.getValueState().booleanValue() ) {
+            mc.thePlayer.motionY -= 0.05D;
         }
 //        handleVanillaKickBypass();
     }

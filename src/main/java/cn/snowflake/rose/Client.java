@@ -6,7 +6,9 @@ import cn.snowflake.rose.manager.FileManager;
 import cn.snowflake.rose.manager.FontManager;
 import cn.snowflake.rose.manager.ModManager;
 import cn.snowflake.rose.mod.mods.WORLD.Xray;
+import cn.snowflake.rose.ui.skeet.SkeetClickGui;
 import cn.snowflake.rose.utils.JReflectUtility;
+import cn.snowflake.rose.utils.UnicodeFontRenderer;
 import cn.snowflake.rose.utils.verify.AntiReflex;
 import cn.snowflake.rose.utils.verify.HWIDUtils;
 import cn.snowflake.rose.utils.verify.ShitUtil;
@@ -20,6 +22,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import org.apache.logging.log4j.LogManager;
 import org.lwjgl.opengl.Display;
+import org.newdawn.slick.AngelCodeFont;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,9 +36,11 @@ import java.util.List;
 public class Client {
     public static String shitname =null;
     public static String name = "Season";
-    public static String version = "0.5";
+    public static String version = "0.6g";
     public static Client instance;
     public static boolean init = false;
+    public static UnicodeFontRenderer fs;
+    public static UnicodeFontRenderer fss;
     private static boolean loaded =false;
     public static boolean canCancle =false;
     public boolean font = false;
@@ -130,6 +135,9 @@ public class Client {
     public static boolean customnpcs = false;
     public static boolean nshowmod = false;// shit of number mob
 
+    public static SkeetClickGui getSkeetClickGui() {
+        return new SkeetClickGui();
+    }
 
 
     @EventTarget

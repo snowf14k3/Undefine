@@ -34,9 +34,7 @@ public class Test{
 
 
     private boolean test(boolean s) {
-        EventPushOut event = new EventPushOut();
-        EventManager.call(event);
-        if (event.cancel) {
+        if (MinecraftHook.insideHook()) {
             return false;
         }
         return true;

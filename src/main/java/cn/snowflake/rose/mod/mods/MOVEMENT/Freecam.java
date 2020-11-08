@@ -77,6 +77,7 @@ public class Freecam extends Module {
         this.mc.thePlayer.motionY = 0.0D;
         if (PlayerUtil.MovementInput()) {
             PlayerUtil.setSpeed(1.0D);
+            mc.thePlayer.motionY -= 0.05D;
         } else {
             this.mc.thePlayer.motionX = this.mc.thePlayer.motionZ = 0.0D;
         }
@@ -102,13 +103,25 @@ public class Freecam extends Module {
 
     @EventTarget
     public void onPacketSend(EventPacket event) {
-        if (event.getType() == EventType.SEND && event.getPacket() instanceof C03PacketPlayer) {
-            C03PacketPlayer packet = (C03PacketPlayer)event.getPacket();
-            JReflectUtility.setField(packet.getClass(),packet,"field_149479_a",this.posX);
-            JReflectUtility.setField(packet.getClass(),packet,"field_149475_d",this.posY);
-            JReflectUtility.setField(packet.getClass(),packet,"field_149478_c",this.posZ);
-            JReflectUtility.setField(packet.getClass(),packet,"field_149473_f",this.rotPitch);
-            JReflectUtility.setField(packet.getClass(),packet,"field_149476_e",this.rotYaw);
+        if (event.getType() == EventType.SEND ) {
+//            if (event.getPacket() instanceof C03PacketPlayer){
+//                C03PacketPlayer packet = (C03PacketPlayer)event.getPacket();
+//                JReflectUtility.setField(packet.getClass(),packet,"field_149479_a",this.posX);
+//                JReflectUtility.setField(packet.getClass(),packet,"field_149475_d",this.posY);
+//                JReflectUtility.setField(packet.getClass(),packet,"field_149478_c",this.posZ);
+//                JReflectUtility.setField(packet.getClass(),packet,"field_149473_f",this.rotPitch);
+//                JReflectUtility.setField(packet.getClass(),packet,"field_149476_e",this.rotYaw);
+//            }else
+            if (event.getPacket() instanceof C03PacketPlayer.C06PacketPlayerPosLook){
+                event.setCancelled(true);
+            }else if (event.getPacket() instanceof C03PacketPlayer.C04PacketPlayerPosition){
+                event.setCancelled(true);
+            }else if (event.getPacket() instanceof C03PacketPlayer.C05PacketPlayerLook){
+                event.setCancelled(true);
+            }else if (event.getPacket() instanceof C03PacketPlayer){
+                event.setCancelled(true);
+            }
+
             //packet.field_149479_a = this.posX;
             //packet.field_149475_d = this.posY;
             //packet.field_149478_c = this.posZ;

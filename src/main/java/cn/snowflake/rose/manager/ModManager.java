@@ -36,13 +36,14 @@ public class ModManager {
         addMod(new Speed());
 //        addMod(new Scaffold());
         addMod(new NoFall());
-        addMod(new Jesus());
+//        addMod(new Jesus());
         addMod(new Step());
         //RENDER
         addMod(new HUD());
+        addMod(new NoHurtcam());
         //addMod(new Animation());
         addMod(new FullBright());
-        addMod(new ItemESP());
+//        addMod(new ItemESP());
         addMod(new ClickGui());
         addMod(new Chams());
         addMod(new ViewClip());

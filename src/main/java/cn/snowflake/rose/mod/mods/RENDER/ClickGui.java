@@ -1,5 +1,6 @@
 package cn.snowflake.rose.mod.mods.RENDER;
 
+import cn.snowflake.rose.Client;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.ui.CSGOGUI;
@@ -17,7 +18,7 @@ public class ClickGui extends Module {
         super("ClickGui", Category.RENDER);
         this.setKey(Keyboard.KEY_RSHIFT);
         this.mode.mode.add("CSGO");
-//		this.mode.mode.add("Hero");
+//		this.mode.mode.add("Skeet");
 
     }
     @Override
@@ -25,6 +26,9 @@ public class ClickGui extends Module {
         if(this.mode.isCurrentMode("CSGO")) {
             Minecraft.getMinecraft().displayGuiScreen(new CSGOGUI());
         }
+//        if(this.mode.isCurrentMode("Skeet")) {
+//            Minecraft.getMinecraft().displayGuiScreen(Client.getSkeetClickGui());
+//        }
         set(false);
     }
 

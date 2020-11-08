@@ -128,7 +128,7 @@ public class HUD extends Module {
         ArrayList<Module> mods = new ArrayList<Module>(Client.instance.modManager.getModList());
         ScaledResolution sr = new ScaledResolution(mc,mc.displayWidth,mc.displayHeight);
 //        FontRenderer font = this.font;
-        UnicodeFontRenderer font = Client.instance.fontManager.simpleton15;
+        UnicodeFontRenderer font = Client.instance.fontManager.simpleton18;
 
         mods.sort(Comparator.comparingDouble(m -> - font.getStringWidth(m.getName() + (m.getdisplayName() == null ? "" : m.getdisplayName()))));
         int color = -1;

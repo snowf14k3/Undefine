@@ -32,7 +32,54 @@ public enum	 RenderUtil {
         float b = ((float) 1 / 255) * c.getBlue();
         return new Color(r, g, b, alpha).getRGB();
     }
+    public static void drawGradientSideways(double left, double top, double right, double bottom, int col1, int col2) {
+        float f = (col1 >> 24 & 0xFF) / 255.0F;
+        float f1 = (col1 >> 16 & 0xFF) / 255.0F;
+        float f2 = (col1 >> 8 & 0xFF) / 255.0F;
+        float f3 = (col1 & 0xFF) / 255.0F;
 
+        float f4 = (col2 >> 24 & 0xFF) / 255.0F;
+        float f5 = (col2 >> 16 & 0xFF) / 255.0F;
+        float f6 = (col2 >> 8 & 0xFF) / 255.0F;
+        float f7 = (col2 & 0xFF) / 255.0F;
+        GL11.glPushMatrix();
+        GL11.glEnable(3042);
+        GL11.glDisable(3553);
+        GL11.glBlendFunc(770, 771);
+        GL11.glEnable(2848);
+        GL11.glShadeModel(7425);
+
+        GL11.glPushMatrix();
+        GL11.glBegin(7);
+        GL11.glColor4f(f1, f2, f3, f);
+        GL11.glVertex2d(left, top);
+        GL11.glVertex2d(left, bottom);
+
+        GL11.glColor4f(f5, f6, f7, f4);
+        GL11.glVertex2d(right, bottom);
+        GL11.glVertex2d(right, top);
+        GL11.glEnd();
+        GL11.glPopMatrix();
+
+        GL11.glEnable(3553);
+        GL11.glDisable(3042);
+        GL11.glDisable(2848);
+        GL11.glShadeModel(7424);
+        GL11.glColor4d(255, 255, 255, 255);
+        GL11.glPopMatrix();
+    }
+    public static void rectangleBordered(double x, double y, double x1, double y1, double width, int internalColor, int borderColor) {
+        rectangle(x + width, y + width, x1 - width, y1 - width, internalColor);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        rectangle(x + width, y, x1 - width, y + width, borderColor);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        rectangle(x, y, x + width, y1, borderColor);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        rectangle(x1 - width, y, x1, y1, borderColor);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        rectangle(x + width, y1 - width, x1 - width, y1, borderColor);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+    }
     public static void drawEntityOnScreen(int p_147046_0_, int p_147046_1_, int p_147046_2_, float p_147046_3_, float p_147046_4_, EntityLivingBase player) {
         GL11.glEnable(2903);
         GL11.glPushMatrix();

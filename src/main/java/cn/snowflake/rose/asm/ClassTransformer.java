@@ -148,14 +148,14 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 
 	private void transformEntityPlayer(ClassNode classNode, MethodNode methodNode) {
 		if (methodNode.name.equalsIgnoreCase("isEntityInsideOpaqueBlock") || methodNode.name.equalsIgnoreCase("func_70094_T")){
-			AbstractInsnNode insnNode = ASMUtil.findMethodInsn(methodNode,INVOKESPECIAL, "net/minecraft/entity/EntityLivingBase", runtimeDeobfuscationEnabled ? "func_70094_T" : "isEntityInsideOpaqueBlock", "()Z");
-			if (insnNode != null){
-				System.out.println(insnNode);
 				InsnList insnList = new InsnList();
 				insnList.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(MinecraftHook.class), "insideHook", "()Z", false));
-				insnList.add(new JumpInsnNode(IFNE, ((JumpInsnNode) insnNode.getPrevious().getPrevious()).label));
+				LabelNode labelNode = new LabelNode();
+				insnList.add(new JumpInsnNode(IFEQ, labelNode));
+				insnList.add(new InsnNode(ICONST_0));
+				insnList.add(new InsnNode(IRETURN));
+				insnList.add(labelNode);
 				methodNode.instructions.insert(insnList);
-			}
 		}
 	}
 
@@ -355,6 +355,15 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			if (target != null){
 				method.instructions.insert(target, new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(MinecraftHook.class), "Event3D", "()V", false));
 			}
+		}
+		if (method.name.equalsIgnoreCase("hurtCameraEffect") || method.name.equalsIgnoreCase("func_78482_e")){
+			InsnList insnList = new InsnList();
+			insnList.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(MinecraftHook.class), "isNohurtcamEnable", "()Z", false));
+			LabelNode labelNode = new LabelNode();
+			insnList.add(new JumpInsnNode(IFEQ, labelNode));
+			insnList.add(new InsnNode(RETURN));
+			insnList.add(labelNode);
+			method.instructions.insert(insnList);
 		}
 		if ((method.name.equalsIgnoreCase("orientCamera") || method.name.equalsIgnoreCase("func_78467_g")) && method.desc.equalsIgnoreCase("(F)V")){
 			AbstractInsnNode target = ASMUtil.findMethodInsn(method, INVOKEVIRTUAL,"net/minecraft/util/Vec3", runtimeDeobfuscationEnabled ?"func_72438_d" : "distanceTo","(Lnet/minecraft/util/Vec3;)D");

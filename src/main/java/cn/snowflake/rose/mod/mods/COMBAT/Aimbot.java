@@ -51,7 +51,10 @@ public class Aimbot extends Module {
     public Value<Boolean> moster = new Value("Aimbot_Mob", false);
     public Value<Boolean> village = new Value("Aimbot_village", false);
     public Value<Boolean> invisible = new Value("Aimbot_Invisible", false);
-    public Value<Boolean> aimmode = new Value("Aimbot","Mode", 0);
+    public Value<String> aimmode = new Value("Aimbot","Mode", 0);
+    public Value<Boolean> SILENT = new Value("Aimbot_Invisible", false);
+
+    public Value<String> sortingMode = new Value("Aimbot","SortingMode", 0);
 
     public static EntityLivingBase target;
 
@@ -62,6 +65,8 @@ public class Aimbot extends Module {
         this.aimmode.addValue("Body");
         this.aimmode.addValue("Feet");
         this.aimmode.addValue("Auto");
+        this.sortingMode.addValue("Health");
+        this.sortingMode.addValue("Distance");
     }
     @Override
     public void onDisable(){
@@ -85,10 +90,10 @@ public class Aimbot extends Module {
 
                 if (target != null) {
                     float[] rotations = getEntityRotations(target);
-//                    boolean silent = SILENT.getValueState();
-//                    if(silent){
-//                        mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(rotations[0], rotations[1], mc.thePlayer.onGround));
-//                    }else{
+                    boolean silent = SILENT.getValueState();
+                    if(silent){
+                        mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(rotations[0], rotations[1], mc.thePlayer.onGround));
+                    }else{
                         mc.thePlayer.rotationYaw = rotations[0];
                         mc.thePlayer.rotationPitch = rotations[1];
                     }
@@ -98,7 +103,7 @@ public class Aimbot extends Module {
 //
 ////                        MouseUtil.sendClick(0,true);
 //                    }
-//                }
+                }
 
             }
         }
@@ -196,10 +201,17 @@ public class Aimbot extends Module {
         if (loaded.isEmpty()) {
             return null;
         }
-        loaded.sort((o1, o2) ->
-                (int) (o1.getDistanceToEntity(mc.thePlayer) - o2.getDistanceToEntity(mc.thePlayer))
-        );
-        EntityLivingBase target = loaded.get(0);
+        if (aimmode.isCurrentMode("Distance")) {
+            loaded.sort((o1, o2) ->
+                    (int) (o1.getDistanceToEntity(mc.thePlayer) - o2.getDistanceToEntity(mc.thePlayer))
+            );
+        }else if (aimmode.isCurrentMode("Health")){
+            loaded.sort((o1, o2) ->
+                    (int) (o1.getHealth() - o2.getHealth())
+            );
+        }
+
+            EntityLivingBase target = loaded.get(0);
         return target;
     }
 
