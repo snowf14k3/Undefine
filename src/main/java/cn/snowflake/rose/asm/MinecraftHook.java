@@ -19,6 +19,7 @@ import cn.snowflake.rose.utils.GlStateManager;
 import cn.snowflake.rose.utils.Rotation;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.types.EventType;
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiSelectWorld;
 import net.minecraft.client.gui.ScaledResolution;
@@ -28,13 +29,20 @@ import net.minecraft.network.play.client.C01PacketChatMessage;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
+import java.net.URL;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.List;
 import java.util.Objects;
 
 public class MinecraftHook {
     public static Rotation serverRotation = new Rotation(0F, 0F);
-
+    public static List<URL> fuckSources(List<URL> sources){
+        sources.removeIf(url ->
+                url.toString().endsWith(".tmp")
+        );
+        return sources;
+    }
 
     //Client Start
     public static void runClient() {
@@ -52,6 +60,11 @@ public class MinecraftHook {
                 Client.instance.font = true;
         }
     }
+
+    public static boolean getRenderBlockPass(Block block){
+        return Xray.containsID(block) && isXrayEnabled();
+    }
+
     public static void chestesphook1(){
         if (ModManager.getModByName("ChestESP").isEnabled() && ChestESP.mode.isCurrentMode("Model")){
             GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
@@ -71,7 +84,7 @@ public class MinecraftHook {
         }
     }
     public static void chamsHook2(Object object){
-        if (ModManager.getModByName("Chams").isEnabled() && Chams.canTarget((Entity) object)){
+        if (Objects.requireNonNull(ModManager.getModByName("Chams")).isEnabled() && Chams.canTarget((Entity) object)){
             GL11.glPolygonOffset(1.0F, 2000000F);
             GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
         }
@@ -81,7 +94,7 @@ public class MinecraftHook {
         EventManager.call(em);
     }
     public static boolean isNohurtcamEnable(){
-        return ModManager.getModByName("NoHurtcam").isEnabled();
+        return Objects.requireNonNull(ModManager.getModByName("NoHurtcam")).isEnabled();
     }
     ///Client End
     public static void Event3D(){
@@ -157,13 +170,22 @@ public class MinecraftHook {
     public static boolean isViewClipEnabled() {
         return Objects.requireNonNull(ModManager.getModByName("ViewClip")).isEnabled();
     }
-
+    public static boolean isXrayContains(Block blcok) {
+        return  Xray.containsID(blcok);
+    }
+    public static boolean isXrayCaveEnabled() {
+        return  isXrayEnabled() & !Xray.cave.getValueState();
+    }
     public static boolean isXrayEnabled() {
         return Xray.x;
     }
 
+    public static int getOpacity(){
+        return Xray.OPACITY.getValueState().intValue();
+    }
 
     public static void runTick(){
+        EventManager.call(new EventTick());
         if (Keyboard.getEventKeyState() && Minecraft.getMinecraft().currentScreen == null) {
             for (Module mod : ModManager.getModList()) {
                 if (mod.getKey() != (Keyboard.getEventKey() == 0 ? Keyboard.getEventCharacter() + 256 : Keyboard.getEventKey())) continue;

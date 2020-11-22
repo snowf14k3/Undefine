@@ -66,7 +66,9 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 				"net.minecraft.entity.Entity",
 				"cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper",
 				"net.minecraft.client.renderer.entity.RendererLivingEntity",
-				"net.minecraft.entity.player.EntityPlayer"
+				"net.minecraft.entity.player.EntityPlayer",
+				"net.minecraft.launchwrapper.LaunchClassLoader",
+				"net.minecraft.client.renderer.Tessellator"
 		};
 		for (int i=0; i<nameArray.length; i++) {
 				classNameSet.add(nameArray[i]);
@@ -136,6 +138,13 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			else if (name.equalsIgnoreCase("net.minecraft.client.renderer.tileentity.RendererLivingEntity")){
 				return this.transformMethods(classByte,this::transformRendererLivingEntity);
 			}
+			 else if (name.equalsIgnoreCase("net.minecraft.launchwrapper.LaunchClassLoader")){
+				 return this.transformMethods(classByte,this::transformLaunchClassLoader);
+			 }
+			 else if (name.equalsIgnoreCase("net.minecraft.client.renderer.Tessellator")){
+				 return this.transformMethods(classByte,this::transformTessellator);
+
+			 }
 //			else if (name.equalsIgnoreCase("net.minecraft.client.model.ModelBiped")){
 //				return this.transformMethods(classByte,this::transformModelBiped);
 //			}
@@ -144,6 +153,33 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			
 		}
 		return classByte;
+	}
+
+	private void transformTessellator(ClassNode classNode, MethodNode methodNode) {
+		if (methodNode.name.equalsIgnoreCase("setColorRGBA") || methodNode.name.equalsIgnoreCase("func_78370_a")){
+			InsnList insnList = new InsnList();
+			insnList.add(new MethodInsnNode(INVOKESTATIC, "cn/snowflake/rose/asm/MinecraftHook", "isXrayEnabled", "()Z", false));
+			LabelNode labelNode = new LabelNode();
+			insnList.add(new JumpInsnNode(IFEQ,labelNode));
+			insnList.add(new MethodInsnNode(INVOKESTATIC, "cn/snowflake/rose/asm/MinecraftHook", "getOpacity", "()I", false));
+			insnList.add(new VarInsnNode(ISTORE,4));
+			insnList.add(labelNode);
+			methodNode.instructions.insert(insnList);
+
+
+		}
+	}
+
+	private void transformLaunchClassLoader(ClassNode classNode, MethodNode methodNode) {
+		if (methodNode.name.equalsIgnoreCase("getSources")) {
+			for (AbstractInsnNode abstractInsnNode : methodNode.instructions.toArray()){
+				if (abstractInsnNode instanceof FieldInsnNode){
+					if (((FieldInsnNode) abstractInsnNode).name.equalsIgnoreCase("sources") && ((FieldInsnNode) abstractInsnNode).desc.equalsIgnoreCase("Ljava/util/List;")) {
+						methodNode.instructions.insert(abstractInsnNode,new MethodInsnNode(INVOKESTATIC, Type.getInternalName(MinecraftHook.class), "fuckSources", "(Ljava/util/List;)Ljava/util/List;", false));
+					}
+				}
+			}
+		}
 	}
 
 	private void transformEntityPlayer(ClassNode classNode, MethodNode methodNode) {
@@ -269,7 +305,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 		if (methodNode.name.equalsIgnoreCase("shouldSideBeRendered") || methodNode.name.equalsIgnoreCase("func_149646_a")){
 			LogManager.getLogger().info(methodNode.name);
 			final InsnList insnList = new InsnList();
-			insnList.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(MinecraftHook.class), "isXrayEnabled", "()Z", false));
+			insnList.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(MinecraftHook.class), "isXrayCaveEnabled", "()Z", false));
 			LabelNode jmp = new LabelNode();
 			insnList.add(new JumpInsnNode(IFEQ,jmp));
 			insnList.add(new FieldInsnNode(GETSTATIC, Type.getInternalName(Xray.class), "block", "Ljava/util/ArrayList;"));
@@ -280,10 +316,37 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			insnList.add(new FrameNode(F_SAME, 0, null, 0, null));
 			methodNode.instructions.insert(insnList);
 		}
-//		if (methodNode.name.equalsIgnoreCase("isCollidable") || methodNode.name.equalsIgnoreCase("func_149703_v")){
-//			final InsnList insnList = new InsnList();
-//			insnList.add(new );
-//		}
+		if (methodNode.name.equalsIgnoreCase("getRenderBlockPass") || methodNode.name.equalsIgnoreCase("func_149701_w")){
+			final InsnList insnList = new InsnList();
+			// if (MinecraftHook.isXrayEnabled)
+			insnList.add(new VarInsnNode(ALOAD,0));// == this
+			insnList.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(MinecraftHook.class), "getRenderBlockPass", "(Lnet/minecraft/block/Block;)Z", false));
+			LabelNode jmp = new LabelNode();
+			insnList.add(new JumpInsnNode(IFEQ,jmp));
+			insnList.add(new InsnNode(ICONST_0));
+			insnList.add(new InsnNode(IRETURN));
+			insnList.add(jmp);
+
+			insnList.add(new VarInsnNode(ALOAD,0));// == this
+			insnList.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(MinecraftHook.class), "getRenderBlockPass", "(Lnet/minecraft/block/Block;)Z", false));
+			LabelNode jmp1 = new LabelNode();
+			insnList.add(new JumpInsnNode(IFNE,jmp1));
+			insnList.add(new InsnNode(ICONST_1));
+			insnList.add(new InsnNode(IRETURN));
+			insnList.add(jmp1);
+
+			methodNode.instructions.insert(insnList);
+
+//			if (MinecraftHook.isXrayEnabled()){
+//				if (Xray.block.contains(this)){
+//					return 1;
+//				}else {
+//					return 0;
+//				}
+//				return 0;
+//			}
+
+		}
 	}
 	//transformNetworkManager start
 	private void transformNetworkManager(ClassNode classNode, MethodNode methodNode) {

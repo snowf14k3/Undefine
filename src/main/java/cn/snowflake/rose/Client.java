@@ -1,6 +1,8 @@
 package cn.snowflake.rose;
 
 import cn.snowflake.rose.events.impl.EventFMLChannels;
+import cn.snowflake.rose.events.impl.EventTick;
+import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.manager.CommandManager;
 import cn.snowflake.rose.manager.FileManager;
 import cn.snowflake.rose.manager.FontManager;
@@ -20,23 +22,33 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.launchwrapper.LaunchClassLoader;
 import org.apache.logging.log4j.LogManager;
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.AngelCodeFont;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
+import java.math.BigInteger;
+import java.net.URL;
+import java.net.UnknownServiceException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.*;
 import java.util.List;
 
 public class Client {
     public static String shitname =null;
     public static String name = "Season";
-    public static String version = "0.6g";
+    public static String version = "0.7fix";
     public static Client instance;
     public static boolean init = false;
     public static UnicodeFontRenderer fs;
@@ -54,6 +66,7 @@ public class Client {
     public Client(){
         EventManager.register(this);
         username = HWIDUtils.getUserName();
+        DEBUG = username.equalsIgnoreCase("SnowFlake");
         this.init = true;
         instance = this;
         if (!(HWIDUtils.version.contains(Client.version) && ShitUtil.contains(HWIDUtils.version,Client.version)) ){
@@ -100,6 +113,7 @@ public class Client {
                         Xray.block.add(block);
                     }
                 }
+                inGameList = checkFile();
 
                 loaded = true;
 
@@ -134,11 +148,69 @@ public class Client {
 
     public static boolean customnpcs = false;
     public static boolean nshowmod = false;// shit of number mob
+    public static boolean DEBUG = false;
 
     public static SkeetClickGui getSkeetClickGui() {
         return new SkeetClickGui();
     }
 
+    public static Set<String> checkFile() {
+        Set<String> fileHash = new HashSet<>();
+        LaunchClassLoader lwClassloader = (LaunchClassLoader) Client.class.getClassLoader();
+        for (URL source : lwClassloader.getSources()) {
+            String hash = getFileHash(source);
+            if (DEBUG){
+                LogManager.getLogger().info("loaded jar : "+source
+                        + "hash " + hash);
+            }
+            if (hash != null) fileHash.add(hash);
+        }
+        return fileHash;
+    }
+    private static String getFileHash(URL url) {
+        String fileName = new File(url.getFile()).getName();
+        try {
+            try (InputStream in = url.openStream()) {
+                return calcHash(in) + "\0" + fileName;
+            }
+        } catch (UnknownServiceException e) {
+            return null;
+        } catch (IOException e) {
+            System.out.println(e.toString());
+            return "0000000000000000000000000000000000000000\0" + (fileName.isEmpty() ? "unknown" : fileName);
+        }
+    }
+
+    public byte salt = 0;
+
+    private static String calcHash(InputStream in) throws IOException {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA1");
+
+            final byte[] buffer = new byte[4096];
+            int read = in.read(buffer, 0, 4096);
+
+            while (read > -1) {
+                md.update(buffer, 0, read);
+                read = in.read(buffer, 0, 4096);
+            }
+
+            byte[] digest = md.digest();
+            return String.format("%0" + (digest.length << 1) + "x", new BigInteger(1, digest)).toUpperCase();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    @EventTarget
+    public void onupdate(EventTick e){
+        if (Minecraft.getMinecraft().thePlayer == null && Minecraft.getMinecraft().theWorld == null){
+            Objects.requireNonNull(ModManager.getModByName("ServerCrasher")).set(false);
+            Objects.requireNonNull(ModManager.getModByName("Aura")).set(false);
+            Objects.requireNonNull(ModManager.getModByName("TPAura")).set(false);
+        }
+    }
 
     @EventTarget
     public void onFml(EventFMLChannels eventFMLChannels){
@@ -159,16 +231,60 @@ public class Client {
 //            } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
 //            }
 //        }
-        //====================================================================================================================================
+        int catversion =2;
+
+//        if (eventFMLChannels.iMessage.getClass().toString().contains("CPacketHelloReply")){// get shit of message
+//            eventFMLChannels.setCancelled(true);
+//            try {
+//                Field fsalt = eventFMLChannels.iMessage.getClass().getDeclaredField("salt");
+//                fsalt.setAccessible(true);
+//                Field fversion = eventFMLChannels.iMessage.getClass().getDeclaredField("version");
+//                fversion.setAccessible(true);
+//                salt = fsalt.getByte(eventFMLChannels.iMessage);
+//                catversion = fversion.getInt(eventFMLChannels.iMessage);
+//                if (DEBUG){
+//                    System.out.println("反作弊版本 : "+catversion + " salt值: " + salt);
+//                }
+//            } catch (NoSuchFieldException | IllegalAccessException e) {
+//                e.printStackTrace();
+//            }
+//        }
         if (eventFMLChannels.iMessage.getClass().toString().contains("CPacketInjectDetect")){// 1.2.7 以下猫反
             eventFMLChannels.setCancelled(true); //     拦截检测注入包
             List<String> list = new ArrayList();
             try {
                 eventFMLChannels.sendToServer(eventFMLChannels.iMessage.getClass().getDeclaredConstructor(List.class).newInstance(list));//发送无参packet
+                if (DEBUG){
+                    LogManager.getLogger().info("拦截成功注入检测包,已发送为无注入class");
+                }
             } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
                 e.printStackTrace();
             }
         }
+
+        if (eventFMLChannels.iMessage.getClass().toString().contains("CPacketFileHash")){
+            eventFMLChannels.setCancelled(true);
+            try {
+                Field field = eventFMLChannels.iMessage.getClass().getDeclaredField("salt");
+                field.setAccessible(true);
+                try {
+                    eventFMLChannels.sendToServer(eventFMLChannels.iMessage.getClass().getDeclaredConstructor(List.class,byte.class).newInstance(new ArrayList<String>(inGameList),field.getByte(eventFMLChannels.iMessage)));
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+                if (DEBUG){
+                    LogManager.getLogger().info("修改成功mods检测包,已设置为无异常列表");
+                }
+            } catch (NoSuchFieldException | IllegalAccessException | NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+        }
+
+
     }
+
+    public Set<String> inGameList;
 
 }

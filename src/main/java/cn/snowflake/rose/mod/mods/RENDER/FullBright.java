@@ -15,7 +15,7 @@ public class FullBright extends Module {
 
     @EventTarget
     public void onUpdate(EventUpdate e){
-        mc.thePlayer.addPotionEffect(new PotionEffect(Potion.nightVision.getId(), 5200, 1));
+        mc.thePlayer.addPotionEffect(new PotionEffect(Potion.nightVision.getId(), 5200, 0));
     }
 
     @Override

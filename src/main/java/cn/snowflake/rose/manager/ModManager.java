@@ -53,9 +53,11 @@ public class ModManager {
         //PLAYER
         addMod(new NoSlow());
         addMod(new AutoTools());
+        addMod(new FastConsume());
         addMod(new Stealer());
         addMod(new FastBreak());
         addMod(new Freecam());
+        addMod(new NoWeb());
         addMod(new FastEat());
         addMod(new FastPlace());
         addMod(new FastUse());
