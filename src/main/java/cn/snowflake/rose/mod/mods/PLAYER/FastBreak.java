@@ -9,6 +9,8 @@ import cn.snowflake.rose.utils.JReflectUtility;
 import cn.snowflake.rose.utils.Value;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumFacing;
 
 
@@ -16,7 +18,7 @@ public class FastBreak extends Module {
     public Value<Double> speed = new Value<Double>("FastBreak_Damage",0.8,0.5,0.8,0.1);
 
     public FastBreak() {
-        super("FastBreak", Category.PLAYER);
+        super("FastBreak","Fast Break", Category.PLAYER);
     }
 
 
@@ -26,10 +28,13 @@ public class FastBreak extends Module {
         JReflectUtility.setBlockHitDelay(0);
 
         if(JReflectUtility.getCurBlockDamageMP() >= speed.getValueState().floatValue()){
-            System.out.println(JReflectUtility.getCurBlockDamageMP()+" !!!");
-
             JReflectUtility.setCurBlockDamageMP(1);
+            boolean item = mc.thePlayer.getCurrentEquippedItem() == null;
+            mc.thePlayer.addPotionEffect(new PotionEffect(Potion.digSpeed.getId(), 20, item?1:0));
         }
+    }
+    public void onDisable() {
+        mc.thePlayer.removePotionEffect(Potion.digSpeed.getId());
     }
 }
 

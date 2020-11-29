@@ -25,6 +25,8 @@ public class FileManager {
             this.loadValues();
             this.loadMods();
             this.loadBlocks();
+            this.loadHidden();
+
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -154,6 +156,9 @@ public class FileManager {
                 if (value.isValueDouble) {
                     pw.print(String.valueOf((Object)valueName) + ":d:" + value.getValueState() + "\n");
                     continue;
+                } if (value.isValueString) {
+                    pw.print(String.valueOf((Object)valueName) + ":m:" + value.getText() + "\n");
+                    continue;
                 }
                 if (!value.isValueMode) continue;
                 pw.print(String.valueOf((Object)valueName) + ":s:" + value.getModeTitle() + ":" + value.getCurrentMode() + "\n");
@@ -185,6 +190,10 @@ public class FileManager {
                         value.setValueState((Object)Double.parseDouble((String)split[2]));
                         continue;
                     }
+                    if (value.isValueString && split[1].equalsIgnoreCase("m")) {
+                        value.setText(split[2]);
+                        continue;
+                    }
                     if (!value.isValueMode || !split[1].equalsIgnoreCase("s") || !split[2].equalsIgnoreCase(value.getModeTitle())) continue;
                     value.setCurrentMode(Integer.parseInt((String)split[3]));
                 }
@@ -192,4 +201,38 @@ public class FileManager {
         }
     }
 
+    public void saveHidden() {
+        File f = new File(String.valueOf((Object)this.fileDir) + "/hidden.txt");
+        try {
+            if (!f.exists()) {
+                f.createNewFile();
+            }
+            PrintWriter pw = new PrintWriter(f);
+            for (Module m : ModManager.getModList()) {
+                pw.print(String.valueOf((Object)m.getName()) + ":" + m.isHidden() + "\n");
+            }
+            pw.close();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadHidden() throws IOException {
+        File f = new File(String.valueOf((Object)this.fileDir) + "/hidden.txt");
+        if (!f.exists()) {
+            f.createNewFile();
+        } else {
+            String line;
+            BufferedReader br = new BufferedReader((Reader)new FileReader(f));
+            while ((line = br.readLine()) != null) {
+                if (!line.contains((CharSequence)":")) continue;
+                String[] split = line.split(":");
+                Module m = ModManager.getModByName((String)split[0]);
+                boolean state = Boolean.parseBoolean((String)split[1]);
+                if (m == null) continue;
+                m.setHidden(state);
+            }
+        }
+    }
 }

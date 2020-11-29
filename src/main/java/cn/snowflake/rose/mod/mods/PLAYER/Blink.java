@@ -29,7 +29,7 @@ public class Blink extends Module {
     private ArrayList positions = new ArrayList();
 
     public Blink() {
-        super("Blink", Category.PLAYER);
+        super("Blink","Blink", Category.PLAYER);
     }
 
     public void onEnable() {

@@ -24,7 +24,7 @@ public class Regen extends Module {
     private TimeHelper useTimer = new TimeHelper();
 
     public Regen() {
-        super("Regen", Category.COMBAT);
+        super("Regen","Regen", Category.COMBAT);
     }
     @EventTarget
     public void onMotion(EventMotion event) {

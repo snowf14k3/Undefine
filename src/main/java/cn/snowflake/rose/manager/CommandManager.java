@@ -15,6 +15,9 @@ public class CommandManager {
         add(new CommandWalkTo(new String[]{"to"}));
         add(new CommandXray(new String[]{"xray"}));
         add(new CommandFriend(new String[]{"friend","f"}));
+        add(new CommandHidden(new String[] {"hidden"}));
+        add(new CommandIRC(new String[] {"irc",""}));
+
     }
 
     public void add(Command c) {

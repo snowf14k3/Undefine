@@ -15,7 +15,7 @@ public class ClickGui extends Module {
     public static Value<String> mode = new Value<String>("ClickGui_Mode","Mode",0);
 
     public ClickGui() {
-        super("ClickGui", Category.RENDER);
+        super("ClickGui","Click Gui", Category.RENDER);
         this.setKey(Keyboard.KEY_RSHIFT);
         this.mode.mode.add("CSGO");
 //		this.mode.mode.add("Skeet");

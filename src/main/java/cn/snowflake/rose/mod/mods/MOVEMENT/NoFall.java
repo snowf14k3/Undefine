@@ -15,7 +15,7 @@ public class NoFall extends Module {
     public Value<String> mode = new Value("NoFall_Mode", "Mode", 0);
 
     public NoFall() {
-        super("NoFall", Category.MOVEMENT);
+        super("NoFall","No Fall",  Category.MOVEMENT);
         this.mode.mode.add("onGround");
     }
 

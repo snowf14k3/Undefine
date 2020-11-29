@@ -9,7 +9,9 @@ public class EventRender2D implements Event {
         this.partialTicks = partialTicks;
     }
 
-    public float getPartialTicks() {
-        return partialTicks;
+    public EventRender2D(){
     }
+//    public float getPartialTicks() {
+//        return partialTicks;
+//    }
 }

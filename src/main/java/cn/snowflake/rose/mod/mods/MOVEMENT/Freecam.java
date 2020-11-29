@@ -25,7 +25,7 @@ public class Freecam extends Module {
     private float rotPitch;
 
     public Freecam() {
-        super("Freecam", Category.PLAYER);
+        super("Freecam","Freecam", Category.PLAYER);
     }
 
     public EntityOtherPlayerMP oldentity;
@@ -45,6 +45,7 @@ public class Freecam extends Module {
             this.oldentity.inventoryContainer = mc.thePlayer.inventoryContainer;
             this.oldentity.setPositionAndRotation(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch);
             this.oldentity.rotationYawHead = mc.thePlayer.rotationYawHead;
+            this.oldentity.setHealth(19);
             mc.theWorld.addEntityToWorld(this.oldentity.getEntityId(), this.oldentity);
 
         }

@@ -52,7 +52,7 @@ public class Aura extends Module {
     public Value<Boolean> moster = new Value("Aura_Mob", false);
     public Value<Boolean> village = new Value("Aura_village", false);
     public Value<Boolean> invisible = new Value("Aura_Invisible", false);
-    public Value<Boolean> block = new Value("Aura_AutoBlock", false);
+    public Value<Boolean> block = new Value("Aura_AutoBlock", true);
     public Value<Double> switchdelay= new Value<Double>("Aura_SwitchDelay", 200.0D, 1.0D, 1000.0D,10.0D);
     public static Value<Double> range= new Value<Double>("Aura_Reach", 4.5D, 1.0D, 7.0D,0.1D);
     public Value<Double> cps = new Value<Double>("Aura_CPS", 12.0D, 1.0D, 20.0D, 1.0D);
@@ -63,7 +63,7 @@ public class Aura extends Module {
     public Value<Boolean> customnpcsteam = new Value("Aura_CustomNPCTeam", false);
 
     public Aura() {
-        super("Aura", Category.COMBAT);
+        super("Aura","Aura", Category.COMBAT);
         this.mode.addValue("Single");
         this.mode.addValue("Switch");
     }

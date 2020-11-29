@@ -11,7 +11,7 @@ public class Sprint extends Module {
     private Value<String> mode = new Value("Sprint", "Mode", 1);
 
     public Sprint() {
-        super("Sprint", Category.MOVEMENT);
+        super("Sprint","Sprint", Category.MOVEMENT);
         this.mode.addValue("Single");
         this.mode.addValue("AllDirection");
     }

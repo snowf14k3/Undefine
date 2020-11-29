@@ -13,10 +13,10 @@ import java.util.Random;
 
 public class Stealer extends Module {
     public Stealer() {
-        super("ChestStealer", Category.PLAYER);
+        super("ChestStealer","Chest Stealer", Category.PLAYER);
     }
-    public Value<Double> delay = new Value("Stealer_Delay", 65d, 0d, 200d, 1d);
-    public Value<Boolean> cchest = new Value("Stealer_CloseChest", true);
+    public Value<Double> delay = new Value("ChestStealer_Delay", 65d, 0d, 200d, 1d);
+    public Value<Boolean> cchest = new Value("ChestStealer_CloseChest", true);
     TimeHelper time = new TimeHelper();
 
 

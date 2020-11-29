@@ -18,7 +18,7 @@ public class NoSlow extends Module {
     public Value<String> mode = new Value<>("NoSlow","Mode",0);
 
     public NoSlow() {
-        super("NoSlow", Category.PLAYER);
+        super("NoSlow","No Slow", Category.PLAYER);
         this.mode.addValue("Normal");
         this.mode.addValue("NCP");
         this.mode.addValue("AAC");

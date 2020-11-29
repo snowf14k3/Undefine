@@ -8,7 +8,7 @@ public class ViewClip extends Module
     public static boolean x = false;
 
     public ViewClip() {
-        super("ViewClip", Category.RENDER);
+        super("ViewClip","View Clip", Category.RENDER);
     }
 
     @Override

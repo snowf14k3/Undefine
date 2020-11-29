@@ -29,7 +29,7 @@ public class MineBot extends Module {
     private WaitTimer skipCheckTimer = new WaitTimer();
 
     public MineBot() {
-        super("MineBot",  Category.WORLD );
+        super("MineBot", "Mine Bot", Category.WORLD );
     }
     private boolean isInventoryFull() {
         int id = 36;

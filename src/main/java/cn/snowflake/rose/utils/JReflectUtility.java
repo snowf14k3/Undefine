@@ -6,6 +6,7 @@ import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Timer;
+import net.minecraft.util.Vec3;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -42,6 +43,29 @@ public class JReflectUtility {
             e.printStackTrace();
             return null;
         }
+    }
+    public static float getRenderPartialTicks(){
+        Field fTimer = null;
+        try {
+            fTimer = mc.getClass().getDeclaredField(
+                    ClassTransformer.runtimeDeobfuscationEnabled ? "field_71428_T" : "timer");
+            fTimer.setAccessible(true);
+        } catch (NoSuchFieldException ev) {
+        }
+        Field frenderPartialTicks = null;
+        try {
+            frenderPartialTicks = Timer.class.getDeclaredField(
+                    ClassTransformer.runtimeDeobfuscationEnabled ? "field_74281_c" : "renderPartialTicks");
+        } catch (NoSuchFieldException v) {
+        }
+
+        float pTicks = 0;
+        try {
+            frenderPartialTicks.setAccessible(true);
+            pTicks = (float) frenderPartialTicks.get(fTimer.get(mc));
+        } catch (IllegalAccessException ev) {
+        }
+        return pTicks;
     }
 
     public static Object getMethodAsObject(Class<?> inClass, Object instance,
@@ -151,6 +175,64 @@ public class JReflectUtility {
     private static final Minecraft mc = Minecraft.getMinecraft();
 
 
+    public static void orientCamera(float renderPartialTicks){
+        try {
+            mc.entityRenderer.getClass().getDeclaredMethod(ClassTransformer.runtimeDeobfuscationEnabled ? "func_78467_g" : "orientCamera",float.class).setAccessible(true);
+            mc.entityRenderer.getClass().getDeclaredMethod(ClassTransformer.runtimeDeobfuscationEnabled ? "func_78467_g" : "orientCamera",float.class).invoke(mc.entityRenderer,renderPartialTicks);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+    }
+    public static AxisAlignedBB newInstanceAxisAlignedBB(double x, double y, double z){
+        Class<AxisAlignedBB> clazz = null;
+        try {
+            clazz = (Class<AxisAlignedBB>) Class.forName("net.minecraft.util.AxisAlignedBB");
+        } catch (ClassNotFoundException e) {
+        }
+        Constructor aabb = null;
+        try {
+            aabb = clazz.getDeclaredConstructor(double.class,double.class,double.class,double.class,double.class,double.class);
+        } catch (NoSuchMethodException e) {
+        }
+        aabb.setAccessible(true);
+        try {
+            return (AxisAlignedBB) aabb.newInstance(x,y,z);
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public static Vec3 newInstanceVec3(double x, double y, double z){
+        Class<Vec3> clazz = null;
+        try {
+            clazz = (Class<Vec3>) Class.forName("net.minecraft.util.Vec3");
+        } catch (ClassNotFoundException e) {
+        }
+        Constructor vec3 = null;
+        try {
+            vec3 = clazz.getDeclaredConstructor(double.class,double.class,double.class);
+        } catch (NoSuchMethodException e) {
+        }
+        vec3.setAccessible(true);
+        try {
+            return (Vec3) vec3.newInstance(x,y,z);
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public static void setRightClickDelayTimer(int i) {
       try{
@@ -187,32 +269,6 @@ public class JReflectUtility {
         return null;
     }
 
-    public static float getRenderPartialTicks(){
-        Field fTimer = null;
-        try {
-            fTimer = mc.getClass().getDeclaredField(
-                    ClassTransformer.runtimeDeobfuscationEnabled ? "field_71428_T" : "timer");
-            fTimer.setAccessible(true);
-        } catch (NoSuchFieldException ev) {
-            return 0;
-        }
-        Field frenderPartialTicks = null;
-        try {
-            frenderPartialTicks = Timer.class.getDeclaredField(
-                    ClassTransformer.runtimeDeobfuscationEnabled ? "field_74281_c" : "renderPartialTicks");
-        } catch (NoSuchFieldException v) {
-            return 0;
-        }
-
-        float pTicks = 0;
-        try {
-            frenderPartialTicks.setAccessible(true);
-            pTicks = (float) frenderPartialTicks.get(fTimer.get(mc));
-        } catch (IllegalAccessException ev) {
-            return 0;
-        }
-        return pTicks;
-    }
 
     public static Class<?>[] getInterfaces(Object clazz){
         Class<?> c = clazz.getClass();

@@ -12,7 +12,7 @@ import net.minecraft.network.play.server.S27PacketExplosion;
 public class Velocity extends Module {
 
     public Velocity() {
-        super("Velocity", Category.COMBAT);
+        super("Velocity", "Velocity",Category.COMBAT);
     }
 
     @EventTarget
@@ -23,6 +23,9 @@ public class Velocity extends Module {
             if (event.getPacket() instanceof S27PacketExplosion)
                 event.setCancelled(true);
         }
+        setDisplayName("0% 0%");
     }
+
+
 
 }

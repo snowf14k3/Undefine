@@ -20,7 +20,7 @@ public class FastConsume extends Module {
     private Random random = new Random();
 
     public FastConsume() {
-        super("FastConsume", Category.WORLD);
+        super("FastConsume","FastConsume", Category.PLAYER);
         this.mode.mode.add("AAC");
         this.mode.mode.add("NCP");
         this.mode.mode.add("Vanilla");

@@ -18,7 +18,7 @@ import net.minecraft.network.play.client.C0APacketAnimation;
  */
 public class ArmorBreaker extends Module {
     public ArmorBreaker() {
-        super("ArmorBreaker", Category.COMBAT);
+        super("ArmorBreaker","Armor Breaker", Category.COMBAT);
     }
     TimeHelper time = new TimeHelper();
 

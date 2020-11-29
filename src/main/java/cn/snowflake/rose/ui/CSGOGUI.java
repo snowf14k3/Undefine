@@ -63,55 +63,55 @@ public class CSGOGUI extends GuiScreen{
             Module mod = (Module) getModsInCategory(Category.values()[selectCategory]).get(i);
             for (Value value : Value.list){
                 if (mod.openValues){
-                   if (value.getValueName().split("_")[0].equalsIgnoreCase(mod.getName()) && value.isValueString){
-                       if (caninput){
-                           selectedChar =  value.getText().toString().length();
-                           StringBuilder stringBuilder;
-                           String oldString;
-                           String textString = value.getText().toString();
+                    if (value.getValueName().split("_")[0].equalsIgnoreCase(mod.getName()) && value.isValueString){
+                        if (caninput){
+                            selectedChar =  value.getText().toString().length();
+                            StringBuilder stringBuilder;
+                            String oldString;
+                            String textString = value.getText().toString();
 
-                           switch (keyCode){
-                               case Keyboard.KEY_BACK:
-                                   if (!value.getText().toString().isEmpty()){
-                                       oldString = value.getText().toString();
-                                       stringBuilder = new StringBuilder(oldString);
-                                       stringBuilder.charAt(selectedChar - 1);
-                                       stringBuilder.deleteCharAt(selectedChar - 1);
+                            switch (keyCode){
+                                case Keyboard.KEY_BACK:
+                                    if (!value.getText().toString().isEmpty()){
+                                        oldString = value.getText().toString();
+                                        stringBuilder = new StringBuilder(oldString);
+                                        stringBuilder.charAt(selectedChar - 1);
+                                        stringBuilder.deleteCharAt(selectedChar - 1);
 
-                                       textString = ChatAllowedCharacters.filerAllowedCharacters(stringBuilder.toString());
-                                       --selectedChar;
+                                        textString = ChatAllowedCharacters.filerAllowedCharacters(stringBuilder.toString());
+                                        --selectedChar;
 
-                                       if (selectedChar > textString.length()) {
-                                           selectedChar = textString.length();
-                                       }
+                                        if (selectedChar > textString.length()) {
+                                            selectedChar = textString.length();
+                                        }
 
-                                       value.setText(textString);
-                                   }
-                                   break;
-                               case Keyboard.KEY_LEFT:
+                                        value.setText(textString);
+                                    }
+                                    break;
+                                case Keyboard.KEY_LEFT:
 //                                   if (selectedChar > 0) {
 //                                       selectedChar = selectedChar - 1;
 //                                   }
-                                   selectedChar = this.selectedChar - 1;
+                                    selectedChar = this.selectedChar - 1;
 
-                                   break;
-                               case Keyboard.KEY_RIGHT:
-                                   if (selectedChar < textString.length()) {
-                                       ++selectedChar;
-                                   }
-                                   break;
-                           }
-                           width = font2.getStringWidth(textString.substring(0, selectedChar));
+                                    break;
+                                case Keyboard.KEY_RIGHT:
+                                    if (selectedChar < textString.length()) {
+                                        ++selectedChar;
+                                    }
+                                    break;
+                            }
+                            width = font2.getStringWidth(textString.substring(0, selectedChar));
 
-                           if (keyCode != Keyboard.KEY_NONE && ChatAllowedCharacters.isAllowedCharacter(Keyboard.getEventCharacter())){
+                            if (keyCode != Keyboard.KEY_NONE && ChatAllowedCharacters.isAllowedCharacter(Keyboard.getEventCharacter())){
                                 value.setText(value.getText().toString()+Keyboard.getEventCharacter());
                                 Client.instance.fileMgr.saveValues();
                             }
                             if (keyCode == Keyboard.KEY_RETURN){
                                 caninput = false;
                             }
-                       }
-                   }
+                        }
+                    }
                 }
             }
         }
@@ -190,13 +190,13 @@ public class CSGOGUI extends GuiScreen{
         //GLScissor
         RenderUtil.doGlScissor(startX,startY - 8, startX +300, startY + 185);
         //Category
-        RenderUtil.drawRect(startX, startY - 8, startX + 60, startY  + 185,new Color(245,245,245).getRGB());
+        RenderUtil.drawRect(startX, startY - 8, startX + 66, startY  + 185,new Color(64,64,64).getRGB());
         //Mods
-        RenderUtil.drawRect(startX + 60, startY + 5, startX + 150, startY  + 185,new Color(250,250,252).getRGB());
+        RenderUtil.drawRect(startX + 60, startY + 5, startX + 150, startY  + 185,new Color(59, 59, 59).getRGB());
         //mid bar
-        RenderUtil.drawRect(startX + 150, startY + 5, startX + 151, startY  + 185,new Color(245,245,245).getRGB());
-
-        RenderUtil.drawRect(startX + 151, startY + 5, startX + 300, startY  + 185,new Color(250,250,252).getRGB());
+        RenderUtil.drawRect(startX + 150, startY + 5, startX + 151, startY  + 185,new Color(42, 41, 41).getRGB());
+        //value bar
+        RenderUtil.drawRect(startX + 151, startY + 5, startX + 300, startY  + 185,new Color(59, 59, 59).getRGB());
 
         //Category Render Recode by SuChen
         int CY = 5;
@@ -217,7 +217,7 @@ public class CSGOGUI extends GuiScreen{
                     startY + 14+ CY,
                     startX + 60,
                     startY + 32+ CY,
-                    selectCategory == i ? new Color(253, 105, 229).getRGB() : new Color(245,245,245).getRGB());
+                    selectCategory == i ? new Color(62, 62, 62).getRGB() : new Color(83,83,83).getRGB());
 
 
             if(isHovered(startX + 3, startY + 14 + CY, startX + 50, startY + 32+ CY, mouseX, mouseY) ) {
@@ -230,7 +230,7 @@ public class CSGOGUI extends GuiScreen{
                         startY + 14+ CY,
                         startX + 60,
                         startY + 32+ CY,
-                        selectCategory == i ? new Color(253, 105, 229).getRGB() : new Color(255, 138, 235).getRGB());
+                        selectCategory == i ? new Color(62, 62, 62).getRGB() : new Color(154, 154, 151).getRGB());
             }
 
             //Category name
@@ -238,10 +238,14 @@ public class CSGOGUI extends GuiScreen{
                     name.substring(0, 1)+ name.toLowerCase().substring(1, name.length()),
                     startX + 4* 7+1,
                     startY + 20 +CY,
-                    new Color(153,153,169).getRGB());
+                    -1);
             CY += 18;
         }
-
+        Client.instance.fontManager.simpleton20.drawCenteredString(
+                "Season",
+                startX + 4* 7+1,
+                startY,
+                -1);
         //windows title
 //        Client.instance.fontManager.simpleton13.drawCenteredString("ClickGui", startX + 3 * 10, startY - 5, new Color(170, 170, 170).getRGB());
 
@@ -252,7 +256,6 @@ public class CSGOGUI extends GuiScreen{
 	     Client.fontManager.simpleton13.drawCenteredString("Render", startX + 4 * 7, startY + 27, new Color(170, 170, 170).getRGB());
 	     Client.fontManager.simpleton13.drawCenteredString("Player", startX + 4* 7, startY + 37, new Color(170, 170, 170).getRGB());
 	     Client.fontManager.simpleton13.drawCenteredString("World", startX + 4* 7, startY + 47, new Color(170, 170, 170).getRGB());
-
 	     if(isHovered(startX + 3, startY + 7, startX + 50, startY + 15, mouseX, mouseY) && handler.canExcecute()) {
 		 selectCategory = 0;
 	     }else if(isHovered(startX + 3, startY + 15, startX + 50, startY + 23, mouseX, mouseY) && handler.canExcecute()){
@@ -289,11 +292,11 @@ public class CSGOGUI extends GuiScreen{
             }
 
             //mod backgorund
-            RenderUtil.drawRect(x, y - 2+modscrollY, x + 82, y+12 + modscrollY, mod.isEnabled() ? new Color(230,230,230).getRGB() : new Color(246,246,246).getRGB());
+            RenderUtil.drawRect(x, y - 2+modscrollY, x + 82, y+12 + modscrollY, mod.isEnabled() ? new Color(83,83,83).getRGB() : new Color(125, 125, 125).getRGB());
             //mod name
-            font2.drawCenteredString(binding ? "Binding Key" : mod.getName(), x + 40, y + 2 + modscrollY, new Color(153,153,169).getRGB());
+            font2.drawCenteredString(bmod == mod ? binding ? "....." : mod.getName()  : mod.getName() , x + 40, y + 2 + modscrollY, -1);
             // has value
-            font2.drawCenteredString(mod.hasValues() ? mod.openValues ? "-" : "+" : "", x + 76 , y + 2 + modscrollY, new Color(153,153,169).getRGB());
+            font2.drawCenteredString(mod.hasValues() ? mod.openValues ? "-" : "+" : "", x + 76 , y + 2 + modscrollY, -1);
 
             //binding
             if(isHovered(startX + 60, startY + 5, startX + 150, startY  + 185, mouseX, mouseY) && isHovered(x, y - 2 + modscrollY, x + 82, y+12 + modscrollY, mouseX, mouseY) && handlerMid.canExcecute()) {
@@ -349,15 +352,15 @@ public class CSGOGUI extends GuiScreen{
                             GL11.glPushMatrix();
                             GL11.glEnable(3089);
                             RenderUtil.doGlScissor(x + 145, vY + scrollY, x + 230, vY + 8 + scrollY);
-                            RenderUtil.drawRect(x + 145, vY + scrollY, x + 230, vY + 8 + scrollY, caninput ? new Color(158, 200, 234).getRGB() : new Color(115, 130, 140).getRGB());
+                            RenderUtil.drawRect(x + 145, vY + scrollY, x + 230, vY + 8 + scrollY, caninput ? new Color(84, 90, 90).getRGB() : new Color(115, 130, 140).getRGB());
                             font2.drawBoldString(value.getText() + "", x + 147, vY + 1 + scrollY, -1);
-                            font2.drawBoldString("_", x + 144 + width, vY + 1 + scrollY, -1);
+//                            font2.drawBoldString("_", x + 144 + width, vY + 1 + scrollY, -1);
 
                             GL11.glDisable(3089);
                             GL11.glPopMatrix();
 
                             if (isHovered(x + 145, vY + scrollY, x + 230, vY + 8 + scrollY, mouseX, mouseY) && Mouse.isButtonDown(0)) {
-                               this.caninput = true;
+                                this.caninput = true;
                             }
                             if (caninput && this.handlerRight.canExcecute()){
                                 this.caninput = false;
@@ -366,7 +369,7 @@ public class CSGOGUI extends GuiScreen{
                             font2.drawBoldString(StrValue, x + 90, vY + scrollY, new Color(153, 153, 169).getRGB());
                             vY += 15;
                         } else
-                            if (value.isValueDouble) {
+                        if (value.isValueDouble) {
                             this.width = 100;
                             float lastMouseX = -1.0f;
                             final double val = (double) value.getValueState();
@@ -493,7 +496,7 @@ public class CSGOGUI extends GuiScreen{
         }
 
         //top bar
-        RenderUtil.drawRect(startX + 60, startY - 8, startX + 300, startY  + 5,new Color(255,255,255).getRGB());
+        RenderUtil.drawRect(startX + 60, startY - 8, startX + 300, startY  + 5,new Color(75, 74, 74).getRGB());
         GL11.glDisable(3089);
         GL11.glPopMatrix();
     }
@@ -531,11 +534,6 @@ public class CSGOGUI extends GuiScreen{
     }
 
 
-    /**
-     *
-     * @param value ��ֵ
-     * @return �������� ��ֵ
-     */
     public static double round(double value) {
         return (double)Math.round(value * 100.0D) / 100.0D;
     }

@@ -10,7 +10,7 @@ import com.darkmagician6.eventapi.EventTarget;
 public class FastPlace extends Module {
 
     public FastPlace() {
-        super("FastPlace", Category.PLAYER);
+        super("FastPlace","Fast Place", Category.PLAYER);
     }
 
     @EventTarget

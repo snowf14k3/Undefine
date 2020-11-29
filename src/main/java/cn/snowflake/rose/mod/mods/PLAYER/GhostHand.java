@@ -5,6 +5,6 @@ import cn.snowflake.rose.mod.Module;
 
 public class GhostHand extends Module {
     public GhostHand() {
-        super("GhostHand", Category.PLAYER);
+        super("GhostHand", "Ghost Hand", Category.PLAYER);
     }
 }

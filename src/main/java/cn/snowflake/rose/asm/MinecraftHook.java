@@ -7,25 +7,29 @@ import cn.snowflake.rose.manager.CommandManager;
 import cn.snowflake.rose.manager.FontManager;
 import cn.snowflake.rose.manager.ModManager;
 import cn.snowflake.rose.mod.Module;
+import cn.snowflake.rose.mod.mods.MOVEMENT.Jesus;
 import cn.snowflake.rose.mod.mods.PLAYER.NoSlow;
 import cn.snowflake.rose.mod.mods.RENDER.Chams;
 import cn.snowflake.rose.mod.mods.RENDER.ChestESP;
+import cn.snowflake.rose.mod.mods.RENDER.NoHurtcam;
 import cn.snowflake.rose.mod.mods.RENDER.ViewClip;
 import cn.snowflake.rose.mod.mods.WORLD.NoCommand;
 import cn.snowflake.rose.mod.mods.WORLD.Xray;
-import cn.snowflake.rose.utils.ChatUtil;
-import cn.snowflake.rose.utils.GLUProjection;
-import cn.snowflake.rose.utils.GlStateManager;
-import cn.snowflake.rose.utils.Rotation;
+import cn.snowflake.rose.utils.*;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.types.EventType;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiSelectWorld;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.client.C01PacketChatMessage;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
@@ -43,6 +47,15 @@ public class MinecraftHook {
         );
         return sources;
     }
+
+    public static void startSectionHook(String info){
+        if (info.equalsIgnoreCase("hand")){
+            Event3D();
+        }else if (info.equalsIgnoreCase("forgeHudText")){
+            Event2D();
+        }
+    }
+
 
     //Client Start
     public static void runClient() {
@@ -62,29 +75,45 @@ public class MinecraftHook {
     }
 
     public static boolean getRenderBlockPass(Block block){
-        return Xray.containsID(block) && isXrayEnabled();
+        return Xray.containsID(block);
     }
 
-    public static void chestesphook1(){
-        if (ModManager.getModByName("ChestESP").isEnabled() && ChestESP.mode.isCurrentMode("Model")){
-            GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
-            GL11.glPolygonOffset(1.0F, -1100000F);
-        }
+    public static AxisAlignedBB jesusHook(BlockLiquid bf, int x, int y, int z) {
+        return !Jesus.jesus ? null : Minecraft.getMinecraft().thePlayer.isSneaking() ? null : AxisAlignedBB.getBoundingBox((double)x + bf.getBlockBoundsMinX(), (double)y + bf.getBlockBoundsMinY(), (double)z + bf.getBlockBoundsMinZ(), (double)x + bf.getBlockBoundsMaxY(), (double)y + bf.getBlockBoundsMaxY(), (double)z + bf.getBlockBoundsMaxZ());
     }
-    public static void chestesphook2(){
-        if (ModManager.getModByName("ChestESP").isEnabled() && ChestESP.mode.isCurrentMode("Model")){
-            GL11.glPolygonOffset(1.0F, 1100000F);
-            GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
+    public static boolean isInsideBlock() {
+        if(Minecraft.getMinecraft().thePlayer == null) {
+            return false;
+        } else {
+            AxisAlignedBB var1 = Minecraft.getMinecraft().thePlayer.getBoundingBox();
+            boolean var2 = false;
+
+            for(int var3 = MathHelper.floor_double(var1.minX); var3 < MathHelper.floor_double(var1.maxX) + 1; ++var3) {
+                int var4 = (int)var1.minY;
+
+                for(int var5 = MathHelper.floor_double(var1.minZ); var5 < MathHelper.floor_double(var1.maxZ) + 1; ++var5) {
+                    Block var6 = Minecraft.getMinecraft().theWorld.getBlock(var3, var4, var5);
+                    if(var6 != null && !(var6 instanceof BlockAir)) {
+                        if(!(var6 instanceof BlockLiquid)) {
+                            return false;
+                        }
+
+                        var2 = true;
+                    }
+                }
+            }
+
+            return var2;
         }
     }
     public static void chamsHook1(Object object){
-        if (ModManager.getModByName("Chams").isEnabled() && Chams.canTarget((Entity) object)){
+        if (ModManager.getModByName("Chams").isEnabled() && object instanceof EntityPlayer){
             GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
             GL11.glPolygonOffset(1.0F, -2000000F);
         }
     }
     public static void chamsHook2(Object object){
-        if (Objects.requireNonNull(ModManager.getModByName("Chams")).isEnabled() && Chams.canTarget((Entity) object)){
+        if (Objects.requireNonNull(ModManager.getModByName("Chams")).isEnabled() && object instanceof EntityPlayer){
             GL11.glPolygonOffset(1.0F, 2000000F);
             GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
         }
@@ -94,7 +123,7 @@ public class MinecraftHook {
         EventManager.call(em);
     }
     public static boolean isNohurtcamEnable(){
-        return Objects.requireNonNull(ModManager.getModByName("NoHurtcam")).isEnabled();
+        return NoHurtcam.no;
     }
     ///Client End
     public static void Event3D(){
@@ -121,9 +150,9 @@ public class MinecraftHook {
         EventManager.call(event);
         return !event.cancel;
     }
-    public static void Event2D(float r){
+    public static void Event2D(){
         GlStateManager.pushMatrix();
-        EventRender2D er = new EventRender2D(r);
+        EventRender2D er = new EventRender2D();
         EventManager.call(er);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.popMatrix();
@@ -174,7 +203,8 @@ public class MinecraftHook {
         return  Xray.containsID(blcok);
     }
     public static boolean isXrayCaveEnabled() {
-        return  isXrayEnabled() & !Xray.cave.getValueState();
+//        return  isXrayEnabled() & !Xray.cave.getValueState();
+        return false;
     }
     public static boolean isXrayEnabled() {
         return Xray.x;

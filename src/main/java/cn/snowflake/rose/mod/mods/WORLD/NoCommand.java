@@ -6,7 +6,7 @@ import cn.snowflake.rose.mod.Module;
 public class NoCommand extends Module {
     public static boolean n = false;
     public NoCommand() {
-        super("NoCommand", Category.WORLD);
+        super("NoCommand","No Command", Category.WORLD);
     }
 
     @Override

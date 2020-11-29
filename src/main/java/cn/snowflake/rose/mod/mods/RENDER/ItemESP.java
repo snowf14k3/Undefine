@@ -18,7 +18,7 @@ import java.awt.*;
 
 public class ItemESP extends Module {
     public ItemESP() {
-        super("ItemESP",Category.RENDER);
+        super("ItemESP","Item ESP",Category.RENDER);
     }
     public Value<Boolean> nametag = new Value<Boolean>("ItemESP_NameRender", false);
 
@@ -30,9 +30,9 @@ public class ItemESP extends Module {
         this.mc.theWorld.getLoadedEntityList().forEach(entity -> {
             if (entity instanceof EntityItem) {
                 EntityItem ent = (EntityItem)entity;
-                double posX = ent.lastTickPosX + (ent.posX - ent.lastTickPosX) * (double)event.getPartialTicks();
-                double posY = ent.lastTickPosY + (ent.posY - ent.lastTickPosY) * (double)event.getPartialTicks();
-                double posZ = ent.lastTickPosZ + (ent.posZ - ent.lastTickPosZ) * (double)event.getPartialTicks();
+                double posX = ent.lastTickPosX + (ent.posX - ent.lastTickPosX) * (double)JReflectUtility.getRenderPartialTicks();
+                double posY = ent.lastTickPosY + (ent.posY - ent.lastTickPosY) * (double)JReflectUtility.getRenderPartialTicks();
+                double posZ = ent.lastTickPosZ + (ent.posZ - ent.lastTickPosZ) * (double)JReflectUtility.getRenderPartialTicks();
                 AxisAlignedBB bb = ((EntityItem) entity).getBoundingBox().expand(0.1, 0.1, 0.1);
                 Vector3d[] corners = new Vector3d[]{new Vector3d(posX + bb.minX - bb.maxX + (double)(ent.width / 2.0f), posY, posZ + bb.minZ - bb.maxZ + (double)(ent.width / 2.0f)), new Vector3d(posX + bb.maxX - bb.minX - (double)(ent.width / 2.0f), posY, posZ + bb.minZ - bb.maxZ + (double)(ent.width / 2.0f)), new Vector3d(posX + bb.minX - bb.maxX + (double)(ent.width / 2.0f), posY, posZ + bb.maxZ - bb.minZ - (double)(ent.width / 2.0f)), new Vector3d(posX + bb.maxX - bb.minX - (double)(ent.width / 2.0f), posY, posZ + bb.maxZ - bb.minZ - (double)(ent.width / 2.0f)), new Vector3d(posX + bb.minX - bb.maxX + (double)(ent.width / 2.0f), posY + bb.maxY - bb.minY, posZ + bb.minZ - bb.maxZ + (double)(ent.width / 2.0f)), new Vector3d(posX + bb.maxX - bb.minX - (double)(ent.width / 2.0f), posY + bb.maxY - bb.minY, posZ + bb.minZ - bb.maxZ + (double)(ent.width / 2.0f)), new Vector3d(posX + bb.minX - bb.maxX + (double)(ent.width / 2.0f), posY + bb.maxY - bb.minY, posZ + bb.maxZ - bb.minZ - (double)(ent.width / 2.0f)), new Vector3d(posX + bb.maxX - bb.minX - (double)(ent.width / 2.0f), posY + bb.maxY - bb.minY, posZ + bb.maxZ - bb.minZ - (double)(ent.width / 2.0f))};
                 GLUProjection.Projection result = null;

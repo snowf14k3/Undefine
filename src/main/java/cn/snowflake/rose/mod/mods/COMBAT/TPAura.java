@@ -81,7 +81,7 @@ public class TPAura extends Module
     public Value<Boolean> wall = new Value<Boolean>("TPAura_ThroughWall", true);
 
     public TPAura() {
-        super("TPAura", Category.COMBAT);
+        super("TPAura","TP Aura", Category.COMBAT);
         this.dashDistance = 5.0;
         this.Mode = new Value<String>("Tpaura", "Mode", 0);
 //        this.ESP = new Value<Boolean>("Tpaura_ESP", true);

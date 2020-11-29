@@ -10,7 +10,7 @@ import net.minecraft.network.play.client.C03PacketPlayer;
 public class FastEat extends Module
 {
     public FastEat() {
-        super("FastEat", Category.PLAYER);
+        super("FastEat","Fast Eat", Category.PLAYER);
     }
 
     @EventTarget

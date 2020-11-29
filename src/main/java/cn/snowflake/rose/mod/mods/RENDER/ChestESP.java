@@ -31,9 +31,9 @@ public class ChestESP extends Module {
     public Value<Boolean> Lines = new Value<Boolean>("ChestESP_Lines", true);
 
     public ChestESP() {
-        super("ChestESP", Category.RENDER);
-        this.mode.addValue("Model");
+        super("ChestESP", "Chest ESP",Category.RENDER);
         this.mode.addValue("ESP");
+        this.mode.addValue("Model");
     }
 
     @EventTarget
@@ -43,7 +43,7 @@ public class ChestESP extends Module {
 
 
             for (final Object o : mc.theWorld.loadedTileEntityList) {
-            if (o instanceof TileEntityChest) {
+            if (o instanceof TileEntityChest || o instanceof TileEntityEnderChest) {
                 TileEntity tileEntity = (TileEntity) o;
                 float renderX = (float) (tileEntity.xCoord - RenderManager.instance.viewerPosX);
                 float renderY = (float) (tileEntity.yCoord - RenderManager.instance.viewerPosY);

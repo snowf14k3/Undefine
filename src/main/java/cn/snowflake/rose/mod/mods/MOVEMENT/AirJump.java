@@ -10,7 +10,7 @@ import com.darkmagician6.eventapi.EventTarget;
 public class AirJump
         extends Module {
     public AirJump() {
-        super("AirJump", Category.MOVEMENT);
+        super("AirJump","Air Jump", Category.MOVEMENT);
     }
 
     @Override

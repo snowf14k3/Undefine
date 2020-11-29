@@ -18,7 +18,7 @@ public class Criticals extends Module {
     public static Value modes = new Value("Criticals", "Mode", 0);
 
     public Criticals() {
-        super("Criticals", Category.COMBAT);
+        super("Criticals","Criticals", Category.COMBAT);
         modes.addValue("Packet");
     }
 

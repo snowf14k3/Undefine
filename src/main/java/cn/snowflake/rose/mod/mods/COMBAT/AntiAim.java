@@ -23,7 +23,7 @@ public class AntiAim extends Module {
 
 
     public AntiAim() {
-        super("AntiAim", Category.COMBAT);
+        super("AntiAim","Anti Aim", Category.COMBAT);
         this.yaw = new Value<String>("AntiAim", "Yaw", 0);
         this.pitch = new Value<String>("AntiAim", "Pitch", 0);
         this.sneak = new Value<Boolean>("AntiAim_Sneak", true);

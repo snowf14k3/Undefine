@@ -10,11 +10,12 @@ import net.minecraft.potion.PotionEffect;
 public class FullBright extends Module {
 
     public FullBright() {
-        super("FullBright", Category.RENDER);
+        super("FullBright","Full Bright", Category.RENDER);
     }
 
     @EventTarget
     public void onUpdate(EventUpdate e){
+        setDisplayName("Potion");
         mc.thePlayer.addPotionEffect(new PotionEffect(Potion.nightVision.getId(), 5200, 0));
     }
 

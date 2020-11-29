@@ -54,29 +54,9 @@ public class ESP extends Module {
         if(entity.isInvisible() && !invisible.getValueState().booleanValue()) {
             return;
         }
-        Field fTimer = null;
-        try {
-            fTimer = mc.getClass().getDeclaredField(
-                    ClassTransformer.runtimeDeobfuscationEnabled ? "field_71428_T" : "timer");
-            fTimer.setAccessible(true);
-        } catch (NoSuchFieldException ev) {
-        }
-        Field frenderPartialTicks = null;
-        try {
-            frenderPartialTicks = Timer.class.getDeclaredField(
-                    ClassTransformer.runtimeDeobfuscationEnabled ? "field_74281_c" : "renderPartialTicks");
-        } catch (NoSuchFieldException v) {
-        }
-
-        float pTicks = 0;
-        try {
-            frenderPartialTicks.setAccessible(true);
-            pTicks = (float) frenderPartialTicks.get(fTimer.get(mc));
-        } catch (IllegalAccessException ev) {
-        }
-        double x = RenderUtil.interpolate((double)entity.posX, (double)entity.lastTickPosX,pTicks);
-        double y = RenderUtil.interpolate((double)entity.posY, (double)entity.lastTickPosY,pTicks);
-        double z = RenderUtil.interpolate((double)entity.posZ, (double)entity.lastTickPosZ,pTicks);
+        double x = RenderUtil.interpolate((double)entity.posX, (double)entity.lastTickPosX,JReflectUtility.getRenderPartialTicks());
+        double y = RenderUtil.interpolate((double)entity.posY, (double)entity.lastTickPosY,JReflectUtility.getRenderPartialTicks());
+        double z = RenderUtil.interpolate((double)entity.posZ, (double)entity.lastTickPosZ,JReflectUtility.getRenderPartialTicks());
         GL11.glPushMatrix();
         RenderUtil.pre();
         GL11.glLineWidth((float)1.0f);
@@ -113,36 +93,16 @@ public class ESP extends Module {
 
     @EventTarget
     public void onRender(EventRender3D e){
-        Field fTimer = null;
-        try {
-            fTimer = mc.getClass().getDeclaredField(
-                    ClassTransformer.runtimeDeobfuscationEnabled ? "field_71428_T" : "timer");
-            fTimer.setAccessible(true);
-        } catch (NoSuchFieldException ev) {
-        }
-        Field frenderPartialTicks = null;
-        try {
-            frenderPartialTicks = Timer.class.getDeclaredField(
-                    ClassTransformer.runtimeDeobfuscationEnabled ? "field_74281_c" : "renderPartialTicks");
-        } catch (NoSuchFieldException v) {
-        }
-
-        float pTicks = 0;
-        try {
-            frenderPartialTicks.setAccessible(true);
-            pTicks = (float) frenderPartialTicks.get(fTimer.get(mc));
-        } catch (IllegalAccessException ev) {
-        }
         for (Object object : mc.theWorld.loadedEntityList) {
             Entity entity = (Entity) object;
             if (entity instanceof EntityLivingBase) {
                 Entity entity1 = entity;
                 if (canTarget(entity1)) {
-                    double posX = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * pTicks - RenderManager.renderPosX;
-                    double posY = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * pTicks - RenderManager.renderPosY;
-                    double posZ = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * pTicks - RenderManager.renderPosZ;
+                    double posX = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * JReflectUtility.getRenderPartialTicks() - RenderManager.renderPosX;
+                    double posY = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * JReflectUtility.getRenderPartialTicks() - RenderManager.renderPosY;
+                    double posZ = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * JReflectUtility.getRenderPartialTicks() - RenderManager.renderPosZ;
                     if (this.mode.isCurrentMode("Box")){
-                        renderBox(entity, ColorUtil.getClickGUIColora().getRed(),ColorUtil.getClickGUIColora().getGreen(),ColorUtil.getClickGUIColora().getBlue());
+                        renderBox(entity,255,255,255);
                     }
                 }
             }

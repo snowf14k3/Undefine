@@ -5,13 +5,18 @@ import java.lang.instrument.UnmodifiableClassException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.List;
 
 import cn.snowflake.rose.asm.ClassTransformer;
+import cn.snowflake.rose.asm.MinecraftHook;
 import cn.snowflake.rose.utils.JReflectUtility;
 import net.minecraft.launchwrapper.LaunchClassLoader;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
+import sun.misc.URLClassPath;
 
 
 public class Agent {
@@ -19,13 +24,14 @@ public class Agent {
 		try {
 			Agent.instrumentation = instrumentation;
 			loadThisJar();
-			addToMinecraftClassLoader(ClassTransformer.class);
+//			addToMinecraftClassLoader(ClassTransformer.class);
 			forceloadclass();
 			retransform();
 		}catch (Exception e){
 			e.printStackTrace();
 		}
 	}
+
 
 
 	public static Instrumentation instrumentation;

@@ -13,7 +13,7 @@ public class SuperKnockback extends Module {
     private Value<Double> hurtTimeValue = new Value("SuperKnockback_HurtTime", 5d,0d,10d,1d);
 
     public SuperKnockback() {
-        super("SuperKnockback", Category.COMBAT);
+        super("SuperKnockback","Super Knockback", Category.COMBAT);
     }
 
     @EventTarget

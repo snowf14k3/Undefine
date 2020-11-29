@@ -12,13 +12,13 @@ import net.minecraft.block.Block;
 
 public class Xray extends Module {
     public static ArrayList<Block> block = new ArrayList();
-    public static Value<Boolean> cave = new Value<Boolean>("Xray_Cave", false);
+//    public static Value<Boolean> cave = new Value<Boolean>("Xray_Cave", false);
     public static Value<Double> OPACITY = new Value<Double>("Xray_Opacity", 160.0, 0.0, 255.0, 5.0);
     private static int opacity = 160;
     public static List<Integer> blocks = new ArrayList<Integer>();
     public static boolean x = false;
     public Xray() {
-        super("Xray", Category.WORLD);
+        super("Xray","Xray",  Category.WORLD);
         blocks.add(16);
         blocks.add(56);
         blocks.add(14);

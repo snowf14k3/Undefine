@@ -28,6 +28,7 @@ public class HWIDUtils {
     private static final char[] hexArray = new String(new byte[] {78,85,77,66,69,82,95,79,70,95,80,82,79,67,69,83,83,79,82,83}).toCharArray();
     public static String https;
     public static String version;
+    public static String hwid;
 
     public static void main(String[] args){
 
@@ -41,10 +42,10 @@ public class HWIDUtils {
 //        https = HttpUtils.sendGet("h"+"t"+"t"+"p"+":"+"/"+"/"+"w"+"w"+"w"+"."+"s"+"e"+"a"+"s"+"o"+"n"+"c"+"l"+"i"+"e"+"n"+"t"+"."+"c"+"f"+"/"+"r"+"o"+"s"+"e"+"/"+"h"+"w"+"i"+"d"+"."+"t"+"x"+"t");
         version = HttpUtils.sendGet("https://gitee.com/cnsnowflake/seasonclient/raw/master/season/version.txt");
         https = HttpUtils.sendGet("https://gitee.com/cnsnowflake/seasonclient/raw/master/season/hwid.txt");
-
+        hwid = HWIDUtils.getHWID();
         //https://gitee.com/cnsnowflake/seasonclient/raw/master/season/hwid.txt
         str = getSubString(https, getHWID()+" ", "\n");
-        Client.shitname = str;
+        Client.shitname = str.replace("\n","");
         if (!https.contains(HWIDUtils.getHWID()) && !ShitUtil.contains(https,HWIDUtils.getHWID())) {
             try {
                 Class clazz = Class.forName("javax.swing.JOptionPane");

@@ -1,12 +1,14 @@
 package cn.snowflake.rose;
 
 import cn.snowflake.rose.events.impl.EventFMLChannels;
+import cn.snowflake.rose.events.impl.EventPacket;
 import cn.snowflake.rose.events.impl.EventTick;
 import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.manager.CommandManager;
 import cn.snowflake.rose.manager.FileManager;
 import cn.snowflake.rose.manager.FontManager;
 import cn.snowflake.rose.manager.ModManager;
+import cn.snowflake.rose.mod.mods.WORLD.IRC;
 import cn.snowflake.rose.mod.mods.WORLD.Xray;
 import cn.snowflake.rose.ui.skeet.SkeetClickGui;
 import cn.snowflake.rose.utils.JReflectUtility;
@@ -16,6 +18,8 @@ import cn.snowflake.rose.utils.verify.HWIDUtils;
 import cn.snowflake.rose.utils.verify.ShitUtil;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
+import com.darkmagician6.eventapi.types.EventType;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -23,6 +27,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.launchwrapper.LaunchClassLoader;
+import net.minecraft.network.play.client.C17PacketCustomPayload;
 import org.apache.logging.log4j.LogManager;
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.AngelCodeFont;
@@ -48,7 +53,7 @@ import java.util.List;
 public class Client {
     public static String shitname =null;
     public static String name = "Season";
-    public static String version = "0.7fix";
+    public static String version = "0.8";
     public static Client instance;
     public static boolean init = false;
     public static UnicodeFontRenderer fs;
@@ -93,7 +98,6 @@ public class Client {
                 e.printStackTrace();
             }
         }
-
         if (ManagementFactory.getRuntimeMXBean().getBootClassPath().split(";")[0].contains("\\lib\\"))
             if (HWIDUtils.version.contains(Client.version) && ShitUtil.contains(HWIDUtils.version,Client.version) && shitname == null || this.username == null && true && true && !false && !false && HWIDUtils.https.contains(HWIDUtils.getHWID()) &&  ShitUtil.contains(HWIDUtils.https, AntiReflex.getHWID())) {
                 for (int i = 0; i < 9999; i++) {
@@ -134,7 +138,9 @@ public class Client {
                         mw = true;
                     }
                 });
-
+                if (!ModManager.getModByName("IRC").isEnabled()){
+                    ModManager.getModByName("IRC").set(true);
+                }
             }
     }
 
@@ -158,11 +164,10 @@ public class Client {
         Set<String> fileHash = new HashSet<>();
         LaunchClassLoader lwClassloader = (LaunchClassLoader) Client.class.getClassLoader();
         for (URL source : lwClassloader.getSources()) {
-            String hash = getFileHash(source);
             if (DEBUG){
-                LogManager.getLogger().info("loaded jar : "+source
-                        + "hash " + hash);
+                LogManager.getLogger().info("loaded jar : "+source);
             }
+            String hash = getFileHash(source);
             if (hash != null) fileHash.add(hash);
         }
         return fileHash;
@@ -204,7 +209,9 @@ public class Client {
 
 
     @EventTarget
-    public void onupdate(EventTick e){
+    public void onupdate(EventUpdate e) throws NoSuchFieldException, IllegalAccessException {
+        ArrayList<URL> urlArrayList = (ArrayList<URL>) Objects.requireNonNull(Agent.getLaunchClassLoader()).getClass().getDeclaredField("path").get(Agent.getLaunchClassLoader());
+        System.out.println("?????????" + urlArrayList);
         if (Minecraft.getMinecraft().thePlayer == null && Minecraft.getMinecraft().theWorld == null){
             Objects.requireNonNull(ModManager.getModByName("ServerCrasher")).set(false);
             Objects.requireNonNull(ModManager.getModByName("Aura")).set(false);
@@ -249,14 +256,13 @@ public class Client {
 //                e.printStackTrace();
 //            }
 //        }
+
         if (eventFMLChannels.iMessage.getClass().toString().contains("CPacketInjectDetect")){// 1.2.7 以下猫反
             eventFMLChannels.setCancelled(true); //     拦截检测注入包
             List<String> list = new ArrayList();
             try {
                 eventFMLChannels.sendToServer(eventFMLChannels.iMessage.getClass().getDeclaredConstructor(List.class).newInstance(list));//发送无参packet
-                if (DEBUG){
-                    LogManager.getLogger().info("拦截成功注入检测包,已发送为无注入class");
-                }
+                 LogManager.getLogger().info("拦截成功注入检测包,已发送为无注入class");
             } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
                 e.printStackTrace();
             }
@@ -274,9 +280,7 @@ public class Client {
                 } catch (InvocationTargetException e) {
                     e.printStackTrace();
                 }
-                if (DEBUG){
-                    LogManager.getLogger().info("修改成功mods检测包,已设置为无异常列表");
-                }
+                LogManager.getLogger().info("修改成功mods检测包,已设置为无异常列表");
             } catch (NoSuchFieldException | IllegalAccessException | NoSuchMethodException e) {
                 e.printStackTrace();
             }

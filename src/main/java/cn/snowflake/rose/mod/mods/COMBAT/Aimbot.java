@@ -63,7 +63,7 @@ public class Aimbot extends Module {
     public static EntityLivingBase target;
 
     public Aimbot() {
-        super("Aimbot", Category.COMBAT);
+        super("Aimbot","Aim Bot", Category.COMBAT);
         this.aimmode.addValue("Head");
         this.aimmode.addValue("Neck");
         this.aimmode.addValue("Body");
@@ -119,7 +119,7 @@ public class Aimbot extends Module {
     public void ontick(EventTick eventTick){
         if (Keyboard.getEventKeyState()) {
             if (this.isEnabled() && Keyboard.KEY_LCONTROL == (Keyboard.getEventKey() == 0 ? Keyboard.getEventCharacter() + 256 : Keyboard.getEventKey())) {
-
+                System.out.println(Keyboard.getEventKey());
             }
         }
     }

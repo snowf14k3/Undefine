@@ -11,7 +11,7 @@ public class Animation extends Module {
     public static Value<Double> size = new Value<Double>("HitAnimation_Size",1.0d,0.1d,2.0d,0.05D);
 
     public Animation() {
-        super("Animation", Category.RENDER);
+        super("Animation","Animation",  Category.RENDER);
         this.mode.addValue("Jello");
         this.mode.addValue("Meme");
         this.mode.addValue("Swang");

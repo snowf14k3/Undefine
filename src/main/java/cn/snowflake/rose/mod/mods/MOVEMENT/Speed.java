@@ -25,7 +25,7 @@ public class Speed extends Module {
     public int time = 0;
 
     public Speed() {
-        super("Speed", Category.MOVEMENT);
+        super("Speed","Speed",  Category.MOVEMENT);
         mode.mode.add("Bhop");
         mode.addValue("Bhop1");
         mode.addValue("Bhop2");

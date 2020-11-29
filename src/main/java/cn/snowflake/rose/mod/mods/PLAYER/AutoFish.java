@@ -18,7 +18,7 @@ import net.minecraft.network.play.server.S29PacketSoundEffect;
 
 public class AutoFish extends Module {
     public AutoFish() {
-        super("AutoFish", Category.PLAYER);
+        super("AutoFish","Auto Fish", Category.PLAYER);
     }
     public void autoFish(S12PacketEntityVelocity ev) {
 

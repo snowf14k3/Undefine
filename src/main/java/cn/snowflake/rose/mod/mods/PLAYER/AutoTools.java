@@ -17,23 +17,20 @@ import com.darkmagician6.eventapi.types.EventType;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.ItemShears;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.item.ItemTool;
+import net.minecraft.item.*;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 
 public class AutoTools extends Module {
 
     public AutoTools() {
-        super("AutoTools", Category.PLAYER);
+        super("AutoTool","Auto Tool", Category.PLAYER);
     }
 
 
     @EventTarget
     public void onClickBlock(EventPacket e) {
         if (e.getPacket() instanceof C07PacketPlayerDigging){
-            if (!mc.thePlayer.isEating()) {
+            if (!(mc.thePlayer.isEating() || this.mc.thePlayer.inventory.getCurrentItem().getItem() instanceof ItemBow)) {
                 this.bestTool(mc.objectMouseOver.blockX, mc.objectMouseOver.blockY, mc.objectMouseOver.blockZ);
             }
         }

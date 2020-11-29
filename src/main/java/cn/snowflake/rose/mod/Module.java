@@ -15,15 +15,32 @@ public class Module {
     public Minecraft mc = Minecraft.getMinecraft();
     private boolean isEnabled;
     public boolean openValues;
+    private String rendername;
 
     public Module(String name,Category category) {
         this.name = name;
         this.category = category;
+        this.key = -1;
     }
+    public Module(String name,String rendername,Category category) {
+        this.name = name;
+        this.category = category;
+        this.rendername = rendername;
+        this.key = -1;
+    }
+    public boolean hidden ;
 
     public void onDisable() {
     }
-
+    public boolean isHidden() {
+        return hidden;
+    }
+    public String getRenderName() {
+        return rendername;
+    }
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
     public String getName() {
         return name;
     }

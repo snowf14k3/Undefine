@@ -17,6 +17,7 @@ import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntityEnderChest;
 
 import java.util.Objects;
 
@@ -85,8 +86,7 @@ public class Chams extends Module {
         }
         if (entity instanceof EntityVillager && !village.getValueState()) {
             return false;
-        }
-//        if (!(entity instanceof EntityMob || entity instanceof EntityAnimal)
+        }//        if (!(entity instanceof EntityMob || entity instanceof EntityAnimal)
 //                && entity instanceof EntityCreature
 //                && !otherentity.getValueState()) {
 //            return false;

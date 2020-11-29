@@ -11,7 +11,7 @@ import net.minecraft.network.play.client.C07PacketPlayerDigging;
 
 public  class FastBow extends Module {
     public FastBow() {
-        super("FastBow", Category.COMBAT);
+        super("FastBow","Fast Bow",  Category.COMBAT);
     }
 
 

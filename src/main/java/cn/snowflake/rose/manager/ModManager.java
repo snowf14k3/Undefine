@@ -36,28 +36,32 @@ public class ModManager {
         addMod(new Speed());
 //        addMod(new Scaffold());
         addMod(new NoFall());
-//        addMod(new Jesus());
+        addMod(new Jesus());
         addMod(new Step());
         //RENDER
         addMod(new HUD());
         addMod(new NoHurtcam());
         //addMod(new Animation());
         addMod(new FullBright());
-//        addMod(new ItemESP());
+        addMod(new ItemESP());
+        addMod(new Nametag());
         addMod(new ClickGui());
+//        addMod(new Tracer());
         addMod(new Chams());
         addMod(new ViewClip());
+        addMod(new ESP2D());
         addMod(new ChestESP());
         addMod(new BlockOverlay());
         addMod(new ESP());
         //PLAYER
         addMod(new NoSlow());
         addMod(new AutoTools());
-        addMod(new FastConsume());
+//        addMod(new FastConsume());
         addMod(new Stealer());
+        addMod(new AntiEffect());
         addMod(new FastBreak());
         addMod(new Freecam());
-        addMod(new NoWeb());
+//        addMod(new NoWeb());
         addMod(new FastEat());
         addMod(new FastPlace());
         addMod(new FastUse());
@@ -69,7 +73,9 @@ public class ModManager {
         addMod(new Xray());
         addMod(new NoFriend());
         addMod(new MineBot());
+        addMod(new Spammer());
         addMod(new MCF());
+        addMod(new IRC());
         addMod(new NoCommand());
     }
 

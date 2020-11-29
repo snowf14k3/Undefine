@@ -5,6 +5,6 @@ import cn.snowflake.rose.mod.Module;
 
 public class NoFriend extends Module {
     public NoFriend() {
-        super("NoFriend", Category.WORLD);
+        super("NoFriend","No Friend",  Category.WORLD);
     }
 }

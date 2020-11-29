@@ -15,7 +15,7 @@ import java.util.Objects;
 public class InvMove extends Module {
 
     public InvMove() {
-        super("InvMove", Category.PLAYER);
+        super("InvMove","Inv Move", Category.PLAYER);
     }
 
     @EventTarget

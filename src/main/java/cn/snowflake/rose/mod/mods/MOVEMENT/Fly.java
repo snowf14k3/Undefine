@@ -22,7 +22,7 @@ public class Fly extends Module {
     private TimeHelper groundTimer = new TimeHelper();
 
     public Fly() {
-        super("Fly", Category.MOVEMENT);
+        super("Fly","Fly", Category.MOVEMENT);
         this.mode.addValue("Motion");
         this.mode.addValue("Creative");
 
@@ -30,6 +30,7 @@ public class Fly extends Module {
 
     @EventTarget
     public void OnUpdate(EventMotion e) {
+        this.setDisplayName(this.mode.getModeName());
         if (this.mode.isCurrentMode("Motion")) {
             this.mc.thePlayer.motionY = 0.0;
             if (this.mc.gameSettings.keyBindForward.getIsKeyPressed()

@@ -12,7 +12,7 @@ public class FastUse extends Module {
     public boolean canBoost = false;
 
     public FastUse() {
-        super("FastUse", Category.PLAYER);
+        super("FastUse","Fast Use", Category.PLAYER);
     }
 
     @EventTarget

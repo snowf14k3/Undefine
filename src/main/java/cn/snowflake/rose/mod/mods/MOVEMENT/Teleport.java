@@ -27,7 +27,7 @@ public class Teleport
     private int tick = 0;
 
     public Teleport(){
-        super("Teleport", Category.MOVEMENT);
+        super("Teleport","Teleport", Category.MOVEMENT);
         this.mode.mode.add("Vanilla");
         this.useMode.addValue("Right");
     }

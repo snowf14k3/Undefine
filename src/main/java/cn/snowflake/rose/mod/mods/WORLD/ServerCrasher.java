@@ -34,7 +34,7 @@ public class ServerCrasher extends Module {
     double posY = 0.0D;
 
     public ServerCrasher() {
-        super("ServerCrasher", Category.WORLD);
+        super("ServerCrasher","Server Crasher", Category.WORLD);
         this.mode.addValue("C0Animotion");
         this.mode.addValue("C14TabComplete");
         this.mode.addValue("AACnew");

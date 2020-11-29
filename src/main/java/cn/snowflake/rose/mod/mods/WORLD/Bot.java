@@ -31,7 +31,7 @@ public class Bot extends Module {
     private Value<Boolean> esp = new Value("Bot_ESP", true);
     public static AStarUtil astarUtil = new AStarUtil();
     public Bot() {
-        super("Bot", Category.WORLD);
+        super("Bot","Bot", Category.WORLD);
     }
 
     @SubscribeEvent

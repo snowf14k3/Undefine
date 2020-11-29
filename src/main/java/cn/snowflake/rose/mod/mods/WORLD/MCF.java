@@ -11,7 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 
 public class MCF extends Module {
     public MCF() {
-        super("MCF", Category.WORLD);
+        super("MCF","MCF", Category.WORLD);
     }
 
     MouseInputHandler midhandler = new MouseInputHandler(2);
