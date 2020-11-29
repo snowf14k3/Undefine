@@ -44,7 +44,7 @@ public class ModManager {
         //addMod(new Animation());
         addMod(new FullBright());
         addMod(new ItemESP());
-        addMod(new Nametag());
+
         addMod(new ClickGui());
 //        addMod(new Tracer());
         addMod(new Chams());
