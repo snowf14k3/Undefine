@@ -69,7 +69,7 @@ public class IRC extends Module {
     public static void sendIRCMessage(String message,boolean prefix) {
         if(prefix) {
             //TODO 发送信息
-            pw.println(Client.shitname.substring(0,Client.shitname.length() -1 )+ " : " + message);
+            pw.println("#IRC#Msg::"+Client.shitname.substring(0,Client.shitname.length() -1 )+ " : " + message);
         } else {
             pw.println(message);
         }
