@@ -124,17 +124,7 @@ public class Nametag extends Module {
         ItemStack[] stacks = entity.inventory.armorInventory;
         int var28 = entity.inventory.armorInventory.length;
 
-        for(index = 0; index < var28; ++index) {
-            ItemStack var27 = stacks[index];
-            if(var27 != null) {
-                ItemStack itemStack = var27.copy();
-                if(itemStack.hasEffect(0) && (itemStack.getItem() instanceof ItemTool || itemStack.getItem() instanceof ItemArmor)) {
-                    itemStack.stackSize = 1;
-                }
-                this.renderItemStack(itemStack, var20, -35);
-                var20 += 20;
-            }
-        }
+
 
         GL11.glPopMatrix();
         revertAllCaps();
