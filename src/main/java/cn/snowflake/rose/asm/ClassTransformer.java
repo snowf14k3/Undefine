@@ -69,7 +69,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 				"net.minecraft.client.renderer.Tessellator",
 				"net.minecraft.profiler.Profiler",
 				"net.minecraft.client.renderer.tileentity.RendererLivingEntity",
-				"net.minecraft.block.BlockLiquid",
+//				"net.minecraft.block.BlockLiquid",
 		};
 		for (int i=0; i<nameArray.length; i++) {
 				classNameSet.add(nameArray[i]);
@@ -139,9 +139,9 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			else if (name.equalsIgnoreCase("net.minecraft.profiler.Profiler")){
 				return this.transformMethods(classByte,this::transformProfiler);
 			}
-			else if (name.equalsIgnoreCase("net.minecraft.block.BlockLiquid")){
-				 return this.transformMethods(classByte,this::transformBlockLiquid);
-			 }
+//			else if (name.equalsIgnoreCase("net.minecraft.block.BlockLiquid")){
+//				 return this.transformMethods(classByte,this::transformBlockLiquid);
+//			 }
 			 else if (name.equalsIgnoreCase("net.minecraft.client.renderer.tileentity.RendererLivingEntity")){
 				 return this.transformMethods(classByte,this::transformRendererLivingEntity);
 			 }
@@ -152,20 +152,20 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 		return classByte;
 	}
 
-	private void transformBlockLiquid(ClassNode classNode, MethodNode methodNode) {
-		if (methodNode.name.equalsIgnoreCase("getCollisionBoundingBoxFromPool") || methodNode.name.equalsIgnoreCase("func_149668_a")){
-			AbstractInsnNode NULL = ASMUtil.findPattern(methodNode,ACONST_NULL);
-			if (NULL != null){
-				InsnList insnList = new InsnList();
-				insnList.add(new VarInsnNode(ALOAD,0));
-				insnList.add(new VarInsnNode(ILOAD,2));
-				insnList.add(new VarInsnNode(ILOAD,3));
-				insnList.add(new VarInsnNode(ILOAD,4));
-				methodNode.instructions.insertBefore(NULL,insnList);
-				methodNode.instructions.set(NULL,new MethodInsnNode(INVOKESTATIC, "cn/snowflake/rose/asm/MinecraftHook", "jesusHook", "(Lnet/minecraft/block/BlockLiquid;III)Lnet/minecraft/util/AxisAlignedBB;", false));
-			}
-		}
-	}
+//	private void transformBlockLiquid(ClassNode classNode, MethodNode methodNode) {
+//		if (methodNode.name.equalsIgnoreCase("getCollisionBoundingBoxFromPool") || methodNode.name.equalsIgnoreCase("func_149668_a")){
+//			AbstractInsnNode NULL = ASMUtil.findPattern(methodNode,ACONST_NULL);
+//			if (NULL != null){
+//				InsnList insnList = new InsnList();
+//				insnList.add(new VarInsnNode(ALOAD,0));
+//				insnList.add(new VarInsnNode(ILOAD,2));
+//				insnList.add(new VarInsnNode(ILOAD,3));
+//				insnList.add(new VarInsnNode(ILOAD,4));
+//				methodNode.instructions.insertBefore(NULL,insnList);
+//				methodNode.instructions.set(NULL,new MethodInsnNode(INVOKESTATIC, "cn/snowflake/rose/asm/MinecraftHook", "jesusHook", "(Lnet/minecraft/block/BlockLiquid;III)Lnet/minecraft/util/AxisAlignedBB;", false));
+//			}
+//		}
+//	}
 
 	private void transformRendererLivingEntity(ClassNode classNode, MethodNode methodNode) {
 		if (methodNode.name.equalsIgnoreCase("doRender") || methodNode.name.equalsIgnoreCase("func_76986_a")){
