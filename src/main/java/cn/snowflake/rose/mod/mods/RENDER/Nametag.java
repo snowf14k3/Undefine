@@ -44,7 +44,7 @@ public class Nametag extends Module {
                         - RenderManager.renderPosY;
                 double pZ = p.lastTickPosZ + (p.posZ - p.lastTickPosZ) * JReflectUtility.getRenderPartialTicks()
                         - RenderManager.renderPosZ;
-                renderNameTag(p, String.valueOf(p.getDisplayName()) , pX, pY, pZ);
+                renderNameTag(p, String.valueOf(p.getCommandSenderName()) , pX, pY, pZ);
             }
         }
     }

@@ -1,6 +1,8 @@
 package cn.snowflake.rose.utils;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -17,7 +19,17 @@ public class PlayerUtil {
     public static boolean MovementInput() {
         return PlayerUtil.mc.gameSettings.keyBindForward.getIsKeyPressed() || PlayerUtil.mc.gameSettings.keyBindLeft.getIsKeyPressed() || PlayerUtil.mc.gameSettings.keyBindRight.getIsKeyPressed() || PlayerUtil.mc.gameSettings.keyBindBack.getIsKeyPressed();
     }
+    public static String getDisplayName(ItemStack itemstack) {
+        String s = itemstack.getItem().getItemStackDisplayName(itemstack);
+        if (itemstack.stackTagCompound != null && itemstack.stackTagCompound.hasKey("display", 10)) {
+            NBTTagCompound nbttagcompound = itemstack.stackTagCompound.getCompoundTag("display");
+            if (nbttagcompound.hasKey("Name", 8)) {
+                s = nbttagcompound.getString("Name");
+            }
+        }
 
+        return s;
+    }
     public static ArrayList<Vector3f> vanillaTeleportPositions(double tpX, double tpY, double tpZ, double speed) {
         ArrayList<Vector3f> positions = new ArrayList<Vector3f>();
         Minecraft mc = Minecraft.getMinecraft();

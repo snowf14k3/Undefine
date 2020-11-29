@@ -160,7 +160,7 @@ public class ESP2D extends Module {
                     double percent = 1.0D - (double)stack.getItemDamage() / (double)stack.getMaxDamage();
                     if(armor.getValueState().booleanValue()) {
                         RenderUtil.rectangle((double)(endx + 2.0F), (double)(y + var1 - 1.0F), (double)(endx + 4.0F), (double)(y + var1 - 1.0F) - (double)diff1 * percent, Colors.getColor(219,79,237));
-//                        mc.fontRenderer.drawStringWithShadow(stack.getDisplayName() + "", (int)(endx + 7.0F), (int)(y + var1 - 1.0F - diff1 / 2.0F)-mc.fontRenderer.FONT_HEIGHT, -1);
+                        mc.fontRenderer.drawStringWithShadow(PlayerUtil.getDisplayName(stack) + "", (int)(endx + 7.0F), (int)(y + var1 - 1.0F - diff1 / 2.0F)-mc.fontRenderer.FONT_HEIGHT, -1);
                         mc.fontRenderer.drawStringWithShadow(stack.getMaxDamage() - stack.getItemDamage() + "", (int)(endx + 7.0F), (int)(y + var1 - 1.0F - diff1 / 2.0F), -1);
                     }
                 }
@@ -174,7 +174,7 @@ public class ESP2D extends Module {
                     double percent = 1.0D - (double)stack2.getItemDamage() * 1.0D / (double)stack2.getMaxDamage();
                     if(armor.getValueState().booleanValue()) {
                         RenderUtil.rectangle((double)(endx + 2.0F), (double)(y + var1 * 2.0F), (double)(endx + 4.0F), (double)(y + var1 * 2.0F) - (double)diff1 * percent, Colors.getColor(219,79,237));
-//                        mc.fontRenderer.drawStringWithShadow(stack2.getDisplayName() + "", (int)(endx + 7.0F), (int)(y + var1 * 2.0F - diff1 / 2.0F) -mc.fontRenderer.FONT_HEIGHT, -1);
+                      mc.fontRenderer.drawStringWithShadow(PlayerUtil.getDisplayName(stack2)+ "", (int)(endx + 7.0F), (int)(y + var1 * 2.0F - diff1 / 2.0F) -mc.fontRenderer.FONT_HEIGHT, -1);
                         mc.fontRenderer.drawStringWithShadow(stack2.getMaxDamage() - stack2.getItemDamage() + "", (int)(endx + 7.0F), (int)(y + var1 * 2.0F - diff1 / 2.0F), -1);
                     }
                 }
@@ -188,7 +188,7 @@ public class ESP2D extends Module {
                     double percent = 1.0D - (double)stack3.getItemDamage() * 1.0D / (double)stack3.getMaxDamage();
                     if(armor.getValueState().booleanValue()) {
                         RenderUtil.rectangle((double)(endx + 2.0F), (double)(y + var1 * 3.0F), (double)(endx + 4.0F), (double)(y + var1 * 3.0F) - (double)diff1 * percent, Colors.getColor(219,79,237));
-//                        mc.fontRenderer.drawStringWithShadow(stack2.getDisplayName() + "", (int)(endx + 7.0F), (int)(y + var1 * 3.0F - diff1 / 2.0F) - mc.fontRenderer.FONT_HEIGHT, -1);
+                        mc.fontRenderer.drawStringWithShadow(PlayerUtil.getDisplayName(stack3) + "", (int)(endx + 7.0F), (int)(y + var1 * 3.0F - diff1 / 2.0F) - mc.fontRenderer.FONT_HEIGHT, -1);
                         mc.fontRenderer.drawStringWithShadow(stack3.getMaxDamage() - stack3.getItemDamage() + "", (int)(endx + 7.0F), (int)(y + var1 * 3.0F - diff1 / 2.0F), -1);
                     }
                 }
@@ -203,7 +203,7 @@ public class ESP2D extends Module {
                     double percent = 1.0D - (double)stack4.getItemDamage() * 1.0D / (double)stack4.getMaxDamage();
                     if(armor.getValueState().booleanValue()) {
                         RenderUtil.rectangle((double)(endx + 2.0F), (double)(y + var1 * 4.0F - 1.0F), (double)(endx + 4.0F), (double)(y + var1 * 4.0F) - (double)health1 * percent, Colors.getColor(219,79,237));
-//                        mc.fontRenderer.drawStringWithShadow(stack2.getDisplayName() + "", (int)(endx + 7.0F), (int)(y + var1 * 4.0F - health1 / 2.0F)- mc.fontRenderer.FONT_HEIGHT, -1);
+                       mc.fontRenderer.drawStringWithShadow(PlayerUtil.getDisplayName(stack4) + "", (int)(endx + 7.0F), (int)(y + var1 * 4.0F - health1 / 2.0F)- mc.fontRenderer.FONT_HEIGHT, -1);
                         mc.fontRenderer.drawStringWithShadow(stack4.getMaxDamage() - stack4.getItemDamage() + "", (int)(endx + 7.0F), (int)(y + var1 * 4.0F - health1 / 2.0F), -1);
                     }
                 }
@@ -213,7 +213,7 @@ public class ESP2D extends Module {
                 }
                 if (this.ITEM.getValueState().booleanValue()){
                     ItemStack current = ((EntityPlayer)ent).getHeldItem();
-                    String str = current != null ? clean(current.getDisplayName()) : "";
+                    String str = current != null ? clean(PlayerUtil.getDisplayName(current)) : "";
                     drawCustomString(str,(float)(x), (float)endy + 2, -1);
                 }
 //                if (this.HEALTH.getValueState()) {
