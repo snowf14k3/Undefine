@@ -107,6 +107,8 @@ public class Client {
                 }
                 Display.setTitle("NMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSL");
             }else{
+                this.fontManager = new FontManager();
+                
                 this.modManager = new ModManager();
 
                 this.commandMgr = new CommandManager();//Command

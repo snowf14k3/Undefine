@@ -67,11 +67,10 @@ public class MinecraftHook {
             new Client();
             Client.init = true;
             if(Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().theWorld != null){
-                ChatUtil.sendClientMessage("Client Injected !");
+                ChatUtil.sendClientMessage("外挂注入完成！");
             }
         }
         if (!Client.instance.font){
-                Client.instance.fontManager = new FontManager();
                 Client.fs = Client.instance.fontManager.simpleton11;
                 Client.fss = Client.instance.fontManager.simpleton10;
                 Client.instance.font = true;

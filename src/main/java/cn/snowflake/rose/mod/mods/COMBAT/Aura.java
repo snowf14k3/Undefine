@@ -100,7 +100,9 @@ public class Aura extends Module {
                     return;
                 }
                 float[] rotations = RotationUtil.getRotations(target);
-                mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(rotations[0], rotations[1], mc.thePlayer.onGround));
+                e.setY(rotations[0]);
+                e.setPitch(rotations[1]);
+                //mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(rotations[0], rotations[1], mc.thePlayer.onGround));
                 mc.thePlayer.rotationYawHead = rotations[0];
                 mc.thePlayer.renderYawOffset = rotations[0];
 //                e.setYaw(rotations[0]);
@@ -124,7 +126,8 @@ public class Aura extends Module {
                     this.switchtime.reset();
                 }
                 float[] rotations = RotationUtil.getRotations(target);
-                mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(rotations[0], rotations[1], mc.thePlayer.onGround));
+                e.setY(rotations[0]);
+                e.setPitch(rotations[1]);
                 mc.thePlayer.rotationYawHead = rotations[0];
                 mc.thePlayer.renderYawOffset = rotations[0];
 //                e.setYaw(rotations[0]);

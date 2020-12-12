@@ -174,7 +174,8 @@ public class Aimbot extends Module {
                 if (target != null) {
                     float[] rotations = this.aimmode.isCurrentMode("Auto") ? getRotationByBoundingBox(target,range.getValueState().floatValue(),false) : getEntityRotations(target);
                     if(silent.getValueState()){
-                        mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(rotations[0], rotations[1], mc.thePlayer.onGround));
+                    	em.setYaw(rotations[0]);
+                    	em.setPitch(rotations[1]);
                     }else{
                         mc.thePlayer.rotationYaw = rotations[0];
                         mc.thePlayer.rotationPitch = rotations[1];

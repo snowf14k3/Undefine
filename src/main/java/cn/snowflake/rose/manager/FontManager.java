@@ -24,23 +24,9 @@ public class FontManager {
     public UnicodeFontRenderer simpleton12;
     public UnicodeFontRenderer simpleton13;
     public UnicodeFontRenderer simpleton15;
-    public UnicodeFontRenderer simpleton16;
-    public UnicodeFontRenderer simpleton17;
-    public UnicodeFontRenderer simpleton18;
-
-    public UnicodeFontRenderer robotoregular19;
-
-
     public UnicodeFontRenderer simpleton20;
-    public UnicodeFontRenderer simpleton25;
-    public UnicodeFontRenderer simpleton30;
-    public UnicodeFontRenderer simpleton35;
-    public UnicodeFontRenderer simpleton40;
-    public UnicodeFontRenderer simpleton45;
-    public UnicodeFontRenderer simpleton50;
-    public UnicodeFontRenderer simpleton70;
-
-
+    
+    public UnicodeFontRenderer robotoregular19;
 
     /*
      * Init
@@ -51,21 +37,11 @@ public class FontManager {
         this.simpleton12 = this.getFont("simpleton", 12.0f, true);
         this.simpleton13 = this.getFont("simpleton", 13.0f, true);
         this.simpleton15 = this.getFont("simpleton", 15.0f, true);
-        this.simpleton16 = this.getFont("simpleton", 16.0f, true);
-        this.simpleton17 = this.getFont("simpleton", 17.0f, true);
-        this.simpleton18 = this.getFont("simpleton", 18.0f, true);
 
         this.robotoregular19 = this.getFont("roboto-regular", 19.0f);
 
 
         this.simpleton20 = this.getFont("simpleton", 20.0f, true);
-        this.simpleton25 = this.getFont("simpleton", 25.0f, true);
-        this.simpleton30 = this.getFont("simpleton", 30.0f, true);
-        this.simpleton35 = this.getFont("simpleton", 35.0f, true);
-        this.simpleton40 = this.getFont("simpleton", 40.0f, true);
-        this.simpleton45 = this.getFont("simpleton", 45.0f, true);
-        this.simpleton50 = this.getFont("simpleton", 50.0f, true);
-        this.simpleton70 = this.getFont("simpleton", 70.0f, true);
 
 
     }

@@ -25,7 +25,8 @@ public class HUD extends Module {
     public Value<Boolean> info = new Value<>("HUD_Info",false);
     public Value<String> rainbow = new Value<>("HUD","ColorMode",0);
     public static Value<Double> rainbowindex = new Value<Double>("HUD_rainbow", 1.0, 1.0, 20.0, 1.0);
-
+    public UnicodeFontRenderer arraylistfont = Client.instance.fontManager.robotoregular19;
+    
     public HUD() {
         super("HUD", Category.RENDER);
         this.rainbow.addValue("Gray");
@@ -154,10 +155,9 @@ public class HUD extends Module {
         ArrayList<Module> mods = new ArrayList<Module>(Client.instance.modManager.getModList());
         ScaledResolution sr = new ScaledResolution(mc,mc.displayWidth,mc.displayHeight);
 //        FontRenderer font = this.font;
-        UnicodeFontRenderer font = Client.instance.fontManager.robotoregular19;
 
         mods.removeIf(Module::isHidden);
-        mods.sort(Comparator.comparingDouble(m1 -> - font.getStringWidth(m1.getRenderName() + (m1.getdisplayName() == null ? "" : m1.getdisplayName()))));
+        mods.sort(Comparator.comparingDouble(m1 -> - arraylistfont.getStringWidth(m1.getRenderName() + (m1.getdisplayName() == null ? "" : m1.getdisplayName()))));
         int countMod = 0;
         int color = -1;
         float yAxis = 0;
@@ -172,7 +172,7 @@ public class HUD extends Module {
                 int Ranbow = (new Color(col2.getGreen() / 255.0F, col2.getGreen() / 255.0F, col2.getGreen() / 255.0F))
                         .getRGB();
 
-                float x = (float)(sr.getScaledWidth() - font.getStringWidth(m2.getName()) - 1);
+                float x = (float)(sr.getScaledWidth() - arraylistfont.getStringWidth(m2.getName()) - 1);
                 if(m2.isEnabled()) {
                     String disname = m2.getdisplayName() == null ? "" : "" + m2.getdisplayName();
                     switch (rainbow.getModeName()){
@@ -184,7 +184,7 @@ public class HUD extends Module {
                             break;
                         case "Gray":
                             color = (new Color(col2.getRed() / 1, col2.getRed() / 1, col2.getRed() / 1))
-                                    .getRGB();;
+                                    .getRGB();
                             break;
 
                         case "White":
@@ -192,8 +192,8 @@ public class HUD extends Module {
                             break;
                     }
 
-                    font.drawStringWithShadow( m2.getRenderName(), sr.getScaledWidth() - font.getStringWidth(m2.getRenderName() + disname) -3, yAxis ,color);
-                    font.drawStringWithShadow(disname, sr.getScaledWidth() - font.getStringWidth(disname) - 1, yAxis,new Color(166,168,168).getRGB());
+                    arraylistfont.drawStringWithShadow( m2.getRenderName(), sr.getScaledWidth() - arraylistfont.getStringWidth(m2.getRenderName() + disname) -3, yAxis ,color);
+                    arraylistfont.drawStringWithShadow(disname, sr.getScaledWidth() - arraylistfont.getStringWidth(disname) - 1, yAxis,new Color(166,168,168).getRGB());
 
                     int[] arrn = var3;
                     arrn[0] = arrn[0] + 2;
