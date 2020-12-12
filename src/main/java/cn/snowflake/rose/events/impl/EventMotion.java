@@ -9,10 +9,10 @@ import net.minecraft.network.play.client.C03PacketPlayer;
 
 public class EventMotion implements Event, Cancellable
 {
-    public double y;
-    public float yaw;
-    public float pitch;
-    public boolean onGround;
+    public static double y;
+    public static float yaw;
+    public static float pitch;
+    public static boolean onGround;
     public boolean cancel;
     public EventType type;
 
@@ -34,6 +34,7 @@ public class EventMotion implements Event, Cancellable
         this.onGround = onGround;
         this.type = EventType.PRE;
     }
+
 
     public EventType getEventType() {
         return this.type;

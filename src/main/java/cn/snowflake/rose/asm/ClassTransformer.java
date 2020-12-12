@@ -86,7 +86,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 	}
 
 	//  TODO SHIT OF runtimeDeobfuscationEnabled
-	public static  boolean runtimeDeobfuscationEnabled = true;
+	public static  boolean runtimeDeobfuscationEnabled = false;
 
 //	public static  boolean runtimeDeobfuscationEnabled = false;
 
@@ -523,41 +523,6 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 		if (method.name.equalsIgnoreCase("sendMotionUpdates") || method.name.equalsIgnoreCase("func_71166_b")){
 			//replace the shit of old
 
-//			InsnList preInsn = new InsnList();
-//			//new EventMotion();
-//			preInsn.add(new TypeInsnNode(NEW,"cn/snowflake/rose/events/impl/EventMotion"));
-//			preInsn.add(new InsnNode(DUP));
-//			//this.posY
-//			preInsn.add(new VarInsnNode(ALOAD,0));
-//			preInsn.add(new FieldInsnNode(GETFIELD,"net/minecraft/client/entity/EntityClientPlayerMP",runtimeDeobfuscationEnabled ? "field_70163_u" : "posY","D"));
-//
-//			//this.rotationYaw
-//			preInsn.add(new VarInsnNode(ALOAD,0));
-//			preInsn.add(new FieldInsnNode(GETFIELD,"net/minecraft/client/entity/EntityClientPlayerMP",runtimeDeobfuscationEnabled ? "field_70177_z" : "rotationYaw","F"));
-//
-//			//this.rotationPitch
-//			preInsn.add(new VarInsnNode(ALOAD,0));//this
-//			preInsn.add(new FieldInsnNode(GETFIELD,"net/minecraft/client/entity/EntityClientPlayerMP", runtimeDeobfuscationEnabled ? "field_70125_A" : "rotationPitch","F"));
-//
-//			//this.onGround
-//			preInsn.add(new VarInsnNode(ALOAD,0));//this
-//			preInsn.add(new FieldInsnNode(GETFIELD,"net/minecraft/client/entity/EntityClientPlayerMP",runtimeDeobfuscationEnabled ? "field_70122_E" : "onGround","Z"));
-//
-//
-//			// EventMotion(this.posY,this.rotationYaw,this.rotationPitch,this.onGround);
-//			preInsn.add(new MethodInsnNode(INVOKESPECIAL, "cn/snowflake/rose/events/impl/EventMotion", "<init>", "(DFFZ)V", false));
-//			// var18
-//			preInsn.add(new VarInsnNode(ASTORE,22));
-//
-//			//EventManager.call( var18 );
-//			preInsn.add(new VarInsnNode(ALOAD,22));
-//			preInsn.add(new MethodInsnNode(INVOKESTATIC, "com/darkmagician6/eventapi/EventManager", "call", "(Lcom/darkmagician6/eventapi/events/Event;)Lcom/darkmagician6/eventapi/events/Event;", false));
-//			preInsn.add(new InsnNode(POP));
-//
-//			method.instructions.insert(preInsn);
-
-
-
 			InsnList preInsn = new InsnList();
 			preInsn.add(new FieldInsnNode(GETSTATIC, "com/darkmagician6/eventapi/types/EventType", "PRE", "Lcom/darkmagician6/eventapi/types/EventType;"));
 			preInsn.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(MinecraftHook.class), "onUpdateWalkingPlayerHook","(Lcom/darkmagician6/eventapi/types/EventType;)V", false));
@@ -565,34 +530,42 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 
 			InsnList postInsn = new InsnList();
 			postInsn.add(new FieldInsnNode(GETSTATIC, "com/darkmagician6/eventapi/types/EventType", "POST", "Lcom/darkmagician6/eventapi/types/EventType;"));
-			postInsn.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(MinecraftHook.class), "onUpdateWalkingPlayerHook","(Lcom/darkmagician6/eventapi/types/EventType;)V", false));
 			method.instructions.insertBefore(ASMUtil.bottom(method), postInsn);
 
 
 
-//			for (AbstractInsnNode abstractInsnNode : method.instructions.toArray()){
-//				if (abstractInsnNode.getOpcode() == ALOAD &
-//						abstractInsnNode.getNext() instanceof FieldInsnNode
-//				){
-//					if ( ((FieldInsnNode) abstractInsnNode.getNext()).name.equalsIgnoreCase(runtimeDeobfuscationEnabled ? "field_70163_u" : "posY") && !(abstractInsnNode.getPrevious().getPrevious() instanceof TypeInsnNode)
-//					){
-//						method.instructions.set(abstractInsnNode.getNext(),new FieldInsnNode(GETFIELD,"cn/snowflake/rose/events/impl/EventMotion","y","D"));
-//						method.instructions.set(abstractInsnNode,new VarInsnNode(ALOAD,22));
-//					}else if ( ((FieldInsnNode) abstractInsnNode.getNext()).name.equalsIgnoreCase(runtimeDeobfuscationEnabled ? "field_70177_z" : "rotationYaw") && !(abstractInsnNode.getPrevious().getPrevious().getPrevious().getPrevious() instanceof TypeInsnNode)
-//					){
-//						method.instructions.set(abstractInsnNode.getNext(),new FieldInsnNode(GETFIELD,"cn/snowflake/rose/events/impl/EventMotion","yaw","F"));
-//						method.instructions.set(abstractInsnNode,new VarInsnNode(ALOAD,22));
-//					}else if ( ((FieldInsnNode) abstractInsnNode.getNext()).name.equalsIgnoreCase(runtimeDeobfuscationEnabled ? "field_70125_A" : "rotationPitch") && !(abstractInsnNode.getPrevious().getPrevious().getPrevious().getPrevious().getPrevious().getPrevious() instanceof TypeInsnNode)
-//					){
-//						method.instructions.set(abstractInsnNode.getNext(),new FieldInsnNode(GETFIELD,"cn/snowflake/rose/events/impl/EventMotion","pitch","F"));
-//						method.instructions.set(abstractInsnNode,new VarInsnNode(ALOAD,22));
-//					}else if ( ((FieldInsnNode) abstractInsnNode.getNext()).name.equalsIgnoreCase(runtimeDeobfuscationEnabled ? "field_70122_E" : "onGround") && !(abstractInsnNode.getPrevious().getPrevious().getPrevious().getPrevious().getPrevious().getPrevious().getPrevious().getPrevious() instanceof TypeInsnNode)
-//					){
-//						method.instructions.set(abstractInsnNode.getNext(),new FieldInsnNode(GETFIELD,"cn/snowflake/rose/events/impl/EventMotion","onGround","Z"));
-//						method.instructions.set(abstractInsnNode,new VarInsnNode(ALOAD,22));
-//					}
-//				}
-//			}
+			for (AbstractInsnNode abstractInsnNode : method.instructions.toArray()){
+				if (abstractInsnNode.getOpcode() == ALOAD &
+						abstractInsnNode.getNext() instanceof FieldInsnNode
+				){
+					if ( ((FieldInsnNode) abstractInsnNode.getNext()).name.equalsIgnoreCase(runtimeDeobfuscationEnabled ? "field_70163_u" : "posY")
+					){
+						method.instructions.set(abstractInsnNode.getNext(),
+								new FieldInsnNode(GETSTATIC,"cn/snowflake/rose/events/impl/EventMotion",
+										"y","D"));
+						method.instructions.remove(abstractInsnNode);
+					}else if ( ((FieldInsnNode) abstractInsnNode.getNext()).name.equalsIgnoreCase(runtimeDeobfuscationEnabled ? "field_70177_z" : "rotationYaw")
+					){
+						method.instructions.set(abstractInsnNode.getNext(),
+								new FieldInsnNode(GETSTATIC,"cn/snowflake/rose/events/impl/EventMotion",
+										"yaw","F"));
+						method.instructions.remove(abstractInsnNode);
+					}else if ( ((FieldInsnNode) abstractInsnNode.getNext()).name.equalsIgnoreCase(runtimeDeobfuscationEnabled ? "field_70125_A" : "rotationPitch")
+					){
+						method.instructions.set(abstractInsnNode.getNext(),
+								new FieldInsnNode(GETSTATIC,"cn/snowflake/rose/events/impl/EventMotion",
+										"pitch","F"));
+						method.instructions.remove(abstractInsnNode);
+					}else if ( ((FieldInsnNode) abstractInsnNode.getNext()).name.equalsIgnoreCase(runtimeDeobfuscationEnabled ? "field_70122_E" : "onGround")
+					){
+						method.instructions.set(abstractInsnNode.getNext(),
+								new FieldInsnNode(GETSTATIC,"cn/snowflake/rose/events/impl/EventMotion",
+										"onGround","Z"));
+						method.instructions.remove(abstractInsnNode);
+					}
+				}
+			}
+
 		}
 		if (method.name.equalsIgnoreCase("func_71165_d") || method.name.equalsIgnoreCase("sendChatMessage")) {
 

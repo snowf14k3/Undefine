@@ -27,6 +27,8 @@ import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.input.Keyboard;
+import net.minecraft.client.gui.ScaledResolution;
+import org.lwjgl.opengl.GL11;
 
 import java.lang.instrument.ClassFileTransformer;
 import java.util.ArrayList;
@@ -37,26 +39,20 @@ public class Aimbot extends Module {
 
 
     public static Value<Double> range= new Value<Double>("Aimbot_Reach", 10.5D, 3.0D, 65.0D,0.1D);
-    public Value<Boolean> bat = new Value("Aimbot_Bat", false);
-    public Value<Boolean> key = new Value("Aimbot_KeySwitch", false);
 
-    public Value<Boolean> customnpcs = new Value("Aimbot_CustomNPCs", false);
-    public Value<Boolean> customnpcsteam = new Value("Aimbot_CustomNPCTeam", false);
-
+    public Value<Double> fov = new Value<Double>("Aimbot_Fov", 180.0, 1.0, 180.0, 1.0);
     public Value<Boolean> decientity = new Value("Aimbot_DeciEntity", true);
-    public Value<Boolean> deci = new Value("Aimbot_DeciGun", true);
-
-
     public Value<Boolean> throughwall = new Value("Aimbot_ThroughWall", false);
 
     public Value<Boolean> players = new Value("Aimbot_Player", true);
-    public Value<Boolean> otherentity = new Value("Aimbot_OtherEntity", false);
+    public Value<Boolean> otherentity = new Value("Aimbot_ModsEntity", false);
     public Value<Boolean> animal = new Value("Aimbot_Animal", false);
     public Value<Boolean> moster = new Value("Aimbot_Mob", false);
     public Value<Boolean> village = new Value("Aimbot_village", false);
     public Value<Boolean> invisible = new Value("Aimbot_Invisible", false);
     public Value<String> aimmode = new Value("Aimbot","Mode", 4);
-    public Value<Boolean> SILENT = new Value("Aimbot_Invisible", false);
+    public Value<Boolean> silent = new Value("Aimbot_Silent", false);
+    public Value<Boolean> recoil = new Value("Aimbot_NoRecoil", true);
 
     public Value<String> sortingMode = new Value("Aimbot","SortingMode", 0);
 
@@ -115,46 +111,74 @@ public class Aimbot extends Module {
         return (Math.random() * (double)(start - end)) + end;
     }
 
-    @EventTarget
-    public void ontick(EventTick eventTick){
-        if (Keyboard.getEventKeyState()) {
-            if (this.isEnabled() && Keyboard.KEY_LCONTROL == (Keyboard.getEventKey() == 0 ? Keyboard.getEventCharacter() + 256 : Keyboard.getEventKey())) {
-                System.out.println(Keyboard.getEventKey());
-            }
-        }
-    }
 
     @EventTarget
     public void on2D(EventRender2D eventRender2D){
+		ScaledResolution res = new ScaledResolution(this.mc,this.mc.displayWidth,this.mc.displayHeight);
         if (Client.DEBUG) {
             mc.fontRenderer.drawStringWithShadow(target.getClass().getName(),
                     100, 90, 16777215); // 测试模式画Entity信息
             mc.fontRenderer.drawStringWithShadow(target.toString(),
                     100, 100, 16777215); // 测试模式画Entity信息
         }
+		drawCircle(res.getScaledWidth() / 2, res.getScaledHeight() / 2,
+					fov.getValueState().floatValue() * 5, 500, -1);
     }
+
+	public static void drawCircle(float cx, float cy, float r, int num_segments, int c) {
+		GL11.glScalef(0.5F, 0.5F, 0.5F);
+		r *= 2;
+		cx *= 2;
+		cy *= 2;
+		float f = (float) (c >> 24 & 0xff) / 255F;
+		float f1 = (float) (c >> 16 & 0xff) / 255F;
+		float f2 = (float) (c >> 8 & 0xff) / 255F;
+		float f3 = (float) (c & 0xff) / 255F;
+		float theta = (float) (2 * 3.1415926 / (num_segments));
+		float p = (float) Math.cos(theta);// calculate the sine and cosine
+		float s = (float) Math.sin(theta);
+		float t;
+		GL11.glColor4f(f1, f2, f3, f);
+		float x = r;
+		float y = 0;// start at angle = 0
+		GL11.glEnable(3042);
+		GL11.glDisable(3553);
+		GL11.glEnable(GL11.GL_LINE_SMOOTH);
+		GL11.glBlendFunc(770, 771);
+		GL11.glBegin(GL11.GL_LINE_LOOP);
+		for (int ii = 0; ii < num_segments; ii++) {
+			GL11.glVertex2f(x + cx, y + cy);// final vertex vertex
+
+			// rotate the stuff
+			t = x;
+			x = p * x - s * y;
+			y = s * t + p * y;
+		}
+		GL11.glEnd();
+		GL11.glEnable(3553);
+		GL11.glDisable(3042);
+		GL11.glDisable(GL11.GL_LINE_SMOOTH);
+		GL11.glScalef(2F, 2F, 2F);
+	}
+
 
     @EventTarget
     public void onEvent(EventMotion em) {
         if (em.isPre()) {
+			if (recoil.getValueState()) {
+				mc.thePlayer.rotationPitch = mc.thePlayer.prevRotationPitch;							
+				mc.thePlayer.rotationYaw = mc.thePlayer.prevRotationYaw;
+			}			
             target = getTarget();
             if(shouldAim()){
-
                 if (target != null) {
                     float[] rotations = this.aimmode.isCurrentMode("Auto") ? getRotationByBoundingBox(target,range.getValueState().floatValue(),false) : getEntityRotations(target);
-                    boolean silent = SILENT.getValueState();
-                    if(silent){
+                    if(silent.getValueState()){
                         mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(rotations[0], rotations[1], mc.thePlayer.onGround));
                     }else{
                         mc.thePlayer.rotationYaw = rotations[0];
                         mc.thePlayer.rotationPitch = rotations[1];
                     }
-//                    if(AUTO_FIRE.getValueState()){
-//                        KeyBinding.setKeyBindState(mc.gameSettings.keyBindAttack.getKeyCode(),true);
-////                        KeyBinding.setKeyBindState(mc.gameSettings.keyBindAttack.getKeyCode(),false);
-//
-////                        MouseUtil.sendClick(0,true);
-//                    }
                 }
 
             }
@@ -164,6 +188,9 @@ public class Aimbot extends Module {
         if(!mc.thePlayer.canEntityBeSeen(entity) && !throughwall.getValueState()) {
             return false;
         }
+		if(!RotationUtil.isVisibleFOV((EntityLivingBase) entity, fov.getValueState().floatValue())){
+			return false;
+		}
         if (entity instanceof EntityPlayer && !players.getValueState()) {
             return false;
         }
@@ -176,7 +203,7 @@ public class Aimbot extends Module {
         if (entity instanceof EntityMob && !moster.getValueState()) {
             return false;
         }
-        if (entity instanceof EntityBat && !bat.getValueState()){
+        if (entity instanceof EntityBat){
             return false;
         }
         if (entity instanceof EntityVillager && !village.getValueState()) {
@@ -189,36 +216,10 @@ public class Aimbot extends Module {
             if (Objects.requireNonNull(JReflectUtility.getEntityNumber()).isInstance(entity)){
                 return false;
             }
-        }
-
-        if (Client.customnpcs) {
-            if (Objects.requireNonNull(JReflectUtility.getNPCEntity()).isInstance(entity) ){
-                if (!customnpcs.getValueState()){
-                    return false;
-                }
-                if (!customnpcsteam.getValueState() && mc.thePlayer.isOnSameTeam((EntityLivingBase) entity)){
-                    return false;
-                }
-            }
-        }else{
-            if (customnpcs.getValueState() || customnpcsteam.getValueState()){
-                customnpcs.setValueState(false);
-                customnpcsteam.setValueState(false);
-                ChatUtil.sendClientMessage("You have no install the customeNPCs");
-            }
-        }
-
+        }       
         if (Client.deci){
             if (Objects.requireNonNull(JReflectUtility.getCorpse()).isInstance(entity)){
                 return false;
-            }
-            if (!Objects.requireNonNull(JReflectUtility.getDeciEntity()).isInstance(entity) && !decientity.getValueState()){
-                return false;
-            }
-        }else{
-            if (decientity.getValueState()){
-                decientity.setValueState(false);
-                ChatUtil.sendClientMessage("You have no install the Deci");
             }
         }
         if ( (entity instanceof EntityCreature) && !otherentity.getValueState() ) {
@@ -231,8 +232,7 @@ public class Aimbot extends Module {
         if(mc.thePlayer.inventory.getCurrentItem() == null ){
             return false;
         }
-        if(mc.thePlayer.isUsingItem())
-            return true;
+     
         return true;
     }
 

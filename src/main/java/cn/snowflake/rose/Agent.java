@@ -16,7 +16,6 @@ import net.minecraft.launchwrapper.LaunchClassLoader;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
-import sun.misc.URLClassPath;
 
 
 public class Agent {
