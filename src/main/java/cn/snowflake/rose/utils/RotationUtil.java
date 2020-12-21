@@ -56,7 +56,11 @@ public class RotationUtil {
         final double y = ent.posY + ent.getEyeHeight() / 2.0f;
         return getRotationFromPosition(x, z, y);
     }
-
+	public static boolean isVisibleFOV(EntityLivingBase e, float fov) {
+		return (Math.abs(getRotations(e)[0] - Minecraft.getMinecraft().thePlayer.rotationYaw) % 360.0F > 180.0F
+				? 360.0F - Math.abs(getRotations(e)[0] - Minecraft.getMinecraft().thePlayer.rotationYaw) % 360.0F
+				: Math.abs(getRotations(e)[0] - Minecraft.getMinecraft().thePlayer.rotationYaw) % 360.0F) <= fov;
+	}
     public static float[] getRotationFromPosition(final double x, final double z, final double y) {
         final double xDiff = x - Minecraft.getMinecraft().thePlayer.posX;
         final double zDiff = z - Minecraft.getMinecraft().thePlayer.posZ;

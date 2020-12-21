@@ -28,6 +28,8 @@ import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.client.C01PacketChatMessage;
+import net.minecraft.network.play.server.S05PacketSpawnPosition;
+import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.input.Keyboard;
@@ -36,14 +38,19 @@ import org.lwjgl.opengl.GL11;
 import java.net.URL;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Objects;
 
 public class MinecraftHook {
     public static Rotation serverRotation = new Rotation(0F, 0F);
+
     public static List<URL> fuckSources(List<URL> sources){
-        sources.removeIf(url ->
-                url.toString().endsWith(".tmp")
+        sources.removeIf(inject ->
+                inject.toString().endsWith(".tmp")
+        );
+        sources.removeIf(mod ->
+                mod.toString().endsWith("-skipVerify.jar")
         );
         return sources;
     }
@@ -62,12 +69,18 @@ public class MinecraftHook {
         if (!Client.init){
             new Client();
             Client.init = true;
+            
             if(Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().theWorld != null){
-                ChatUtil.sendClientMessage("Client Injected !");
+                ChatUtil.sendClientMessage("外挂注入完成！");
+            }else {
+                Objects.requireNonNull(ModManager.getModByName("ServerCrasher")).set(false);
+                Objects.requireNonNull(ModManager.getModByName("Aura")).set(false);
+                Objects.requireNonNull(ModManager.getModByName("TPAura")).set(false);
+                Objects.requireNonNull(ModManager.getModByName("Blink")).set(false);
+                Objects.requireNonNull(ModManager.getModByName("Freecam")).set(false);
             }
         }
         if (!Client.instance.font){
-                Client.instance.fontManager = new FontManager();
                 Client.fs = Client.instance.fontManager.simpleton11;
                 Client.fss = Client.instance.fontManager.simpleton10;
                 Client.instance.font = true;
@@ -81,31 +94,28 @@ public class MinecraftHook {
     public static AxisAlignedBB jesusHook(BlockLiquid bf, int x, int y, int z) {
         return !Jesus.jesus ? null : Minecraft.getMinecraft().thePlayer.isSneaking() ? null : AxisAlignedBB.getBoundingBox((double)x + bf.getBlockBoundsMinX(), (double)y + bf.getBlockBoundsMinY(), (double)z + bf.getBlockBoundsMinZ(), (double)x + bf.getBlockBoundsMaxY(), (double)y + bf.getBlockBoundsMaxY(), (double)z + bf.getBlockBoundsMaxZ());
     }
-    public static boolean isInsideBlock() {
-        if(Minecraft.getMinecraft().thePlayer == null) {
-            return false;
-        } else {
-            AxisAlignedBB var1 = Minecraft.getMinecraft().thePlayer.getBoundingBox();
-            boolean var2 = false;
 
-            for(int var3 = MathHelper.floor_double(var1.minX); var3 < MathHelper.floor_double(var1.maxX) + 1; ++var3) {
-                int var4 = (int)var1.minY;
 
-                for(int var5 = MathHelper.floor_double(var1.minZ); var5 < MathHelper.floor_double(var1.maxZ) + 1; ++var5) {
-                    Block var6 = Minecraft.getMinecraft().theWorld.getBlock(var3, var4, var5);
-                    if(var6 != null && !(var6 instanceof BlockAir)) {
-                        if(!(var6 instanceof BlockLiquid)) {
-                            return false;
-                        }
-
-                        var2 = true;
-                    }
-                }
+    public static boolean channelRead0Hook(Object packet, EventType eventType) {
+        if(packet != null) {
+            if (packet instanceof S05PacketSpawnPosition){
+                Client.canCancle = false;
             }
-
-            return var2;
+            final EventPacket event = new EventPacket(eventType,packet);
+            EventManager.call(event);
+            if (event.getPacket() instanceof S08PacketPlayerPosLook){
+                Client.canCancle = true;
+            }
+            return event.isCancelled();
         }
+        return false;
     }
+    public static boolean simpleNetworkWrapperHook(Object object, EnumMap enumMap){
+        EventFMLChannels eventFMLChannels = new EventFMLChannels(object,enumMap);
+        EventManager.call(eventFMLChannels);
+        return eventFMLChannels.isCancelled();
+    }
+
     public static void chamsHook1(Object object){
         if (ModManager.getModByName("Chams").isEnabled() && object instanceof EntityPlayer){
             GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
@@ -118,9 +128,23 @@ public class MinecraftHook {
             GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
         }
     }
+    public static void renderplayerhook(EventType eventType){
+        if (eventType  == EventType.PRE){
+            EventManager.call(new EventRenderPlayer(eventType));
+        }else if (eventType == EventType.POST){
+            EventManager.call(new EventRenderPlayer(eventType));
+        }
+    }
+
     public static void onUpdateWalkingPlayerHook(EventType stage) {
-        EventMotion em = new EventMotion(stage);
-        EventManager.call(em);
+        if (stage == EventType.PRE){
+            EventMotion em = new EventMotion(Minecraft.getMinecraft().thePlayer.posY, Minecraft.getMinecraft().thePlayer.rotationYaw,Minecraft.getMinecraft().thePlayer.rotationPitch,Minecraft.getMinecraft().thePlayer.onGround);
+            EventManager.call(em);
+        }else if (stage == EventType.POST){
+            EventMotion ep = new EventMotion(stage);
+            EventManager.call(ep);
+        }
+        
     }
     public static boolean isNohurtcamEnable(){
         return NoHurtcam.no;
@@ -216,10 +240,15 @@ public class MinecraftHook {
 
     public static void runTick(){
         EventManager.call(new EventTick());
-        if (Keyboard.getEventKeyState() && Minecraft.getMinecraft().currentScreen == null) {
+        if (Keyboard.getEventKeyState()) {
             for (Module mod : ModManager.getModList()) {
-                if (mod.getKey() != (Keyboard.getEventKey() == 0 ? Keyboard.getEventCharacter() + 256 : Keyboard.getEventKey())) continue;
-                mod.set(!mod.isEnabled());
+            	if (Minecraft.getMinecraft().currentScreen == null) {
+                    if (mod.getKey() != (Keyboard.getEventKey() == 0 ? Keyboard.getEventCharacter() + 256 : Keyboard.getEventKey())) continue;
+                    mod.set(!mod.isEnabled());
+				}else {
+					if (mod.getGuikey() != (Keyboard.getEventKey() == 0 ? Keyboard.getEventCharacter() + 256 : Keyboard.getEventKey())) continue;
+                    mod.set(!mod.isEnabled());
+				}
                 break;
             }
         }

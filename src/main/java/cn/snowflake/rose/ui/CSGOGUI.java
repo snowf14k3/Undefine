@@ -167,8 +167,8 @@ public class CSGOGUI extends GuiScreen{
             }
         }else {
             if (moveX != 0 || moveY != 0) {
-                moveX = 0;
-                moveY = 0;
+                //moveX = 0;
+                //moveY = 0;
             }
         }
         if (startX > (float)(rs.getScaledWidth() - 303)) {

@@ -82,7 +82,8 @@ public class Aura extends Module {
 
     @EventTarget
     public void OnPre(EventMotion e) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        if (e.isPre()) {
+
+    	if (e.isPre()) {
             target = getTarget(range.getValueState());
             if (target != null) {
                 if (block.getValueState() && !mc.thePlayer.isBlocking() && mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.inventory.getCurrentItem().getItem() instanceof ItemSword) {
@@ -100,14 +101,10 @@ public class Aura extends Module {
                     return;
                 }
                 float[] rotations = RotationUtil.getRotations(target);
-                mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(rotations[0], rotations[1], mc.thePlayer.onGround));
+                e.setY(rotations[0]);
+                e.setPitch(rotations[1]); 
                 mc.thePlayer.rotationYawHead = rotations[0];
                 mc.thePlayer.renderYawOffset = rotations[0];
-//                e.setYaw(rotations[0]);
-//                e.setPitch(rotations[1]);
-//                mc.thePlayer.rotationYawHead = e.getYaw();
-//                mc.thePlayer.renderYawOffset = e.getYaw();
-//                MinecraftHook.serverRotation = new Rotation(e.getYaw(),e.getPitch());
             }
             if (mode.getModeName().equalsIgnoreCase("Switch")) {
                 setDisplayName("Switch");
@@ -124,14 +121,11 @@ public class Aura extends Module {
                     this.switchtime.reset();
                 }
                 float[] rotations = RotationUtil.getRotations(target);
-                mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(rotations[0], rotations[1], mc.thePlayer.onGround));
+                e.setY(rotations[0]);
+                e.setPitch(rotations[1]);
                 mc.thePlayer.rotationYawHead = rotations[0];
                 mc.thePlayer.renderYawOffset = rotations[0];
-//                e.setYaw(rotations[0]);
-//                e.setPitch(rotations[1]);
-//                mc.thePlayer.rotationYawHead = e.getYaw();
-//                mc.thePlayer.renderYawOffset = e.getYaw();
-//                MinecraftHook.serverRotation = new Rotation(e.getYaw(),e.getPitch());
+
             }
         }else if (e.getEventType() == EventType.POST){
             if(target != null) {

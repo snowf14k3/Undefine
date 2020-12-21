@@ -42,7 +42,7 @@ public class Blink extends Module {
             EntityOtherPlayerMP e = new EntityOtherPlayerMP(this.mc.theWorld, this.mc.thePlayer.getGameProfile());
             e.inventory = this.mc.thePlayer.inventory;
             e.inventoryContainer = this.mc.thePlayer.inventoryContainer;
-            e.setPositionAndRotation(x, y, z, yaw, pitch);
+            e.setPositionAndRotation(x, y - 1.5d, z, yaw, pitch);
             e.rotationYawHead = this.mc.thePlayer.rotationYawHead;
             this.mc.theWorld.addEntityToWorld(-1, e);
         }

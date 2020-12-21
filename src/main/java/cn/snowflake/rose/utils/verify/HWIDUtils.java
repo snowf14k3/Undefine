@@ -13,7 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import org.apache.logging.log4j.LogManager;
 import org.lwjgl.Sys;
-import sun.nio.ch.Net;
+
 
 import javax.swing.*;
 

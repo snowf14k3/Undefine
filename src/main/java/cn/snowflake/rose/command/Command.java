@@ -15,6 +15,7 @@ public class Command {
     }
 
     public void onCmd(String[] args) {
+
     }
 
     public void setArgs(String args) {

@@ -108,7 +108,7 @@ public class IRC extends Module {
                     processMessage(msg1);
                 }
             }catch (IOException e) {
-                System.out.println("与服务器断开连接");
+                setDisplayName("connectionreset");
             }
         }
     }

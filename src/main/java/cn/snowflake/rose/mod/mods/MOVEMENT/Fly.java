@@ -41,12 +41,10 @@ public class Fly extends Module {
             }
 
             if (this.mc.gameSettings.keyBindSneak.getIsKeyPressed()) {
-                EntityPlayerSP thePlayer = this.mc.thePlayer;
-                --thePlayer.motionY;
+                --this.mc.thePlayer.motionY;
             }
             else if (this.mc.gameSettings.keyBindJump.getIsKeyPressed()) {
-                EntityPlayerSP thePlayer2 = this.mc.thePlayer;
-                ++thePlayer2.motionY;
+                ++this.mc.thePlayer.motionY;
             }
         }
 
@@ -57,55 +55,10 @@ public class Fly extends Module {
         if (antikick.getValueState().booleanValue() ) {
             mc.thePlayer.motionY -= 0.05D;
         }
-//        handleVanillaKickBypass();
+
     }
 
-    private void handleVanillaKickBypass() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
-        if(!antikick.getValueState().booleanValue() || !groundTimer.isDelayComplete(1000)) return;
-
-        double ground = calculateGround();
-
-        for(double posY = mc.thePlayer.posY; posY > ground; posY -= 8D) {
-            mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX,mc.thePlayer.boundingBox.minY, posY, mc.thePlayer.posZ, true));
-
-            if(posY - 8D < ground) break; // Prevent next step
-        }
-
-        mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX,mc.thePlayer.boundingBox.minY, ground, mc.thePlayer.posZ, true));
-
-
-        for(double posY = ground; posY < mc.thePlayer.posY; posY += 8D) {
-            mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX,mc.thePlayer.boundingBox.minY, posY, mc.thePlayer.posZ, true));
-
-            if(posY + 8D > mc.thePlayer.posY) break; // Prevent next step
-        }
-
-        mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX,mc.thePlayer.boundingBox.minY, mc.thePlayer.posY, mc.thePlayer.posZ, true));
-
-        groundTimer.reset();
-    }
-
-    // TODO: Make better and faster calculation lol
-    private double calculateGround() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        Class clazz = Class.forName("net.minecraft.util.AxisAlignedBB");
-        Constructor aabb = clazz.getDeclaredConstructor(double.class,double.class,double.class,double.class,double.class,double.class);
-        AxisAlignedBB playerBoundingBox = mc.thePlayer.getBoundingBox();
-
-        double blockHeight = 1D;
-
-        for(double ground = mc.thePlayer.posY; ground > 0D; ground -= blockHeight) {
-            AxisAlignedBB customBox = (AxisAlignedBB)aabb.newInstance(playerBoundingBox.maxX, ground + blockHeight, playerBoundingBox.maxZ, playerBoundingBox.minX, ground, playerBoundingBox.minZ);
-            if(mc.theWorld.checkBlockCollision(customBox)) {
-                if(blockHeight <= 0.05D)
-                    return ground + blockHeight;
-                ground += blockHeight;
-                blockHeight = 0.05D;
-            }
-        }
-
-        return 0F;
-    }
-
+  
 
     @Override
     public void onDisable() {

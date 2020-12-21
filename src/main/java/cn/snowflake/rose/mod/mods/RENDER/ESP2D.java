@@ -1,5 +1,6 @@
 package cn.snowflake.rose.mod.mods.RENDER;
 
+import cn.snowflake.rose.Client;
 import cn.snowflake.rose.events.impl.EventRender2D;
 import cn.snowflake.rose.events.impl.EventRender3D;
 import cn.snowflake.rose.mod.Category;
@@ -94,8 +95,8 @@ public class ESP2D extends Module {
                     if (bdubs <= endy) continue;
                     endy = bdubs;
                 }
-                double xDiff = (endx - x) / 6.0;
-                double x2Diff = (endx - x) / (double)6;
+                double xDiff = (endx - x) / 4.0;
+                double x2Diff = (endx - x) / (double)4;
                 double yDiff =  xDiff ;
                 int color = Colors.getColor(255, 255);
                 if(ent.hurtTime > 0) {
@@ -226,25 +227,10 @@ public class ESP2D extends Module {
                     double healthLocation = endy + difference * (double)progress;
                     RenderUtil.rectangleBordered(x - 6.5, y - 0.5, x - 3.5, endy, 1.0, Colors.getColor(0, 100), Colors.getColor(0, 150));
                     RenderUtil.rectangle(x - 5.5, endy - 1.0, x - 4.5, healthLocation, customColor.getRGB());
-//                        if (- difference > 50.0) {
-//                            for (int i = 1; i < 10; ++i) {
-//                                double dThing = difference / 10.0 * (double)i;
-//                                RenderUtil.rectangle(x - 6.5, endy - 0.5 + dThing, x - 2.5, endy - 0.5 + dThing - 1.0, Colors.getColor(0));
-//                            }
-//                        }
-//                    if ((int)getIncremental(progress * 100.0f, 1.0) <= 40) {
-
-                        String nigger = "" + (int)getIncremental(health * 5.0f, 1.0) + "HP \2474\u2764";
-                        //  Client.verdana10.drawStringWithShadow(nigger, (float)(x - 6.0 - (double)(Client.verdana16.getWidth(nigger) * 2.0f)) / 2.0f, ((float)((int)healthLocation) + Client.fss.getHeight(nigger) / 2.0f) / 2.0f, -1);
-
-                        drawCustomString(""+nigger, (float)(x - 6.0 - (double)(mc.fontRenderer.getStringWidth(nigger))), ((float)((int)healthLocation) + mc.fontRenderer.getStringWidth(nigger) / 2.0f) - 10, -1);
-//                    }
-
-//                }
+                    String nigger = "" + (int)getIncremental(health * 5.0f, 1.0) + "HP \2474\u2764";
+                    drawCustomString(""+nigger, (float)(x - 6.0 - (double)(mc.fontRenderer.getStringWidth(nigger))), ((float)((int)healthLocation) + mc.fontRenderer.getStringWidth(nigger) / 2.0f) - 10, -1);
             }
             catch (Exception xValues) {
-                // empty catch block
-
             }
 
             GlStateManager.popMatrix();

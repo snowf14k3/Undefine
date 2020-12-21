@@ -6,6 +6,7 @@ import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.JReflectUtility;
 import cn.snowflake.rose.utils.RenderUtil;
 import com.darkmagician6.eventapi.EventTarget;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,42 +20,56 @@ public class Tracer extends Module {
 
     @EventTarget
     public void On3D(EventRender3D e) {
-        for(Object ent : mc.theWorld.loadedEntityList) {
-            if(ent instanceof EntityPlayer && ent != mc.thePlayer) {
-                this.drawLine((EntityPlayer) ent);
-            }
-        }
-    }
-    private void drawLine(EntityPlayer player) {
-        double x = player.lastTickPosX + (player.posX - player.lastTickPosX) * (double)JReflectUtility.getRenderPartialTicks() - RenderManager.renderPosX;
-        double y = player.lastTickPosY + (player.posY - player.lastTickPosY) * (double)JReflectUtility.getRenderPartialTicks() - RenderManager.renderPosY;
-        double z = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * (double)JReflectUtility.getRenderPartialTicks() - RenderManager.renderPosZ;
+    	try{
         GL11.glPushMatrix();
-        GL11.glEnable(3042);
-        GL11.glEnable(2848);
-        GL11.glDisable(2929);
-        GL11.glDisable(3553);
-        GL11.glBlendFunc(770, 771);
-        GL11.glLineWidth(1.5F);
-        float DISTANCE = this.mc.thePlayer.getDistanceToEntity(player);
-        if (DISTANCE <= 200.0F) {
-            GL11.glColor3f(1.0F, DISTANCE / 40.0F, 0.0F);
-        }
+			GL11.glEnable(GL11.GL_LINE_SMOOTH);
+			GL11.glDisable(GL11.GL_DEPTH_TEST);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			GL11.glDisable(GL11.GL_TEXTURE_2D);
+			GL11.glDepthMask(false);
+			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glLineWidth(1.25F);
+			for(Object entities: Minecraft.getMinecraft().theWorld.loadedEntityList){
+				if (entities != Minecraft.getMinecraft().thePlayer && entities != null){
+					if (entities instanceof EntityPlayer && !((EntityPlayer) entities).isDead && !((EntityPlayer) entities).isInvisible()){ //Add EntityMob also if you want to lol.
+						EntityPlayer entity = (EntityPlayer)entities;
+						float distance = Minecraft.getMinecraft().renderViewEntity.getDistanceToEntity(entity);
+						double posX = ((entity.lastTickPosX + (entity.posX - entity.lastTickPosX) - RenderManager.renderPosX));
+						double posY = ((entity.lastTickPosY + 1.4 + (entity.posY - entity.lastTickPosY) - RenderManager.renderPosY));
+						double posZ = ((entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) - RenderManager.renderPosZ));
 
-        GL11.glLoadIdentity();
-        boolean bobbing = this.mc.gameSettings.viewBobbing;
-        this.mc.gameSettings.viewBobbing = false;
-        JReflectUtility.orientCamera(JReflectUtility.getRenderPartialTicks());
-        GL11.glBegin(3);
-        GL11.glVertex3d(0.0D, (double)this.mc.thePlayer.getEyeHeight(), 0.0D);
-        GL11.glVertex3d(x, y, z);
-        GL11.glVertex3d(x, y + (double)player.getEyeHeight(), z);
-        GL11.glEnd();
-        this.mc.gameSettings.viewBobbing = bobbing;
-        GL11.glEnable(3553);
-        GL11.glEnable(2929);
-        GL11.glDisable(2848);
-        GL11.glDisable(3042);
-        GL11.glPopMatrix();
+							if (distance <= 6F){
+								GL11.glColor3f(1.0F, 0.0F, 0.0F);
+							}
+							else if (distance <= 96F){
+								GL11.glColor3f(1.0F, (distance / 100F), 0.0F);
+							}
+							else if (distance > 96F){
+								GL11.glColor3f(0.1F, 0.6F, 255.0F);
+							}
+
+
+						GL11.glBegin(GL11.GL_LINE_LOOP);
+						GL11.glVertex3d(0, 0, 0);
+						GL11.glVertex3d(posX, posY, posZ);
+						GL11.glEnd();
+					}
+				}
+			}
+
+			GL11.glDisable(GL11.GL_BLEND);
+			GL11.glDepthMask(true);
+			GL11.glEnable(GL11.GL_TEXTURE_2D);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			GL11.glEnable(GL11.GL_DEPTH_TEST);
+			GL11.glDisable(GL11.GL_LINE_SMOOTH);
+			GL11.glPopMatrix();
+
+		}
+		catch(Exception e2){}
+
+
     }
+    
 }

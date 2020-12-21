@@ -8,7 +8,7 @@ import com.darkmagician6.eventapi.EventTarget;
 
 
 public class Step extends Module {
-    public Value<Double> height = new Value<Double>("Step_height", 2.0d,2.0d,5.0d,0.5d);
+    public Value<Double> height = new Value<Double>("Step_height", 2.0d,1.0d,5.0d,0.5d);
 
     public Step() {
         super("Step","Step", Category.MOVEMENT);

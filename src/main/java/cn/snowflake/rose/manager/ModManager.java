@@ -1,8 +1,8 @@
 package cn.snowflake.rose.manager;
 
-import cn.snowflake.rose.friend.Friend;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.mod.mods.COMBAT.*;
+import cn.snowflake.rose.mod.mods.FORGE.EIOXpGrab;
 import cn.snowflake.rose.mod.mods.MOVEMENT.*;
 import cn.snowflake.rose.mod.mods.PLAYER.*;
 import cn.snowflake.rose.mod.mods.MOVEMENT.Teleport;
@@ -13,7 +13,7 @@ import cn.snowflake.rose.mod.mods.WORLD.*;
 import java.util.ArrayList;
 
 public class ModManager {
-    public static ArrayList<Module> modList = new ArrayList();
+    public static ArrayList<Module> modList = new ArrayList<Module>();
 
     public ModManager() {
         //COMBAT
@@ -33,6 +33,7 @@ public class ModManager {
         addMod(new Sprint());
         addMod(new AirJump());
         addMod(new Fly());
+        addMod(new TargetStrafe());
         addMod(new Speed());
 //        addMod(new Scaffold());
         addMod(new NoFall());
@@ -40,13 +41,15 @@ public class ModManager {
         addMod(new Step());
         //RENDER
         addMod(new HUD());
+        addMod(new ArrowESP());
+        addMod(new CrossHair());
         addMod(new NoHurtcam());
         //addMod(new Animation());
         addMod(new FullBright());
         addMod(new ItemESP());
 
         addMod(new ClickGui());
-//        addMod(new Tracer());
+        addMod(new Tracer());
         addMod(new Chams());
         addMod(new ViewClip());
         addMod(new ESP2D());
@@ -77,6 +80,12 @@ public class ModManager {
         addMod(new MCF());
         addMod(new IRC());
         addMod(new NoCommand());
+        addMod(new Plugins());
+        
+        
+        //FORGE
+        addMod(new EIOXpGrab());
+        
     }
 
 

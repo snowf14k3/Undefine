@@ -2,6 +2,7 @@ package cn.snowflake.rose.mod.mods.MOVEMENT;
 
 import cn.snowflake.rose.events.impl.EventMove;
 import cn.snowflake.rose.events.impl.EventUpdate;
+import cn.snowflake.rose.manager.ModManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.PlayerUtil;
@@ -149,6 +150,10 @@ public class Speed extends Module {
                 this.setMotion(e, this.speed * 1.5d);
                 ++this.stage;
             }
+        }
+        TargetStrafe ts = (TargetStrafe) ModManager.getModByName("TargetStrafe");
+        if (ts.isEnabled()){
+            ts.doStrafe(e,speed);
         }
     }
 

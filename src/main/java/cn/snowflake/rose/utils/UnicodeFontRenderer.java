@@ -22,7 +22,7 @@ import net.minecraft.util.ResourceLocation;
  * 下午5:53:19 2019
  */
 public class UnicodeFontRenderer extends FontRenderer {
-    public HashMap<String, Float> widthMap = new HashMap();//储存string的长度
+    public HashMap<String, Float> widthMap = new HashMap<String, Float>();//储存string的长度
     private final UnicodeFont font;
     public int[] colorCode;
 
@@ -34,11 +34,10 @@ public class UnicodeFontRenderer extends FontRenderer {
         super(Minecraft.getMinecraft().gameSettings, new ResourceLocation("textures/font/ascii.png"), Minecraft.getMinecraft().getTextureManager(), false);
         this.font = new UnicodeFont(awtFont);
         this.font.addAsciiGlyphs();
-        this.font.addGlyphs(22, 255);//加载的字体数 调试时使用
-//        this.font.addGlyphs(22, 65535);//加载的字体数 调试时不用
+        this.font.addGlyphs(22, 255);
         this.colorCode = new int[32];
 
-        this.font.getEffects().add((Object)new ColorEffect(Color.WHITE));
+        this.font.getEffects().add(new ColorEffect(Color.WHITE));
         try {
             this.font.loadGlyphs();//
         } catch (SlickException exception) {
@@ -48,7 +47,22 @@ public class UnicodeFontRenderer extends FontRenderer {
         this.FONT_HEIGHT = this.font.getHeight(alphabet) / 2;
     }
 
+    public UnicodeFontRenderer(Font awtFont,boolean chinese) {
+        super(Minecraft.getMinecraft().gameSettings, new ResourceLocation("textures/font/ascii.png"), Minecraft.getMinecraft().getTextureManager(), false);
+        this.font = new UnicodeFont(awtFont);
+        this.font.addAsciiGlyphs();
+        this.font.addGlyphs(22, 35535);//加载的字体数 调试时不用
+        this.colorCode = new int[32];
 
+        this.font.getEffects().add(new ColorEffect(Color.WHITE));
+        try {
+            this.font.loadGlyphs();//
+        } catch (SlickException exception) {
+            throw new RuntimeException((Throwable)exception);//抛出异常
+        }
+        String alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789";
+        this.FONT_HEIGHT = this.font.getHeight(alphabet) / 2;
+    }
     /**
      *
      * @param string
@@ -56,7 +70,7 @@ public class UnicodeFontRenderer extends FontRenderer {
      */
     public int GetLength(String string) {
         if(this.widthMap.containsKey(string)) {
-            return ((Float)this.widthMap.get(string)).intValue();
+            return this.widthMap.get(string).intValue();
         } else {
             float width = (float)(this.font.getWidth(string) / 2);
             this.widthMap.put(string, Float.valueOf(width));

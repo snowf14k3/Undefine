@@ -4,42 +4,39 @@ package cn.snowflake.rose.events.impl;
 import com.darkmagician6.eventapi.types.EventType;
 import com.darkmagician6.eventapi.events.Cancellable;
 import com.darkmagician6.eventapi.events.Event;
-import net.minecraft.client.Minecraft;
-import net.minecraft.network.play.client.C03PacketPlayer;
 
 public class EventMotion implements Event, Cancellable
 {
-    public double y;
-    public float yaw;
-    public float pitch;
-    public boolean onGround;
+    public static double y;
+    public static float yaw;
+    public static float pitch;
+    public static boolean onGround;
     public boolean cancel;
     public EventType type;
 
     public boolean isCancel() {
         return cancel;
     }
-    public EventMotion(final double y, float yaw, float pitch) {
-        super();
-        this.y = y;
-        this.yaw = yaw;
-        this.pitch = pitch;
+    public EventMotion(double y, float yaw, float pitch) {
+        EventMotion.y = y;
+        EventMotion.yaw = yaw;
+        EventMotion.pitch = pitch;
         this.type = EventType.PRE;
     }
-    public EventMotion(final double y, float yaw, float pitch, boolean onGround) {
-        super();
-        this.y = y;
-        this.yaw = yaw;
-        this.pitch = pitch;
-        this.onGround = onGround;
+    public EventMotion(double y, float yaw, float pitch, boolean onGround) {
+        EventMotion.y = y;
+        EventMotion.yaw = yaw;
+        EventMotion.pitch = pitch;
+        EventMotion.onGround = onGround;
         this.type = EventType.PRE;
     }
+
 
     public EventType getEventType() {
         return this.type;
     }
 
-    public EventMotion(final EventType type) {
+    public EventMotion(EventType type) {
         this.type = type;
     }
 
@@ -53,44 +50,40 @@ public class EventMotion implements Event, Cancellable
     }
 
     @Override
-    public void setCancelled(final boolean cancel) {
+    public void setCancelled(boolean cancel) {
         this.cancel = cancel;
     }
 
     public double getY() {
-        return this.y;
+        return EventMotion.y;
     }
 
-    public void setY(final double y) {
-        this.y = y;
+    public void setY(double y) {
+        EventMotion.y = y;
     }
 
     public float getYaw() {
-        return this.yaw;
+        return EventMotion.yaw;
     }
 
-    public void setYaw(final float yaw) {
-        Minecraft.getMinecraft().getNetHandler().addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(yaw, Minecraft.getMinecraft().thePlayer.rotationPitch, Minecraft.getMinecraft().thePlayer.onGround));
-
-        this.yaw = yaw;
+    public void setYaw(float yaw) {
+        EventMotion.yaw = yaw;
     }
 
     public float getPitch() {
-        return this.pitch;
+        return EventMotion.pitch;
     }
 
-    public void setPitch(final float pitch) {
-        Minecraft.getMinecraft().getNetHandler().addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(Minecraft.getMinecraft().thePlayer.rotationYaw, pitch, Minecraft.getMinecraft().thePlayer.onGround));
-
-        this.pitch = pitch;
+    public void setPitch(float pitch) {
+        EventMotion.pitch = pitch;
     }
 
     public boolean isOnGround() {
-        return this.onGround;
+        return EventMotion.onGround;
     }
 
-    public void setOnGround(final boolean onGround) {
-        this.onGround = onGround;
+    public void setOnGround(boolean onGround) {
+        EventMotion.onGround = onGround;
     }
 
 }

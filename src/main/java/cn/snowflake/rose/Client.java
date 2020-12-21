@@ -31,12 +31,19 @@ import net.minecraft.network.play.client.C17PacketCustomPayload;
 import org.apache.logging.log4j.LogManager;
 import org.lwjgl.opengl.Display;
 import org.newdawn.slick.AngelCodeFont;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.ClassNode;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.awt.image.BufferedImage;
+import java.io.*;
+import java.lang.annotation.Annotation;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -49,6 +56,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.List;
+import java.util.zip.GZIPOutputStream;
 
 public class Client {
     public static String shitname =null;
@@ -74,7 +82,9 @@ public class Client {
         DEBUG = username.equalsIgnoreCase("SnowFlake");
         this.init = true;
         instance = this;
-        if (!(HWIDUtils.version.contains(Client.version) && ShitUtil.contains(HWIDUtils.version,Client.version)) ){
+        if (!(HWIDUtils.version.contains(Client.version)
+                && ShitUtil.contains(HWIDUtils.version,Client.version)) )
+        {
             try {
                 Class clazz = Class.forName("javax.swing.JOptionPane");
                 String str1 = new String("未通过版本验证！请更新你滴版本");
@@ -99,25 +109,35 @@ public class Client {
             }
         }
         if (ManagementFactory.getRuntimeMXBean().getBootClassPath().split(";")[0].contains("\\lib\\"))
-            if (HWIDUtils.version.contains(Client.version) && ShitUtil.contains(HWIDUtils.version,Client.version) && shitname == null || this.username == null && true && true && !false && !false && HWIDUtils.https.contains(HWIDUtils.getHWID()) &&  ShitUtil.contains(HWIDUtils.https, AntiReflex.getHWID())) {
+            if (HWIDUtils.version.contains(Client.version)
+                    && ShitUtil.contains(HWIDUtils.version,Client.version)
+                    && shitname == null
+                    || this.username == null && true && true && !false && !false
+                    && HWIDUtils.https.contains(HWIDUtils.getHWID())
+                    &&  ShitUtil.contains(HWIDUtils.https, AntiReflex.getHWID())
+            ) {
                 for (int i = 0; i < 9999; i++) {
                     LogManager.getLogger().error("NMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSL");
                 }
                 Display.setTitle("NMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSL");
             }else{
-                this.modManager = new ModManager();
+                if (ShitUtil.contains(HWIDUtils.version,Client.version)) {
+                    this.inGameList = checkFile();
+                    this.fontManager = new FontManager();
+                }
+                if (ShitUtil.contains(HWIDUtils.https, AntiReflex.getHWID())) {
+                    this.modManager = new ModManager();
 
-                this.commandMgr = new CommandManager();//Command
+                    this.commandMgr = new CommandManager();//Command
 
-                this.fileMgr = new FileManager();
-
+                    this.fileMgr = new FileManager();
+                }
                 if (Xray.block.size() == 0) {
                     for (Integer id : Xray.blocks) {
                         Block block = Block.getBlockById(id);
                         Xray.block.add(block);
                     }
                 }
-                inGameList = checkFile();
 
                 loaded = true;
 
@@ -160,13 +180,25 @@ public class Client {
         return new SkeetClickGui();
     }
 
+
+
+
+    @EventTarget
+    public void onupdate(EventTick e) throws NoSuchFieldException, IllegalAccessException {
+        if (Minecraft.getMinecraft().thePlayer == null && Minecraft.getMinecraft().theWorld == null){
+            Objects.requireNonNull(ModManager.getModByName("ServerCrasher")).set(false);
+            Objects.requireNonNull(ModManager.getModByName("Aura")).set(false);
+            Objects.requireNonNull(ModManager.getModByName("TPAura")).set(false);
+            Objects.requireNonNull(ModManager.getModByName("Blink")).set(false);
+            Objects.requireNonNull(ModManager.getModByName("Freecam")).set(false);
+        }
+    }
+    public Set<String> inGameList;
+
     public static Set<String> checkFile() {
         Set<String> fileHash = new HashSet<>();
         LaunchClassLoader lwClassloader = (LaunchClassLoader) Client.class.getClassLoader();
         for (URL source : lwClassloader.getSources()) {
-            if (DEBUG){
-                LogManager.getLogger().info("loaded jar : "+source);
-            }
             String hash = getFileHash(source);
             if (hash != null) fileHash.add(hash);
         }
@@ -206,89 +238,124 @@ public class Client {
             throw new RuntimeException(e);
         }
     }
-
-
-    @EventTarget
-    public void onupdate(EventUpdate e) throws NoSuchFieldException, IllegalAccessException {
-        ArrayList<URL> urlArrayList = (ArrayList<URL>) Objects.requireNonNull(Agent.getLaunchClassLoader()).getClass().getDeclaredField("path").get(Agent.getLaunchClassLoader());
-        System.out.println("?????????" + urlArrayList);
-        if (Minecraft.getMinecraft().thePlayer == null && Minecraft.getMinecraft().theWorld == null){
-            Objects.requireNonNull(ModManager.getModByName("ServerCrasher")).set(false);
-            Objects.requireNonNull(ModManager.getModByName("Aura")).set(false);
-            Objects.requireNonNull(ModManager.getModByName("TPAura")).set(false);
-        }
-    }
-
+    
     @EventTarget
     public void onFml(EventFMLChannels eventFMLChannels){
-//        Constructor constructor = null;// 1.3猫反
-//        try {
-//            constructor = eventFMLChannels.iMessage.getClass().getConstructor(List.class);
-//        } catch (NoSuchMethodException e) {
-//        }
-//        if (constructor != null
-//                && eventFMLChannels.iMessage.getClass().getInterfaces()[0].equals(IMessage.class)
-//                && eventFMLChannels.iMessage.getClass().getInterfaces().length == 1
-//                && eventFMLChannels.iMessage.getClass().getDeclaredFields().length == 1
-//                && eventFMLChannels.iMessage.getClass().getDeclaredFields()[0].toString().contains("java.util.List")
-//        ){
-//            eventFMLChannels.setCancelled(true); //     拦截检测注入包
-//            try {
-//                eventFMLChannels.sendToServer(eventFMLChannels.iMessage.getClass().getDeclaredConstructor().newInstance());//发送无参packet
-//            } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-//            }
-//        }
-        int catversion =2;
-
-//        if (eventFMLChannels.iMessage.getClass().toString().contains("CPacketHelloReply")){// get shit of message
-//            eventFMLChannels.setCancelled(true);
-//            try {
-//                Field fsalt = eventFMLChannels.iMessage.getClass().getDeclaredField("salt");
-//                fsalt.setAccessible(true);
-//                Field fversion = eventFMLChannels.iMessage.getClass().getDeclaredField("version");
-//                fversion.setAccessible(true);
-//                salt = fsalt.getByte(eventFMLChannels.iMessage);
-//                catversion = fversion.getInt(eventFMLChannels.iMessage);
-//                if (DEBUG){
-//                    System.out.println("反作弊版本 : "+catversion + " salt值: " + salt);
-//                }
-//            } catch (NoSuchFieldException | IllegalAccessException e) {
-//                e.printStackTrace();
-//            }
-//        }
-
-        if (eventFMLChannels.iMessage.getClass().toString().contains("CPacketInjectDetect")){// 1.2.7 以下猫反
-            eventFMLChannels.setCancelled(true); //     拦截检测注入包
-            List<String> list = new ArrayList();
-            try {
-                eventFMLChannels.sendToServer(eventFMLChannels.iMessage.getClass().getDeclaredConstructor(List.class).newInstance(list));//发送无参packet
-                 LogManager.getLogger().info("拦截成功注入检测包,已发送为无注入class");
-            } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (eventFMLChannels.iMessage.getClass().toString().contains("CPacketFileHash")){
-            eventFMLChannels.setCancelled(true);
-            try {
-                Field field = eventFMLChannels.iMessage.getClass().getDeclaredField("salt");
-                field.setAccessible(true);
-                try {
-                    eventFMLChannels.sendToServer(eventFMLChannels.iMessage.getClass().getDeclaredConstructor(List.class,byte.class).newInstance(new ArrayList<String>(inGameList),field.getByte(eventFMLChannels.iMessage)));
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
+        if (eventFMLChannels.iMessage.getClass().toString().contains("cac")
+                || eventFMLChannels.iMessage.getClass().toString().contains("luohuayu.anticheat.message")) {
+            try {//filehash and classfound check
+                Constructor<? extends IMessage> filehash = eventFMLChannels.iMessage.getClass().getDeclaredConstructor(
+                        List.class,byte.class);
+                if (filehash != null){
+                    eventFMLChannels.setCancelled(true);
+                    Field[] fields = eventFMLChannels.iMessage.getClass().getDeclaredFields();
+                    Field fieldlist = fields[0];
+                    Field salt = fields[1];
+                    salt.setAccessible(true);
+                    fieldlist.setAccessible(true);
+                    if (salt != null && fieldlist !=null){
+                    	try {
+							List<String> list = (List<String>) fieldlist.get(eventFMLChannels.iMessage);
+							System.out.println(list);
+							if (list.size() > 10) {
+								 eventFMLChannels.sendToServer((IMessage) filehash.newInstance(new ArrayList<>(inGameList),
+										 salt.getByte(eventFMLChannels.iMessage)));
+							}else {
+								 eventFMLChannels.sendToServer((IMessage) filehash.newInstance(new ArrayList<>(list),
+										 salt.getByte(eventFMLChannels.iMessage)));
+							}
+						} catch (Exception e1) {
+                        }
+                    }
                 }
-                LogManager.getLogger().info("修改成功mods检测包,已设置为无异常列表");
-            } catch (NoSuchFieldException | IllegalAccessException | NoSuchMethodException e) {
-                e.printStackTrace();
+            } catch (NoSuchMethodException eee) {
+                List<String> list = new ArrayList<String>();
+                try {//injectdetect check
+                    Constructor<? extends IMessage> injectdetect = eventFMLChannels.iMessage.getClass().getDeclaredConstructor(
+                            List.class);
+                    if (injectdetect != null) {
+                        try {
+                            eventFMLChannels.setCancelled(true);
+                            eventFMLChannels.sendToServer((IMessage) injectdetect.newInstance(list));
+                        } catch (InstantiationException e) {
+                        } catch (IllegalAccessException e) {
+                        } catch (InvocationTargetException e) {
+                        }
+                    }
+                } catch (NoSuchMethodException e) {
+                    try {// screenhost check
+                        Constructor<? extends IMessage> screenhost = eventFMLChannels.iMessage.getClass().getDeclaredConstructor(
+                                boolean.class, byte[].class); 
+                        if (screenhost != null) {
+                            eventFMLChannels.setCancelled(true);
+                            ByteArrayInputStream in = new ByteArrayInputStream(screenshot());
+                            try {
+                                byte[] networkData = new byte[32763];
+                                int size;
+                                while ((size = in.read(networkData)) >= 0) {
+                                    try {
+                                        if (networkData.length == size) {
+                                            eventFMLChannels.sendToServer((IMessage) screenhost.newInstance(
+                                                    in.available() == 0, networkData));
+                                        } else {
+                                            eventFMLChannels.sendToServer((IMessage) screenhost.newInstance(
+                                                    in.available() == 0, Arrays.copyOf(networkData, size)));
+                                        }
+                                    } catch (InstantiationException instantiationException) {
+                                    } catch (IllegalAccessException illegalAccessException) {
+                                    } catch (InvocationTargetException invocationTargetException) {
+                                    }
+                                }
+                            } catch (IOException evv) {
+                            }
+                        }
+                    } catch (NoSuchMethodException noSuchMethodException) {
+                    	try {	//lighting and transparentTexture check
+							Constructor<? extends IMessage> datacheck = eventFMLChannels.iMessage.getClass().getDeclaredConstructor(
+							        boolean.class, boolean.class);
+							if(datacheck != null) {
+								eventFMLChannels.setCancelled(true);
+								try {
+									eventFMLChannels.sendToServer((IMessage) datacheck.newInstance(
+											false, false));
+								} catch (Exception e1) {
+									e1.printStackTrace();
+								} 
+							}
+						} catch (NoSuchMethodException e1) {
+							
+						} 
+                    }
+                }
             }
         }
-
-
     }
 
-    public Set<String> inGameList;
+    public static byte[] screenshot() {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try {
+            GZIPOutputStream gzipOutputStream = new GZIPOutputStream(out);
+            JFileChooser jf = new JFileChooser();
+            jf.setCurrentDirectory(new File(Minecraft.getMinecraft().mcDataDir.getParent()));
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("\u6587\u4ef6(*.png,*.jpg,*.jpeg,*.bmp)", new String[]{"png","jpg","jpeg","bmp"});
+            jf.setFileFilter(filter);
+            int option = jf.showOpenDialog(jf);
+            jf.setDialogTitle("\u8bf7\u5feb\u901f\u9009\u62e9\u4f60\u8981\u53d1\u9001\u7684\u622a\u56fe\u0028\u5c0f\u4e8e\u0031\u0036\u006d\u0029");
+            if (option == 0) {
+                File file = jf.getSelectedFile();
+                if (file.exists()) {
+                    try {
+                        BufferedImage bufferedImage = ImageIO.read(new FileInputStream(file));
+                        ImageIO.write(bufferedImage, "png", gzipOutputStream);
+                    } catch (IOException ioException) {
+                    }
+                }
+            }
+            gzipOutputStream.flush();
+            gzipOutputStream.close();
+        } catch (Exception ignored) {}
+
+        return out.toByteArray();
+    }
 
 }

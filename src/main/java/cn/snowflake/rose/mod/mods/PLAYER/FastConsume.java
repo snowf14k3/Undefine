@@ -14,7 +14,6 @@ import java.util.Random;
 
 public class FastConsume extends Module {
     private Value mode = new Value("FastConsume", "Mode", 0);
-    private Value<Boolean> allitem = new Value<>("FastConsume_AllItem",false);
     private boolean send;
     private TimeHelper timer = new TimeHelper();
     private Random random = new Random();
@@ -29,7 +28,8 @@ public class FastConsume extends Module {
     @EventTarget
     public void onUpdate(EventMotion event) {
         if (event.getEventType() == EventType.PRE) {
-            if ((allitem.getValueState() || this.mc.thePlayer.isEating()) && !(this.mc.thePlayer.getHeldItem().getItem() instanceof ItemBow)) {
+            if (mc.gameSettings.keyBindUseItem.getIsKeyPressed()
+            ) {
                 if (this.send && this.timer.isDelayComplete((long) (1000 + this.random.nextInt(100)))) {
                     for (int i = 0; i < (this.mode.isCurrentMode("NCP") ? 17 : (this.mode.isCurrentMode("AAC") ? 6 : 50)); ++i) {
                         this.mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer(true));

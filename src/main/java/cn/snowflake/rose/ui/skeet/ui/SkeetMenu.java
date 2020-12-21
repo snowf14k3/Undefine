@@ -286,7 +286,7 @@ extends UI {
                         x1 = 0.5f;
                         y += 12.0f;
                     }
-                    for (Value val : Value.list) {
+                    for (Value<?> val : Value.list) {
                     	if(val.getValueName().split("_")[0].equalsIgnoreCase(module.getName())) {
                         	if (val.isValueMode) {
                         		if (x1 == 44.5f) {
@@ -296,7 +296,7 @@ extends UI {
                         	}  
                     	}  
                     }
-                    for (Value val : Value.list) {
+                    for (Value<?> val : Value.list) {
                     	if(val.getValueName().split("_")[0].equalsIgnoreCase(module.getName())) {
                     		if (val.isValueMode) {
                            		categoryPanel.dropdownBoxes.add((DropdownBox)new DropdownBox(val, xOff + x1, yOff + y + 4.0f, categoryPanel));
@@ -336,7 +336,7 @@ extends UI {
                 if (!module.openValues) {
                     categoryPanel.buttons.add((Button)new Button(categoryPanel, module.getName(), xOff + 0.5f, yOff + 10.0f, module));
                     float x1 = 0.5f;
-                    for (Value val : Value.list) {
+                    for (Value<?> val : Value.list) {
                     	if(val.getValueName().split("_")[0].equalsIgnoreCase(module.getName())) {
                         	String sname = val.getValueName().split("_")[1];
                         	if (val.isValueBoolean) {
@@ -353,15 +353,15 @@ extends UI {
                     x1 = 0.5f;
                     int tY = 0;
                     ArrayList<Value> sliders = new ArrayList();
-                    for (Value val : Value.list) {
+                    for (Value<?> val : Value.list) {
                     	if(val.getValueName().split("_")[0].equalsIgnoreCase(module.getName())) {
                            	if (val.isValueDouble) {
-                        		sliders.add((Value)val);
+                        		sliders.add(val);
                         	}
                     	}
                     }
                     sliders.sort(Comparator.comparing(Value::getValueName));
-                    for (Value setting : sliders) {
+                    for (Value<?> setting : sliders) {
                         categoryPanel.sliders.add((Slider)new Slider(categoryPanel, xOff + x1 + 1.0f, yOff + y + 4.0f, setting));
                         tY = 12;
                         if ((x1 += 44.0f) != 88.5f) continue;
@@ -369,7 +369,7 @@ extends UI {
                         x1 = 0.5f;
                         y += 12.0f;
                     }
-                    for (Value val : Value.list) {
+                    for (Value<?> val : Value.list) {
                     	if(val.getValueName().split("_")[0].equalsIgnoreCase(module.getName())) {
                         	if (val.isValueMode) {
                                 if (x1 == 44.5f) {
@@ -436,15 +436,15 @@ extends UI {
                     x1 = 0.5f;
                     int tY = 0;
                     ArrayList<Value> sliders = new ArrayList();
-                    for (Value val : Value.list) {
+                    for (Value<?> val : Value.list) {
                     	if(val.getValueName().split("_")[0].equalsIgnoreCase(module.getName())) {
                          	if (val.isValueDouble) {
-                       		 sliders.add((Value)val);
+                       		 sliders.add(val);
                        	}  
                     	}
                     }
                     sliders.sort(Comparator.comparing(Value::getValueName));
-                    for (Value setting : sliders) {
+                    for (Value<?> setting : sliders) {
                         categoryPanel.sliders.add((Slider)new Slider(categoryPanel, xOff + x1 + 1.0f, yOff + y + 4.0f, setting));
                         tY = 12;
                         if ((x1 += 44.0f) != 88.5f) continue;
@@ -452,7 +452,7 @@ extends UI {
                         x1 = 0.5f;
                         y += 12.0f;
                     }
-                    for (Value val : Value.list) {
+                    for (Value<?> val : Value.list) {
                     	if(val.getValueName().split("_")[0].equalsIgnoreCase(module.getName())) {
                         	if (val.isValueMode) {
                                 if (x1 == 44.5f) {

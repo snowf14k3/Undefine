@@ -33,7 +33,6 @@ public class ChestESP extends Module {
     public ChestESP() {
         super("ChestESP", "Chest ESP",Category.RENDER);
         this.mode.addValue("ESP");
-        this.mode.addValue("Model");
     }
 
     @EventTarget

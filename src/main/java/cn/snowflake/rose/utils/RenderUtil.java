@@ -788,4 +788,72 @@ public enum	 RenderUtil {
         boolean result = GLU.gluProject((float)x, (float)y, (float)z, modelView, projection, viewport, screenCoords);
         return result?new double[]{(double)screenCoords.get(0), (double)((float) Display.getHeight() - screenCoords.get(1)), (double)screenCoords.get(2)}:null;
     }
+    public static void enableGL2D() {
+        GL11.glDisable(2929);
+        GL11.glEnable(3042);
+        GL11.glDisable(3553);
+        GL11.glBlendFunc(770, 771);
+        GL11.glDepthMask(true);
+        GL11.glEnable(2848);
+        GL11.glHint(3154, 4354);
+        GL11.glHint(3155, 4354);
+    }
+
+    public static void disableGL2D() {
+        GL11.glEnable(3553);
+        GL11.glDisable(3042);
+        GL11.glEnable(2929);
+        GL11.glDisable(2848);
+        GL11.glHint(3154, 4352);
+        GL11.glHint(3155, 4352);
+    }
+    public static void drawESPCircle(float cx,float cy,float r,float n,Color color) {
+        GL11.glPushMatrix();
+        cx *= 2.0;
+        cy *= 2.0;
+        double b = 6.2831852 / n;
+        double p = Math.cos(b);
+        double s = Math.sin(b);
+        double x = r *= 2.0;
+        double y = 0.0;
+        enableGL2D();
+        GL11.glScalef(0.5F, 0.5F, 0.5F);
+        GlStateManager.color(0,0,0);
+        GlStateManager.resetColor();
+        glColor(color);
+        GL11.glBegin(2);
+        int ii = 0;
+        while (ii < n) {
+            GL11.glVertex2f((float)x + cx,(float) y + cy);
+            double t = x;
+            x = p * x - s * y;
+            y = s * t + p * y;
+            ii++;
+        }
+        GL11.glEnd();
+        GL11.glScalef(2.0F, 2.0F, 2.0F);
+        disableGL2D();
+        GlStateManager.color(1, 1, 1, 1);
+        GL11.glPopMatrix();
+    }
+    public static void glColor(final Color color) {
+        final float red = color.getRed() / 255F;
+        final float green = color.getGreen() / 255F;
+        final float blue = color.getBlue() / 255F;
+        final float alpha = color.getAlpha() / 255F;
+
+        GlStateManager.color(red, green, blue, alpha);
+    }
+    public static void drawBordRect(double x, double y, double x1, double y1, double width, int internalColor, int borderColor) {
+        drawRect(x + width, y + width, x1 - width, y1 - width, internalColor);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        drawRect(x + width, y, x1 - width, y + width, borderColor);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        drawRect(x, y, x + width, y1, borderColor);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        drawRect(x1 - width, y, x1, y1, borderColor);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        drawRect(x + width, y1 - width, x1 - width, y1, borderColor);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+     }
 }

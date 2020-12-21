@@ -43,7 +43,7 @@ public class Freecam extends Module {
             this.oldentity = new EntityOtherPlayerMP(mc.theWorld, new GameProfile(new UUID(69L, 96L), "123"));
             this.oldentity.inventory = mc.thePlayer.inventory;
             this.oldentity.inventoryContainer = mc.thePlayer.inventoryContainer;
-            this.oldentity.setPositionAndRotation(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch);
+            this.oldentity.setPositionAndRotation(mc.thePlayer.posX, mc.thePlayer.posY - 1.5d, mc.thePlayer.posZ, mc.thePlayer.rotationYaw, mc.thePlayer.rotationPitch);
             this.oldentity.rotationYawHead = mc.thePlayer.rotationYawHead;
             this.oldentity.setHealth(19);
             mc.theWorld.addEntityToWorld(this.oldentity.getEntityId(), this.oldentity);

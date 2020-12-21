@@ -15,7 +15,11 @@ public class FastEat extends Module
 
     @EventTarget
     public void onUpdate(EventUpdate e) {
-        if (this.mc.thePlayer.isEating() && this.mc.thePlayer.getItemInUse() != null && this.mc.thePlayer.getItemInUse().getItem() instanceof ItemFood && this.mc.thePlayer.fallDistance < 3.0f) {
+        if (this.mc.thePlayer.isEating()
+                && this.mc.thePlayer.getItemInUse() != null
+                && this.mc.thePlayer.getItemInUse().getItem() instanceof ItemFood
+                && this.mc.thePlayer.fallDistance < 3.0f
+        ) {
             for (int i = 0; i < 8; ++i) {
                 this.mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer(this.mc.thePlayer.onGround));
             }
