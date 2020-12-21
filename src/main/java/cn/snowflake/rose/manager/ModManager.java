@@ -56,6 +56,7 @@ public class ModManager {
         addMod(new ChestESP());
         addMod(new BlockOverlay());
         addMod(new ESP());
+        addMod(new RearView());
         //PLAYER
         addMod(new NoSlow());
         addMod(new AutoTools());
