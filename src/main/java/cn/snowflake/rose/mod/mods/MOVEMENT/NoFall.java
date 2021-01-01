@@ -23,7 +23,7 @@ public class NoFall extends Module {
     public void OnPre(EventMotion e) {
         if(mode.isCurrentMode("onGround")) {
             if(mc.thePlayer.fallDistance > 2) {
-               mc.thePlayer.onGround = !mc.thePlayer.onGround;
+               e.setOnGround(true);
             }
         }
     }

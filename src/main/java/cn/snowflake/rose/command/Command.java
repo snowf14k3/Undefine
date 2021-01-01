@@ -5,7 +5,7 @@ import net.minecraft.client.Minecraft;
 public class Command {
     private String[] commands;
     private String args;
-    Minecraft mc = Minecraft.getMinecraft();
+    public Minecraft mc = Minecraft.getMinecraft();
     public Command(String[] commands) {
         this.commands = commands;
     }

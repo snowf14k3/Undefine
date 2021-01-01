@@ -6,7 +6,6 @@ import cn.snowflake.rose.events.impl.EventFMLChannels;
 import cn.snowflake.rose.events.impl.EventMotion;
 import cn.snowflake.rose.events.impl.EventMove;
 import cn.snowflake.rose.events.impl.EventPushOut;
-import cn.snowflake.rose.mod.mods.PLAYER.NoSlow;
 import cn.snowflake.rose.mod.mods.WORLD.Xray;
 import cn.snowflake.rose.utils.RotationUtil;
 import com.darkmagician6.eventapi.EventManager;

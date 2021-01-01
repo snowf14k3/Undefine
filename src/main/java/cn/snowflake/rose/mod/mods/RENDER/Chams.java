@@ -2,6 +2,7 @@ package cn.snowflake.rose.mod.mods.RENDER;
 
 import cn.snowflake.rose.Client;
 import cn.snowflake.rose.events.impl.EventRenderPlayer;
+import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.manager.FriendManager;
 import cn.snowflake.rose.manager.ModManager;
 import cn.snowflake.rose.mod.Category;
@@ -30,6 +31,7 @@ public class Chams extends Module {
         super("Chams","Chams", Category.RENDER);
     }
 
+    public static boolean chams;
 
     @Override
     public void onDisable() {
@@ -39,6 +41,11 @@ public class Chams extends Module {
     @Override
     public void onEnable() {
         super.onEnable();
+    }
+
+    @EventTarget
+    public void onupdate(EventUpdate e){
+        chams = this.isEnabled();
     }
 
 //    @EventTarget

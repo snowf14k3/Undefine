@@ -8,7 +8,7 @@ import cn.snowflake.rose.manager.FontManager;
 import cn.snowflake.rose.manager.ModManager;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.mod.mods.MOVEMENT.Jesus;
-import cn.snowflake.rose.mod.mods.PLAYER.NoSlow;
+import cn.snowflake.rose.mod.mods.PLAYER.NoSlowDown;
 import cn.snowflake.rose.mod.mods.RENDER.Chams;
 import cn.snowflake.rose.mod.mods.RENDER.ChestESP;
 import cn.snowflake.rose.mod.mods.RENDER.NoHurtcam;
@@ -108,13 +108,13 @@ public class MinecraftHook {
     }
 
     public static void chamsHook1(Object object){
-        if (ModManager.getModByName("Chams").isEnabled() && object instanceof EntityPlayer){
+        if (Chams.chams && object instanceof EntityPlayer){
             GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
             GL11.glPolygonOffset(1.0F, -2000000F);
         }
     }
     public static void chamsHook2(Object object){
-        if (Objects.requireNonNull(ModManager.getModByName("Chams")).isEnabled() && object instanceof EntityPlayer){
+        if (Chams.chams && object instanceof EntityPlayer){
             GL11.glPolygonOffset(1.0F, 2000000F);
             GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
         }
@@ -146,9 +146,9 @@ public class MinecraftHook {
         IntBuffer viewPort = GLAllocation.createDirectIntBuffer(16);
         FloatBuffer modelView = GLAllocation.createDirectFloatBuffer(16);
         FloatBuffer projectionPort = GLAllocation.createDirectFloatBuffer(16);
-        GL11.glGetFloat((int)2982, (FloatBuffer)modelView);
-        GL11.glGetFloat((int)2983, (FloatBuffer)projectionPort);
-        GL11.glGetInteger((int)2978, (IntBuffer)viewPort);
+        GL11.glGetFloat(2982, modelView);
+        GL11.glGetFloat(2983, projectionPort);
+        GL11.glGetInteger(2978, viewPort);
         ScaledResolution scaledResolution = new ScaledResolution(Minecraft.getMinecraft(),Minecraft.getMinecraft().displayWidth,Minecraft.getMinecraft().displayHeight);
         projection.updateMatrices(viewPort, modelView, projectionPort, (double)scaledResolution.getScaledWidth() / (double)Minecraft.getMinecraft().displayWidth, (double)scaledResolution.getScaledHeight() / (double)Minecraft.getMinecraft().displayHeight);
         EventRender3D er3 = new EventRender3D();
@@ -178,7 +178,7 @@ public class MinecraftHook {
     private static float cacheForward;
 
     public static boolean onNoSlowEnable2() {
-        return NoSlow.no;
+        return NoSlowDown.no;
     }
 
     public static boolean isSlow() {
@@ -196,7 +196,7 @@ public class MinecraftHook {
         if (!isSlow()) {
             return;
         }
-        if (NoSlow.no) {
+        if (NoSlowDown.no) {
             cacheStrafe = Minecraft.getMinecraft().thePlayer.movementInput.moveStrafe;
             cacheForward = Minecraft.getMinecraft().thePlayer.movementInput.moveForward;
         }
@@ -205,7 +205,7 @@ public class MinecraftHook {
         if (!isSlow()) {
             return;
         }
-        if (NoSlow.no) {
+        if (NoSlowDown.no) {
             Minecraft.getMinecraft().thePlayer.movementInput.moveStrafe = cacheStrafe;
             Minecraft.getMinecraft().thePlayer.movementInput.moveForward = cacheForward;
         }
@@ -235,9 +235,6 @@ public class MinecraftHook {
             for (Module mod : ModManager.getModList()) {
             	if (Minecraft.getMinecraft().currentScreen == null) {
                     if (mod.getKey() != (Keyboard.getEventKey() == 0 ? Keyboard.getEventCharacter() + 256 : Keyboard.getEventKey())) continue;
-                    mod.set(!mod.isEnabled());
-				}else if (!(Minecraft.getMinecraft().currentScreen instanceof GuiChat)){
-					if (mod.getGuikey() != (Keyboard.getEventKey() == 0 ? Keyboard.getEventCharacter() + 256 : Keyboard.getEventKey())) continue;
                     mod.set(!mod.isEnabled());
 				}
                 break;

@@ -53,7 +53,7 @@ public class ShitUtil {
     }
 
     public static void exit(int status) {
-        System.exit(status);
+
     }
 
 }

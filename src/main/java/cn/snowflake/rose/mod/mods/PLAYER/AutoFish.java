@@ -20,9 +20,7 @@ public class AutoFish extends Module {
     public AutoFish() {
         super("AutoFish","Auto Fish", Category.PLAYER);
     }
-    public void autoFish(S12PacketEntityVelocity ev) {
 
-    }
     @EventTarget
     public void onPacket(EventPacket e){
         S12PacketEntityVelocity packet = (S12PacketEntityVelocity) e.getPacket();
@@ -31,8 +29,8 @@ public class AutoFish extends Module {
                         if(packet.func_149411_d() == 0 && packet.func_149409_f() == 0 && packet.func_149410_e() < 0) {
                             Entity ev = mc.theWorld.getEntityByID(packet.func_149412_c());
                             if(ev instanceof EntityFishHook) {
-                                mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(-1, -1, -1, 255, (ItemStack)null, 0.0F, 0.0F, 0.0F));
-                                mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(-1, -1, -1, 255, (ItemStack)null, 0.0F, 0.0F, 0.0F));
+                                mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(-1, -1, -1, 255,mc.thePlayer.inventory.getCurrentItem(), 0.0F, 0.0F, 0.0F));
+                                mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(-1, -1, -1, 255,mc.thePlayer.inventory.getCurrentItem(), 0.0F, 0.0F, 0.0F));
                             }
                         }
                     }

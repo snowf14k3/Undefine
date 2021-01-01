@@ -3,6 +3,7 @@ package cn.snowflake.rose.mod.mods.RENDER;
 import cn.snowflake.rose.Client;
 import cn.snowflake.rose.asm.ClassTransformer;
 import cn.snowflake.rose.events.impl.EventRender2D;
+import cn.snowflake.rose.manager.ModManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.*;
@@ -90,7 +91,7 @@ public class HUD extends Module {
             String text2 = null;
             try {
                 text2 = JReflectUtility.getField(mc.getClass(), ClassTransformer.runtimeDeobfuscationEnabled ? "field_71470_ab": "debugFPS",true).getInt(mc) + " fps | " +result +" | " + server;
-                text = this.text.getText().toLowerCase().equalsIgnoreCase("flux") ? ("flux.today | " + text2 ) : this.text.getText().toLowerCase()+"client.cf | " +text2;
+                text = this.text.getText()+"\2472sense\247f | " +text2;
             } catch (IllegalAccessException illegalAccessException) {
                 illegalAccessException.printStackTrace();
             }
@@ -102,10 +103,19 @@ public class HUD extends Module {
             RenderUtil.drawBorderedRect(posX + .5, posY + .5, posX + width + 1.5, posY + height - .5, 0.5, new Color(40, 40, 40, 255).getRGB(), new Color(60, 60, 60, 255).getRGB(), true);
             RenderUtil.drawBorderedRect(posX + 2, posY + 2, posX + width, posY + height - 2, 0.5, new Color(22, 22, 22, 255).getRGB(), new Color(60, 60, 60, 255).getRGB(), true);
             RenderUtil.drawRect(posX + 2.5, posY + 2.5, posX + width - .5, posY + 4.5, new Color(9, 9, 9, 255).getRGB());
-            RenderUtil.drawGradientSideways(4, posY + 3, 4 + (width / 3), posY + 4, new Color(81, 149, 219, 255).getRGB(), new Color(180, 49, 218, 255).getRGB());
-            RenderUtil.drawGradientSideways(4 + (width / 3), posY + 3, 4 + ((width / 3) * 2), posY + 4, new Color(180, 49, 218, 255).getRGB(), new Color(236, 93, 128, 255).getRGB());
-            RenderUtil.drawGradientSideways(4 + ((width / 3) * 2), posY + 3, ((width / 3) * 3) + 1, posY + 4, new Color(236, 93, 128, 255).getRGB(), new Color(167, 171, 90, 255).getRGB());
-            Client.instance.fontManager.simpleton11.drawStringWithShadow(text, 4 + posX, 5 + posY, -1);
+
+            RenderUtil.drawGradientSideways(4, posY + 3, 4 + (width / 3), posY + 4,
+                    rainbow(100),
+                    rainbow(1000));
+            RenderUtil.drawGradientSideways(4 + (width / 3), posY + 3, 4 + ((width / 3) * 2), posY + 4,
+                    rainbow(1000),
+                    rainbow(1900));
+            RenderUtil.drawGradientSideways(4 + ((width / 3) * 2), posY + 3, ((width / 3) * 3) + 1, posY + 4,
+                    rainbow(1900),
+                    rainbow(2800));
+
+
+            Client.instance.fontManager.simpleton11.drawStringWithColor(text, 4 + posX, 5 + posY, -1,0);
 
 //            renderStringWave(name.substring(0,1), 7, 7, 1);
 //            font.drawStringWithColor(name.substring(1),9 + font.getStringWidth(name.substring(0,1)), 7, -1,0);
@@ -149,8 +159,10 @@ public class HUD extends Module {
         Color c = new Color((int)color);
         return new Color((float)c.getRed() / 255.0F * fade, (float)c.getGreen() / 255.0F * fade, (float)c.getBlue() / 255.0F * fade, (float)c.getAlpha() / 255.0F);
     }
+
     private void RenderArraylist() {
-        ArrayList<Module> mods = Client.instance.modManager.getModList();
+        ArrayList<Module> mods = new ArrayList<>(ModManager.getModList());
+
         ScaledResolution sr = new ScaledResolution(mc,mc.displayWidth,mc.displayHeight);
 //        FontRenderer font = this.font;
         UnicodeFontRenderer arraylistfont = Client.instance.fontManager.robotoregular19;

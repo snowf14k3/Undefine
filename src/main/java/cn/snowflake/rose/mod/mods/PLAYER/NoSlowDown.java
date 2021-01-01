@@ -14,10 +14,10 @@ import net.minecraft.util.EnumFacing;
 
 import java.lang.reflect.InvocationTargetException;
 
-public class NoSlow extends Module {
+public class NoSlowDown extends Module {
     public Value<String> mode = new Value<>("NoSlow","Mode",0);
 
-    public NoSlow() {
+    public NoSlowDown() {
         super("NoSlow","No Slow", Category.PLAYER);
         this.mode.addValue("Normal");
         this.mode.addValue("NCP");
@@ -39,6 +39,7 @@ public class NoSlow extends Module {
 
     @EventTarget
     public void onUpdate(EventUpdate e){
+        no = isEnabled();
         if (mode.isCurrentMode("NCP") || mode.isCurrentMode("AAC")){
             if((this.mc.thePlayer.getHeldItem().getItem() instanceof ItemSword && mc.thePlayer.isBlocking()  ) || (this.mc.thePlayer.getHeldItem().getItem() instanceof ItemFood && mc.thePlayer.isUsingItem())) {
                 try {

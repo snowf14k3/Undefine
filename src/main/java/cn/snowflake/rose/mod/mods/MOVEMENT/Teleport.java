@@ -67,7 +67,7 @@ public class Teleport
                 double ydi = (endPos.getY() - mc.thePlayer.posY)/( nbPackets);
                 ytp += ydi;
                 count ++;
-                C03PacketPlayer.C04PacketPlayerPosition Packet= new C03PacketPlayer.C04PacketPlayerPosition(xtp,mc.thePlayer.boundingBox.minY, ytp, ztp, true);
+                C03PacketPlayer.C04PacketPlayerPosition Packet= new C03PacketPlayer.C04PacketPlayerPosition(xtp,-999, ytp, ztp, true);
 
                 mc.thePlayer.sendQueue.addToSendQueue(Packet);
             }

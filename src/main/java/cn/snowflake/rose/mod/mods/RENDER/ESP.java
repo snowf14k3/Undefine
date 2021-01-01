@@ -46,8 +46,8 @@ public class ESP extends Module {
     public ESP() {
         super("ESP", Category.RENDER);
 //        this.mode.addValue("2DBox");
+        this.mode.addValue("2DBox");
         this.mode.addValue("Box");
-
     }
 
     public void renderBox(Entity entity,double r,double g, double b) {
@@ -103,6 +103,37 @@ public class ESP extends Module {
                     double posZ = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * JReflectUtility.getRenderPartialTicks() - RenderManager.renderPosZ;
                     if (this.mode.isCurrentMode("Box")){
                         renderBox(entity,255,255,255);
+                    }else if (this.mode.isCurrentMode("2DBox")){
+                        GL11.glPushMatrix();
+                        GL11.glColor4d((double) 1.0, (double) 1.0, (double) 1.0, (double) 0.0);
+                        double size = 0.25;
+                        double boundindY = entity.getBoundingBox().maxY - entity.getBoundingBox().minY;
+                        RenderUtil.drawBoundingBox(new AltAxisAlignedBB(posX - size, (double) posY, posZ - size, posX + size, (double) (posY + boundindY), posZ + size));
+                        RenderUtil.renderOne();//renderOne
+                        RenderUtil.drawBoundingBox(new AltAxisAlignedBB(posX - size, (double) posY, posZ - size, posX + size, (double) (posY + boundindY), posZ + size));
+                        GL11.glStencilFunc((int) 512, (int) 0, (int) 15);
+                        GL11.glStencilOp((int) 7681, (int) 7681, (int) 7681);
+                        GL11.glPolygonMode((int) 1032, (int) 6914);
+                        RenderUtil.drawBoundingBox(new AltAxisAlignedBB(posX - size, (double) posY, posZ - size, posX + size, (double) (posY + boundindY), posZ + size));
+                        GL11.glStencilFunc((int) 514, (int) 1, (int) 15);
+                        GL11.glStencilOp((int) 7680, (int) 7680, (int) 7680);
+                        GL11.glPolygonMode((int) 1032, (int) 6913);
+                        RenderUtil.setColor(entity1);//draw
+                        RenderUtil.drawBoundingBox(new AltAxisAlignedBB(posX - size, (double) posY, posZ - size, posX + size, (double) (posY + boundindY), posZ + size));
+                        GL11.glPolygonOffset((float) 1.0f, (float) 2000000.0f);
+                        GL11.glDisable((int) 10754);
+                        GL11.glEnable((int) 2929);
+                        GL11.glDepthMask((boolean) true);
+                        GL11.glDisable((int) 2960);
+                        GL11.glDisable((int) 2848);
+                        GL11.glHint((int) 3154, (int) 4352);
+                        GL11.glEnable((int) 3042);
+                        GL11.glEnable((int) 2896);
+                        GL11.glEnable((int) 3553);
+                        GL11.glEnable((int) 3008);
+                        GL11.glPopAttrib();
+                        GL11.glColor4d((double) 1.0, (double) 1.0, (double) 1.0, (double) 1.0);
+                        GL11.glPopMatrix();
                     }
                 }
             }

@@ -52,9 +52,9 @@ public class Plugins extends Module {
             Collections.sort(plugins);
 
             if(!plugins.isEmpty()) {
-                ChatUtil.sendClientMessage("§fFound "+plugins.size() +" Plugins -> §c" + Strings.join(plugins.toArray(new String[0]), "§7, §c"));
+                ChatUtil.sendClientMessage("\247fFound "+plugins.size() +" Plugins -> \247c" + Strings.join(plugins.toArray(new String[0]), "\2477, \247c"));
             }else {
-                ChatUtil.sendClientMessage("§fNo plugins found.");
+                ChatUtil.sendClientMessage("\247fNo plugins found.");
             }
             set(false);
             time.reset();
@@ -63,7 +63,7 @@ public class Plugins extends Module {
     @EventTarget
     public void update(EventUpdate e){
         if(time.isDelayComplete(20)) {
-            ChatUtil.sendClientMessage("§cPlugins check timed out...");
+            ChatUtil.sendClientMessage("\247cPlugins check timed out...");
             time.reset();
             set(false);
         }

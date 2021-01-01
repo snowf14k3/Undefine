@@ -1,20 +1,21 @@
 package cn.snowflake.rose.manager;
 
+import cn.snowflake.rose.friend.Friend;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.mod.mods.COMBAT.*;
 import cn.snowflake.rose.mod.mods.FORGE.EIOXpGrab;
-import cn.snowflake.rose.mod.mods.FORGE.ScreenProtect;
 import cn.snowflake.rose.mod.mods.MOVEMENT.*;
 import cn.snowflake.rose.mod.mods.PLAYER.*;
 import cn.snowflake.rose.mod.mods.MOVEMENT.Teleport;
 import cn.snowflake.rose.mod.mods.PLAYER.Blink;
 import cn.snowflake.rose.mod.mods.RENDER.*;
 import cn.snowflake.rose.mod.mods.WORLD.*;
+import cn.snowflake.rose.mod.mods.FORGE.*;
 
 import java.util.ArrayList;
 
 public class ModManager {
-    public static ArrayList<Module> modList = new ArrayList<Module>();
+    public static ArrayList<Module> modList = new ArrayList();
 
     public ModManager() {
         //COMBAT
@@ -36,13 +37,13 @@ public class ModManager {
         addMod(new TargetStrafe());
         addMod(new Speed());
         addMod(new NoFall());
-        addMod(new Jesus());
+//        addMod(new Jesus());
         addMod(new Step());
         //RENDER
         addMod(new HUD());
+        addMod(new NoHurtcam());
         addMod(new ArrowESP());
         addMod(new CrossHair());
-        addMod(new NoHurtcam());
         addMod(new FullBright());
         addMod(new ItemESP());
 
@@ -54,21 +55,19 @@ public class ModManager {
         addMod(new ChestESP());
         addMod(new BlockOverlay());
         addMod(new ESP());
-
         //PLAYER
-        addMod(new NoSlow());
+        addMod(new NoSlowDown());
         addMod(new AutoTools());
 //        addMod(new FastConsume());
         addMod(new Stealer());
         addMod(new AntiEffect());
         addMod(new FastBreak());
         addMod(new Freecam());
-//        addMod(new NoWeb());
         addMod(new FastEat());
         addMod(new FastPlace());
         addMod(new FastUse());
         addMod(new InvMove());
-
+//        addMod(new GhostHand());
         //WORLD
         addMod(new ServerCrasher());
         addMod(new Bot());
@@ -79,11 +78,13 @@ public class ModManager {
         addMod(new MCF());
 //        addMod(new IRC());
         addMod(new NoCommand());
+        addMod(new SecretClose());
         addMod(new Plugins());
 
         //FORGE
         addMod(new EIOXpGrab());
         addMod(new ScreenProtect());
+
     }
 
 

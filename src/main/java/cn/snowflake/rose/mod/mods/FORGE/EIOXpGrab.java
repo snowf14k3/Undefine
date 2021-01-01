@@ -16,7 +16,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 public class EIOXpGrab extends Module{
 
 	public EIOXpGrab() {
-		super("EIOXpGrab", "EIOXpGrab", Category.FORGE,"EnderIO");
+		super("EIOXpGrab", "EIOXpGrab", Category.FORGE);
 	}
 
 	@Override

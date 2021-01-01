@@ -79,7 +79,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 	}
 
 	//  TODO SHIT OF runtimeDeobfuscationEnabled
-	public static  boolean runtimeDeobfuscationEnabled = false;
+	public static  boolean runtimeDeobfuscationEnabled = true;
 
 //	public static  boolean runtimeDeobfuscationEnabled = false;
 
@@ -559,16 +559,16 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 								new FieldInsnNode(GETSTATIC,"cn/snowflake/rose/events/impl/EventMotion",
 										"pitch","F"));
 						method.instructions.remove(abstractInsnNode);
+					}else if ( ((FieldInsnNode) abstractInsnNode.getNext()).name.equalsIgnoreCase(runtimeDeobfuscationEnabled ? "field_70122_E" : "onGround")
+					){
+						method.instructions.set(abstractInsnNode.getNext(),
+								new FieldInsnNode(GETSTATIC,"cn/snowflake/rose/events/impl/EventMotion",
+										"onGround","Z"));
+						method.instructions.remove(abstractInsnNode);
 					}
 					
 					//replace the shit of onground field 
-//					else if ( ((FieldInsnNode) abstractInsnNode.getNext()).name.equalsIgnoreCase(runtimeDeobfuscationEnabled ? "field_70122_E" : "onGround")
-//					){
-//						method.instructions.set(abstractInsnNode.getNext(),
-//								new FieldInsnNode(GETSTATIC,"cn/snowflake/rose/events/impl/EventMotion",
-//										"onGround","Z"));
-//						method.instructions.remove(abstractInsnNode);
-//					}
+
 				}
 			}
 

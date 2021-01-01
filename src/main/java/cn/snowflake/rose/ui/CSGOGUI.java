@@ -355,15 +355,11 @@ public class CSGOGUI extends GuiScreen{
                 if(mod.openValues) {
                     if (BBoolean) {
                         if (value.isValueString) {
-                            GL11.glPushMatrix();
-                            GL11.glEnable(3089);
-                            RenderUtil.doGlScissor(x + 145, vY + scrollY, x + 230, vY + 8 + scrollY);
-                            RenderUtil.drawRect(x + 145, vY + scrollY, x + 230, vY + 8 + scrollY, caninput ? new Color(84, 90, 90).getRGB() : new Color(115, 130, 140).getRGB());
+
+                            RenderUtil.drawRect(x + 145, vY + scrollY, x + 235, vY + 8 + scrollY, caninput ? new Color(84, 90, 90).getRGB() : new Color(115, 130, 140).getRGB());
                             font2.drawBoldString(value.getText() + "", x + 147, vY + 1 + scrollY, -1);
 //                            font2.drawBoldString("_", x + 144 + width, vY + 1 + scrollY, -1);
 
-                            GL11.glDisable(3089);
-                            GL11.glPopMatrix();
 
                             if (isHovered(x + 145, vY + scrollY, x + 230, vY + 8 + scrollY, mouseX, mouseY) && Mouse.isButtonDown(0)) {
                                 this.caninput = true;
