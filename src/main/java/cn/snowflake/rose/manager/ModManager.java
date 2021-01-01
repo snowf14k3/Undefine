@@ -3,6 +3,7 @@ package cn.snowflake.rose.manager;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.mod.mods.COMBAT.*;
 import cn.snowflake.rose.mod.mods.FORGE.EIOXpGrab;
+import cn.snowflake.rose.mod.mods.FORGE.ScreenProtect;
 import cn.snowflake.rose.mod.mods.MOVEMENT.*;
 import cn.snowflake.rose.mod.mods.PLAYER.*;
 import cn.snowflake.rose.mod.mods.MOVEMENT.Teleport;
@@ -23,7 +24,6 @@ public class ModManager {
         addMod(new FastBow());
         addMod(new AntiAim());
         addMod(new TPAura());
-        //addMod(new SuperKnockback());
         addMod(new Aimbot());
         addMod(new Velocity());
         addMod(new AutoFish());
@@ -35,7 +35,6 @@ public class ModManager {
         addMod(new Fly());
         addMod(new TargetStrafe());
         addMod(new Speed());
-//        addMod(new Scaffold());
         addMod(new NoFall());
         addMod(new Jesus());
         addMod(new Step());
@@ -44,7 +43,6 @@ public class ModManager {
         addMod(new ArrowESP());
         addMod(new CrossHair());
         addMod(new NoHurtcam());
-        //addMod(new Animation());
         addMod(new FullBright());
         addMod(new ItemESP());
 
@@ -56,7 +54,7 @@ public class ModManager {
         addMod(new ChestESP());
         addMod(new BlockOverlay());
         addMod(new ESP());
-        addMod(new RearView());
+
         //PLAYER
         addMod(new NoSlow());
         addMod(new AutoTools());
@@ -70,7 +68,7 @@ public class ModManager {
         addMod(new FastPlace());
         addMod(new FastUse());
         addMod(new InvMove());
-//        addMod(new GhostHand());
+
         //WORLD
         addMod(new ServerCrasher());
         addMod(new Bot());
@@ -79,14 +77,13 @@ public class ModManager {
         addMod(new MineBot());
         addMod(new Spammer());
         addMod(new MCF());
-        addMod(new IRC());
+//        addMod(new IRC());
         addMod(new NoCommand());
         addMod(new Plugins());
-        
-        
+
         //FORGE
         addMod(new EIOXpGrab());
-        
+        addMod(new ScreenProtect());
     }
 
 

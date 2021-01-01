@@ -286,13 +286,19 @@ public class CSGOGUI extends GuiScreen{
             if (modscrollY > 0.0) {
                 modscrollY = 0.0F;
             }
-            if(modlistsize > 12
-                    && modscrollY < (modlistsize - 12) * -15) {
+            if(modlistsize > 12 && modscrollY < (modlistsize - 12) * -15) {
                 modscrollY = (modlistsize - 12) * -15;
             }
 
             //mod backgorund
-            RenderUtil.drawRect(x, y - 2+modscrollY, x + 82, y+12 + modscrollY, mod.isEnabled() ? new Color(83,83,83).getRGB() : new Color(125, 125, 125).getRGB());
+            RenderUtil.drawRect(x,
+                    y - 2+modscrollY,
+                    x + 82,
+                    y+12 + modscrollY,
+                    mod.isEnabled() ?
+                            new Color(83,83,83).getRGB()
+                            :
+                            new Color(125, 125, 125).getRGB());
             //mod name
             font2.drawCenteredString(bmod == mod ? binding ? "....." : mod.getName()  : mod.getName() , x + 40, y + 2 + modscrollY, -1);
             // has value

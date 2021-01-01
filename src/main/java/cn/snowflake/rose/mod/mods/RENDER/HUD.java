@@ -25,15 +25,13 @@ public class HUD extends Module {
     public Value<Boolean> info = new Value<>("HUD_Info",false);
     public Value<String> rainbow = new Value<>("HUD","ColorMode",0);
     public static Value<Double> rainbowindex = new Value<Double>("HUD_rainbow", 1.0, 1.0, 20.0, 1.0);
-    public UnicodeFontRenderer arraylistfont;
-    
+
     public HUD() {
         super("HUD", Category.RENDER);
         this.rainbow.addValue("Gray");
         this.rainbow.addValue("Rainbow");
         this.rainbow.addValue("White");
         this.setKey(Keyboard.KEY_K);
-        arraylistfont = Client.instance.fontManager.robotoregular19;
     }
 
     public void renderStringWave(String s, int x, int y, float bright) {
@@ -152,10 +150,10 @@ public class HUD extends Module {
         return new Color((float)c.getRed() / 255.0F * fade, (float)c.getGreen() / 255.0F * fade, (float)c.getBlue() / 255.0F * fade, (float)c.getAlpha() / 255.0F);
     }
     private void RenderArraylist() {
-        ArrayList<Module> mods = new ArrayList<Module>(Client.instance.modManager.getModList());
+        ArrayList<Module> mods = Client.instance.modManager.getModList();
         ScaledResolution sr = new ScaledResolution(mc,mc.displayWidth,mc.displayHeight);
 //        FontRenderer font = this.font;
-
+        UnicodeFontRenderer arraylistfont = Client.instance.fontManager.robotoregular19;
         mods.removeIf(Module::isHidden);
         mods.sort(Comparator.comparingDouble(m1 -> - arraylistfont.getStringWidth(m1.getRenderName() + (m1.getdisplayName() == null ? "" : m1.getdisplayName()))));
         int countMod = 0;

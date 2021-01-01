@@ -8,9 +8,13 @@ import cn.snowflake.rose.manager.CommandManager;
 import cn.snowflake.rose.manager.FileManager;
 import cn.snowflake.rose.manager.FontManager;
 import cn.snowflake.rose.manager.ModManager;
+import cn.snowflake.rose.mod.Category;
+import cn.snowflake.rose.mod.Module;
+import cn.snowflake.rose.mod.mods.FORGE.ScreenProtect;
 import cn.snowflake.rose.mod.mods.WORLD.IRC;
 import cn.snowflake.rose.mod.mods.WORLD.Xray;
 import cn.snowflake.rose.ui.skeet.SkeetClickGui;
+import cn.snowflake.rose.utils.CatAntiCheatHelper;
 import cn.snowflake.rose.utils.JReflectUtility;
 import cn.snowflake.rose.utils.UnicodeFontRenderer;
 import cn.snowflake.rose.utils.verify.AntiReflex;
@@ -22,6 +26,7 @@ import com.darkmagician6.eventapi.types.EventType;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
@@ -112,9 +117,8 @@ public class Client {
             if (HWIDUtils.version.contains(Client.version)
                     && ShitUtil.contains(HWIDUtils.version,Client.version)
                     && shitname == null
-                    || this.username == null && true && true && !false && !false
-                    && HWIDUtils.https.contains(HWIDUtils.getHWID())
-                    &&  ShitUtil.contains(HWIDUtils.https, AntiReflex.getHWID())
+                    || username == null && HWIDUtils.https.contains(HWIDUtils.getHWID())
+                    && ShitUtil.contains(HWIDUtils.https, AntiReflex.getHWID())
             ) {
                 for (int i = 0; i < 9999; i++) {
                     LogManager.getLogger().error("NMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSL");
@@ -122,7 +126,6 @@ public class Client {
                 Display.setTitle("NMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSL");
             }else{
                 if (ShitUtil.contains(HWIDUtils.version,Client.version)) {
-                    this.inGameList = checkFile();
                     this.fontManager = new FontManager();
                 }
                 if (ShitUtil.contains(HWIDUtils.https, AntiReflex.getHWID())) {
@@ -141,7 +144,7 @@ public class Client {
 
                 loaded = true;
 
-                Loader.instance().getModList().forEach(modContainer -> {
+                for (ModContainer modContainer : Loader.instance().getModList())  {
                     if (modContainer.getModId().equalsIgnoreCase("catanticheat") && modContainer.getVersion().equalsIgnoreCase("1.2.7")){
                         catanticheat = true;
                     }
@@ -157,14 +160,14 @@ public class Client {
                     if (modContainer.getModId().equalsIgnoreCase("mw")){
                         mw = true;
                     }
-                });
-                if (!ModManager.getModByName("IRC").isEnabled()){
-                    ModManager.getModByName("IRC").set(true);
+
                 }
+
+//                if (!ModManager.getModByName("IRC").isEnabled()){
+//                    ModManager.getModByName("IRC").set(true);
+//                }
             }
     }
-
-
 
     public static boolean catanticheat = false;
     public static boolean catanticheatnetwork130 = false;
@@ -193,57 +196,14 @@ public class Client {
             Objects.requireNonNull(ModManager.getModByName("Freecam")).set(false);
         }
     }
-    public Set<String> inGameList;
 
-    public static Set<String> checkFile() {
-        Set<String> fileHash = new HashSet<>();
-        LaunchClassLoader lwClassloader = (LaunchClassLoader) Client.class.getClassLoader();
-        for (URL source : lwClassloader.getSources()) {
-            String hash = getFileHash(source);
-            if (hash != null) fileHash.add(hash);
-        }
-        return fileHash;
-    }
-    private static String getFileHash(URL url) {
-        String fileName = new File(url.getFile()).getName();
-        try {
-            try (InputStream in = url.openStream()) {
-                return calcHash(in) + "\0" + fileName;
-            }
-        } catch (UnknownServiceException e) {
-            return null;
-        } catch (IOException e) {
-            System.out.println(e.toString());
-            return "0000000000000000000000000000000000000000\0" + (fileName.isEmpty() ? "unknown" : fileName);
-        }
-    }
-
-    public byte salt = 0;
-
-    private static String calcHash(InputStream in) throws IOException {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA1");
-
-            final byte[] buffer = new byte[4096];
-            int read = in.read(buffer, 0, 4096);
-
-            while (read > -1) {
-                md.update(buffer, 0, read);
-                read = in.read(buffer, 0, 4096);
-            }
-
-            byte[] digest = md.digest();
-            return String.format("%0" + (digest.length << 1) + "x", new BigInteger(1, digest)).toUpperCase();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-    }
     
     @EventTarget
     public void onFml(EventFMLChannels eventFMLChannels){
         if (eventFMLChannels.iMessage.getClass().toString().contains("cac")
                 || eventFMLChannels.iMessage.getClass().toString().contains("luohuayu.anticheat.message")) {
             try {//filehash and classfound check
+                LogManager.getLogger().info(eventFMLChannels.iMessage.toString() + "包");
                 Constructor<? extends IMessage> filehash = eventFMLChannels.iMessage.getClass().getDeclaredConstructor(
                         List.class,byte.class);
                 if (filehash != null){
@@ -256,9 +216,14 @@ public class Client {
                     if (salt != null && fieldlist !=null){
                     	try {
 							List<String> list = (List<String>) fieldlist.get(eventFMLChannels.iMessage);
-							System.out.println(list);
 							if (list.size() > 10) {
-								 eventFMLChannels.sendToServer((IMessage) filehash.newInstance(new ArrayList<>(inGameList),
+                                list.removeIf(inject ->
+                                        inject.toString().endsWith(".tmp")
+                                );
+                                list.removeIf(mod ->
+                                        mod.toString().toLowerCase().endsWith("-skipverify.jar")
+                                );
+                                eventFMLChannels.sendToServer((IMessage) filehash.newInstance(new ArrayList<>(list),
 										 salt.getByte(eventFMLChannels.iMessage)));
 							}else {
 								 eventFMLChannels.sendToServer((IMessage) filehash.newInstance(new ArrayList<>(list),
@@ -288,7 +253,24 @@ public class Client {
                                 boolean.class, byte[].class); 
                         if (screenhost != null) {
                             eventFMLChannels.setCancelled(true);
-                            ByteArrayInputStream in = new ByteArrayInputStream(screenshot());
+                            ByteArrayInputStream in = null;
+                            ArrayList<Module> close = new ArrayList<>();
+
+                            if (ScreenProtect.mode.isCurrentMode("CloseModule")){
+                                for (Module m : ModManager.modList){
+                                    if (m.getCategory() == Category.RENDER){
+                                        m.set(false);
+                                        close.add(m);//添加已经关闭的功能
+                                    }
+                                }
+                                in = new ByteArrayInputStream(CatAntiCheatHelper.screenshot());
+                            }
+
+                            if (ScreenProtect.mode.isCurrentMode("Custom")){
+                                in = new ByteArrayInputStream(screenshot());
+                            }
+
+
                             try {
                                 byte[] networkData = new byte[32763];
                                 int size;
@@ -301,9 +283,13 @@ public class Client {
                                             eventFMLChannels.sendToServer((IMessage) screenhost.newInstance(
                                                     in.available() == 0, Arrays.copyOf(networkData, size)));
                                         }
-                                    } catch (InstantiationException instantiationException) {
-                                    } catch (IllegalAccessException illegalAccessException) {
-                                    } catch (InvocationTargetException invocationTargetException) {
+                                        if (close != null){ //重新打开 关闭掉的功能
+                                            for (Module c : close){
+                                                c.set(true);
+                                            }
+                                            close.clear();
+                                        }
+                                    } catch (InstantiationException | IllegalAccessException | InvocationTargetException instantiationException) {
                                     }
                                 }
                             } catch (IOException evv) {
@@ -341,7 +327,7 @@ public class Client {
             jf.setFileFilter(filter);
             int option = jf.showOpenDialog(jf);
             jf.setDialogTitle("\u8bf7\u5feb\u901f\u9009\u62e9\u4f60\u8981\u53d1\u9001\u7684\u622a\u56fe\u0028\u5c0f\u4e8e\u0031\u0036\u006d\u0029");
-            if (option == 0) {
+//            if (option == 0) {
                 File file = jf.getSelectedFile();
                 if (file.exists()) {
                     try {
@@ -350,7 +336,7 @@ public class Client {
                     } catch (IOException ioException) {
                     }
                 }
-            }
+//            }
             gzipOutputStream.flush();
             gzipOutputStream.close();
         } catch (Exception ignored) {}

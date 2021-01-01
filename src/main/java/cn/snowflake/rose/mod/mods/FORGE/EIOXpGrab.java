@@ -16,13 +16,15 @@ import net.minecraft.world.chunk.IChunkProvider;
 public class EIOXpGrab extends Module{
 
 	public EIOXpGrab() {
-		super("EIOXpGrab", "EIOXpGrab", Category.FORGE);
+		super("EIOXpGrab", "EIOXpGrab", Category.FORGE,"EnderIO");
 	}
 
-	
-	
-	
-	
+	@Override
+	public void onEnable() {
+		nearTiles().forEach(this::sendGrab);
+		super.onEnable();
+	}
+
 	private void sendGrab(TileEntity tile) {
 	        try {
 	            if (Class.forName("crazypants.enderio.machine.obelisk.xp.TileExperienceObelisk").isInstance(tile)) {

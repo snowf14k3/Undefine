@@ -9,6 +9,7 @@ import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.*;
 import com.darkmagician6.eventapi.EventTarget;
+import com.darkmagician6.eventapi.types.EventType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.Entity;
@@ -23,6 +24,7 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
@@ -36,7 +38,6 @@ public class Aimbot extends Module {
     public static Value<Double> range= new Value<Double>("Aimbot_Reach", 10.5D, 3.0D, 65.0D,0.1D);
 
     public Value<Double> fov = new Value<Double>("Aimbot_Fov", 10.0, 1.0, 180.0, 1.0);
-    public Value<Boolean> decientity = new Value<Boolean>("Aimbot_DeciEntity", true);
     public Value<Boolean> throughwall = new Value<Boolean>("Aimbot_ThroughWall", false);
 
     public Value<Boolean> players = new Value<Boolean>("Aimbot_Player", true);
@@ -48,7 +49,6 @@ public class Aimbot extends Module {
     public Value<String> aimmode = new Value<String>("Aimbot","Mode", 4);
     public Value<Boolean> silent = new Value<Boolean>("Aimbot_Silent", false);
     public Value<Boolean> recoil = new Value<Boolean>("Aimbot_NoRecoil", true);
-    public Value<Boolean> key = new Value<Boolean>("Aimbot_KeySwitch", false);
 
     public Value<String> sortingMode = new Value<String>("Aimbot","SortingMode", 0);
 
@@ -60,7 +60,6 @@ public class Aimbot extends Module {
         this.aimmode.addValue("Neck");
         this.aimmode.addValue("Body");
         this.aimmode.addValue("Feet");
-        this.aimmode.addValue("Auto");
         this.sortingMode.addValue("Health");
         this.sortingMode.addValue("Distance");
     }
@@ -69,39 +68,6 @@ public class Aimbot extends Module {
         target = null;
     }
 
-
-    public static float[] getRotationByBoundingBox(Entity ent,float maxRange ,boolean random){
-        if(ent == null)
-            return new float[]{0,0};
-        AxisAlignedBB boundingBox = ent.boundingBox;
-        double boundingX = (boundingBox.maxX-boundingBox.minX)/4;
-        double boundingY = (boundingBox.maxY-boundingBox.minY)/8;
-        double boundingZ = (boundingBox.maxZ-boundingBox.minZ)/4;
-        double orPosX = ent.boundingBox.minX,orPosY=ent.boundingBox.minY,orPosZ = ent.boundingBox.minZ;
-        if(random){
-            orPosX+=randomNumber(boundingX,-boundingX);
-            orPosY+=randomNumber(boundingY,-boundingY);
-            orPosZ+=randomNumber(boundingZ,-boundingZ);
-        }
-        double pX = Minecraft.getMinecraft().thePlayer.boundingBox.minX;
-        double pY = Minecraft.getMinecraft().thePlayer.boundingBox.minY + (Minecraft.getMinecraft().thePlayer.boundingBox.minY+Minecraft.getMinecraft().thePlayer.boundingBox.maxY)/2;
-        double pZ = Minecraft.getMinecraft().thePlayer.boundingBox.minZ;
-        double dX = pX - orPosX;
-        double dZ = pZ - orPosZ;
-        double yaw = Math.toDegrees(Math.atan2(dZ, dX)) + 90.0;
-        Location BestPos = new Location(ent.boundingBox.minX, orPosY, ent.boundingBox.minZ);
-        Location myEyePos = new Location(Minecraft.getMinecraft().thePlayer.boundingBox.minX, Minecraft.getMinecraft().thePlayer.boundingBox.minY+ (double)Minecraft.getMinecraft().thePlayer.getEyeHeight(), Minecraft.getMinecraft().thePlayer.boundingBox.minZ);
-        double diffY;
-        for(diffY = ent.boundingBox.minY + 0.7D; diffY < ent.boundingBox.maxY - 0.1D; diffY += 0.1D) {
-            if (myEyePos.distanceTo(new Location(ent.boundingBox.minX, diffY, ent.boundingBox.minZ)) < myEyePos.distanceTo(BestPos)) {
-                BestPos = new Location(ent.boundingBox.minX, diffY, ent.boundingBox.minZ);
-            }
-        }
-        diffY = BestPos.getY() - (Minecraft.getMinecraft().thePlayer.boundingBox.minY + (double)Minecraft.getMinecraft().thePlayer.getEyeHeight());
-        double dist = MathHelper.sqrt_double(dX * dX + dZ * dZ);
-        float pitch = (float)(-(Math.atan2(diffY, dist) * 180.0D / 3.141592653589793D));
-        return new float[]{(float) yaw,pitch};
-    }
 
     static double randomNumber(double start, double end) {
         return (Math.random() * (double)(start - end)) + end;
@@ -161,14 +127,10 @@ public class Aimbot extends Module {
     @EventTarget
     public void onEvent(EventMotion em) {
         if (em.isPre()) {
-			if (recoil.getValueState()) {
-				mc.thePlayer.rotationPitch = mc.thePlayer.prevRotationPitch;							
-				mc.thePlayer.rotationYaw = mc.thePlayer.prevRotationYaw;
-			}			
             target = getTarget();
             if(shouldAim()){
                 if (target != null) {
-                    float[] rotations = this.aimmode.isCurrentMode("Auto") ? getRotationByBoundingBox(target,range.getValueState().floatValue(),false) : getEntityRotations(target);
+                    float[] rotations = getEntityRotations(target);
                     if(silent.getValueState()){
                     	em.setYaw(rotations[0]);
                     	em.setPitch(rotations[1]);
@@ -179,8 +141,15 @@ public class Aimbot extends Module {
                 }
 
             }
+        }else if (em.getEventType() == EventType.POST){
+            if (recoil.getValueState()) {
+                mc.thePlayer.rotationPitch = mc.thePlayer.prevRotationPitch;
+                mc.thePlayer.rotationYaw = mc.thePlayer.prevRotationYaw;
+            }
         }
     }
+
+
     private boolean canTarget(Entity entity) {
         if(!mc.thePlayer.canEntityBeSeen(entity) && !throughwall.getValueState()) {
             return false;
@@ -227,6 +196,36 @@ public class Aimbot extends Module {
         }
         return entity != mc.thePlayer && entity.isEntityAlive();
     }
+
+    public static float getYawChange(Entity entity) {
+        double x = entity.posX - Minecraft.getMinecraft().thePlayer.posX;
+        double z = entity.posZ - Minecraft.getMinecraft().thePlayer.posZ;
+        double yawToEntity;
+        if ((z < 0.0D) && (x < 0.0D)) {
+            yawToEntity = 90.0D + Math.toDegrees(Math.atan(z / x));
+        } else {
+            if ((z < 0.0D) && (x > 0.0D)) {
+                yawToEntity = -90.0D + Math.toDegrees(Math.atan(z / x));
+            } else {
+                yawToEntity = Math.toDegrees(-Math.atan(x / z));
+            }
+        }
+
+        return wrapAngleTo180_float(-(Minecraft.getMinecraft().thePlayer.rotationYaw - (float) yawToEntity));
+    }
+    public static float wrapAngleTo180_float(float par0) {
+        par0 %= 360.0F;
+
+        if (par0 >= 180.0F) {
+            par0 -= 360.0F;
+        }
+
+        if (par0 < -180.0F) {
+            par0 += 360.0F;
+        }
+
+        return par0;
+    }
 //|| !(deci.getValueState() && Objects.requireNonNull(JReflectUtility.getGunItem()).isInstance(mc.thePlayer.inventory.getCurrentItem().getItem()))
     public boolean shouldAim(){
     	if (Keyboard.isKeyDown(Keyboard.KEY_LMETA)) {
@@ -256,7 +255,7 @@ public class Aimbot extends Module {
             return null;
         }
         EntityLivingBase target = null;
-        if (!key.getValueState().booleanValue()) {
+
 	        if (aimmode.isCurrentMode("Distance")) {
 	            loaded.sort((o1, o2) ->
 	                    (int) (o1.getDistanceToEntity(mc.thePlayer) - o2.getDistanceToEntity(mc.thePlayer))
@@ -268,17 +267,6 @@ public class Aimbot extends Module {
 	            );
 	        }
 	         target = loaded.get(0);
-        }else {
-        	int index = 0;
-        	if (Keyboard.isKeyDown(Keyboard.KEY_LCONTROL)) {
-				index += 1;
-			}
-        	try {
-            	target = loaded.get(index);
-        	}catch (Exception e) {
-        		index = 0;
-			}
-        }
         return target;
     }
 

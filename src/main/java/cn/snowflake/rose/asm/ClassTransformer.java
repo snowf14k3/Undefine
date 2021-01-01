@@ -59,10 +59,10 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 				"net.minecraft.entity.Entity",
 				"cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper",
 				"net.minecraft.entity.player.EntityPlayer",
-				"net.minecraft.launchwrapper.LaunchClassLoader",
 				"net.minecraft.client.renderer.Tessellator",
 				"net.minecraft.profiler.Profiler",
 				"net.minecraft.client.renderer.entity.RenderPlayer",
+				"net.minecraft.network.NetHandlerPlayServer",
 		};
 		for (int i=0; i<nameArray.length; i++) {
 				classNameSet.add(nameArray[i]);
@@ -79,7 +79,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 	}
 
 	//  TODO SHIT OF runtimeDeobfuscationEnabled
-	public static  boolean runtimeDeobfuscationEnabled = true;
+	public static  boolean runtimeDeobfuscationEnabled = false;
 
 //	public static  boolean runtimeDeobfuscationEnabled = false;
 
@@ -104,9 +104,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			else if(name.equals("net.minecraft.client.entity.EntityPlayerSP")){  //fixed
 				return  transformMethods(classByte, this::transformEntityPlayerSP);
 			}
-			else if (name.equalsIgnoreCase("net.minecraft.network.NetHandlerPlayServer")){
-				return this.transformMethods(classByte,this::transformNetHandlerPlayServer);
-			}
+
 			else if (name.equalsIgnoreCase("net.minecraft.network.NetworkManager")){ //EventPacket
 				return this.transformMethods(classByte,this::transformNetworkManager);
 			}
@@ -122,18 +120,15 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			else if (name.equalsIgnoreCase("cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper")){
 				return this.transformMethods(classByte,this::transformSimpleNetworkWrapper);
 			}
-			 else if (name.equalsIgnoreCase("net.minecraft.launchwrapper.LaunchClassLoader")){
-				 return this.transformMethods(classByte,this::transformLaunchClassLoader);
-			 }
 //			 else if (name.equalsIgnoreCase("net.minecraft.client.renderer.Tessellator")){
 //				 return this.transformMethods(classByte,this::transformTessellator);
 //			 }
 			else if (name.equalsIgnoreCase("net.minecraft.profiler.Profiler")){
 				return this.transformMethods(classByte,this::transformProfiler);
 			}
-//			else if (name.equalsIgnoreCase("net.minecraft.block.BlockLiquid")){
-//				 return this.transformMethods(classByte,this::transformBlockLiquid);
-//			 }
+			else if (name.equalsIgnoreCase("net.minecraft.network.NetHandlerPlayServer")){
+				 return this.transformMethods(classByte,this::transformNetHandlerPlayServer);
+			 }
 			 else if (name.equalsIgnoreCase("net.minecraft.client.renderer.entity.RenderPlayer")){
 				 return this.transformMethods(classByte,this::transformRendererLivingEntity);
 			 }
@@ -235,17 +230,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 		}
 	}
 
-	private void transformLaunchClassLoader(ClassNode classNode, MethodNode methodNode) {
-		if (methodNode.name.equalsIgnoreCase("getSources")) {
-			for (AbstractInsnNode abstractInsnNode : methodNode.instructions.toArray()){
-				if (abstractInsnNode instanceof FieldInsnNode){
-					if (((FieldInsnNode) abstractInsnNode).name.equalsIgnoreCase("sources") && ((FieldInsnNode) abstractInsnNode).desc.equalsIgnoreCase("Ljava/util/List;")) {
-						methodNode.instructions.insert(abstractInsnNode,new MethodInsnNode(INVOKESTATIC, Type.getInternalName(MinecraftHook.class), "fuckSources", "(Ljava/util/List;)Ljava/util/List;", false));
-					}
-				}
-			}
-		}
-	}
+
 
 	private void transformEntityPlayer(ClassNode classNode, MethodNode methodNode) {
 		if (methodNode.name.equalsIgnoreCase("isEntityInsideOpaqueBlock") || methodNode.name.equalsIgnoreCase("func_70094_T")){
@@ -429,6 +414,12 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			insnList.add(l1);
 			insnList.add(new FrameNode(F_SAME, 4, null, 0, null));
 			methodNode.instructions.insertBefore(nodelist.getFirst().getNext(),insnList);
+		}
+		if (methodNode.name.equalsIgnoreCase("processPlayer") || methodNode.name.equalsIgnoreCase("func_147347_a")){
+			AbstractInsnNode ldc = ASMUtil.findInsnLdc(methodNode," had an illegal stance: ");
+			if (ldc != null){
+				methodNode.instructions.remove(ASMUtil.forward(ldc,8));
+			}
 		}
 	}
 

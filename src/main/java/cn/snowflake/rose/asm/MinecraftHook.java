@@ -22,6 +22,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiSelectWorld;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GLAllocation;
@@ -45,15 +46,6 @@ import java.util.Objects;
 public class MinecraftHook {
     public static Rotation serverRotation = new Rotation(0F, 0F);
 
-    public static List<URL> fuckSources(List<URL> sources){
-        sources.removeIf(inject ->
-                inject.toString().endsWith(".tmp")
-        );
-        sources.removeIf(mod ->
-                mod.toString().endsWith("-skipVerify.jar")
-        );
-        return sources;
-    }
 
     public static void startSectionHook(String info){
         if (info.equalsIgnoreCase("hand")){
@@ -69,7 +61,6 @@ public class MinecraftHook {
         if (!Client.init){
             new Client();
             Client.init = true;
-            
             if(Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().theWorld != null){
                 ChatUtil.sendClientMessage("外挂注入完成！");
             }else {
@@ -205,7 +196,7 @@ public class MinecraftHook {
         if (!isSlow()) {
             return;
         }
-        if (ModManager.getModByName("NoSlow").isEnabled()) {
+        if (NoSlow.no) {
             cacheStrafe = Minecraft.getMinecraft().thePlayer.movementInput.moveStrafe;
             cacheForward = Minecraft.getMinecraft().thePlayer.movementInput.moveForward;
         }
@@ -214,7 +205,7 @@ public class MinecraftHook {
         if (!isSlow()) {
             return;
         }
-        if (ModManager.getModByName("NoSlow").isEnabled()) {
+        if (NoSlow.no) {
             Minecraft.getMinecraft().thePlayer.movementInput.moveStrafe = cacheStrafe;
             Minecraft.getMinecraft().thePlayer.movementInput.moveForward = cacheForward;
         }
@@ -245,7 +236,7 @@ public class MinecraftHook {
             	if (Minecraft.getMinecraft().currentScreen == null) {
                     if (mod.getKey() != (Keyboard.getEventKey() == 0 ? Keyboard.getEventCharacter() + 256 : Keyboard.getEventKey())) continue;
                     mod.set(!mod.isEnabled());
-				}else {
+				}else if (!(Minecraft.getMinecraft().currentScreen instanceof GuiChat)){
 					if (mod.getGuikey() != (Keyboard.getEventKey() == 0 ? Keyboard.getEventCharacter() + 256 : Keyboard.getEventKey())) continue;
                     mod.set(!mod.isEnabled());
 				}
