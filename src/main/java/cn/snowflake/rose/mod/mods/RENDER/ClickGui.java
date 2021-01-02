@@ -9,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
 
 public class ClickGui extends Module {
+    private CSGOGUI clickgui = null;
     public static Value<Double> r = new Value<Double>("ClickGui_Red", 255.0D, 0.0D,255.0D, 5.0D);
     public static Value<Double> g = new Value<Double>("ClickGui_Green", 0.0D, 0.0D, 255.0D, 5.0D);
     public static Value<Double> b = new Value<Double>("ClickGui_Blue", 0.0D, 0.0D, 255.0D, 5.0D);
@@ -24,7 +25,10 @@ public class ClickGui extends Module {
     @Override
     public void onEnable() {
         if(this.mode.isCurrentMode("CSGO")) {
-            Minecraft.getMinecraft().displayGuiScreen(new CSGOGUI());
+            if(clickgui == null){
+                clickgui = new CSGOGUI();
+            }
+            Minecraft.getMinecraft().displayGuiScreen(clickgui);
         }
 //        if(this.mode.isCurrentMode("Skeet")) {
 //            Minecraft.getMinecraft().displayGuiScreen(Client.getSkeetClickGui());

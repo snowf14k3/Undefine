@@ -2,9 +2,7 @@ package cn.snowflake.rose.ui;
 
 
 import java.awt.Color;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -19,10 +17,8 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.util.ResourceLocation;
 /**
  *
  * @author SnowFlake , SuChen
@@ -30,7 +26,7 @@ import net.minecraft.util.ResourceLocation;
  * Time : 2020.01.05 12:01
  *
  */
-public class CSGOGUI extends GuiScreen{
+public class CSGOGUI extends GuiScreen {
     private MouseInputHandler handlerMid = new MouseInputHandler(2);
     private MouseInputHandler handlerRight = new MouseInputHandler(1);
     private MouseInputHandler handler = new MouseInputHandler(0);
@@ -55,7 +51,7 @@ public class CSGOGUI extends GuiScreen{
 
     private boolean caninput = false;
     private float width;
-
+    public float anim = 700f;
     int selectedChar;
     @Override
     protected void keyTyped(char typedChar, int keyCode)  {
@@ -145,7 +141,6 @@ public class CSGOGUI extends GuiScreen{
 
         super.mouseClicked(mouseX, mouseY, mouseButton);
     }
-    public float anim = 700f;
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -528,6 +523,7 @@ public class CSGOGUI extends GuiScreen{
 
     @Override
     public void onGuiClosed() {
+        anim = 700f;
 //        if (mc.entityRenderer.theShaderGroup != null) {
 //            mc.entityRenderer.theShaderGroup.deleteShaderGroup();
 //            mc.entityRenderer.theShaderGroup = null;

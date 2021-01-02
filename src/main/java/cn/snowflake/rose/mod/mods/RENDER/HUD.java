@@ -57,9 +57,9 @@ public class HUD extends Module {
         UnicodeFontRenderer font = Client.instance.fontManager.simpleton12;
         if (this.info.getValueState()) {
             //info
-	
+
             ScaledResolution sr = new ScaledResolution(mc,mc.displayWidth,mc.displayHeight);
- 
+
             String xyz = "\247cX: \247f" + (int) mc.thePlayer.posX + " \247cY: \247f" + (int) mc.thePlayer.posY + " \247cZ: \247f" + (int) mc.thePlayer.posZ;
             if (Client.username == null) {
                 while (true) {
@@ -174,41 +174,41 @@ public class HUD extends Module {
         int[] var3 = new int[1];//rainbow
         for (Module m2 : mods) {
             if (m2.hidden)continue;
-                int rainbowCol2 = rainbow(System.nanoTime(), (float) countMod, 1).getRGB();
-                ++countMod;
-                int c = rainbowCol2;
-                Color col2 = new Color(c);
-                int color2 = (new Color((float) col2.getRed() / 255.0F, (float) col2.getGreen() / 255.0F,(float) col2.getBlue() / 255.0F, 1)).getRGB();
-                int Ranbow = (new Color(col2.getGreen() / 255.0F, col2.getGreen() / 255.0F, col2.getGreen() / 255.0F))
-                        .getRGB();
+            int rainbowCol2 = rainbow(System.nanoTime(), (float) countMod, 1).getRGB();
+            ++countMod;
+            int c = rainbowCol2;
+            Color col2 = new Color(c);
+            int color2 = (new Color((float) col2.getRed() / 255.0F, (float) col2.getGreen() / 255.0F,(float) col2.getBlue() / 255.0F, 1)).getRGB();
+            int Ranbow = (new Color(col2.getGreen() / 255.0F, col2.getGreen() / 255.0F, col2.getGreen() / 255.0F))
+                    .getRGB();
 
-                float x = (float)(sr.getScaledWidth() - arraylistfont.getStringWidth(m2.getName()) - 1);
-                if(m2.isEnabled()) {
-                    String disname = m2.getdisplayName() == null ? "" : "" + m2.getdisplayName();
-                    switch (rainbow.getModeName()){
-                        case "Rainbow" :
-                            int rainbowCol = rainbow1(System.nanoTime() + 4400l, (float) yAxis * +5, 1.1F).getRGB();
-                            int c1 = rainbowCol;
-                            Color col = new Color(c1);
-                            color = new Color(col.getRed(), col.getGreen(), col.getBlue()).brighter().getRGB();
-                            break;
-                        case "Gray":
-                            color = (new Color(col2.getRed() / 1, col2.getRed() / 1, col2.getRed() / 1))
-                                    .getRGB();
-                            break;
+            float x = (float)(sr.getScaledWidth() - arraylistfont.getStringWidth(m2.getName()) - 1);
+            if(m2.isEnabled()) {
+                String disname = m2.getdisplayName() == null ? "" : "" + m2.getdisplayName();
+                switch (rainbow.getModeName()){
+                    case "Rainbow" :
+                        int rainbowCol = rainbow1(System.nanoTime() + 4400l, (float) yAxis * +5, 1.1F).getRGB();
+                        int c1 = rainbowCol;
+                        Color col = new Color(c1);
+                        color = new Color(col.getRed(), col.getGreen(), col.getBlue()).brighter().getRGB();
+                        break;
+                    case "Gray":
+                        color = (new Color(col2.getRed() / 1, col2.getRed() / 1, col2.getRed() / 1))
+                                .getRGB();
+                        break;
 
-                        case "White":
-                            color = -1;
-                            break;
-                    }
-
-                    arraylistfont.drawStringWithShadow( m2.getRenderName(), sr.getScaledWidth() - arraylistfont.getStringWidth(m2.getRenderName() + disname) -3, yAxis ,color);
-                    arraylistfont.drawStringWithShadow(disname, sr.getScaledWidth() - arraylistfont.getStringWidth(disname) - 1, yAxis,new Color(166,168,168).getRGB());
-
-                    int[] arrn = var3;
-                    arrn[0] = arrn[0] + 2;
-                    yAxis += 12F;
+                    case "White":
+                        color = -1;
+                        break;
                 }
+
+                arraylistfont.drawStringWithShadow( m2.getRenderName(), sr.getScaledWidth() - arraylistfont.getStringWidth(m2.getRenderName() + disname) -3, yAxis ,color);
+                arraylistfont.drawStringWithShadow(disname, sr.getScaledWidth() - arraylistfont.getStringWidth(disname) - 1, yAxis,new Color(166,168,168).getRGB());
+
+                int[] arrn = var3;
+                arrn[0] = arrn[0] + 2;
+                yAxis += 12F;
+            }
 
         }
     }
