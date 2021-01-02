@@ -5,6 +5,7 @@ import cn.snowflake.rose.asm.ClassTransformer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.injection.ClientLoader;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Timer;
@@ -50,14 +51,14 @@ public class JReflectUtility {
         Field fTimer = null;
         try {
             fTimer = mc.getClass().getDeclaredField(
-                    ClassTransformer.runtimeDeobfuscationEnabled ? "field_71428_T" : "timer");
+                    ClientLoader.runtimeDeobfuscationEnabled ? "field_71428_T" : "timer");
             fTimer.setAccessible(true);
         } catch (NoSuchFieldException ev) {
         }
         Field frenderPartialTicks = null;
         try {
             frenderPartialTicks = Timer.class.getDeclaredField(
-                    ClassTransformer.runtimeDeobfuscationEnabled ? "field_74281_c" : "renderPartialTicks");
+                    ClientLoader.runtimeDeobfuscationEnabled ? "field_74281_c" : "renderPartialTicks");
         } catch (NoSuchFieldException v) {
         }
 
@@ -226,8 +227,8 @@ public class JReflectUtility {
 
     public static void orientCamera(float renderPartialTicks){
         try {
-            mc.entityRenderer.getClass().getDeclaredMethod(ClassTransformer.runtimeDeobfuscationEnabled ? "func_78467_g" : "orientCamera",float.class).setAccessible(true);
-            mc.entityRenderer.getClass().getDeclaredMethod(ClassTransformer.runtimeDeobfuscationEnabled ? "func_78467_g" : "orientCamera",float.class).invoke(mc.entityRenderer,renderPartialTicks);
+            mc.entityRenderer.getClass().getDeclaredMethod(ClientLoader.runtimeDeobfuscationEnabled ? "func_78467_g" : "orientCamera",float.class).setAccessible(true);
+            mc.entityRenderer.getClass().getDeclaredMethod(ClientLoader.runtimeDeobfuscationEnabled ? "func_78467_g" : "orientCamera",float.class).invoke(mc.entityRenderer,renderPartialTicks);
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (InvocationTargetException e) {
@@ -286,7 +287,7 @@ public class JReflectUtility {
     public static void setRightClickDelayTimer(int i) {
       try{
         Field rightClickDelayTimer =
-                mc.getClass().getDeclaredField(ClassTransformer.runtimeDeobfuscationEnabled
+                mc.getClass().getDeclaredField(ClientLoader.runtimeDeobfuscationEnabled
                         ? "field_71467_ac" : "rightClickDelayTimer");//field_71467_ac
         rightClickDelayTimer.setAccessible(true);
         rightClickDelayTimer.setInt(mc, 0);
@@ -350,7 +351,7 @@ public class JReflectUtility {
         Field field = null;
         try {
             field = PlayerControllerMP.class.getDeclaredField(
-                    ClassTransformer.runtimeDeobfuscationEnabled ? "field_78770_f" : "curBlockDamageMP");
+                    ClientLoader.runtimeDeobfuscationEnabled ? "field_78770_f" : "curBlockDamageMP");
         } catch (NoSuchFieldException e) {
         }
         field.setAccessible(true);
@@ -365,7 +366,7 @@ public class JReflectUtility {
         Field field = null;
         try {
             field = Minecraft.getMinecraft().playerController.getClass().getDeclaredField(
-                    ClassTransformer.runtimeDeobfuscationEnabled ? "field_78778_j" : "isHittingBlock");
+                    ClientLoader.runtimeDeobfuscationEnabled ? "field_78778_j" : "isHittingBlock");
             field.setAccessible(true);
             return field.getBoolean(Minecraft.getMinecraft().playerController.getClass());
         }catch (Exception e){
@@ -378,7 +379,7 @@ public class JReflectUtility {
         Field field = null;
         try {
             field = mc.thePlayer.getClass().getDeclaredField(
-                    ClassTransformer.runtimeDeobfuscationEnabled ? "field_71171_cn" : "wasSprinting");
+                    ClientLoader.runtimeDeobfuscationEnabled ? "field_71171_cn" : "wasSprinting");
         } catch (NoSuchFieldException e) {
         }
         field.setAccessible(true);
@@ -392,7 +393,7 @@ public class JReflectUtility {
         Field field = null;
         try {
             field = PlayerControllerMP.class.getDeclaredField(
-                    ClassTransformer.runtimeDeobfuscationEnabled ? "field_78781_i" : "blockHitDelay");
+                    ClientLoader.runtimeDeobfuscationEnabled ? "field_78781_i" : "blockHitDelay");
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
@@ -407,7 +408,7 @@ public class JReflectUtility {
         Field field = null;
         try {
             field = PlayerControllerMP.class.getDeclaredField(
-                    ClassTransformer.runtimeDeobfuscationEnabled ? "field_78770_f" : "curBlockDamageMP");
+                    ClientLoader.runtimeDeobfuscationEnabled ? "field_78770_f" : "curBlockDamageMP");
         } catch (NoSuchFieldException e) {
 
         }

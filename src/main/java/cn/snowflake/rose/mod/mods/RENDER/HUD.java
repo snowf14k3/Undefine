@@ -12,6 +12,7 @@ import io.netty.util.internal.ConcurrentSet;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.injection.ClientLoader;
 import org.apache.logging.log4j.LogManager;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
@@ -90,7 +91,7 @@ public class HUD extends Module {
             String text = null;
             String text2 = null;
             try {
-                text2 = JReflectUtility.getField(mc.getClass(), ClassTransformer.runtimeDeobfuscationEnabled ? "field_71470_ab": "debugFPS",true).getInt(mc) + " fps | " +result +" | " + server;
+                text2 = JReflectUtility.getField(mc.getClass(), ClientLoader.runtimeDeobfuscationEnabled ? "field_71470_ab": "debugFPS",true).getInt(mc) + " fps | " +result +" | " + server;
                 text = this.text.getText()+"\2472sense\247f | " +text2;
             } catch (IllegalAccessException illegalAccessException) {
                 illegalAccessException.printStackTrace();

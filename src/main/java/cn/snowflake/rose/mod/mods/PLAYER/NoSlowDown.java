@@ -7,6 +7,7 @@ import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.BlockPos;
 import cn.snowflake.rose.utils.Value;
 import com.darkmagician6.eventapi.EventTarget;
+import net.minecraft.injection.ClientLoader;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemSword;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
@@ -43,7 +44,7 @@ public class NoSlowDown extends Module {
         if (mode.isCurrentMode("NCP") || mode.isCurrentMode("AAC")){
             if((this.mc.thePlayer.getHeldItem().getItem() instanceof ItemSword && mc.thePlayer.isBlocking()  ) || (this.mc.thePlayer.getHeldItem().getItem() instanceof ItemFood && mc.thePlayer.isUsingItem())) {
                 try {
-                    mc.playerController.getClass().getDeclaredMethod(ClassTransformer.runtimeDeobfuscationEnabled ? "func_78750_j" : "syncCurrentPlayItem").invoke(mc.playerController);
+                    mc.playerController.getClass().getDeclaredMethod(ClientLoader.runtimeDeobfuscationEnabled ? "func_78750_j" : "syncCurrentPlayItem").invoke(mc.playerController);
                 } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException illegalAccessException) {
                 }
                 mc.getNetHandler().addToSendQueue(new C07PacketPlayerDigging(5, 0,0,0, 0));

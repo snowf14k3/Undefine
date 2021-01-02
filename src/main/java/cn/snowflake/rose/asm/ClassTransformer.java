@@ -15,6 +15,7 @@ import cn.snowflake.rose.mod.mods.WORLD.Xray;
 import cn.snowflake.rose.utils.asm.ASMUtil;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.types.EventType;
+import net.minecraft.injection.ClientLoader;
 import net.minecraft.network.play.server.S05PacketSpawnPosition;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -78,10 +79,10 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 		return transform(transformedName, classByte);
 	}
 
-	//  TODO SHIT OF runtimeDeobfuscationEnabled
-	public static  boolean runtimeDeobfuscationEnabled = true;
+	//  TODO SHIT OF ClientLoader.runtimeDeobfuscationEnabled
+//	public static  boolean ClientLoader.runtimeDeobfuscationEnabled = true;
 
-//	public static  boolean runtimeDeobfuscationEnabled = false;
+//	public static  boolean ClientLoader.runtimeDeobfuscationEnabled = false;
 
 	public byte[] transform(String name, byte[] classByte) {
 		try {
@@ -146,18 +147,18 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 	}
 	private void transformModelBiped(ClassNode classNode, MethodNode methodNode) {
 		if (methodNode.name.equalsIgnoreCase("setRotationAngles") || methodNode.name.equalsIgnoreCase("func_78087_a")){
-			AbstractInsnNode target = ASMUtil.findFieldInsnNode(methodNode,GETFIELD, "net/minecraft/client/model/ModelBiped", runtimeDeobfuscationEnabled ? "field_70122_E" : "onGround", "F");
+			AbstractInsnNode target = ASMUtil.findFieldInsnNode(methodNode,GETFIELD, "net/minecraft/client/model/ModelBiped", ClientLoader.runtimeDeobfuscationEnabled ? "field_70122_E" : "onGround", "F");
 			if (target != null){
 				InsnList insnList = new InsnList();
 				insnList.add(new VarInsnNode(ALOAD,0));
-				insnList.add(new FieldInsnNode(GETFIELD, "net/minecraft/client/model/ModelBiped", runtimeDeobfuscationEnabled ?  "field_78120_m" : "heldItemRight", "I"));
+				insnList.add(new FieldInsnNode(GETFIELD, "net/minecraft/client/model/ModelBiped", ClientLoader.runtimeDeobfuscationEnabled ?  "field_78120_m" : "heldItemRight", "I"));
 				insnList.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(ClassTransformer.class), "isheldItemRight", "(I)Z", false));
 				LabelNode l1 = new LabelNode();
 				insnList.add(new JumpInsnNode(IFEQ,l1));
 				insnList.add(new VarInsnNode(ALOAD,0));
-				insnList.add(new FieldInsnNode(GETFIELD, "net/minecraft/client/model/ModelBiped", runtimeDeobfuscationEnabled ? "field_78112_f":"bipedRightArm", "Lnet/minecraft/client/model/ModelRenderer;"));
+				insnList.add(new FieldInsnNode(GETFIELD, "net/minecraft/client/model/ModelBiped", ClientLoader.runtimeDeobfuscationEnabled ? "field_78112_f":"bipedRightArm", "Lnet/minecraft/client/model/ModelRenderer;"));
 				insnList.add(new InsnNode(FCONST_0));
-				insnList.add(new FieldInsnNode(PUTFIELD, "net/minecraft/client/model/ModelRenderer", runtimeDeobfuscationEnabled ? "field_78796_g" : "rotateAngleY", "F"));
+				insnList.add(new FieldInsnNode(PUTFIELD, "net/minecraft/client/model/ModelRenderer", ClientLoader.runtimeDeobfuscationEnabled ? "field_78796_g" : "rotateAngleY", "F"));
 				insnList.add(l1);
 
 //				LabelNode l2 = new LabelNode();
@@ -172,19 +173,19 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 //
 //				//			var7.equals(Minecraft.getMinecraft().thePlayer)
 //				insnList.add(new VarInsnNode(ALOAD,7));
-//				insnList.add(new MethodInsnNode(INVOKESTATIC, "net/minecraft/client/Minecraft", runtimeDeobfuscationEnabled ? "func_71410_x" : "getMinecraft", "()Lnet/minecraft/client/Minecraft;", false));
-//				insnList.add(new FieldInsnNode(GETFIELD, "net/minecraft/client/Minecraft", runtimeDeobfuscationEnabled ? "field_71439_g" : "thePlayer", "Lnet/minecraft/client/entity/EntityClientPlayerMP;"));
+//				insnList.add(new MethodInsnNode(INVOKESTATIC, "net/minecraft/client/Minecraft", ClientLoader.runtimeDeobfuscationEnabled ? "func_71410_x" : "getMinecraft", "()Lnet/minecraft/client/Minecraft;", false));
+//				insnList.add(new FieldInsnNode(GETFIELD, "net/minecraft/client/Minecraft", ClientLoader.runtimeDeobfuscationEnabled ? "field_71439_g" : "thePlayer", "Lnet/minecraft/client/entity/EntityClientPlayerMP;"));
 //				insnList.add(new MethodInsnNode(INVOKEVIRTUAL, "net/minecraft/entity/Entity", "equals", "(Ljava/lang/Object;)Z", false));
 //				insnList.add(new JumpInsnNode(IFEQ,l2));
 //
 //				insnList.add(new VarInsnNode(ALOAD,0));
-//				insnList.add(new FieldInsnNode(GETFIELD, "net/minecraft/client/model/ModelRenderer", runtimeDeobfuscationEnabled ? "field_78116_c" : "bipedHead", "Lnet/minecraft/client/model/ModelRenderer;"));
+//				insnList.add(new FieldInsnNode(GETFIELD, "net/minecraft/client/model/ModelRenderer", ClientLoader.runtimeDeobfuscationEnabled ? "field_78116_c" : "bipedHead", "Lnet/minecraft/client/model/ModelRenderer;"));
 //
 //				insnList.add(new FieldInsnNode(GETSTATIC, "cn/snowflake/rose/asm/MinecraftHook", "serverRotation", "Lcn/snowflake/rose/utils/Rotation;"));
 //				insnList.add(new MethodInsnNode(INVOKEVIRTUAL, "cn/snowflake/rose/utils/Rotation", "getPitch", "()F", false));
 //				insnList.add(new LdcInsnNode("57.295776"));
 //				insnList.add(new InsnNode(FDIV));
-//				insnList.add(new FieldInsnNode(PUTFIELD, "net/minecraft/client/model/ModelRenderer", runtimeDeobfuscationEnabled ? "field_78795_f" : "rotateAngleX", "F"));
+//				insnList.add(new FieldInsnNode(PUTFIELD, "net/minecraft/client/model/ModelRenderer", ClientLoader.runtimeDeobfuscationEnabled ? "field_78795_f" : "rotateAngleX", "F"));
 //
 //				insnList.add(l2);
 //				insnList.add(new FrameNode(F_SAME, 0, null, 0, null));
@@ -299,7 +300,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			methodNode.instructions.insert(insnList);
 
 //			InsnList steplist = new InsnList();
-//			steplist.add(new FieldInsnNode(GETFIELD,"net/minecraft/entity/Entity",runtimeDeobfuscationEnabled ? "field_70138_W" : "stepHeight","F"));
+//			steplist.add(new FieldInsnNode(GETFIELD,"net/minecraft/entity/Entity",ClientLoader.runtimeDeobfuscationEnabled ? "field_70138_W" : "stepHeight","F"));
 //			steplist.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(MinecraftHook.class), "eventStepHook1", "(F)Z", false));
 //			for (AbstractInsnNode abstractInsnNode : methodNode.instructions.toArray()) {
 //				if (abstractInsnNode.getOpcode() == ALOAD &
@@ -442,7 +443,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			method.instructions.insert(insnList);
 		}
 		if ((method.name.equalsIgnoreCase("orientCamera") || method.name.equalsIgnoreCase("func_78467_g")) && method.desc.equalsIgnoreCase("(F)V")){
-			AbstractInsnNode target = ASMUtil.findMethodInsn(method, INVOKEVIRTUAL,"net/minecraft/util/Vec3", runtimeDeobfuscationEnabled ?"func_72438_d" : "distanceTo","(Lnet/minecraft/util/Vec3;)D");
+			AbstractInsnNode target = ASMUtil.findMethodInsn(method, INVOKEVIRTUAL,"net/minecraft/util/Vec3", ClientLoader.runtimeDeobfuscationEnabled ?"func_72438_d" : "distanceTo","(Lnet/minecraft/util/Vec3;)D");
 			if (target != null){
 				InsnList insnList2 = new InsnList();
 
@@ -541,25 +542,25 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 				if (abstractInsnNode.getOpcode() == ALOAD &
 						abstractInsnNode.getNext() instanceof FieldInsnNode
 				){
-					if ( ((FieldInsnNode) abstractInsnNode.getNext()).name.equalsIgnoreCase(runtimeDeobfuscationEnabled ? "field_70163_u" : "posY")
+					if ( ((FieldInsnNode) abstractInsnNode.getNext()).name.equalsIgnoreCase(ClientLoader.runtimeDeobfuscationEnabled ? "field_70163_u" : "posY")
 					){
 						method.instructions.set(abstractInsnNode.getNext(),
 								new FieldInsnNode(GETSTATIC,"cn/snowflake/rose/events/impl/EventMotion",
 										"y","D"));
 						method.instructions.remove(abstractInsnNode);
-					}else if ( ((FieldInsnNode) abstractInsnNode.getNext()).name.equalsIgnoreCase(runtimeDeobfuscationEnabled ? "field_70177_z" : "rotationYaw")
+					}else if ( ((FieldInsnNode) abstractInsnNode.getNext()).name.equalsIgnoreCase(ClientLoader.runtimeDeobfuscationEnabled ? "field_70177_z" : "rotationYaw")
 					){
 						method.instructions.set(abstractInsnNode.getNext(),
 								new FieldInsnNode(GETSTATIC,"cn/snowflake/rose/events/impl/EventMotion",
 										"yaw","F"));
 						method.instructions.remove(abstractInsnNode);
-					}else if ( ((FieldInsnNode) abstractInsnNode.getNext()).name.equalsIgnoreCase(runtimeDeobfuscationEnabled ? "field_70125_A" : "rotationPitch")
+					}else if ( ((FieldInsnNode) abstractInsnNode.getNext()).name.equalsIgnoreCase(ClientLoader.runtimeDeobfuscationEnabled ? "field_70125_A" : "rotationPitch")
 					){
 						method.instructions.set(abstractInsnNode.getNext(),
 								new FieldInsnNode(GETSTATIC,"cn/snowflake/rose/events/impl/EventMotion",
 										"pitch","F"));
 						method.instructions.remove(abstractInsnNode);
-					}else if ( ((FieldInsnNode) abstractInsnNode.getNext()).name.equalsIgnoreCase(runtimeDeobfuscationEnabled ? "field_70122_E" : "onGround")
+					}else if ( ((FieldInsnNode) abstractInsnNode.getNext()).name.equalsIgnoreCase(ClientLoader.runtimeDeobfuscationEnabled ? "field_70122_E" : "onGround")
 					){
 						method.instructions.set(abstractInsnNode.getNext(),
 								new FieldInsnNode(GETSTATIC,"cn/snowflake/rose/events/impl/EventMotion",
@@ -596,7 +597,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 	@Override
 	public byte[] transform(ClassLoader arg0, String name, Class<?> clazz, ProtectionDomain arg3, byte[] classByte)
 			throws IllegalClassFormatException {
-		runtimeDeobfuscationEnabled = true;
+		ClientLoader.runtimeDeobfuscationEnabled = true;
 		return transform(clazz.getName(), classByte);
 	}
 

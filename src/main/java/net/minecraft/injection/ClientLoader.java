@@ -2,11 +2,10 @@ package net.minecraft.injection;
 
 import cn.snowflake.rose.Client;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
-
 import java.util.Map;
 
-
 public class ClientLoader implements IFMLLoadingPlugin {
+	public static boolean runtimeDeobfuscationEnabled = true;
 
 	@Override
 	public String[] getASMTransformerClass() {
@@ -25,6 +24,7 @@ public class ClientLoader implements IFMLLoadingPlugin {
 
 	@Override
 	public void injectData(Map<String, Object> data) {
+		runtimeDeobfuscationEnabled = (boolean)data.get("runtimeDeobfuscationEnabled");
 	}
 
 	@Override

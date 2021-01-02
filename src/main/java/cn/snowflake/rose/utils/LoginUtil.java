@@ -7,6 +7,7 @@ import com.mojang.authlib.exceptions.AuthenticationUnavailableException;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import com.mojang.authlib.yggdrasil.YggdrasilUserAuthentication;
 import net.minecraft.client.Minecraft;
+import net.minecraft.injection.ClientLoader;
 import net.minecraft.util.Session;
 
 import java.lang.reflect.Field;
@@ -25,7 +26,7 @@ public class LoginUtil {
         try {
             authentication.logIn();
             try {
-                Field f = Minecraft.class.getDeclaredField(ClassTransformer.runtimeDeobfuscationEnabled ? "field_71449_j" : "session");
+                Field f = Minecraft.class.getDeclaredField(ClientLoader.runtimeDeobfuscationEnabled ? "field_71449_j" : "session");
                 f.setAccessible(true);
                 f.set(Minecraft.getMinecraft(), new Session(authentication.getSelectedProfile().getName(), authentication.getSelectedProfile().getId().toString(), authentication.getAuthenticatedToken(), "mojang"));
                 displayText = "Logged [License]: " + Minecraft.getMinecraft().getSession().getUsername();
@@ -65,7 +66,7 @@ public class LoginUtil {
 
     public static void changeCrackedName(String name) {
         try {
-            Field f = Minecraft.class.getDeclaredField(ClassTransformer.runtimeDeobfuscationEnabled ? "field_71449_j" : "session");
+            Field f = Minecraft.class.getDeclaredField(ClientLoader.runtimeDeobfuscationEnabled ? "field_71449_j" : "session");
             f.setAccessible(true);
             f.set(Minecraft.getMinecraft(), new Session(name, "", "", "mojang"));
         } catch (Exception e) {
