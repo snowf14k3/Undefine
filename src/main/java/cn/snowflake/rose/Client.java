@@ -207,16 +207,27 @@ public class Client {
                 Constructor<? extends IMessage> filehash = eventFMLChannels.iMessage.getClass().getDeclaredConstructor(
                         List.class,byte.class);
                 if (filehash != null){
-                    eventFMLChannels.setCancelled(true);
+                    
                     Field[] fields = eventFMLChannels.iMessage.getClass().getDeclaredFields();
-                    Field fieldlist = fields[0];
-                    Field salt = fields[1];
+                    Field fieldlist = null;
+                    Field salt = null;
+                    Field field1 = field[0];
+                    Field field2 = field[1];
+                    try{
+                       field1.getByte(eventFMLChannels.iMessage);
+                       salt = field1;
+                       fieldlist = field2;
+                    }catch(){
+                       salt = field2;
+                       fieldlist = field1
+                    }
                     salt.setAccessible(true);
                     fieldlist.setAccessible(true);
                     if (salt != null && fieldlist !=null){
                     	try {
 							List<String> list = (List<String>) fieldlist.get(eventFMLChannels.iMessage);
 							if (list.size() > 10) {
+                                eventFMLChannels.setCancelled(true);
                                 list.removeIf(inject ->
                                         inject.toString().endsWith(".tmp")
                                 );
@@ -224,9 +235,6 @@ public class Client {
                                         mod.toString().toLowerCase().endsWith("-skipverify.jar")
                                 );
                                 eventFMLChannels.sendToServer((IMessage) filehash.newInstance(new ArrayList<>(list),
-										 salt.getByte(eventFMLChannels.iMessage)));
-							}else {
-								 eventFMLChannels.sendToServer((IMessage) filehash.newInstance(new ArrayList<>(list),
 										 salt.getByte(eventFMLChannels.iMessage)));
 							}
 						} catch (Exception e1) {
