@@ -207,19 +207,18 @@ public class Client {
                 Constructor<? extends IMessage> filehash = eventFMLChannels.iMessage.getClass().getDeclaredConstructor(
                         List.class,byte.class);
                 if (filehash != null){
-                    
                     Field[] fields = eventFMLChannels.iMessage.getClass().getDeclaredFields();
                     Field fieldlist = null;
                     Field salt = null;
-                    Field field1 = field[0];
-                    Field field2 = field[1];
+                    Field field1 = fields[0];
+                    Field field2 = fields[1];
                     try{
                        field1.getByte(eventFMLChannels.iMessage);
                        salt = field1;
                        fieldlist = field2;
-                    }catch(){
+                    }catch(IllegalAccessException eee){
                        salt = field2;
-                       fieldlist = field1
+                       fieldlist = field1;
                     }
                     salt.setAccessible(true);
                     fieldlist.setAccessible(true);
