@@ -130,15 +130,6 @@ extends UI {
         if (this.opacity.getOpacity() < 10.0f) {
             return;
         }
-        if (key == 210 || key == 211 || key == 54) {
-            /*panel.typeButton.forEach(o -> o.categoryPanel.multiDropdownBoxes.forEach(b -> {
-                b.active = false;
-            }));*/
-            panel.typeButton.forEach(o -> o.categoryPanel.dropdownBoxes.forEach(b -> {
-                b.active = false;
-            }));
-            this.mc.displayGuiScreen(null);
-        }
         panel.typeButton.forEach(o -> o.categoryPanel.buttons.forEach(b -> b.keyPressed(key)));
       //  panel.typeButton.forEach(o -> o.categoryPanel.textBoxes.forEach(t -> t.keyPressed(key)));
     }
@@ -1013,8 +1004,12 @@ extends UI {
         RenderUtil.rectangle((double)0.0, (double)0.5, (double)0.5, (double)2.0, (int)Colors.getColor((int)151));
         RenderUtil.rectangle((double)0.5, (double)1.0, (double)1.0, (double)1.5, (int)Colors.getColor((int)151));
         GlStateManager.popMatrix();
+        //TODO 获取Mode这里会数组越界，暂时注释掉
+        /*
         String modenow = p0.setting.getModeAt(p0.setting.getCurrentMode());
         Client.fss.drawString(modenow, p0.x + 4.0f + xOff - 1.0f, p0.y + 3.0f + yOff, Colors.getColor((int)151, (int)((int)this.opacity.getOpacity())));
+        */
+
       //  if (p0.option.getSelected().contains((CharSequence)"180")) {
       //      this.mc.fontRendererObj.drawString("\u6811\u5c4b", p0.x + 3.0f + xOff + Client.fss.getWidth(p0.option.getSelected()), p0.y + yOff + 0.5f, Colors.getColor((int)151, (int)((int)this.opacity.getOpacity())));
       //  }

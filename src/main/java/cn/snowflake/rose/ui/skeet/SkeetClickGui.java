@@ -28,6 +28,7 @@ extends GuiScreen {
     
     @Override
     public void initGui() {
+        this.mainPanel.opacity =255;
     }
     
     @Override
