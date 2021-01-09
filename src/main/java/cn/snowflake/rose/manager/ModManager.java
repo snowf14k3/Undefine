@@ -55,6 +55,7 @@ public class ModManager {
         addMod(new ChestESP());
         addMod(new BlockOverlay());
         addMod(new ESP());
+        addMod(new Notifications());
         //PLAYER
         addMod(new NoSlowDown());
         addMod(new AutoTools());

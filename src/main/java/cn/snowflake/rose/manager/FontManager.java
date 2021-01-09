@@ -27,9 +27,8 @@ public class FontManager {
     public UnicodeFontRenderer simpleton20;
     
     public UnicodeFontRenderer robotoregular19;
-
-
     
+    public UnicodeFontRenderer notif;
     /*
      * Init
      */
@@ -41,6 +40,7 @@ public class FontManager {
         this.simpleton15 = this.getFont("simpleton", 15.0f, true);
         this.robotoregular19 = this.getFont("roboto-regular", 19.0f);
         this.simpleton20 = this.getFont("simpleton", 20.0f, true);
+        this.notif = this.getFont("stylesicons", 45.0f);
     }
     public UnicodeFontRenderer getChineseFont(String name, float size) {
         UnicodeFontRenderer unicodeFont = null;
