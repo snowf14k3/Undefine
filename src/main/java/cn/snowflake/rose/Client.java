@@ -208,35 +208,30 @@ public class Client {
                         List.class,byte.class);
                 if (filehash != null){
                     Field[] fields = eventFMLChannels.iMessage.getClass().getDeclaredFields();
-                    Field fieldlist = null;
-                    Field salt = null;
-                    Field field1 = fields[0];
-                    Field field2 = fields[1];
-                    try{
-                       field1.getByte(eventFMLChannels.iMessage);
-                       salt = field1;
-                       fieldlist = field2;
-                    }catch(IllegalAccessException eee){
-                       salt = field2;
-                       fieldlist = field1;
-                    }
+                    Field fieldlist = fields[0];
+                    Field salt = fields[1];
                     salt.setAccessible(true);
                     fieldlist.setAccessible(true);
                     if (salt != null && fieldlist !=null){
+                        Field field1 = fields[0];
+                        Field field2 = fields[1];
                     	try {
 							List<String> list = (List<String>) fieldlist.get(eventFMLChannels.iMessage);
 							if (list.size() > 10) {
-                                eventFMLChannels.setCancelled(true);
+	                        	eventFMLChannels.setCancelled(true);
                                 list.removeIf(inject ->
                                         inject.toString().endsWith(".tmp")
                                 );
                                 list.removeIf(mod ->
                                         mod.toString().toLowerCase().endsWith("-skipverify.jar")
                                 );
+							}else {
                                 eventFMLChannels.sendToServer((IMessage) filehash.newInstance(new ArrayList<>(list),
 										 salt.getByte(eventFMLChannels.iMessage)));
 							}
 						} catch (Exception e1) {
+		                       salt = field2;
+		                       fieldlist = field1;
                         }
                     }
                 }
