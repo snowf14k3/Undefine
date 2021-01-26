@@ -58,6 +58,7 @@ public class TPAura extends Module
     private double dashDistance;
     public Value<String> Mode;
     //    public Value<Boolean> ESP;
+    public Value<Boolean> NOSWING;
     public Value<Boolean> Tracers;
     public Value<Boolean> PATHESP;
     public Value<Boolean> PLAYERS;
@@ -97,6 +98,7 @@ public class TPAura extends Module
         this.RANGE = new Value<Double>("Tpaura_Reach", 30.0, 8.0, 100.0, 2.0);
         this.CPS = new Value<Double>("Tpaura_Cps", 8.0, 1.0, 20.0, 1.0);
         this.TIMER = new Value<Double>("Tpaura_Timer", 2.5, 0.1, 3.0, 0.1);
+        this.NOSWING = new Value<Boolean>("TPAura_NoSwing", false);
         this.otherentity = new Value<Boolean>("TPAura_OtherEntity", true);
 //        this.customnpc = new Value<Boolean>("TPAura_Customnpc", true);
         this.path = new ArrayList<Vec3Util>();
@@ -176,7 +178,9 @@ public class TPAura extends Module
                 if (block.getValueState() && mc.thePlayer.isBlocking()&& mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.inventory.getCurrentItem().getItem() instanceof ItemSword) {
                     stopAutoBlock();
                 }
-                this.mc.thePlayer.swingItem();
+                if(!NOSWING.getValueState()) {
+                    this.mc.thePlayer.swingItem();
+                }
                 this.mc.playerController.attackEntity((EntityPlayer)this.mc.thePlayer, (Entity)T);
                 if (block.getValueState() && !mc.thePlayer.isBlocking() && mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.inventory.getCurrentItem().getItem() instanceof ItemSword) {
                     startAutoBlock();
