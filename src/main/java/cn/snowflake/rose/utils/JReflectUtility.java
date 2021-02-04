@@ -223,8 +223,16 @@ public class JReflectUtility {
     }
 
     private static final Minecraft mc = Minecraft.getMinecraft();
-
-
+    
+    public static void cameraTransform(float renderPartialTicks, int pass) {
+		try {
+            mc.entityRenderer.getClass().getDeclaredMethod(ClientLoader.runtimeDeobfuscationEnabled ? "func_78479_a" : "setupCameraTransform",float.class).setAccessible(true);
+            mc.entityRenderer.getClass().getDeclaredMethod(ClientLoader.runtimeDeobfuscationEnabled ? "func_78479_a" : "setupCameraTransform",float.class,int.class).invoke(mc.entityRenderer,renderPartialTicks,pass);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+    
     public static void orientCamera(float renderPartialTicks){
         try {
             mc.entityRenderer.getClass().getDeclaredMethod(ClientLoader.runtimeDeobfuscationEnabled ? "func_78467_g" : "orientCamera",float.class).setAccessible(true);
@@ -237,6 +245,7 @@ public class JReflectUtility {
             e.printStackTrace();
         }
     }
+    
     public static AxisAlignedBB newInstanceAxisAlignedBB(double x, double y, double z){
         Class<AxisAlignedBB> clazz = null;
         try {

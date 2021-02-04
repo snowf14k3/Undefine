@@ -5,10 +5,12 @@ import java.lang.reflect.Field;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
+import javax.vecmath.Vector3d;
 
 import cn.snowflake.rose.asm.ClassTransformer;
 import cn.snowflake.rose.manager.ModManager;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.culling.Frustrum;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.Entity;
@@ -23,6 +25,7 @@ import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -32,6 +35,10 @@ import org.lwjgl.util.glu.GLU;
 
 public enum	 RenderUtil {
     INSTANCE;
+    private static final IntBuffer viewport = GLAllocation.createDirectIntBuffer(16);
+    private static final FloatBuffer modelview = GLAllocation.createDirectFloatBuffer(16);
+    private static final FloatBuffer projection = GLAllocation.createDirectFloatBuffer(16);
+    
     public static int reAlpha(int color, float alpha) {
         Color c = new Color(color);
         float r = ((float) 1 / 255) * c.getRed();
@@ -856,4 +863,16 @@ public enum	 RenderUtil {
         drawRect(x + width, y1 - width, x1 - width, y1, borderColor);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
      }
+    
+    public static Vector3d project(double x, double y, double z) {
+    	ScaledResolution getsr = new ScaledResolution(Minecraft.getMinecraft(),Minecraft.getMinecraft().displayWidth,Minecraft.getMinecraft().displayHeight);
+        FloatBuffer vector = GLAllocation.createDirectFloatBuffer(4);
+        GL11.glGetFloat((int)2982, (FloatBuffer)modelview);
+        GL11.glGetFloat((int)2983, (FloatBuffer)projection);
+        GL11.glGetInteger((int)2978, (IntBuffer)viewport);
+        if (GLU.gluProject((float)((float)x), (float)((float)y), (float)((float)z), (FloatBuffer)modelview, (FloatBuffer)projection, (IntBuffer)viewport, (FloatBuffer)vector)) {
+            return new Vector3d(vector.get(0) / (float)getsr.getScaleFactor(), ((float)Display.getHeight() - vector.get(1)) / (float)getsr.getScaleFactor(), vector.get(2));
+        }
+        return null;
+    }
 }
