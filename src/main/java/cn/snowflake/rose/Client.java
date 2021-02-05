@@ -1,46 +1,33 @@
 package cn.snowflake.rose;
 
 import cn.snowflake.rose.events.impl.EventFMLChannels;
-import cn.snowflake.rose.events.impl.EventPacket;
 import cn.snowflake.rose.events.impl.EventTick;
-import cn.snowflake.rose.events.impl.EventUpdate;
-import cn.snowflake.rose.manager.CommandManager;
-import cn.snowflake.rose.manager.FileManager;
-import cn.snowflake.rose.manager.FontManager;
-import cn.snowflake.rose.manager.ModManager;
+import cn.snowflake.rose.events.impl.EventWorldChange;
+import cn.snowflake.rose.management.CommandManager;
+import cn.snowflake.rose.management.FileManager;
+import cn.snowflake.rose.management.FontManager;
+import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.mod.mods.FORGE.ScreenProtect;
-import cn.snowflake.rose.mod.mods.WORLD.IRC;
 import cn.snowflake.rose.mod.mods.WORLD.Xray;
 import cn.snowflake.rose.ui.skeet.SkeetClickGui;
 import cn.snowflake.rose.utils.CatAntiCheatHelper;
-import cn.snowflake.rose.utils.JReflectUtility;
 import cn.snowflake.rose.utils.UnicodeFontRenderer;
 import cn.snowflake.rose.utils.verify.AntiReflex;
 import cn.snowflake.rose.utils.verify.HWIDUtils;
 import cn.snowflake.rose.utils.verify.ShitUtil;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
-import com.darkmagician6.eventapi.types.EventType;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.launchwrapper.LaunchClassLoader;
-import net.minecraft.network.play.client.C17PacketCustomPayload;
+import net.minecraft.client.multiplayer.WorldClient;
 import org.apache.logging.log4j.LogManager;
 import org.lwjgl.opengl.Display;
-import org.newdawn.slick.AngelCodeFont;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.ClassNode;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -48,17 +35,11 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.lang.annotation.Annotation;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.math.BigInteger;
-import java.net.URL;
-import java.net.UnknownServiceException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.List;
 import java.util.zip.GZIPOutputStream;
@@ -183,21 +164,41 @@ public class Client {
         return new SkeetClickGui();
     }
 
-
-
-
     @EventTarget
-    public void onupdate(EventTick e) throws NoSuchFieldException, IllegalAccessException {
-        if (Minecraft.getMinecraft().thePlayer == null && Minecraft.getMinecraft().theWorld == null){
-            Objects.requireNonNull(ModManager.getModByName("ServerCrasher")).set(false);
-            Objects.requireNonNull(ModManager.getModByName("Aura")).set(false);
-            Objects.requireNonNull(ModManager.getModByName("TPAura")).set(false);
-            Objects.requireNonNull(ModManager.getModByName("Blink")).set(false);
-            Objects.requireNonNull(ModManager.getModByName("Freecam")).set(false);
+    public void ontick(EventWorldChange eventTick){
+        Objects.requireNonNull(ModManager.getModByName("ServerCrasher")).set(false);
+        Objects.requireNonNull(ModManager.getModByName("Aura")).set(false);
+        Objects.requireNonNull(ModManager.getModByName("TPAura")).set(false);
+        Objects.requireNonNull(ModManager.getModByName("Blink")).set(false);
+        Objects.requireNonNull(ModManager.getModByName("Freecam")).set(false);
+    }
+
+    //copy from Hanabi
+    public static boolean isGameInit = false;
+
+    public static void onGameLoop() {
+        isGameInit = true;
+        WorldClient world = Minecraft.getMinecraft().theWorld;
+        if (worldChange == null) {
+            worldChange = world;
+            return;
+        }
+
+        if (world == null) {
+            worldChange = null;
+            return;
+        }
+
+        if (worldChange != world) {
+            worldChange = world;
+            EventManager.call(new EventWorldChange());
         }
     }
 
-    
+    static int VL = 0;
+    public static WorldClient worldChange;
+    //copy from Hanabi
+
     @EventTarget
     public void onFml(EventFMLChannels eventFMLChannels){
         if (eventFMLChannels.iMessage.getClass().toString().contains("cac")

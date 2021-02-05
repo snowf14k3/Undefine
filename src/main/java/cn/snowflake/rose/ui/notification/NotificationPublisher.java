@@ -29,7 +29,7 @@ public final class NotificationPublisher {
             int width = notification.getWidth();
             if (!notification.getTimer().elapsed(notification.getTime())) {
                 notification.scissorBoxWidth = AnimationUtil.animate(width, notification.scissorBoxWidth, 0.25D);
-                translate.interpolate((scaledWidth - width), y, (float) 0.15D);
+                translate.interpolate((scaledWidth - width), y, (float) 0.2D);
             } else {
                 notification.scissorBoxWidth = AnimationUtil.animate(0.0, notification.scissorBoxWidth, 0.25D);
                 if (notification.getWidth() > scaledWidth) {
@@ -46,10 +46,9 @@ public final class NotificationPublisher {
             RenderUtil.drawRect(translateX, (translateY + 28.0F - 1.0F), scaledWidth, (translateY + 28.0F), new Color(10, 10, 10, 180).getRGB());
             RenderUtil.drawRect(translateX, (translateY + 28.0F - 1.0F), translateX + width * (notification.getTime() - notification.getTimer().getElapsedTime()) / notification.getTime(), (translateY + 28.0F), notification.getType().getColor());
 
-            icon.drawString(notification.getType().getColorstr(), translateX + 2.0F, translateY + 4.0F, notification.getType().getColor());
-            Client.instance.fontManager.robotoregular19.drawStringWithShadow(notification.getTitle(), (int)(translateX + 28), (int)(translateY + 16), -1);
-            //Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(notification.getTitle(), (int)(translateX + 28), (int)(translateY + 4), -1);
-            //Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(notification.getContent(), (int)(translateX + 28), (int)(translateY + 16), -1);
+            icon.drawString(notification.getType().getColorstr(), translateX, translateY, notification.getType().getColor());
+            Client.instance.fontManager.simpleton20.drawStringWithShadow(notification.getTitle(), (int)(translateX + 28), (int)(translateY + 16), -1);
+
             GL11.glDisable(3089);
             GL11.glPopMatrix();
             y -= 35;

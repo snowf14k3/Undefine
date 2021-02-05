@@ -1,7 +1,7 @@
 package cn.snowflake.rose.command.commands;
 
 import cn.snowflake.rose.command.Command;
-import cn.snowflake.rose.manager.ModManager;
+import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.mods.WORLD.IRC;
 
 public class CommandIRC

@@ -3,44 +3,35 @@ package cn.snowflake.rose.asm;
 import cn.snowflake.rose.Client;
 import cn.snowflake.rose.command.Command;
 import cn.snowflake.rose.events.impl.*;
-import cn.snowflake.rose.manager.CommandManager;
-import cn.snowflake.rose.manager.FontManager;
-import cn.snowflake.rose.manager.ModManager;
+import cn.snowflake.rose.management.CommandManager;
+import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.mod.mods.MOVEMENT.Jesus;
+import cn.snowflake.rose.mod.mods.MOVEMENT.Scaffold;
 import cn.snowflake.rose.mod.mods.PLAYER.NoSlowDown;
 import cn.snowflake.rose.mod.mods.RENDER.Chams;
-import cn.snowflake.rose.mod.mods.RENDER.ChestESP;
 import cn.snowflake.rose.mod.mods.RENDER.NoHurtcam;
-import cn.snowflake.rose.mod.mods.RENDER.ViewClip;
 import cn.snowflake.rose.mod.mods.WORLD.NoCommand;
 import cn.snowflake.rose.mod.mods.WORLD.Xray;
 import cn.snowflake.rose.utils.*;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.types.EventType;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiChat;
-import net.minecraft.client.gui.GuiSelectWorld;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.play.client.C01PacketChatMessage;
 import net.minecraft.network.play.server.S05PacketSpawnPosition;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.util.Log;
 
-import java.net.URL;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.EnumMap;
-import java.util.List;
 import java.util.Objects;
 
 public class MinecraftHook {
@@ -58,17 +49,12 @@ public class MinecraftHook {
 
     //Client Start
     public static void runClient() {
+        Client.onGameLoop();
         if (!Client.init){
             new Client();
             Client.init = true;
             if(Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().theWorld != null){
                 ChatUtil.sendClientMessage("外挂注入完成！");
-            }else {
-                Objects.requireNonNull(ModManager.getModByName("ServerCrasher")).set(false);
-                Objects.requireNonNull(ModManager.getModByName("Aura")).set(false);
-                Objects.requireNonNull(ModManager.getModByName("TPAura")).set(false);
-                Objects.requireNonNull(ModManager.getModByName("Blink")).set(false);
-                Objects.requireNonNull(ModManager.getModByName("Freecam")).set(false);
             }
         }
         if (!Client.instance.font){
@@ -78,6 +64,12 @@ public class MinecraftHook {
         }
     }
 
+
+    public static boolean isDownEnabled() {
+        return Scaffold.down.getValueState() &&
+                Keyboard.isKeyDown(42) &&
+                Scaffold.d;
+    }
     public static boolean getRenderBlockPass(Block block){
         return Xray.containsID(block);
     }
@@ -132,7 +124,7 @@ public class MinecraftHook {
             EventMotion em = new EventMotion(Minecraft.getMinecraft().thePlayer.posY, Minecraft.getMinecraft().thePlayer.rotationYaw,Minecraft.getMinecraft().thePlayer.rotationPitch,Minecraft.getMinecraft().thePlayer.onGround);
             EventManager.call(em);
         }else if (stage == EventType.POST){
-            EventMotion ep = new EventMotion(stage);
+            EventMotion ep = new EventMotion(stage,Minecraft.getMinecraft().thePlayer.rotationPitch);
             EventManager.call(ep);
         }
         

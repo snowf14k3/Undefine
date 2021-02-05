@@ -107,7 +107,7 @@ public class ESP extends Module {
                         GL11.glPushMatrix();
                         GL11.glColor4d((double) 1.0, (double) 1.0, (double) 1.0, (double) 0.0);
                         double size = 0.25;
-                        double boundindY = entity.getBoundingBox().maxY - entity.getBoundingBox().minY;
+                        double boundindY = entity.boundingBox.maxY - entity.boundingBox.minY;
                         RenderUtil.drawBoundingBox(new AltAxisAlignedBB(posX - size, (double) posY, posZ - size, posX + size, (double) (posY + boundindY), posZ + size));
                         RenderUtil.renderOne();//renderOne
                         RenderUtil.drawBoundingBox(new AltAxisAlignedBB(posX - size, (double) posY, posZ - size, posX + size, (double) (posY + boundindY), posZ + size));

@@ -1,21 +1,17 @@
 package cn.snowflake.rose.mod.mods.RENDER;
 
 import cn.snowflake.rose.Client;
-import cn.snowflake.rose.asm.ClassTransformer;
 import cn.snowflake.rose.events.impl.EventRender2D;
-import cn.snowflake.rose.manager.ModManager;
+import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.*;
 import com.darkmagician6.eventapi.EventTarget;
-import io.netty.util.internal.ConcurrentSet;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.injection.ClientLoader;
 import org.apache.logging.log4j.LogManager;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.text.SimpleDateFormat;

@@ -2,7 +2,7 @@ package cn.snowflake.rose.command.commands;
 
 import cn.snowflake.rose.command.Command;
 import cn.snowflake.rose.friend.Friend;
-import cn.snowflake.rose.manager.FriendManager;
+import cn.snowflake.rose.management.FriendManager;
 import cn.snowflake.rose.utils.ChatUtil;
 
 public class CommandFriend extends Command {

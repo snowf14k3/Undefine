@@ -2,7 +2,7 @@ package cn.snowflake.rose.mod.mods.COMBAT;
 
 
 import cn.snowflake.rose.events.impl.EventMotion;
-import cn.snowflake.rose.manager.ModManager;
+import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.TimeHelper;
@@ -22,6 +22,7 @@ public class Regen extends Module {
     private TimeHelper delay = new TimeHelper();
     private Value<Double> regendelay = new Value("Regen_Delay", Double.valueOf(500.0D), Double.valueOf(0.0D), Double.valueOf(10000.0D), 100D);
     private TimeHelper useTimer = new TimeHelper();
+    private Value<Boolean> eat = new Value<>("Regen_AutoEat",false);
 
     public Regen() {
         super("Regen","Regen", Category.COMBAT);
@@ -48,7 +49,9 @@ public class Regen extends Module {
 
                                 }
                             }else if(this.mc.thePlayer.getFoodStats().getFoodLevel() < 18){
-                                this.EatFood();
+                                if (eat.getValueState()) {
+                                    this.EatFood();
+                                }
                                 this.setDisplayName("FoodLevelLow");
                             }
                         }else {

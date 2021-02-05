@@ -1,4 +1,4 @@
-package cn.snowflake.rose.manager;
+package cn.snowflake.rose.management;
 
 import cn.snowflake.rose.friend.Friend;
 import net.minecraft.entity.player.EntityPlayer;

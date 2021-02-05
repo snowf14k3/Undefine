@@ -237,6 +237,7 @@ public class AntiAim extends Module {
     public void updateAngles(final float n, final float rotationPitch) {
         if (this.mc.gameSettings.thirdPersonView != 0) {
             AntiAim.rotationPitch = rotationPitch;
+            EventMotion.RPITCH = rotationPitch;
             this.mc.thePlayer.rotationYawHead = n;
             this.mc.thePlayer.renderYawOffset = n;
         }

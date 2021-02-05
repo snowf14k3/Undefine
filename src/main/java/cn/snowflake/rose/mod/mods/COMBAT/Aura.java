@@ -1,5 +1,6 @@
 package cn.snowflake.rose.mod.mods.COMBAT;
 
+import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,12 +8,11 @@ import java.util.Objects;
 import java.util.Random;
 
 import cn.snowflake.rose.Client;
-import cn.snowflake.rose.asm.ClassTransformer;
-import cn.snowflake.rose.asm.MinecraftHook;
 import cn.snowflake.rose.events.impl.EventAura;
 import cn.snowflake.rose.events.impl.EventMotion;
-import cn.snowflake.rose.manager.FriendManager;
-import cn.snowflake.rose.manager.ModManager;
+import cn.snowflake.rose.events.impl.EventRender3D;
+import cn.snowflake.rose.management.FriendManager;
+import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.*;
@@ -22,9 +22,9 @@ import com.darkmagician6.eventapi.EventTarget;
 import com.darkmagician6.eventapi.types.EventType;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
@@ -32,8 +32,9 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemSword;
 import net.minecraft.network.play.client.C02PacketUseEntity;
-import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.glu.Cylinder;
 
 /**
  *
@@ -101,8 +102,9 @@ public class Aura extends Module {
                     return;
                 }
                 float[] rotations = RotationUtil.getRotations(target);
-                e.setY(rotations[0]);
-                e.setPitch(rotations[1]); 
+                e.setYaw(rotations[0]);
+                e.setPitch(rotations[1]);
+                e.setRPITCH(rotations[1]);//animotion
                 mc.thePlayer.rotationYawHead = rotations[0];
                 mc.thePlayer.renderYawOffset = rotations[0];
             }
@@ -121,7 +123,7 @@ public class Aura extends Module {
                     this.switchtime.reset();
                 }
                 float[] rotations = RotationUtil.getRotations(target);
-                e.setY(rotations[0]);
+                e.setYaw(rotations[0]);
                 e.setPitch(rotations[1]);
                 mc.thePlayer.rotationYawHead = rotations[0];
                 mc.thePlayer.renderYawOffset = rotations[0];
@@ -197,6 +199,56 @@ public class Aura extends Module {
         }
     }
 
+    @EventTarget
+    public void onRender(EventRender3D render) {
+        if (target!=null){
+            drawESP();
+        }
+    }
+
+    private void drawESP() {
+        double x = target.lastTickPosX
+                + (target.posX - target.lastTickPosX) * JReflectUtility.getRenderPartialTicks()
+                - RenderManager.renderPosX;
+        double y = target.lastTickPosY
+                + (target.posY - target.lastTickPosY) * JReflectUtility.getRenderPartialTicks()
+                - RenderManager.renderPosY;
+        double z = target.lastTickPosZ
+                + (target.posZ - target.lastTickPosZ) * JReflectUtility.getRenderPartialTicks()
+                - RenderManager.renderPosZ;
+        drawCylinderESP(target,x, y + target.getEyeHeight() + 0.5d, z);
+    }
+
+
+    public  void drawCylinderESP(EntityLivingBase entity,double x, double y, double z) {
+        GL11.glPushMatrix();
+        GL11.glTranslated((double)x, (double)y, (double)z);
+        GL11.glRotatef((float)(-entity.width), (float)0.0f, (float)1.0f, (float)0.0f);
+        GlStateManager.disableLighting();
+//        RenderUtil.enableSmoothLine(2.0f);
+        RenderUtil.glColor(new Color(1, 89, 1 ,150).getRGB());//color4f
+        Cylinder c = new Cylinder();
+        //GL11.glRotatef(RenderUtil.GetFloat(), (float)0.0f, (float)1.0f, (float)0.0f);
+        GL11.glRotatef((float)-90.0f, (float)1.0f, (float)0.0f, (float)0.0f);
+        c.setDrawStyle(100011);
+        c.draw(0.0f, 0.2f, 0.5f, 4, 200);
+//        RenderUtil.disableSmoothLine();
+        GlStateManager.enableLighting();
+        GL11.glPopMatrix();
+
+        GL11.glPushMatrix();
+        GL11.glTranslated((double)x, (double)y+0.5f, (double)z);
+        GL11.glRotatef((float)(-entity.width), (float)0.0f, (float)1.0f, (float)0.0f);
+        GlStateManager.disableLighting();
+        RenderUtil.glColor(new Color(2, 168, 2,150).getRGB());//color4f
+//        RenderUtil.enableSmoothLine(2.0f);
+        GL11.glRotatef((float)-90.0f, (float)1.0f, (float)0.0f, (float)0.0f);
+        c.setDrawStyle(100011);
+        c.draw(0.2f, 0.0f, 0.5f, 4, 200);
+//        RenderUtil.disableSmoothLine();
+        GlStateManager.enableLighting();
+        GL11.glPopMatrix();
+    }
     private void DoAttack() {
         int aps = ((Double)this.cps.getValueState()).intValue();
         int DelayValue = 1000 / aps + this.RANDOM.nextInt(50) - 30;

@@ -3,20 +3,30 @@ package cn.snowflake.rose.utils;
 
 import net.minecraft.util.Vec3;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 public class Vec3Util
 {
-    private double x;
-    private double y;
-    private double z;
+    public double x;
+    public double y;
+    public double z;
 
     public Vec3Util(final double x, final double y, final double z) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
+
+    public Vec3Util(BlockPos blockPos) {
+        this.x = blockPos.x;
+        this.y = blockPos.y;
+        this.z = blockPos.z;
+    }
+
+    public Vec3Util(Vec3i directionVec) {
+        this.x = directionVec.x;
+        this.y = directionVec.y;
+        this.z = directionVec.z;
+    }
+
 
     public double getX() {
         return this.x;
@@ -46,16 +56,17 @@ public class Vec3Util
         return this.addVector(class235.getX(), class235.getY(), class235.getZ());
     }
 
-    public Vec3 mc() throws NoSuchMethodException, ClassNotFoundException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        Class<Vec3> clazz = (Class<Vec3>) Class.forName("net.minecraft.util.Vec3");
-        Constructor vec3 = clazz.getDeclaredConstructor(double.class,double.class,double.class);
-        vec3.setAccessible(true);
-        return (Vec3)vec3.newInstance(x,y,z);
+    public Vec3 toVec3() {
+        return Vec3.createVectorHelper(x,y,z);
     }
 
 
     @Override
     public String toString() {
         return "[" + this.x + ";" + this.y + ";" + this.z + "]";
+    }
+
+    public Vec3Util scale(double p_186678_1_) {
+        return new Vec3Util(this.x * p_186678_1_, this.y * p_186678_1_, this.z * p_186678_1_);
     }
 }

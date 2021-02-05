@@ -1,30 +1,9 @@
 package cn.snowflake.rose.mod.mods.RENDER;
 
-import cn.snowflake.rose.Client;
-import cn.snowflake.rose.events.impl.EventRenderPlayer;
 import cn.snowflake.rose.events.impl.EventUpdate;
-import cn.snowflake.rose.manager.FriendManager;
-import cn.snowflake.rose.manager.ModManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.ChatUtil;
-import cn.snowflake.rose.utils.JReflectUtility;
-import cn.snowflake.rose.utils.Value;
 import com.darkmagician6.eventapi.EventTarget;
-import com.darkmagician6.eventapi.types.EventType;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntityBat;
-import net.minecraft.entity.passive.EntitySquid;
-import net.minecraft.entity.passive.EntityVillager;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntityEnderChest;
-import org.lwjgl.opengl.GL11;
-
-import java.util.Objects;
 
 public class Chams extends Module {
     public Chams() {
@@ -35,6 +14,7 @@ public class Chams extends Module {
 
     @Override
     public void onDisable() {
+        chams = false;
         super.onDisable();
     }
 

@@ -5,6 +5,7 @@ import java.util.Random;
 
 import cn.snowflake.rose.asm.MinecraftHook;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,7 +29,7 @@ public class RotationUtil {
             EntityLivingBase var10 = (EntityLivingBase)target;
             var6 = var10.posY + (double)var10.getEyeHeight() - (mc.thePlayer.posY + (double)mc.thePlayer.getEyeHeight());
         } else {
-            var6 = (target.getBoundingBox().minY + target.getBoundingBox().maxY) / 2.0 - (mc.thePlayer.posY + (double)mc.thePlayer.getEyeHeight());
+            var6 = (target.boundingBox.minY + target.boundingBox.maxY) / 2.0 - (mc.thePlayer.posY + (double)mc.thePlayer.getEyeHeight());
         }
         Random rnd = new Random();
         double var14 = MathHelper.sqrt_double(var4 * var4 + var8 * var8);
@@ -108,5 +109,22 @@ public class RotationUtil {
             angle = 360.0F - angle;
         }
         return angle;
+    }
+
+    public static float[] teleportRot(Entity entity, Entity target, float p_706252, float p_706253) {
+        double y;
+        double xDist = target.posX - entity.posX;
+        double zDist = target.posZ - entity.posZ;
+        if (target instanceof EntityLivingBase) {
+            y = target.posY + (double)target.getEyeHeight() - (entity.posY + (double)entity.getEyeHeight());
+        } else {
+            y = (target.boundingBox.minY + target.boundingBox.maxY) / 2.0 - (entity.posY + (double)entity.getEyeHeight());
+        }
+        double distance = MathHelper.sqrt_double(xDist * xDist + zDist * zDist);
+        float realYaw = (float)(Math.atan2(zDist, xDist) * 180.0 / 3.141592653589793) - 90.0f;
+        float realPitch = (float)(- Math.atan2(y - (target instanceof EntityPlayer ? 0.25 : 0.0), distance) * 180.0 / 3.141592653589793);
+        float yaw = RotationUtil.changeRotation(entity.rotationYaw, realYaw, p_706252);
+        float pitch = RotationUtil.changeRotation(entity.rotationPitch, realPitch, p_706253);
+        return new float[] {yaw, pitch};
     }
 }

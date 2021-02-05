@@ -2,7 +2,7 @@ package cn.snowflake.rose.mod.mods.MOVEMENT;
 
 import cn.snowflake.rose.events.impl.EventMove;
 import cn.snowflake.rose.events.impl.EventUpdate;
-import cn.snowflake.rose.manager.ModManager;
+import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.PlayerUtil;
@@ -13,7 +13,7 @@ import net.minecraft.potion.Potion;
 
 public class Speed extends Module {
     public static Value<String> mode = new Value("Speed", "Mode", 0);
-    public Value<Double> boost = new Value<Double>("Speed_MoitonBoost", 2d, 0d, 7.0, 0.01);
+    public Value<Double> boost = new Value<Double>("Speed_MoitonBoost", 0.65d, 0d, 7.0, 0.01);
     public boolean shouldslow = false;
     boolean collided;
     boolean lessSlow;

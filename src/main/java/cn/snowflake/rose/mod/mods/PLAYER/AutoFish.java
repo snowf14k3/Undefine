@@ -23,17 +23,19 @@ public class AutoFish extends Module {
 
     @EventTarget
     public void onPacket(EventPacket e){
-        S12PacketEntityVelocity packet = (S12PacketEntityVelocity) e.getPacket();
-                if(mc.thePlayer.getCurrentEquippedItem() != null) {
-                    if(mc.thePlayer.getCurrentEquippedItem().getItem() instanceof ItemFishingRod) {
-                        if(packet.func_149411_d() == 0 && packet.func_149409_f() == 0 && packet.func_149410_e() < 0) {
-                            Entity ev = mc.theWorld.getEntityByID(packet.func_149412_c());
-                            if(ev instanceof EntityFishHook) {
-                                mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(-1, -1, -1, 255,mc.thePlayer.inventory.getCurrentItem(), 0.0F, 0.0F, 0.0F));
-                                mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(-1, -1, -1, 255,mc.thePlayer.inventory.getCurrentItem(), 0.0F, 0.0F, 0.0F));
-                            }
-                        }
-                    }
+        S29PacketSoundEffect packet = (S29PacketSoundEffect) e.getPacket();
+        if(packet.func_149212_c().contains("random.splash")) {
+            mc.playerController.sendUseItem(mc.thePlayer, mc.theWorld, mc.thePlayer.inventory.getCurrentItem());
+            new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        sleep(1500);
+                        mc.playerController.sendUseItem(mc.thePlayer, mc.theWorld, mc.thePlayer.inventory.getCurrentItem());
+                        return;
+                    }catch (Exception e) {}
+                }
+            }.start();
         }
     }
 

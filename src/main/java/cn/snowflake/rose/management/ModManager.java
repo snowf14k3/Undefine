@@ -1,6 +1,5 @@
-package cn.snowflake.rose.manager;
+package cn.snowflake.rose.management;
 
-import cn.snowflake.rose.friend.Friend;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.mod.mods.COMBAT.*;
 import cn.snowflake.rose.mod.mods.FORGE.EIOXpGrab;
@@ -34,6 +33,7 @@ public class ModManager {
         addMod(new Sprint());
         addMod(new AirJump());
         addMod(new Fly());
+        addMod(new Scaffold());
         addMod(new TargetStrafe());
         addMod(new Speed());
         addMod(new NoFall());

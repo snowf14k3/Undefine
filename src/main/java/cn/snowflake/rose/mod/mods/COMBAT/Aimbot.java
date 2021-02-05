@@ -3,8 +3,9 @@ package cn.snowflake.rose.mod.mods.COMBAT;
 import cn.snowflake.rose.Client;
 import cn.snowflake.rose.events.impl.EventMotion;
 import cn.snowflake.rose.events.impl.EventRender2D;
-import cn.snowflake.rose.manager.FriendManager;
-import cn.snowflake.rose.manager.ModManager;
+import cn.snowflake.rose.events.impl.EventTick;
+import cn.snowflake.rose.management.FriendManager;
+import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.*;
@@ -27,6 +28,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +36,7 @@ import java.util.Objects;
 
 public class Aimbot extends Module {
 
+    public static Value<Double> index = new Value<Double>("Aimbot_pitchIndex", 1.0, -0.5, 1.0, 0.01);
 
     public static Value<Double> range= new Value<Double>("Aimbot_Reach", 10.5D, 3.0D, 65.0D,0.1D);
 
@@ -46,7 +49,6 @@ public class Aimbot extends Module {
     public Value<Boolean> moster = new Value<Boolean>("Aimbot_Mob", false);
     public Value<Boolean> village = new Value<Boolean>("Aimbot_village", false);
     public Value<Boolean> invisible = new Value<Boolean>("Aimbot_Invisible", false);
-    public Value<String> aimmode = new Value<String>("Aimbot","Mode", 4);
     public Value<Boolean> silent = new Value<Boolean>("Aimbot_Silent", false);
     public Value<Boolean> recoil = new Value<Boolean>("Aimbot_NoRecoil", true);
 
@@ -56,10 +58,6 @@ public class Aimbot extends Module {
 
     public Aimbot() {
         super("Aimbot","Aim Bot", Category.COMBAT);
-        this.aimmode.addValue("Head");
-        this.aimmode.addValue("Neck");
-        this.aimmode.addValue("Body");
-        this.aimmode.addValue("Feet");
         this.sortingMode.addValue("Health");
         this.sortingMode.addValue("Distance");
     }
@@ -130,7 +128,8 @@ public class Aimbot extends Module {
             target = getTarget();
             if(shouldAim()){
                 if (target != null) {
-                    float[] rotations = getEntityRotations(target);
+                    float[] rotations = getRotationByBoundingBox(target,range.getValueState().floatValue(),false);
+                    atuoSetPitchIndex(target);
                     if(silent.getValueState()){
                     	em.setYaw(rotations[0]);
                     	em.setPitch(rotations[1]);
@@ -142,13 +141,94 @@ public class Aimbot extends Module {
 
             }
         }else if (em.getEventType() == EventType.POST){
-            if (recoil.getValueState()) {
-                mc.thePlayer.rotationPitch = mc.thePlayer.prevRotationPitch;
-                mc.thePlayer.rotationYaw = mc.thePlayer.prevRotationYaw;
-            }
+
         }
     }
+    public boolean atuoSetPitchIndex(Entity e){
+        Vec3 vec1 = Vec3.createVectorHelper(mc.thePlayer.posX, mc.thePlayer.posY + mc.thePlayer.getEyeHeight(),mc.thePlayer.posZ);
 
+        AxisAlignedBB box = e.boundingBox;
+        Vec3 vec2 = Vec3.createVectorHelper(e.posX, e.posY + (e.getEyeHeight()/1.32F),e.posZ);
+        double minx = e.posX - 0.25;
+        double maxx = e.posX + 0.25;
+        double miny = e.posY;
+        double maxy = e.posY + Math.abs(e.posY - box.maxY) ;
+        double minz = e.posZ - 0.25;
+        double maxz = e.posZ + 0.25;
+        boolean see =  mc.theWorld.rayTraceBlocks(vec1, vec2) == null? true:false;
+        if(see) {//露头
+            index.setValueState(-0.5d);
+            return true;
+        }
+        vec2 = Vec3.createVectorHelper(maxx,miny,minz);
+        see = mc.theWorld.rayTraceBlocks(vec1, vec2) == null? true:false;
+        if(see) {
+            Log.info("feet11");
+            return true;
+        }
+        vec2 = Vec3.createVectorHelper(minx,miny,minz);
+        see = mc.theWorld.rayTraceBlocks(vec1, vec2) == null? true:false;
+
+        if(see) {
+            Log.info("feet9");
+
+            return true;
+        }
+        vec2 = Vec3.createVectorHelper(minx,miny,maxz);
+        see = mc.theWorld.rayTraceBlocks(vec1, vec2) == null? true:false;
+        if(see) {
+            Log.info("feet6");
+
+            return true;
+        }
+        vec2 = Vec3.createVectorHelper(maxx,miny,maxz);
+        see = mc.theWorld.rayTraceBlocks(vec1, vec2) == null? true:false;
+        if(see) {
+            Log.info("feet1");
+
+            return true;
+        }
+        vec2 = Vec3.createVectorHelper(maxx, maxy,minz);
+        see = mc.theWorld.rayTraceBlocks(vec1, vec2) == null? true:false;
+
+        if(see) {// ???????不知道怎么描述
+            index.setValueState(1d);
+
+
+            return true;
+        }
+        vec2 = Vec3.createVectorHelper(minx, maxy,minz);
+
+        see = mc.theWorld.rayTraceBlocks(vec1, vec2) == null? true:false;
+        if(see) {
+            Log.info("feet2");
+
+            return true;
+        }
+        vec2 = Vec3.createVectorHelper(minx, maxy,maxz - 0.1);
+        see = mc.theWorld.rayTraceBlocks(vec1, vec2) == null? true:false;
+        if(see) {
+            Log.info("feet3");
+
+            return true;
+        }
+        vec2 = Vec3.createVectorHelper(maxx, maxy,maxz);
+        see = mc.theWorld.rayTraceBlocks(vec1, vec2) == null? true:false;
+        if(see) {
+            Log.info("feet4");
+            return true;
+        }
+
+        return false;
+    }
+    @EventTarget
+    public void ontick(EventTick e){
+        if (mc.thePlayer != null && mc.theWorld != null)
+        if (recoil.getValueState()) {
+            mc.thePlayer.rotationPitch = mc.thePlayer.prevRotationPitch;
+            mc.thePlayer.rotationYaw = mc.thePlayer.prevRotationYaw;
+        }
+    }
 
     private boolean canTarget(Entity entity) {
         if(!mc.thePlayer.canEntityBeSeen(entity) && !throughwall.getValueState()) {
@@ -256,12 +336,12 @@ public class Aimbot extends Module {
         }
         EntityLivingBase target = null;
 
-	        if (aimmode.isCurrentMode("Distance")) {
+	        if (sortingMode.isCurrentMode("Distance")) {
 	            loaded.sort((o1, o2) ->
 	                    (int) (o1.getDistanceToEntity(mc.thePlayer) - o2.getDistanceToEntity(mc.thePlayer))
 	            );
 	        }
-	        if (aimmode.isCurrentMode("Health")){
+	        if (sortingMode.isCurrentMode("Health")){
 	            loaded.sort((o1, o2) ->
 	                    (int) (o1.getHealth() - o2.getHealth())
 	            );
@@ -270,45 +350,31 @@ public class Aimbot extends Module {
         return target;
     }
 
+    public static float[] getRotationByBoundingBox(Entity ent,float maxRange ,boolean random){
+        if(ent == null)
+            return new float[]{0,0};
+        AxisAlignedBB boundingBox = ent.boundingBox;
 
+        double orPosX = ent.boundingBox.minX,orPosY=ent.boundingBox.minY ,orPosZ = ent.boundingBox.minZ;
 
-    public float[] getEntityRotations(Entity target) {
-        double xDiff = target.posX - mc.thePlayer.posX;
-        double yDiff = target.posY - mc.thePlayer.posY;
-        double zDiff = target.posZ - mc.thePlayer.posZ;
-        float yaw = (float)(Math.atan2(zDiff, xDiff) * 180.0 / 3.141592653589793) - 90.0f;
-        float pitch = (float)((- Math.atan2(target.posY + (double)target.getEyeHeight() / 0.0 - (mc.thePlayer.posY + (double)mc.thePlayer.getEyeHeight()), Math.hypot(xDiff, zDiff))) * 180.0 / 3.141592653589793);
-        if (this.aimmode.isCurrentMode("Body")) {
-            pitch = (float)((- Math.atan2(target.posY + (double)target.getEyeHeight() / HitLocation.CHEST.getOffset() - (mc.thePlayer.posY + (double)mc.thePlayer.getEyeHeight()), Math.hypot(xDiff, zDiff))) * 180.0 / 3.141592653589793);
-        } else if (this.aimmode.isCurrentMode("Feet")) {
-            pitch = (float)((- Math.atan2(target.posY + (double)target.getEyeHeight() / HitLocation.FEET.getOffset() - (mc.thePlayer.posY + (double)mc.thePlayer.getEyeHeight()), Math.hypot(xDiff, zDiff))) * 180.0 / 3.141592653589793);
-        } else if (this.aimmode.isCurrentMode("Head") || (Client.mw && target instanceof EntityPlayer && JReflectUtility.getProning((EntityPlayer) target)) ) {
-            pitch = (float)((- Math.atan2(target.posY + (double)target.getEyeHeight() / HitLocation.HEAD.getOffset() - (mc.thePlayer.posY + (double)mc.thePlayer.getEyeHeight()), Math.hypot(xDiff, zDiff))) * 180.0 / 3.141592653589793);
-        }else if (this.aimmode.isCurrentMode("Neck")) {
-            pitch = (float)((- Math.atan2(target.posY + (double)target.getEyeHeight() / HitLocation.HEAD.getOffset() - (mc.thePlayer.posY + (double)mc.thePlayer.getEyeHeight()), Math.hypot(xDiff, zDiff))) * 180.0 / 3.141592653589793);
+        double pX = Minecraft.getMinecraft().thePlayer.boundingBox.minX;
+        double pY = Minecraft.getMinecraft().thePlayer.boundingBox.minY + (Minecraft.getMinecraft().thePlayer.boundingBox.minY+Minecraft.getMinecraft().thePlayer.boundingBox.maxY)/2;
+        double pZ = Minecraft.getMinecraft().thePlayer.boundingBox.minZ;
+        double dX = pX - orPosX;
+        double dZ = pZ - orPosZ;
+        double yaw = Math.toDegrees(Math.atan2(dZ, dX)) + 90.0;
+        Location BestPos = new Location(ent.boundingBox.minX, orPosY, ent.boundingBox.minZ);
+        Location myEyePos = new Location(Minecraft.getMinecraft().thePlayer.boundingBox.minX, Minecraft.getMinecraft().thePlayer.boundingBox.minY+ (double)Minecraft.getMinecraft().thePlayer.getEyeHeight(), Minecraft.getMinecraft().thePlayer.boundingBox.minZ);
+        double diffY;
+        for(diffY = ent.boundingBox.minY + 0.7D; diffY < ent.boundingBox.maxY; diffY += 0.1D) {
+            if (myEyePos.distanceTo(new Location(ent.boundingBox.minX, diffY, ent.boundingBox.minZ)) < myEyePos.distanceTo(BestPos)) {
+                BestPos = new Location(ent.boundingBox.minX, diffY, ent.boundingBox.minZ);
+            }
         }
-        return new float[]{yaw, pitch};
-    }
-
-    private static enum HitLocation {
-        AUTO(0.0),
-        HEAD(1.0),
-        CHEST(1.5),
-        FEET(3.5),
-        NECK(1.25);
-        private double offset;
-
-        private HitLocation(double offset, int n3, double d2) {
-            this.offset = offset;
-        }
-
-        private HitLocation(double offset) {
-            this.offset = offset;
-        }
-
-        public double getOffset() {
-            return this.offset;
-        }
+        diffY = BestPos.getY() - (Minecraft.getMinecraft().thePlayer.boundingBox.minY + (double)Minecraft.getMinecraft().thePlayer.getEyeHeight());
+        double dist = MathHelper.sqrt_double(dX * dX + dZ * dZ);
+        float pitch = (float)(-(Math.atan2(diffY - index.getValueState().doubleValue(), dist) * 180.0D / 3.141592653589793D));
+        return new float[]{(float) yaw,pitch};
     }
 
 }

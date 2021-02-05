@@ -9,8 +9,8 @@ public class BlockUtils {
     static Minecraft mc = Minecraft.getMinecraft();
 
     public static boolean collideBlock(AxisAlignedBB axisAlignedBB) {
-        for (int x = MathHelper.floor_double(mc.thePlayer.getBoundingBox().minX); x < MathHelper.floor_double(mc.thePlayer.getBoundingBox().maxX) + 1; ++x) {
-            for (int z = MathHelper.floor_double(mc.thePlayer.getBoundingBox().minZ); z < MathHelper.floor_double(mc.thePlayer.getBoundingBox().maxZ) + 1; ++z) {
+        for (int x = MathHelper.floor_double(mc.thePlayer.boundingBox.minX); x < MathHelper.floor_double(mc.thePlayer.boundingBox.maxX) + 1; ++x) {
+            for (int z = MathHelper.floor_double(mc.thePlayer.boundingBox.minZ); z < MathHelper.floor_double(mc.thePlayer.boundingBox.maxZ) + 1; ++z) {
                 Block block = mc.theWorld.getBlock(x, (int) (axisAlignedBB.minY), z);
                 if (!(block instanceof BlockLiquid)) {
                     return false;

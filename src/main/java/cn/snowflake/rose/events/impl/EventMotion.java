@@ -14,6 +14,9 @@ public class EventMotion implements Event, Cancellable
     public boolean cancel;
     public EventType type;
 
+    public static float RPITCH;
+    public static float RPPITCH;
+
     public boolean isCancel() {
         return cancel;
     }
@@ -23,6 +26,7 @@ public class EventMotion implements Event, Cancellable
         EventMotion.pitch = pitch;
         this.type = EventType.PRE;
     }
+
     public EventMotion(double y, float yaw, float pitch, boolean onGround) {
         EventMotion.y = y;
         EventMotion.yaw = yaw;
@@ -34,6 +38,24 @@ public class EventMotion implements Event, Cancellable
 
     public EventType getEventType() {
         return this.type;
+    }
+
+
+    public EventMotion(EventType type,float pitch) {
+        if (type == EventType.POST){
+            //Memory prevPitch and Pitch for rotation animation
+            RPPITCH = RPITCH;
+            RPITCH = pitch;
+        }
+        this.type = type;
+    }
+
+    public void setRPITCH(float RPITCH) {
+        EventMotion.RPITCH = RPITCH;
+    }
+
+    public void setRPPITCH(float RPPITCH) {
+        EventMotion.RPPITCH = RPPITCH;
     }
 
     public EventMotion(EventType type) {

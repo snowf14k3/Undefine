@@ -1,7 +1,7 @@
 package cn.snowflake.rose.command.commands;
 
 import cn.snowflake.rose.command.Command;
-import cn.snowflake.rose.manager.ModManager;
+import cn.snowflake.rose.management.ModManager;
 
 public class CommandPlugins extends Command {
     public CommandPlugins(String[] commands) {

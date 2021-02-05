@@ -28,8 +28,9 @@ import cn.snowflake.rose.asm.ClassTransformer;
 import cn.snowflake.rose.events.impl.EventPacket;
 import cn.snowflake.rose.events.impl.EventMotion;
 import cn.snowflake.rose.events.impl.EventRender3D;
-import cn.snowflake.rose.manager.FriendManager;
-import cn.snowflake.rose.manager.ModManager;
+
+import cn.snowflake.rose.management.FriendManager;
+import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.*;
@@ -294,7 +295,7 @@ public class TPAura extends Module
     }
 
     private ArrayList<Vec3Util> computePath(Vec3Util topFrom, Vec3Util to) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        if (!this.canPassThrow(new BlockPos(topFrom.mc()))) {
+        if (!this.canPassThrow(new BlockPos(topFrom.toVec3()))) {
             topFrom = topFrom.addVector(0.0, 1.0, 0.0);
         }
         AStarCustomPathFinder pathfinder = new AStarCustomPathFinder(topFrom, to);

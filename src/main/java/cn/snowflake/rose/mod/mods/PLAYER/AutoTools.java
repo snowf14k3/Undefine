@@ -30,8 +30,7 @@ public class AutoTools extends Module {
     @EventTarget
     public void onClickBlock(EventPacket e) {
         if (e.getPacket() instanceof C07PacketPlayerDigging){
-            if (!(mc.thePlayer.isEating() || this.mc.thePlayer.inventory.getCurrentItem().getItem() instanceof ItemBow) 
-            		&& this.mc.thePlayer.inventory.getCurrentItem().getItem() != null) {
+            if (!(mc.thePlayer.isEating() || this.mc.thePlayer.inventory.getCurrentItem().getItem() instanceof ItemBow)) {
                 this.bestTool(mc.objectMouseOver.blockX, mc.objectMouseOver.blockY, mc.objectMouseOver.blockZ);
             }
         }

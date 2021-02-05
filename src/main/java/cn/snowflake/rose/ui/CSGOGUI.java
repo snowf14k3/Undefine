@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import cn.snowflake.rose.Client;
-import cn.snowflake.rose.manager.ModManager;
+import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.*;

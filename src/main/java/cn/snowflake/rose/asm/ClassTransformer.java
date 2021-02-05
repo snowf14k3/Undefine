@@ -9,12 +9,16 @@ import java.util.function.BiConsumer;
 
 import cn.snowflake.rose.Client;
 import cn.snowflake.rose.events.impl.EventFMLChannels;
+import cn.snowflake.rose.events.impl.EventMotion;
 import cn.snowflake.rose.events.impl.EventMove;
 import cn.snowflake.rose.events.impl.EventPacket;
+import cn.snowflake.rose.hooks.RendererLivingEntityHook;
 import cn.snowflake.rose.mod.mods.WORLD.Xray;
+import cn.snowflake.rose.utils.JReflectUtility;
 import cn.snowflake.rose.utils.asm.ASMUtil;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.types.EventType;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.injection.ClientLoader;
 import net.minecraft.network.play.server.S05PacketSpawnPosition;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
@@ -64,6 +68,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 				"net.minecraft.profiler.Profiler",
 				"net.minecraft.client.renderer.entity.RenderPlayer",
 				"net.minecraft.network.NetHandlerPlayServer",
+				"net.minecraft.util.MovementInputFromOptions"
 		};
 		for (int i=0; i<nameArray.length; i++) {
 				classNameSet.add(nameArray[i]);
@@ -102,6 +107,9 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			else if (name.equalsIgnoreCase("net.minecraft.client.renderer.EntityRenderer")){//3d
 				return transformMethods(classByte, this::transformRenderEntityRenderer);
 			}
+			 else if (name.equalsIgnoreCase("net.minecraft.util.MovementInputFromOptions")){
+				 return this.transformMethods(classByte,this::transformMovementInputFromOptions);
+			 }
 			else if(name.equals("net.minecraft.client.entity.EntityPlayerSP")){  //fixed
 				return  transformMethods(classByte, this::transformEntityPlayerSP);
 			}
@@ -131,70 +139,87 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 				 return this.transformMethods(classByte,this::transformNetHandlerPlayServer);
 			 }
 			 else if (name.equalsIgnoreCase("net.minecraft.client.renderer.entity.RenderPlayer")){
-				 return this.transformMethods(classByte,this::transformRendererLivingEntity);
+				 return this.transformMethods(classByte,this::transformRenderPlayer);
 			 }
-			else if (name.equalsIgnoreCase("net.minecraft.client.model.ModelBiped")){
-				return this.transformMethods(classByte,this::transformModelBiped);
-			}
+//			 else if (name.equalsIgnoreCase("net.minecraft.client.renderer.entity.RendererLivingEntity")){
+//				 return this.transformMethods(classByte, this::transformRendererLivingEntity);
+//			 }
 		}catch(Exception e) {
 			LogManager.getLogger().log(Level.ERROR, ExceptionUtils.getStackTrace(e));
 			
 		}
 		return classByte;
 	}
-	public static boolean isheldItemRight(int heldItemRight){
-		return heldItemRight == 3;
-	}
-	private void transformModelBiped(ClassNode classNode, MethodNode methodNode) {
-		if (methodNode.name.equalsIgnoreCase("setRotationAngles") || methodNode.name.equalsIgnoreCase("func_78087_a")){
-			AbstractInsnNode target = ASMUtil.findFieldInsnNode(methodNode,GETFIELD, "net/minecraft/client/model/ModelBiped", ClientLoader.runtimeDeobfuscationEnabled ? "field_70122_E" : "onGround", "F");
-			if (target != null){
-				InsnList insnList = new InsnList();
-				insnList.add(new VarInsnNode(ALOAD,0));
-				insnList.add(new FieldInsnNode(GETFIELD, "net/minecraft/client/model/ModelBiped", ClientLoader.runtimeDeobfuscationEnabled ?  "field_78120_m" : "heldItemRight", "I"));
-				insnList.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(ClassTransformer.class), "isheldItemRight", "(I)Z", false));
-				LabelNode l1 = new LabelNode();
-				insnList.add(new JumpInsnNode(IFEQ,l1));
-				insnList.add(new VarInsnNode(ALOAD,0));
-				insnList.add(new FieldInsnNode(GETFIELD, "net/minecraft/client/model/ModelBiped", ClientLoader.runtimeDeobfuscationEnabled ? "field_78112_f":"bipedRightArm", "Lnet/minecraft/client/model/ModelRenderer;"));
-				insnList.add(new InsnNode(FCONST_0));
-				insnList.add(new FieldInsnNode(PUTFIELD, "net/minecraft/client/model/ModelRenderer", ClientLoader.runtimeDeobfuscationEnabled ? "field_78796_g" : "rotateAngleY", "F"));
-				insnList.add(l1);
 
-//				LabelNode l2 = new LabelNode();
-//				// serverRotation != null
-//				insnList.add(new FieldInsnNode(GETSTATIC, "cn/snowflake/rose/asm/MinecraftHook", "serverRotation", "Lcn/snowflake/rose/utils/Rotation;"));
-//				insnList.add(new JumpInsnNode(IFNULL,l2));
-//
-//				// var7 instanceof EntityPlayer
-//				insnList.add(new VarInsnNode(ALOAD,7));
-//				insnList.add(new TypeInsnNode(INSTANCEOF, "net/minecraft/entity/player/EntityPlayer"));
-//				insnList.add(new JumpInsnNode(IFEQ,l2));
-//
-//				//			var7.equals(Minecraft.getMinecraft().thePlayer)
-//				insnList.add(new VarInsnNode(ALOAD,7));
-//				insnList.add(new MethodInsnNode(INVOKESTATIC, "net/minecraft/client/Minecraft", ClientLoader.runtimeDeobfuscationEnabled ? "func_71410_x" : "getMinecraft", "()Lnet/minecraft/client/Minecraft;", false));
-//				insnList.add(new FieldInsnNode(GETFIELD, "net/minecraft/client/Minecraft", ClientLoader.runtimeDeobfuscationEnabled ? "field_71439_g" : "thePlayer", "Lnet/minecraft/client/entity/EntityClientPlayerMP;"));
-//				insnList.add(new MethodInsnNode(INVOKEVIRTUAL, "net/minecraft/entity/Entity", "equals", "(Ljava/lang/Object;)Z", false));
-//				insnList.add(new JumpInsnNode(IFEQ,l2));
-//
-//				insnList.add(new VarInsnNode(ALOAD,0));
-//				insnList.add(new FieldInsnNode(GETFIELD, "net/minecraft/client/model/ModelRenderer", ClientLoader.runtimeDeobfuscationEnabled ? "field_78116_c" : "bipedHead", "Lnet/minecraft/client/model/ModelRenderer;"));
-//
-//				insnList.add(new FieldInsnNode(GETSTATIC, "cn/snowflake/rose/asm/MinecraftHook", "serverRotation", "Lcn/snowflake/rose/utils/Rotation;"));
-//				insnList.add(new MethodInsnNode(INVOKEVIRTUAL, "cn/snowflake/rose/utils/Rotation", "getPitch", "()F", false));
-//				insnList.add(new LdcInsnNode("57.295776"));
-//				insnList.add(new InsnNode(FDIV));
-//				insnList.add(new FieldInsnNode(PUTFIELD, "net/minecraft/client/model/ModelRenderer", ClientLoader.runtimeDeobfuscationEnabled ? "field_78795_f" : "rotateAngleX", "F"));
-//
-//				insnList.add(l2);
-//				insnList.add(new FrameNode(F_SAME, 0, null, 0, null));
-				methodNode.instructions.insert(target,insnList);
+	private void transformMovementInputFromOptions(ClassNode classNode, MethodNode methodNode) {
+		if (methodNode.name.equalsIgnoreCase("updatePlayerMoveState") || methodNode.name.equalsIgnoreCase("func_78898_a")){
+			AbstractInsnNode target = ASMUtil.findFieldInsnNode(methodNode, GETFIELD, "net/minecraft/util/MovementInputFromOptions", ClientLoader.runtimeDeobfuscationEnabled ? "field_78899_d" : "sneak", "Z");
+			if (target != null) {
+				final InsnList insnList = new InsnList();
+				insnList.add(new MethodInsnNode(INVOKESTATIC, "cn/snowflake/rose/asm/MinecraftHook", "isDownEnabled", "()Z", false));
+				LabelNode jmp = new LabelNode();
+				insnList.add(new JumpInsnNode(IFEQ,jmp));
+				insnList.add(new InsnNode(RETURN));
+				insnList.add(jmp);
+				insnList.add(new FrameNode(F_SAME, 0, null, 0, null));
+				methodNode.instructions.insert(ASMUtil.forward(target,2),insnList);
 			}
 		}
 	}
 
-	private void transformRendererLivingEntity(ClassNode classNode, MethodNode method) {
+//	public void transformRendererLivingEntity(ClassNode classNode, MethodNode method) {
+//		if (method.name.equalsIgnoreCase("doRender") || method.name.equalsIgnoreCase("func_76986_a")){
+//			AbstractInsnNode prevRotationPitch = ASMUtil.findFieldInsnNode(method,GETFIELD, "net/minecraft/entity/EntityLivingBase", ClientLoader.runtimeDeobfuscationEnabled ? "field_70127_C" : "prevRotationPitch", "F");
+//			if (prevRotationPitch != null){
+//				InsnList insnList1 = new InsnList();
+//				insnList1.add(new VarInsnNode(ALOAD,1));
+//				insnList1.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(this.getClass()),"isEntityplayer","(Ljava/lang/Object;)Z",false));
+//				LabelNode labelNode33 = new LabelNode();
+//				insnList1.add(new JumpInsnNode(IFNE,labelNode33));
+//
+//
+//				method.instructions.insertBefore(prevRotationPitch.getPrevious(),insnList1);
+//				method.instructions.insert(ASMUtil.forward(prevRotationPitch,9),labelNode33);
+//
+//
+//			}
+//			AbstractInsnNode renderLivingAt = ASMUtil.findMethodInsn(method,INVOKEVIRTUAL, "net/minecraft/client/renderer/entity/RendererLivingEntity", ClientLoader.runtimeDeobfuscationEnabled ? "func_77039_a" : "renderLivingAt", "(Lnet/minecraft/entity/EntityLivingBase;DDD)V");
+//			if (renderLivingAt != null){
+//				InsnList insnList = new InsnList();
+//				insnList.add(new VarInsnNode(ALOAD,1));
+//				insnList.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(this.getClass()),"isEntityplayer","(Ljava/lang/Object;)Z",false));
+//				LabelNode labelNode = new LabelNode();
+//				insnList.add(new JumpInsnNode(IFEQ,labelNode));
+//				insnList.add(new FieldInsnNode(GETSTATIC,Type.getInternalName(EventMotion.class),"RPPITCH","F"));
+//				insnList.add(new FieldInsnNode(GETSTATIC,Type.getInternalName(EventMotion.class),"RPITCH","F"));
+//				insnList.add(new MethodInsnNode(INVOKESTATIC,Type.getInternalName(this.getClass()),"interpolateRotation","(FF)F",false));
+//				insnList.add(new VarInsnNode(FSTORE,13));
+//				insnList.add(labelNode);
+//				method.instructions.insertBefore(renderLivingAt,insnList);
+//			}
+//		}
+//	}
+
+	public static float interpolateRotation(float p_77034_1_, float p_77034_2_) {
+		float f3;
+		for(f3 = p_77034_2_ - p_77034_1_; f3 < -180.0F; f3 += 360.0F) {
+		}
+
+		while(f3 >= 180.0F) {
+			f3 -= 360.0F;
+		}
+
+		return p_77034_1_ + JReflectUtility.getRenderPartialTicks() * f3;
+	}
+
+	public static boolean isEntityplayer(Object object){
+		if (object instanceof EntityPlayerSP){
+			return true;
+		}
+		return false;
+	}
+
+	private void transformRenderPlayer(ClassNode classNode, MethodNode method) {
 		if (method.name.equalsIgnoreCase("doRender") || method.name.equalsIgnoreCase("func_76986_a")){
 			InsnList insnList1 = new InsnList();
 			InsnList insnList2 = new InsnList();
@@ -504,6 +529,18 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 					}
 				}
 			}
+		}
+		if (method.name.equalsIgnoreCase("isSneaking") || method.name.equalsIgnoreCase("func_70093_af")) {
+			final InsnList insnList = new InsnList();
+			insnList.add(new MethodInsnNode(INVOKESTATIC, "cn/snowflake/rose/asm/MinecraftHook", "isDownEnabled", "()Z", false));
+			LabelNode jmp = new LabelNode();
+			insnList.add(new JumpInsnNode(IFEQ,jmp));
+			insnList.add(new InsnNode(ICONST_0));
+			insnList.add(new InsnNode(IRETURN));
+			insnList.add(jmp);
+			insnList.add(jmp);
+			insnList.add(new FrameNode(F_SAME, 0, null, 0, null));
+			method.instructions.insert(insnList);
 		}
 		if (method.name.equalsIgnoreCase("func_145771_j")){
 			final InsnList insnList = new InsnList();

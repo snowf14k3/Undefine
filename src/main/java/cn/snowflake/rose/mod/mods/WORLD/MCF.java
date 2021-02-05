@@ -2,7 +2,7 @@ package cn.snowflake.rose.mod.mods.WORLD;
 
 import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.friend.Friend;
-import cn.snowflake.rose.manager.FriendManager;
+import cn.snowflake.rose.management.FriendManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.MouseInputHandler;

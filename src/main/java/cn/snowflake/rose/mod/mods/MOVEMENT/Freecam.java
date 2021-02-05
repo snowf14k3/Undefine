@@ -78,7 +78,6 @@ public class Freecam extends Module {
         this.mc.thePlayer.motionY = 0.0D;
         if (PlayerUtil.MovementInput()) {
             PlayerUtil.setSpeed(1.0D);
-            mc.thePlayer.motionY -= 0.05D;
         } else {
             this.mc.thePlayer.motionX = this.mc.thePlayer.motionZ = 0.0D;
         }
