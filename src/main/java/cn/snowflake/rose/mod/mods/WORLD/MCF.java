@@ -14,22 +14,22 @@ public class MCF extends Module {
         super("MCF","MCF", Category.WORLD);
     }
 
-    MouseInputHandler midhandler = new MouseInputHandler(2);
+    private MouseInputHandler handler = new MouseInputHandler(2);
 
     @EventTarget
     public void onupdate(EventUpdate e){
-        if (mc.objectMouseOver.entityHit != null && midhandler.canExcecute()){
-            if (mc.objectMouseOver.entityHit instanceof EntityPlayer){
-                EntityPlayer entity = (EntityPlayer) mc.objectMouseOver.entityHit;
-
-                for (Friend f : FriendManager.friends){
-
-                    if (f.getName().equalsIgnoreCase(entity.getCommandSenderName())){
-                        FriendManager.friends.remove(f);
-                    }else{
-                        FriendManager.friends.add(new Friend(entity.getCommandSenderName(),entity));
+        if (this.mc.objectMouseOver != null && this.mc.objectMouseOver.entityHit != null && this.mc.objectMouseOver.entityHit instanceof EntityPlayer) {
+            String name = this.mc.objectMouseOver.entityHit.getCommandSenderName();
+            if (this.handler.canExcecute()) {
+                if (FriendManager.isFriend(name)) {
+                    for(int i = 0; i < FriendManager.getFriends().size(); ++i) {
+                        Friend f = (Friend)FriendManager.getFriends().get(i);
+                        if (f.getName().equalsIgnoreCase(name)) {
+                            FriendManager.getFriends().remove(i);
+                        }
                     }
-
+                } else {
+                    FriendManager.getFriends().add(new Friend(name, name));
                 }
             }
         }

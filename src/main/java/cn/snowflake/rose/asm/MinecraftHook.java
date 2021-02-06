@@ -50,6 +50,8 @@ public class MinecraftHook {
     //Client Start
     public static void runClient() {
         Client.onGameLoop();
+        EventManager.call(new EventTick());
+
         if (!Client.init){
             new Client();
             Client.init = true;
@@ -222,7 +224,6 @@ public class MinecraftHook {
     }
 
     public static void runTick(){
-        EventManager.call(new EventTick());
         if (Keyboard.getEventKeyState()) {
             for (Module mod : ModManager.getModList()) {
             	if (Minecraft.getMinecraft().currentScreen == null) {

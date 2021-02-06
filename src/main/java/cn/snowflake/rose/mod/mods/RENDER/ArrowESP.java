@@ -47,7 +47,6 @@ public class ArrowESP
         float yOffset = sr.getScaledHeight() / 2 - 25.2f;
         float playerOffsetX = (float) mc.thePlayer.posX;
         float playerOffSetZ = (float) mc.thePlayer.posZ;
-        int rainbow=0;
         for (Object o : mc.theWorld.getLoadedEntityList()) {
             if (o instanceof EntityPlayer&&o !=mc.thePlayer&&!((EntityPlayer) o).isInvisible()) {
                 EntityPlayer ent = (EntityPlayer) o;
@@ -76,7 +75,6 @@ public class ArrowESP
                         RenderUtil.drawESPCircle(this.size.getValueState().floatValue(), 0, i, 3, new Color(255,255,255,50));
                         i-=0.1f;
                     }
-                    rainbow+=500;
                     GlStateManager.popMatrix();
                 }
             }

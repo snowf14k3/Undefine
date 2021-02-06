@@ -18,8 +18,10 @@ import cn.snowflake.rose.utils.JReflectUtility;
 import cn.snowflake.rose.utils.asm.ASMUtil;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.types.EventType;
+import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.injection.ClientLoader;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.S05PacketSpawnPosition;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -63,6 +65,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 				"net.minecraftforge.client.GuiIngameForge",
 				"net.minecraft.entity.Entity",
 				"cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper",
+				"cpw.mods.fml.common.network.FMLEventChannel",
 				"net.minecraft.entity.player.EntityPlayer",
 				"net.minecraft.client.renderer.Tessellator",
 				"net.minecraft.profiler.Profiler",
@@ -141,6 +144,9 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			 else if (name.equalsIgnoreCase("net.minecraft.client.renderer.entity.RenderPlayer")){
 				 return this.transformMethods(classByte,this::transformRenderPlayer);
 			 }
+			 else if (name.equalsIgnoreCase("cpw.mods.fml.common.network.FMLEventChannel")){
+			 	return this.transformMethods(classByte,this::transformFMLEventChannel);
+			 }
 //			 else if (name.equalsIgnoreCase("net.minecraft.client.renderer.entity.RendererLivingEntity")){
 //				 return this.transformMethods(classByte, this::transformRendererLivingEntity);
 //			 }
@@ -150,6 +156,8 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 		}
 		return classByte;
 	}
+
+
 
 	private void transformMovementInputFromOptions(ClassNode classNode, MethodNode methodNode) {
 		if (methodNode.name.equalsIgnoreCase("updatePlayerMoveState") || methodNode.name.equalsIgnoreCase("func_78898_a")){
@@ -269,6 +277,31 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 				insnList.add(labelNode);
 				methodNode.instructions.insert(insnList);
 		}
+	}
+	private void transformFMLEventChannel(ClassNode classNode, MethodNode methodNode) {
+		if (methodNode.name.equalsIgnoreCase("sendToServer")) {
+
+			InsnList insnList = new InsnList();
+			insnList.add(new VarInsnNode(ALOAD,1));//FMLProxyPacket
+
+			insnList.add(new VarInsnNode(ALOAD,0));
+			insnList.add(new FieldInsnNode(GETFIELD, "cpw/mods/fml/common/network/FMLEventChannel", "channels", "Ljava/util/EnumMap;"));
+
+			insnList.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(ClassTransformer.class), "FMLEventChannelHook", "(Lcpw/mods/fml/common/network/internal/FMLProxyPacket;Ljava/util/EnumMap;)Z", false));
+			LabelNode labelNode = new LabelNode();
+			insnList.add(new JumpInsnNode(IFEQ,labelNode));
+			insnList.add(new InsnNode(RETURN));
+			insnList.add(labelNode);
+			methodNode.instructions.insert(insnList);
+			LogManager.getLogger().info("Successfully initialized FML hook !");
+
+		}
+	}
+
+	public static boolean FMLEventChannelHook(FMLProxyPacket fmlProxyPacket, EnumMap enumMap){
+		EventFMLChannels eventFMLChannels = new EventFMLChannels(fmlProxyPacket,enumMap);
+		EventManager.call(eventFMLChannels);
+		return eventFMLChannels.isCancelled();
 	}
 
 	private void transformSimpleNetworkWrapper(ClassNode classNode, MethodNode methodNode) {

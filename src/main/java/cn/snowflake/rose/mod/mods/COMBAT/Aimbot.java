@@ -129,7 +129,7 @@ public class Aimbot extends Module {
             if(shouldAim()){
                 if (target != null) {
                     float[] rotations = getRotationByBoundingBox(target,range.getValueState().floatValue(),false);
-                    atuoSetPitchIndex(target);
+//                    atuoSetPitchIndex(target);
                     if(silent.getValueState()){
                     	em.setYaw(rotations[0]);
                     	em.setPitch(rotations[1]);

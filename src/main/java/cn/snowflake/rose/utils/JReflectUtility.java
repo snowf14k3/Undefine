@@ -47,6 +47,27 @@ public class JReflectUtility {
             return null;
         }
     }
+    public static void setTimerSpeed(float timerSpeed){
+        Field fTimer = null;
+        try {
+            fTimer = mc.getClass().getDeclaredField(
+                    ClientLoader.runtimeDeobfuscationEnabled ? "field_71428_T" : "timer");
+            fTimer.setAccessible(true);
+        } catch (NoSuchFieldException ev) {
+        }
+        Field ftimer = null;
+        try {
+            ftimer = Timer.class.getDeclaredField(
+                    ClientLoader.runtimeDeobfuscationEnabled ? "field_74278_d" : "timerSpeed");
+        } catch (NoSuchFieldException v) {
+        }
+        try {
+            ftimer.setAccessible(true);
+            ftimer.set(fTimer.get(mc),timerSpeed);
+        } catch (IllegalAccessException ev) {
+        }
+    }
+
     public static float getRenderPartialTicks(){
         Field fTimer = null;
         try {

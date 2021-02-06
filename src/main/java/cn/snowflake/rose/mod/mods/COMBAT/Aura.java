@@ -219,33 +219,57 @@ public class Aura extends Module {
         drawCylinderESP(target,x, y + target.getEyeHeight() + 0.5d, z);
     }
 
+    public static void disableSmoothLine() {
+        GL11.glEnable((int) 3553);
+        GL11.glEnable((int) 2929);
+        GL11.glDisable((int) 3042);
+        GL11.glEnable((int) 3008);
+        GL11.glDepthMask((boolean) true);
+        GL11.glCullFace((int) 1029);
+        GL11.glDisable((int) 2848);
+        GL11.glHint((int) 3154, (int) 4352);
+        GL11.glHint((int) 3155, (int) 4352);
+    }
 
-    public  void drawCylinderESP(EntityLivingBase entity,double x, double y, double z) {
+    public static void enableSmoothLine(float width) {
+        GL11.glDisable((int) 3008);
+        GL11.glEnable((int) 3042);
+        GL11.glBlendFunc((int) 770, (int) 771);
+        GL11.glDisable((int) 3553);
+        GL11.glDisable((int) 2929);
+        GL11.glDepthMask((boolean) false);
+        GL11.glEnable((int) 2884);
+        GL11.glEnable((int) 2848);
+        GL11.glHint((int) 3154, (int) 4354);
+        GL11.glHint((int) 3155, (int) 4354);
+        GL11.glLineWidth((float) width);
+    }
+
+    public void drawCylinderESP(EntityLivingBase entity, double x, double y, double z) {
         GL11.glPushMatrix();
-        GL11.glTranslated((double)x, (double)y, (double)z);
-        GL11.glRotatef((float)(-entity.width), (float)0.0f, (float)1.0f, (float)0.0f);
         GlStateManager.disableLighting();
-//        RenderUtil.enableSmoothLine(2.0f);
-        RenderUtil.glColor(new Color(1, 89, 1 ,150).getRGB());//color4f
+        GL11.glTranslated((double) x, (double) y, (double) z);
+        GL11.glRotatef((float) (-entity.width), (float) 0.0f, (float) 1.0f, (float) 0.0f);
+        RenderUtil.glColor(new Color(1, 89, 1, 150).getRGB());// color4f
+        enableSmoothLine(0.1f);//
         Cylinder c = new Cylinder();
-        //GL11.glRotatef(RenderUtil.GetFloat(), (float)0.0f, (float)1.0f, (float)0.0f);
-        GL11.glRotatef((float)-90.0f, (float)1.0f, (float)0.0f, (float)0.0f);
+        GL11.glRotatef((float) -90.0f, (float) 1.0f, (float) 0.0f, (float) 0.0f);
         c.setDrawStyle(100011);
-        c.draw(0.0f, 0.2f, 0.5f, 4, 200);
-//        RenderUtil.disableSmoothLine();
+        c.draw(0.0f, 0.2f, 0.5f, 5, 300);
+        disableSmoothLine();
         GlStateManager.enableLighting();
         GL11.glPopMatrix();
 
         GL11.glPushMatrix();
-        GL11.glTranslated((double)x, (double)y+0.5f, (double)z);
-        GL11.glRotatef((float)(-entity.width), (float)0.0f, (float)1.0f, (float)0.0f);
         GlStateManager.disableLighting();
-        RenderUtil.glColor(new Color(2, 168, 2,150).getRGB());//color4f
-//        RenderUtil.enableSmoothLine(2.0f);
-        GL11.glRotatef((float)-90.0f, (float)1.0f, (float)0.0f, (float)0.0f);
+        GL11.glTranslated((double) x, (double) y + 0.5f, (double) z);
+        GL11.glRotatef((float) (-entity.width), (float) 0.0f, (float) 1.0f, (float) 0.0f);
+        RenderUtil.glColor(new Color(2, 168, 2, 150).getRGB());// color4f
+        enableSmoothLine(0.1f);//
+        GL11.glRotatef((float) -90.0f, (float) 1.0f, (float) 0.0f, (float) 0.0f);
         c.setDrawStyle(100011);
-        c.draw(0.2f, 0.0f, 0.5f, 4, 200);
-//        RenderUtil.disableSmoothLine();
+        c.draw(0.2f, 0.0f, 0.5f, 5, 300);
+        disableSmoothLine();
         GlStateManager.enableLighting();
         GL11.glPopMatrix();
     }
@@ -316,7 +340,7 @@ public class Aura extends Module {
                 ChatUtil.sendClientMessage("You have no install the customeNPCs");
             }
         }
-        if (!ModManager.getModByName("NoFriend").isEnabled() && FriendManager.isFriend(entity.getCommandSenderName())){
+        if (!Objects.requireNonNull(ModManager.getModByName("NoFriend")).isEnabled() && FriendManager.isFriend(entity.getCommandSenderName())){
             return false;
         }
         if(!mc.thePlayer.canEntityBeSeen(entity) && !wall.getValueState().booleanValue()) {

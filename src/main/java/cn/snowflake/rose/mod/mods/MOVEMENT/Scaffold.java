@@ -37,7 +37,7 @@ public class Scaffold
     private Value<Boolean> noSwing = new Value<Boolean>("Scaffold_NoSwing", true);
     public static Value<Boolean> down = new Value<Boolean>("Scaffold_Down", true);
 
-    private List<Block> blacklisted = Arrays.asList(Blocks.air, Blocks.water, Blocks.flowing_water, Blocks.lava, Blocks.flowing_lava, Blocks.enchanting_table, Blocks.ender_chest, Blocks.yellow_flower, Blocks.carpet, Blocks.glass_pane, Blocks.stained_glass_pane, Blocks.iron_bars, Blocks.crafting_table, Blocks.snow_layer, Blocks.packed_ice, Blocks.coal_ore, Blocks.diamond_ore, Blocks.emerald_ore, Blocks.chest, Blocks.torch, Blocks.anvil, Blocks.trapped_chest, Blocks.noteblock, Blocks.gold_ore, Blocks.iron_ore, Blocks.lapis_ore, Blocks.lit_redstone_ore, Blocks.redstone_ore, Blocks.wooden_pressure_plate, Blocks.stone_pressure_plate, Blocks.light_weighted_pressure_plate, Blocks.heavy_weighted_pressure_plate, Blocks.stone_button, Blocks.wooden_button, Blocks.cactus, Blocks.lever, Blocks.activator_rail, Blocks.rail, Blocks.detector_rail, Blocks.golden_rail, Blocks.furnace, Blocks.ladder, Blocks.redstone_torch,  Blocks.trapdoor, Blocks.tripwire_hook, Blocks.hopper,  Blocks.dispenser, Blocks.sapling, Blocks.tallgrass, Blocks.deadbush, Blocks.web, Blocks.red_flower, Blocks.red_mushroom, Blocks.brown_mushroom, Blocks.nether_brick_fence, Blocks.vine, Blocks.double_plant, Blocks.flower_pot, Blocks.beacon, Blocks.pumpkin, Blocks.lit_pumpkin);
+    private List<Block> blacklisted = Arrays.asList(Blocks.air, Blocks.water, Blocks.flowing_water, Blocks.lava, Blocks.flowing_lava, Blocks.enchanting_table, Blocks.ender_chest, Blocks.yellow_flower, Blocks.carpet, Blocks.glass_pane, Blocks.stained_glass_pane, Blocks.iron_bars, Blocks.crafting_table, Blocks.snow_layer, Blocks.packed_ice, Blocks.coal_ore, Blocks.diamond_ore, Blocks.emerald_ore, Blocks.chest, Blocks.torch, Blocks.anvil, Blocks.trapped_chest, Blocks.noteblock, Blocks.gold_ore, Blocks.iron_ore, Blocks.lapis_ore, Blocks.lit_redstone_ore, Blocks.redstone_ore, Blocks.wooden_pressure_plate, Blocks.stone_pressure_plate, Blocks.light_weighted_pressure_plate, Blocks.heavy_weighted_pressure_plate, Blocks.stone_button, Blocks.wooden_button, Blocks.cactus, Blocks.lever, Blocks.activator_rail, Blocks.rail, Blocks.detector_rail, Blocks.golden_rail, Blocks.furnace, Blocks.ladder,  Blocks.trapdoor, Blocks.tripwire_hook, Blocks.hopper,  Blocks.dispenser, Blocks.sapling, Blocks.tallgrass, Blocks.deadbush, Blocks.web, Blocks.red_flower, Blocks.red_mushroom, Blocks.brown_mushroom, Blocks.nether_brick_fence, Blocks.vine, Blocks.double_plant, Blocks.flower_pot, Blocks.beacon, Blocks.pumpkin, Blocks.lit_pumpkin);
     public static List<Block> blacklistedBlocks = Arrays.asList(Blocks.air, Blocks.water, Blocks.flowing_water, Blocks.lava, Blocks.flowing_lava, Blocks.ender_chest, Blocks.enchanting_table, Blocks.stone_button, Blocks.wooden_button, Blocks.crafting_table, Blocks.beacon);
 
 
@@ -50,13 +50,13 @@ public class Scaffold
     public void onPre(EventMotion event) {
         if (event.isPre()) {
             double x = mc.thePlayer.posX;
-            double y = mc.thePlayer.posY - 1.0;
+            double y = mc.thePlayer.posY - 2;
             double z = mc.thePlayer.posZ;
             BlockPos blockBelow = new BlockPos(x, y, z);
             if (mc.thePlayer != null) {
                 this.blockData = this.getBlockData(blockBelow, blacklistedBlocks);
                 if (this.blockData == null) {
-                    this.blockData = this.getBlockData(blockBelow.offset(EnumFacing.DOWN), blacklistedBlocks);
+                    this.blockData = this.getBlockData(blockBelow.down(1), blacklistedBlocks);
                 }
                 blockBelow = new BlockPos(x, y, z);
                 if (this.mc.theWorld.getBlock(blockBelow.getX(), blockBelow.getY(), blockBelow.getZ()) == Blocks.air) {
@@ -171,71 +171,75 @@ public class Scaffold
 
     private BlockData getBlockData(BlockPos pos, List list) {
         if (!blacklistedBlocks.contains(getBlock(pos.add(0, -1, 0)))) {
-            return new BlockData(pos.add(0, -1, 0), EnumFacing.UP, this.blockData);
+            return new BlockData(pos.add(0, -1, 0), EnumFacing.UP);
         }
         if (!blacklistedBlocks.contains(getBlock(pos.add(-1, 0, 0)))) {
-            return new BlockData(pos.add(-1, 0, 0), Keyboard.isKeyDown((int)42) && mc.thePlayer.onGround && mc.thePlayer.fallDistance == 0.0f && getBlock(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1.0, mc.thePlayer.posZ)) == Blocks.air ? (down.getValueState() ? EnumFacing.DOWN : EnumFacing.EAST) : EnumFacing.EAST, this.blockData);
+            return new BlockData(pos.add(-1, 0, 0), Keyboard.isKeyDown((int)42) && mc.thePlayer.onGround && mc.thePlayer.fallDistance == 0.0f && getBlock(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1.0, mc.thePlayer.posZ)) == Blocks.air ? (down.getValueState() ? EnumFacing.DOWN : EnumFacing.EAST) : EnumFacing.EAST);
         }
         if (!blacklistedBlocks.contains(getBlock(pos.add(1, 0, 0)))) {
-            return new BlockData(pos.add(1, 0, 0), Keyboard.isKeyDown((int)42) && mc.thePlayer.onGround && mc.thePlayer.fallDistance == 0.0f && getBlock(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1.0, mc.thePlayer.posZ)) == Blocks.air ? (down.getValueState() ? EnumFacing.DOWN : EnumFacing.WEST) : EnumFacing.WEST, this.blockData);
+            return new BlockData(pos.add(1, 0, 0), Keyboard.isKeyDown((int)42) && mc.thePlayer.onGround && mc.thePlayer.fallDistance == 0.0f && getBlock(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1.0, mc.thePlayer.posZ)) == Blocks.air ? (down.getValueState() ? EnumFacing.DOWN : EnumFacing.WEST) : EnumFacing.WEST);
         }
         if (!blacklistedBlocks.contains(getBlock(pos.add(0, 0, -1)))) {
-            return new BlockData(pos.add(0, 0, -1), Keyboard.isKeyDown((int)42) && mc.thePlayer.onGround && mc.thePlayer.fallDistance == 0.0f && getBlock(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1.0, mc.thePlayer.posZ)) == Blocks.air ? (down.getValueState() ? EnumFacing.DOWN : EnumFacing.SOUTH) : EnumFacing.SOUTH, this.blockData);
+            return new BlockData(pos.add(0, 0, -1), Keyboard.isKeyDown((int)42) && mc.thePlayer.onGround && mc.thePlayer.fallDistance == 0.0f && getBlock(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1.0, mc.thePlayer.posZ)) == Blocks.air ? (down.getValueState() ? EnumFacing.DOWN : EnumFacing.SOUTH) : EnumFacing.SOUTH);
         }
         if (!blacklistedBlocks.contains(getBlock(pos.add(0, 0, 1)))) {
-            return new BlockData(pos.add(0, 0, 1), Keyboard.isKeyDown((int)42) && mc.thePlayer.onGround && mc.thePlayer.fallDistance == 0.0f && getBlock(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1.0, mc.thePlayer.posZ)) == Blocks.air ? (down.getValueState() ? EnumFacing.DOWN : EnumFacing.NORTH)   : EnumFacing.NORTH, this.blockData);
+            return new BlockData(pos.add(0, 0, 1), Keyboard.isKeyDown((int)42) && mc.thePlayer.onGround && mc.thePlayer.fallDistance == 0.0f && getBlock(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1.0, mc.thePlayer.posZ)) == Blocks.air ? (down.getValueState() ? EnumFacing.DOWN : EnumFacing.NORTH)   : EnumFacing.NORTH);
         }
         BlockPos add = pos.add(-1, 0, 0);
         if (!blacklistedBlocks.contains(getBlock(add.add(-1, 0, 0)))) {
-            return new BlockData(add.add(-1, 0, 0), EnumFacing.EAST, this.blockData);
+            return new BlockData(add.add(-1, 0, 0), EnumFacing.EAST);
         }
         if (!blacklistedBlocks.contains(getBlock(add.add(1, 0, 0)))) {
-            return new BlockData(add.add(1, 0, 0), EnumFacing.WEST, this.blockData);
+            return new BlockData(add.add(1, 0, 0), EnumFacing.WEST);
         }
         if (!blacklistedBlocks.contains(getBlock(add.add(0, 0, -1)))) {
-            return new BlockData(add.add(0, 0, -1), EnumFacing.SOUTH, this.blockData);
+            return new BlockData(add.add(0, 0, -1), EnumFacing.SOUTH);
         }
         if (!blacklistedBlocks.contains(getBlock(add.add(0, 0, 1)))) {
-            return new BlockData(add.add(0, 0, 1), EnumFacing.NORTH, this.blockData);
+            return new BlockData(add.add(0, 0, 1), EnumFacing.NORTH);
         }
         BlockPos add2 = pos.add(1, 0, 0);
         if (!blacklistedBlocks.contains(getBlock(add2.add(-1, 0, 0)))) {
-            return new BlockData(add2.add(-1, 0, 0), EnumFacing.EAST, this.blockData);
+            return new BlockData(add2.add(-1, 0, 0), EnumFacing.EAST);
         }
         if (!blacklistedBlocks.contains(getBlock(add2.add(1, 0, 0)))) {
-            return new BlockData(add2.add(1, 0, 0), EnumFacing.WEST, this.blockData);
+            return new BlockData(add2.add(1, 0, 0), EnumFacing.WEST);
         }
         if (!blacklistedBlocks.contains(getBlock(add2.add(0, 0, -1)))) {
-            return new BlockData(add2.add(0, 0, -1), EnumFacing.SOUTH, this.blockData);
+            return new BlockData(add2.add(0, 0, -1), EnumFacing.SOUTH);
         }
         if (!blacklistedBlocks.contains(getBlock(add2.add(0, 0, 1)))) {
-            return new BlockData(add2.add(0, 0, 1), EnumFacing.NORTH, this.blockData);
+            return new BlockData(add2.add(0, 0, 1), EnumFacing.NORTH);
         }
         BlockPos add3 = pos.add(0, 0, -1);
         if (!blacklistedBlocks.contains(getBlock(add3.add(-1, 0, 0)))) {
-            return new BlockData(add3.add(-1, 0, 0), EnumFacing.EAST, this.blockData);
+            return new BlockData(add3.add(-1, 0, 0), EnumFacing.EAST);
         }
         if (!blacklistedBlocks.contains(getBlock(add3.add(1, 0, 0)))) {
-            return new BlockData(add3.add(1, 0, 0), EnumFacing.WEST, this.blockData);
+            return new BlockData(add3.add(1, 0, 0), EnumFacing.WEST);
         }
         if (!blacklistedBlocks.contains(getBlock(add3.add(0, 0, -1)))) {
-            return new BlockData(add3.add(0, 0, -1), EnumFacing.SOUTH, this.blockData);
+            return new BlockData(add3.add(0, 0, -1), EnumFacing.SOUTH);
         }
         if (!blacklistedBlocks.contains(getBlock(add3.add(0, 0, 1)))) {
-            return new BlockData(add3.add(0, 0, 1), EnumFacing.NORTH, this.blockData);
+            return new BlockData(add3.add(0, 0, 1), EnumFacing.NORTH);
         }
         BlockPos add4 = pos.add(0, 0, 1);
         if (!blacklistedBlocks.contains(getBlock(add4.add(-1, 0, 0)))) {
-            return new BlockData(add4.add(-1, 0, 0), EnumFacing.EAST, this.blockData);
+            System.out.println(getBlock(add4.add(-1, 0, 0)));
+            return new BlockData(add4.add(-1, 0, 0), EnumFacing.EAST);
         }
         if (!blacklistedBlocks.contains(getBlock(add4.add(1, 0, 0)))) {
-            return new BlockData(add4.add(1, 0, 0), EnumFacing.WEST, this.blockData);
+            System.out.println("WEST");
+            return new BlockData(add4.add(1, 0, 0), EnumFacing.WEST);
         }
         if (!blacklistedBlocks.contains(getBlock(add4.add(0, 0, -1)))) {
-            return new BlockData(add4.add(0, 0, -1), EnumFacing.SOUTH, this.blockData);
+            System.out.println("SOUTH");
+            return new BlockData(add4.add(0, 0, -1), EnumFacing.SOUTH);
         }
         if (!blacklistedBlocks.contains(getBlock(add4.add(0, 0, 1)))) {
-            return new BlockData(add4.add(0, 0, 1), EnumFacing.NORTH, this.blockData);
+            System.out.println("NORTH");
+            return new BlockData(add4.add(0, 0, 1), EnumFacing.NORTH);
         }
         return null;
     }
@@ -287,7 +291,7 @@ public class Scaffold
         public static BlockPos position;
         public static EnumFacing face;
 
-        public BlockData(BlockPos position, EnumFacing face, BlockData blockData) {
+        public BlockData(BlockPos position, EnumFacing face) {
             BlockData.position = position;
             BlockData.face = face;
         }

@@ -100,4 +100,18 @@ public class PlayerUtil {
         }
         return yaw * 0.017453292F;
     }
+    public static float getSpeed() {
+        return (float) Math.sqrt(mc.thePlayer.motionX * mc.thePlayer.motionX + mc.thePlayer.motionZ * mc.thePlayer.motionZ);
+    }
+    public static void strafe() {
+        strafe(getSpeed());
+    }
+    public static void strafe(final float speed) {
+        if(!isMoving())
+            return;
+
+        final double yaw = getDirection();
+        mc.thePlayer.motionX = -Math.sin(yaw) * speed;
+        mc.thePlayer.motionZ = Math.cos(yaw) * speed;
+    }
 }

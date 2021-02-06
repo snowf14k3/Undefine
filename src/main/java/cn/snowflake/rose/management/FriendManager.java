@@ -1,34 +1,54 @@
 package cn.snowflake.rose.management;
 
+import java.util.Iterator;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import cn.snowflake.rose.friend.Friend;
 import net.minecraft.entity.player.EntityPlayer;
 
-import java.util.ArrayList;
-
 public class FriendManager {
-    public static ArrayList<Friend> friends = new ArrayList();
+    private static CopyOnWriteArrayList friends = new CopyOnWriteArrayList();
 
-    public static boolean isFriend(EntityPlayer entityPlayer){
-        for (Friend friend : friends) {
-            return friend.name.equalsIgnoreCase(entityPlayer.getCommandSenderName());
+    public static CopyOnWriteArrayList getFriends() {
+        return friends;
+    }
+
+    public static boolean isFriend(EntityPlayer player) {
+        Iterator var2 = friends.iterator();
+
+        while(var2.hasNext()) {
+            Friend friend = (Friend)var2.next();
+            if (friend.getName().equalsIgnoreCase(player.getCommandSenderName())) {
+                return true;
+            }
         }
+
         return false;
     }
 
-    public static boolean isFriend(String name){
-        for (Friend friend : friends) {
-            return friend.name.equalsIgnoreCase(name);
+    public static boolean isFriend(String player) {
+        Iterator var2 = friends.iterator();
+
+        while(var2.hasNext()) {
+            Friend friend = (Friend)var2.next();
+            if (friend.getName().equalsIgnoreCase(player)) {
+                return true;
+            }
         }
+
         return false;
     }
 
-    public static Friend getFriend(String name){
-        for (Friend friend : friends) {
-            if (friend.name.equalsIgnoreCase(name)){
+    public static Friend getFriend(String name) {
+        Iterator var2 = friends.iterator();
+
+        while(var2.hasNext()) {
+            Friend friend = (Friend)var2.next();
+            if (friend.getName().equalsIgnoreCase(name)) {
                 return friend;
             }
         }
+
         return null;
     }
-
 }

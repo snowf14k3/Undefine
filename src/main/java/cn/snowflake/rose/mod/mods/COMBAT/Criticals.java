@@ -71,9 +71,9 @@ public class Criticals extends Module {
 
     @EventTarget
     public void Eventaura(EventAura e) {
-        if (modes.isCurrentMode("NoGround")) {
+        if (modes.isCurrentMode("Packet")) {
             if (ModManager.getModByName("Aura").isEnabled() && Aura.target != null) {
-                if (mc.thePlayer.onGround && mc.thePlayer.onGround && !ModManager.getModByName("Fly").isEnabled()  && !ModManager.getModByName("Speed").isEnabled()) {
+                if (mc.thePlayer.onGround && !ModManager.getModByName("Fly").isEnabled()  && !ModManager.getModByName("Speed").isEnabled()) {
                     double[] offsets = {CodeByLiquidSlowly(),0.0};
                     int var6 = offsets.length;
                     for (int i = 0; i < offsets.length; i++) {

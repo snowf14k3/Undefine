@@ -3,21 +3,23 @@ package cn.snowflake.rose.friend;
 import net.minecraft.entity.EntityLivingBase;
 
 public class Friend {
-    public String name ;
-    public EntityLivingBase friend;
+    private String name;
+    private String alias;
 
-    public Friend(String name, EntityLivingBase friend){
+    public Friend(String name, String alias) {
         this.name = name;
-        this.friend = friend;
-    }
-    public Friend(String name){
-        this.name = name;
-    }
-    public EntityLivingBase getFriend() {
-        return friend;
+        this.alias = alias;
     }
 
     public String getName() {
-        return name;
+        return this.name;
+    }
+
+    public String getAlias() {
+        return this.alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 }

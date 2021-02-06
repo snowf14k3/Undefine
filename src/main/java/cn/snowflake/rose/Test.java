@@ -37,8 +37,7 @@ import java.util.List;
 
 public class Test {
 
-
-    public void doRender(EntityLivingBase p_76986_1_, double p_76986_2_, double p_76986_4_, double p_76986_6_, float p_76986_8_, float p_76986_9_) {
+    public Test(int i ,int i2 ,ByteBuf g){
 
     }
 

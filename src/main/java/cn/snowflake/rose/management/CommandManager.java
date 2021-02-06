@@ -12,7 +12,7 @@ public class CommandManager {
         add(new CommandHelp(new String[] {"help"}));
         add(new CommandToggle(new String[] {"toggle", "t"}));
         add(new CommandBind(new String[] {"bind"}));
-//        add(new CommandWalkTo(new String[]{"to"}));
+        add(new CommandTP(new String[]{"tp"}));
         add(new CommandXray(new String[]{"xray"}));
         add(new CommandFriend(new String[]{"friend","f"}));
         add(new CommandHidden(new String[] {"hidden"}));

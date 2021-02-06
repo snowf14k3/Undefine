@@ -1,15 +1,18 @@
 package cn.snowflake.rose.mod.mods.MOVEMENT;
 
+import cn.snowflake.rose.events.impl.EventMotion;
 import cn.snowflake.rose.events.impl.EventMove;
 import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
+import cn.snowflake.rose.utils.JReflectUtility;
 import cn.snowflake.rose.utils.PlayerUtil;
 import cn.snowflake.rose.utils.TimeHelper;
 import cn.snowflake.rose.utils.Value;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.MathHelper;
 
 public class Speed extends Module {
     public static Value<String> mode = new Value("Speed", "Mode", 0);
@@ -20,7 +23,7 @@ public class Speed extends Module {
     private int stage;
     double less;
     double stair;
-    private double speed;
+    public double speed;
     TimeHelper timer = new TimeHelper();
     TimeHelper lastCheck = new TimeHelper();
     public int time = 0;
@@ -30,7 +33,10 @@ public class Speed extends Module {
         mode.mode.add("Bhop");
         mode.addValue("Bhop1");
         mode.addValue("Bhop2");
+        mode.addValue("OnGroundNCP");
+        mode.addValue("YportNCP");
     }
+    private int jumps;
 
     @EventTarget
     public void onUpdate(EventUpdate e){
@@ -42,6 +48,59 @@ public class Speed extends Module {
                 PlayerUtil.setSpeed(boost.getValueState());
             }
         }
+
+    }
+    @EventTarget
+    public void motion(EventMotion eventMotion){
+        if (eventMotion.isPre()){
+            if (mode.isCurrentMode("YportNCP")){
+                if(mc.thePlayer.isOnLadder() || mc.thePlayer.isInWater() ||!PlayerUtil.isMoving() || mc.thePlayer.isInWater()){
+                    return;
+                }
+                if(jumps >= 4 && mc.thePlayer.onGround)
+                    jumps = 0;
+
+                if(mc.thePlayer.onGround) {
+                    mc.thePlayer.motionY = jumps <= 1 ? 0.42F : 0.4F;
+
+                    float f = mc.thePlayer.rotationYaw * 0.017453292F;
+                    mc.thePlayer.motionX -= MathHelper.sin(f) * 0.2F;
+                    mc.thePlayer.motionZ += MathHelper.cos(f) * 0.2F;
+
+                    jumps++;
+                }else if(jumps <= 1)
+                    mc.thePlayer.motionY = -5D;
+
+                PlayerUtil.strafe();
+            }
+            if (this.mode.isCurrentMode("OnGroundNCP"))
+            {
+                if(!PlayerUtil.isMoving())
+                    return;
+
+                if(mc.thePlayer.fallDistance > 3.994)
+                    return;
+
+                if(mc.thePlayer.isInWater() || mc.thePlayer.isOnLadder() || mc.thePlayer.isCollidedHorizontally)
+                    return;
+
+                mc.thePlayer.posY -= 0.3993000090122223;
+                mc.thePlayer.motionY = -1000.0;
+                mc.thePlayer.cameraPitch = 0.3F;
+                mc.thePlayer.distanceWalkedModified = 44.0F;
+                JReflectUtility.setTimerSpeed(1f);
+
+                if(mc.thePlayer.onGround) {
+                    mc.thePlayer.posY += 0.3993000090122223;
+                    mc.thePlayer.motionY = 0.3993000090122223;
+                    mc.thePlayer.distanceWalkedOnStepModified = 44.0f;
+                    mc.thePlayer.motionX *= 1.590000033378601;
+                    mc.thePlayer.motionZ *= 1.590000033378601;
+                    mc.thePlayer.cameraPitch = 0.0f;
+                    JReflectUtility.setTimerSpeed(1.199F);
+                }
+            }
+        }
     }
 
     @EventTarget
@@ -49,7 +108,9 @@ public class Speed extends Module {
         if (e.getEntity() != mc.thePlayer){
             return;
         }
+
         this.setDisplayName(mode.getModeName());
+
         if (this.mode.isCurrentMode("Bhop1")) {
             if (mc.thePlayer.isCollidedHorizontally) {
                 this.collided = true;

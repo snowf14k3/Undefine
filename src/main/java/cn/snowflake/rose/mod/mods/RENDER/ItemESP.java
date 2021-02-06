@@ -75,6 +75,7 @@ public class ItemESP extends Module {
                     }
                     if (this.nametag.getValueState().booleanValue()) {
                         String nametext = StringUtils.stripControlCodes(ent.getEntityItem().getItem().getItemStackDisplayName(ent.getEntityItem()));
+
                         this.mc.fontRenderer.drawStringWithShadow(nametext, (int)(x + (x2 - x) / 2.0f - (float)(this.mc.fontRenderer.getStringWidth(nametext) / 2)), (int)(y - (float)this.mc.fontRenderer.FONT_HEIGHT - 2.0f), -1);
                     }
                     GlStateManager.popMatrix();

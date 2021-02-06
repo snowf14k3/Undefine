@@ -38,7 +38,7 @@ public class FontManager {
         this.robotoregular19 = this.getFont("roboto-regular", 19.0f);
         this.simpleton20 = this.getFont("simpleton", 20.0f, true);
         this.simpleton30 = this.getFont("simpleton", 30.0f, true);
-        this.notif = this.getFont("stylesicons", 45.0f);
+        this.notif = this.getFont("stylesicons", 20.0f);
     }
 
     public UnicodeFontRenderer getFont(String name, float size, boolean b) {

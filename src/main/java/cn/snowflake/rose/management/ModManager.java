@@ -37,8 +37,9 @@ public class ModManager {
         addMod(new TargetStrafe());
         addMod(new Speed());
         addMod(new NoFall());
-//        addMod(new Jesus());
+        addMod(new Jesus());
         addMod(new Step());
+        addMod(new TP());
         //RENDER
         addMod(new HUD());
         addMod(new NoHurtcam());
@@ -46,20 +47,18 @@ public class ModManager {
         addMod(new CrossHair());
         addMod(new FullBright());
         addMod(new ItemESP());
-
         addMod(new ClickGui());
         addMod(new Tracer());
         addMod(new Chams());
         addMod(new ViewClip());
         addMod(new ESP2D());
         addMod(new ChestESP());
-        addMod(new BlockOverlay());
+//        addMod(new BlockOverlay());
         addMod(new ESP());
-        addMod(new Notifications());
+//        addMod(new Notifications());
         //PLAYER
         addMod(new NoSlowDown());
         addMod(new AutoTools());
-//        addMod(new FastConsume());
         addMod(new Stealer());
         addMod(new AntiEffect());
         addMod(new FastBreak());
@@ -68,7 +67,6 @@ public class ModManager {
         addMod(new FastPlace());
         addMod(new FastUse());
         addMod(new InvMove());
-//        addMod(new GhostHand());
         //WORLD
         addMod(new ServerCrasher());
         addMod(new Bot());
@@ -77,14 +75,15 @@ public class ModManager {
         addMod(new MineBot());
         addMod(new Spammer());
         addMod(new MCF());
+        addMod(new FakeLag());
 //        addMod(new IRC());
         addMod(new NoCommand());
-        addMod(new SecretClose());
         addMod(new Plugins());
 
         //FORGE
         addMod(new EIOXpGrab());
         addMod(new ScreenProtect());
+        addMod(new SecretClose());
 
     }
 

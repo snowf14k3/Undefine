@@ -1,5 +1,6 @@
 package cn.snowflake.rose.mod.mods.MOVEMENT;
 
+import cn.snowflake.rose.events.impl.EventMotion;
 import cn.snowflake.rose.events.impl.EventMove;
 import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.mod.Category;
@@ -33,6 +34,15 @@ public class Jesus extends Module {
             jesus = false;
         }
         super.set(state);
+    }
+
+    @EventTarget
+    public void onUpdatePre(EventMotion event) {
+        if (event.isPre()){
+            if (isInLiquid()){
+                mc.thePlayer.motionY = 0.1;
+            }
+        }
     }
     public static boolean isInLiquid() {
         Minecraft mc = Minecraft.getMinecraft();

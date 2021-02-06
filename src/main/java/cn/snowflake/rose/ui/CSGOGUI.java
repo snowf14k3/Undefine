@@ -5,11 +5,13 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import cn.snowflake.rose.Client;
 import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
+import cn.snowflake.rose.mod.mods.RENDER.ClickGui;
 import cn.snowflake.rose.utils.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatAllowedCharacters;
@@ -35,7 +37,7 @@ public class CSGOGUI extends GuiScreen {
     public int moveX = 0;
     public int moveY = 0;
 
-    public int startX = 50;
+    public int startX = 60;
     public int startY = 40;
     public int lastselect;
     public int selectCategory = 0;
@@ -51,7 +53,7 @@ public class CSGOGUI extends GuiScreen {
 
     private boolean caninput = false;
     private float width;
-    public float anim = 700f;
+    public float anim = 0;
     int selectedChar;
     @Override
     protected void keyTyped(char typedChar, int keyCode)  {
@@ -144,13 +146,13 @@ public class CSGOGUI extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        anim = AnimationUtil.moveUD(anim, 0, 0.6f, 0.04f);
+        anim = AnimationUtil.moveUD(anim, 1, 0.4f, 0.01f);
 //        GlStateManager.rotate(anim, 0, 0, 1);
-        GlStateManager.translate(anim,anim,anim);
         ScaledResolution rs = new ScaledResolution(Minecraft.getMinecraft(),Minecraft.getMinecraft().displayWidth,Minecraft.getMinecraft().displayHeight);
-        if (isHovered(startX, startY - 8, startX + 300, startY + 5, mouseX, mouseY) && !isHovered(startX+289, startY-8, startX+296, startY+0, mouseX, mouseY)) {
-            if(handler.canExcecute())
+        if (isHovered(startX - 20, startY - 8, startX + 300, startY + 5, mouseX, mouseY) && !isHovered(startX+289, startY-8, startX+296, startY+0, mouseX, mouseY)) {
+            if(handler.canExcecute()){
                 dragging = true;
+            }
         }
         if (dragging) {
             if (moveX == 0 && moveY == 0) {
@@ -162,8 +164,8 @@ public class CSGOGUI extends GuiScreen {
             }
         }else {
             if (moveX != 0 || moveY != 0) {
-                //moveX = 0;
-                //moveY = 0;
+                moveX = 0;
+                moveY = 0;
             }
         }
         if (startX > (float)(rs.getScaledWidth() - 303)) {
@@ -182,16 +184,16 @@ public class CSGOGUI extends GuiScreen {
 
         GL11.glPushMatrix();
         GL11.glEnable(3089);
+        GlStateManager.translate(anim,anim,anim);
+
         //GLScissor
-        RenderUtil.doGlScissor(startX,startY - 8, startX +300, startY + 185);
+        RenderUtil.doGlScissor(startX - 20,startY - 8, startX +300, startY + 198);
         //Category
-        RenderUtil.drawRect(startX, startY - 8, startX + 66, startY  + 185,new Color(64,64,64).getRGB());
+        RenderUtil.drawRect(startX - 20, startY - 8, startX + 66, startY  + 198,new Color(64,64,64).getRGB());
         //Mods
-        RenderUtil.drawRect(startX + 60, startY + 5, startX + 150, startY  + 185,new Color(59, 59, 59).getRGB());
-        //mid bar
-        RenderUtil.drawRect(startX + 150, startY + 5, startX + 151, startY  + 185,new Color(42, 41, 41).getRGB());
+        RenderUtil.drawRect(startX + 60, startY + 5, startX + 150, startY  + 198,new Color(59, 59, 59).getRGB());
         //value bar
-        RenderUtil.drawRect(startX + 151, startY + 5, startX + 300, startY  + 185,new Color(59, 59, 59).getRGB());
+        RenderUtil.drawRect(startX + 150, startY + 5, startX + 300, startY  + 198,new Color(64,64,64).getRGB());
 
         //Category Render Recode by SuChen
         int CY = 5;
@@ -201,44 +203,61 @@ public class CSGOGUI extends GuiScreen {
             Category c = Category.values()[i];
             String name = c.name();
 
-//            RenderUtil.drawRect(
-//                    startX + 1,
-//                    startY + 14+ CY,
-//                    startX + 60,
-//                    startY + 32+ CY,
-//                    new Color(239, 239, 239).getRGB());
-            RenderUtil.drawRect(
-                    startX + 1,
-                    startY + 14+ CY,
-                    startX + 60,
-                    startY + 32+ CY,
-                    selectCategory == i ? new Color(62, 62, 62).getRGB() : new Color(83,83,83).getRGB());
 
 
-            if(isHovered(startX + 3, startY + 14 + CY, startX + 50, startY + 32+ CY, mouseX, mouseY) ) {
+            if(isHovered(startX - 17, startY + 14 + CY, startX + 50, startY + 32+ CY, mouseX, mouseY) ) {
                 if (handler.canExcecute()){
                     this.selectCategory = i;
                     this.modlistsize = getModsInCategory(Category.values()[selectCategory]).size();
                 }
+
                 RenderUtil.drawRect(
-                        startX + 1,
+                        startX - 20,
                         startY + 14+ CY,
                         startX + 60,
                         startY + 32+ CY,
-                        selectCategory == i ? new Color(62, 62, 62).getRGB() : new Color(154, 154, 151).getRGB());
+                        new Color(82,85,85).getRGB());
+            }
+            if (selectCategory == i) {
+                RenderUtil.drawRect(
+                        startX - 20,
+                        startY + 19 + CY,
+                        startX - 19,
+                        startY + 28 + CY,
+                        new Color(ClickGui.r.getValueState().intValue(), ClickGui.g.getValueState().intValue(), ClickGui.b.getValueState().intValue()).getRGB()
+                );
             }
 
+            String iconname = null;
+            if (name.toLowerCase().equalsIgnoreCase("movement")){
+                iconname = "A";
+            }else if (name.toLowerCase().equalsIgnoreCase("render")){
+                iconname =  "C";
+            }else if (name.toLowerCase().equalsIgnoreCase("combat")){
+                iconname = "D";
+            }else if (name.toLowerCase().equalsIgnoreCase("player")){
+                iconname = "B";
+            }else if (name.toLowerCase().equalsIgnoreCase("forge")){
+                iconname = "E";
+            }else if (name.toLowerCase().equalsIgnoreCase("world")){
+                iconname = "G";
+            }
+
+            Client.instance.fontManager.notif.drawBoldString(iconname,startX - 16,
+                    startY + 19 + CY,
+                    -1);
+
             //Category name
-            Client.instance.fontManager.simpleton13.drawCenteredString(
+            Client.instance.fontManager.simpleton13.drawString(
                     name.substring(0, 1)+ name.toLowerCase().substring(1, name.length()),
-                    startX + 4* 7+1,
+                    startX - 4,
                     startY + 20 +CY,
                     -1);
             CY += 18;
         }
         Client.instance.fontManager.simpleton20.drawCenteredString(
                 "Season",
-                startX + 4* 7+1,
+                (startX + 4* 7+1) - 14,
                 startY,
                 -1);
         //windows title
@@ -286,10 +305,11 @@ public class CSGOGUI extends GuiScreen {
             }
 
             //mod backgorund
-            RenderUtil.drawRect(x,
+            RenderUtil.drawRoundedRect(x,
                     y - 2+modscrollY,
                     x + 82,
                     y+12 + modscrollY,
+                    1.5f,
                     mod.isEnabled() ?
                             new Color(83,83,83).getRGB()
                             :
@@ -491,11 +511,14 @@ public class CSGOGUI extends GuiScreen {
             }
             y+= 15;
         }
+        //buttom bar
+        RenderUtil.drawRect(startX + 60, startY + 185, startX + 300, startY  + 198,new Color(75, 74, 74).getRGB());
 
         //top bar
         RenderUtil.drawRect(startX + 60, startY - 8, startX + 300, startY  + 5,new Color(75, 74, 74).getRGB());
         GL11.glDisable(3089);
         GL11.glPopMatrix();
+
     }
 
     /**

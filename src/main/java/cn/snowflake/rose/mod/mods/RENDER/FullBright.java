@@ -14,8 +14,8 @@ public class FullBright extends Module {
 
     public FullBright() {
         super("FullBright","Full Bright", Category.RENDER);
-        this.mode.addValue("Gamma");
         this.mode.addValue("Potion");
+        this.mode.addValue("Gamma");
     }
 
     @EventTarget

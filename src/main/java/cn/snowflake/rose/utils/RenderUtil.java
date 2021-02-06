@@ -7,9 +7,11 @@ import java.nio.IntBuffer;
 
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.culling.Frustrum;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.Entity;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
 import org.lwjgl.BufferUtils;
@@ -566,6 +568,20 @@ public enum	 RenderUtil {
     public static double interpolate(double newPos, double oldPos,float renderPartialTicks) {
         return oldPos + (newPos - oldPos) * renderPartialTicks;
     }
+    private static final RenderItem itemRenderer = new RenderItem();
+
+    public static void drawItem(int x, int y, ItemStack stack) {
+
+        itemRenderer.renderItemIntoGUI(Minecraft.getMinecraft().fontRenderer, Minecraft.getMinecraft().renderEngine, stack, x, y);
+        itemRenderer.renderItemAndEffectIntoGUI(Minecraft.getMinecraft().fontRenderer,Minecraft.getMinecraft().renderEngine, stack, x, y);
+        GL11.glDisable(2884);
+        GL11.glEnable(3008);
+        GL11.glDisable(3042);
+        GL11.glDisable(2896);
+        GL11.glDisable(2884);
+        GL11.glClear(256);
+    }
+
     public static boolean isInViewFrustrum(Entity entity) {
         return isInViewFrustrum(entity.boundingBox) || entity.ignoreFrustumCheck;
     }

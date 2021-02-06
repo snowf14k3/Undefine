@@ -13,33 +13,44 @@ import cn.snowflake.rose.mod.mods.FORGE.ScreenProtect;
 import cn.snowflake.rose.mod.mods.WORLD.Xray;
 import cn.snowflake.rose.ui.skeet.SkeetClickGui;
 import cn.snowflake.rose.utils.CatAntiCheatHelper;
+import cn.snowflake.rose.utils.ChatUtil;
+import cn.snowflake.rose.utils.HXAntiCheatHelper;
 import cn.snowflake.rose.utils.UnicodeFontRenderer;
 import cn.snowflake.rose.utils.verify.AntiReflex;
 import cn.snowflake.rose.utils.verify.HWIDUtils;
 import cn.snowflake.rose.utils.verify.ShitUtil;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
+import com.google.gson.Gson;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
+import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import org.apache.logging.log4j.LogManager;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL30;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 import java.io.*;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URL;
+import java.nio.IntBuffer;
 import java.util.*;
 import java.util.List;
 import java.util.zip.GZIPOutputStream;
@@ -201,10 +212,26 @@ public class Client {
 
     @EventTarget
     public void onFml(EventFMLChannels eventFMLChannels){
+        //hx anticheat
+        if (eventFMLChannels.fmlProxyPacket != null){
+            if (eventFMLChannels.fmlProxyPacket.channel().contains("AntiCheat")) {
+                ChatUtil.sendClientMessage("[反反作弊] 已拦截傻逼HX反作弊检测");
+                eventFMLChannels.setCancelled(true);//拦截
+                Object[] encrypt = HXAntiCheatHelper.getHXPacketData(this.getClass().getClassLoader());
+                if (encrypt.length == 0) {
+                    return;
+                }
+                ByteBuf data = HXAntiCheatHelper.writeData(
+                        -1262767116,
+                        (HXAntiCheatHelper.currentTimeMillistoHexString() + "$" + (new Gson().toJson(Arrays.asList(encrypt)))).getBytes());
+                FMLProxyPacket fpp = new FMLProxyPacket(data, "HX:AntiCheat");
+                eventFMLChannels.sendToServer(fpp);
+            }
+        }
+        //catanticheat
         if (eventFMLChannels.iMessage.getClass().toString().contains("cac")
                 || eventFMLChannels.iMessage.getClass().toString().contains("luohuayu.anticheat.message")) {
             try {//filehash and classfound check
-                LogManager.getLogger().info(eventFMLChannels.iMessage.toString() + "包");
                 Constructor<? extends IMessage> filehash = eventFMLChannels.iMessage.getClass().getDeclaredConstructor(
                         List.class,byte.class);
                 if (filehash != null){
@@ -218,7 +245,7 @@ public class Client {
                         Field field2 = fields[1];
                     	try {
 							List<String> list = (List<String>) fieldlist.get(eventFMLChannels.iMessage);
-							if (list.size() > 10) {
+							if (list.size() > 20) {
 	                        	eventFMLChannels.setCancelled(true);
                                 list.removeIf(inject ->
                                         inject.toString().endsWith(".tmp")
@@ -226,6 +253,8 @@ public class Client {
                                 list.removeIf(mod ->
                                         mod.toString().toLowerCase().endsWith("-skipverify.jar")
                                 );
+                                eventFMLChannels.sendToServer((IMessage) filehash.newInstance(new ArrayList<>(list),
+                                        salt.getByte(eventFMLChannels.iMessage)));
 							}else {
                                 eventFMLChannels.sendToServer((IMessage) filehash.newInstance(new ArrayList<>(list),
 										 salt.getByte(eventFMLChannels.iMessage)));
@@ -318,6 +347,34 @@ public class Client {
                 }
             }
         }
+
+        if (eventFMLChannels.iMessage.toString().contains("deci.aE.a$ab")){
+
+        }
+
+    }
+
+    public static IntBuffer intBuffer = null;
+
+    public BufferedImage getDeciScreenhost() {
+        int displayWidth = Minecraft.getMinecraft().displayWidth;
+        int displayHeight = Minecraft.getMinecraft().displayHeight;
+        GL11.glPixelStorei((int)3333, (int)1);
+        GL11.glPixelStorei((int)3317, (int)1);
+        int n3 = displayWidth * displayHeight;
+        if (intBuffer == null || intBuffer.capacity() < n3) {
+            intBuffer = BufferUtils.createIntBuffer((int)n3);
+        }
+        intBuffer.clear();
+        GL11.glReadPixels(0,0, (int)displayWidth, displayHeight,32993,33639, intBuffer);
+        GL30.glBindFramebuffer((int)36160, (int)0);
+        BufferedImage bufferedImage = new BufferedImage(displayWidth, displayHeight, 1);
+        int[] arrn = ((DataBufferInt)bufferedImage.getWritableTile(0, 0).getDataBuffer()).getData();
+        int height = displayHeight;
+        while (height > 0) {
+            intBuffer.get(arrn, --height * displayWidth, displayWidth);
+        }
+        return bufferedImage;
     }
 
     public static byte[] screenshot() {
@@ -330,7 +387,6 @@ public class Client {
             jf.setFileFilter(filter);
             int option = jf.showOpenDialog(jf);
             jf.setDialogTitle("\u8bf7\u5feb\u901f\u9009\u62e9\u4f60\u8981\u53d1\u9001\u7684\u622a\u56fe\u0028\u5c0f\u4e8e\u0031\u0036\u006d\u0029");
-//            if (option == 0) {
                 File file = jf.getSelectedFile();
                 if (file.exists()) {
                     try {
@@ -339,7 +395,6 @@ public class Client {
                     } catch (IOException ioException) {
                     }
                 }
-//            }
             gzipOutputStream.flush();
             gzipOutputStream.close();
         } catch (Exception ignored) {}
