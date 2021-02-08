@@ -28,19 +28,16 @@ public class CommandTP extends Command {
         if (args.length < 2) {
             Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText(this.getArgs()));
         } else {
-            String mod = args[1];
-            if (mod.contains(":")) {
-                String[] xyz = mod.split(":");
-                String sx = xyz[0];
-                String sy = xyz[1];
-                String sz = xyz[2];
+            if (args.length >= 3) {
+                String sx = args[1];
+                String sy = args[2];
+                String sz = args[3];
                 Teleport.x = Integer.parseInt(sx);
                 Teleport.y = Integer.parseInt(sy);
                 Teleport.z = Integer.parseInt(sz);
-                ModManager.getModByName("TP").set(true);
+                ModManager.getModByName("Teleport").set(true);
             } else {
                 String playername = args[1];
-
                     if (mc.theWorld.getPlayerEntityByName(playername) != null) {
                         EntityLivingBase entity1 = (EntityLivingBase) mc.theWorld.getPlayerEntityByName(playername);
                         if (entity1.getCommandSenderName().startsWith(playername)) {
@@ -51,7 +48,7 @@ public class CommandTP extends Command {
                             Teleport.x = (int) entity1.posX;
                             Teleport.y = (int) entity1.posY;
                             Teleport.z = (int) entity1.posZ;
-                            ModManager.getModByName("TP").set(true);
+                            ModManager.getModByName("Teleport").set(true);
                         } else {
                             System.out.println(playername + " " + entity1.getCommandSenderName());
                             ChatUtil.sendClientMessage(" can not find the player");

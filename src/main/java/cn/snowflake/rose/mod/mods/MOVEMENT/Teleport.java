@@ -37,6 +37,7 @@ public class Teleport extends Module {
 //		playerCapabilities.setFlySpeed((float) MathUtils.randomNumber(0.1, 9.0));
         mc.getNetHandler().addToSendQueue(new C0FPacketConfirmTransaction(0, (short)(-1), false));
         mc.getNetHandler().addToSendQueue(new C13PacketPlayerAbilities(playerCapabilities));
+        mc.getNetHandler().addToSendQueue(new C03PacketPlayer(true));
         mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 0.17,mc.thePlayer.posY + 0.17, mc.thePlayer.posZ, true));
         mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 0.06,mc.thePlayer.posY + 0.06, mc.thePlayer.posZ, true));
         mc.thePlayer.stepHeight = 0.0f;
@@ -60,6 +61,9 @@ public class Teleport extends Module {
             set(false);
             return;
         }
+        for (int i = 0; i < 20; i++) {
+                    mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer(true));
+                }
         mc.getNetHandler().addToSendQueue(new C0CPacketInput(0.0f, 0.0f, true, true));
         double lastY = mc.thePlayer.posY, downY = 0;
         for (Vec3Util vec3 : TPUtil.computePath(
@@ -79,7 +83,13 @@ public class Teleport extends Module {
             lastY = vec3.getY();
         }
         //Teleported
+        mc.thePlayer.sendQueue.addToSendQueue(new C0FPacketConfirmTransaction(0, (short) -1, false));
+        PlayerCapabilities capabilities = new PlayerCapabilities();
+        capabilities.allowFlying = true;
+        capabilities.isFlying = true;
+        mc.thePlayer.sendQueue.addToSendQueue(new C13PacketPlayerAbilities(capabilities));
         mc.thePlayer.setPosition(x, y, z);
+        //mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(x,y,y,z,true));
         ChatUtil.sendClientMessage("传送到"+x+" "+y+" "+z);
         x = 0;
         y = 0;
@@ -87,7 +97,4 @@ public class Teleport extends Module {
         set(false);
 
     }
-
-
-
 }
