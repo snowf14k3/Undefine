@@ -3,7 +3,7 @@ package cn.snowflake.rose.command.commands;
 import cn.snowflake.rose.command.Command;
 import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.mods.MOVEMENT.Teleport;
-import cn.snowflake.rose.utils.ChatUtil;
+import cn.snowflake.rose.utils.client.ChatUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ChatComponentText;
@@ -28,10 +28,12 @@ public class CommandTP extends Command {
         if (args.length < 2) {
             Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText(this.getArgs()));
         } else {
-            if (args.length >= 3) {
-                String sx = args[1];
-                String sy = args[2];
-                String sz = args[3];
+            String mod = args[1];
+            if (mod.contains(":")) {
+                String[] xyz = mod.split(":");
+                String sx = xyz[0];
+                String sy = xyz[1];
+                String sz = xyz[2];
                 Teleport.x = Integer.parseInt(sx);
                 Teleport.y = Integer.parseInt(sy);
                 Teleport.z = Integer.parseInt(sz);
