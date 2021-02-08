@@ -12,14 +12,13 @@ import cn.snowflake.rose.mod.mods.FORGE.ScreenProtect;
 import cn.snowflake.rose.mod.mods.WORLD.Xray;
 import cn.snowflake.rose.ui.skeet.SkeetClickGui;
 import cn.snowflake.rose.ui.skeet.TTFFontRenderer;
-import cn.snowflake.rose.utils.client.ChatUtil;
 import cn.snowflake.rose.utils.antianticheat.CatAntiCheatHelper;
 import cn.snowflake.rose.utils.antianticheat.HXAntiCheatHelper;
-import cn.snowflake.rose.utils.render.UnicodeFontRenderer;
 import cn.snowflake.rose.utils.antianticheat.ScreenhostHelper;
 import cn.snowflake.rose.utils.auth.AntiReflex;
 import cn.snowflake.rose.utils.auth.HWIDUtils;
 import cn.snowflake.rose.utils.auth.ShitUtil;
+import cn.snowflake.rose.utils.client.ChatUtil;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
 import com.google.gson.Gson;
@@ -28,21 +27,30 @@ import cpw.mods.fml.common.ModContainer;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufOutputStream;
+import io.netty.buffer.Unpooled;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.util.MathHelper;
 import org.apache.logging.log4j.LogManager;
 import org.lwjgl.opengl.Display;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
-import java.io.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class Client {
     public static String shitname =null;
@@ -344,61 +352,62 @@ public class Client {
             }
         }
 
-//        if (eventFMLChannels.iMessage.toString().contains("deci.aE.a$ab")){
-//            try {
-//                eventFMLChannels.setCancelled(true);
-//                Constructor<? extends IMessage> constructor = eventFMLChannels.iMessage.getClass().getConstructor(int.class,int.class,ByteBuf.class);
-//                constructor.setAccessible(true);
-//
-//                try {
-//                    //图片数据
-//                    BufferedImage bufferedImage = null;
-//                    ArrayList<Module> close = new ArrayList<>();//关闭的mod
-//
-//
-//                    if (ScreenProtect.mode.isCurrentMode("CloseModule")){
-//                        for (Module m : ModManager.modList){
-//                            if (m.getCategory() == Category.RENDER || m.getClass().equals(Xray.class)){
-//                                m.set(false);
-//                                close.add(m);//添加已经关闭的功能
-//                            }
-//                        }
-//                        bufferedImage = ScreenhostHelper.getDeciScreenhost();//获取没有显示功能的图片
-//                    }
-//
-//                    if (ScreenProtect.mode.isCurrentMode("Custom")){
-//                        if (ScreenhostHelper.bufferedImage != null){
-//                            bufferedImage = ScreenhostHelper.bufferedImage;//从计算机中获取图片
-//                        }else {
-//                            ScreenhostHelper.bufferedImage = ScreenhostHelper.getDeciScreenhost();
-//                            bufferedImage = ScreenhostHelper.bufferedImage;
-//                        }
-//                    }
-//
-//                    final ByteBuf buffer = Unpooled.buffer();
-//                    if (bufferedImage.getData().getDataBuffer().getSize() / 1024 < 5000) {
-//                        ImageIO.write(bufferedImage, "PNG", (OutputStream)new ByteBufOutputStream(buffer));
-//                        for (int ceiling_float_int = MathHelper.ceiling_float_int(buffer.readableBytes() / 32763.0f), i = 0; i < ceiling_float_int; ++i) {
-//                            final int n = i * 32763;
-//                            eventFMLChannels.sendToServer((IMessage) constructor.newInstance(ceiling_float_int,
-//                                    i,
-//                                    buffer.slice(n, Math.min(buffer.readableBytes() - n, 32763)) )
-//                            );
-//                        }
-//                    }
-//
-//                    if (close != null){ //重新打开 关闭掉的功能
-//                        for (Module c : close){
-//                            c.set(true);
-//                        }
-//                        close.clear();
-//                    }
-//                }catch (IOException | InstantiationException | InvocationTargetException ignored) {
-////                    ChatUtil.sendClientMessage(ignored.getMessage());
-//                }
-//            } catch (IllegalAccessException | NoSuchMethodException ignored) {
-//            }
-//        }
+        if (eventFMLChannels.iMessage.toString().contains("deci.aE.a$ab")){
+            try {
+                eventFMLChannels.setCancelled(true);
+                Constructor<? extends IMessage> constructor = eventFMLChannels.iMessage.getClass().getConstructor(int.class,int.class,ByteBuf.class);
+                constructor.setAccessible(true);
+
+                try {
+                    //图片数据
+                    BufferedImage bufferedImage = null;
+                    ArrayList<Module> close = new ArrayList<>();//关闭的mod
+
+
+                    if (ScreenProtect.mode.isCurrentMode("CloseModule")){
+                        for (Module m : ModManager.modList){
+                            if (m.getCategory() == Category.RENDER || m.getClass().equals(Xray.class)){
+                                m.set(false);
+                                close.add(m);//添加已经关闭的功能
+                            }
+                        }
+                        bufferedImage = ScreenhostHelper.getDeciScreenhost();//获取没有显示功能的图片
+                    }
+
+                    if (ScreenProtect.mode.isCurrentMode("Custom")){
+                        if (ScreenhostHelper.bufferedImage != null){
+                            bufferedImage = ScreenhostHelper.bufferedImage;//从计算机中获取图片
+                        }else {
+                            ScreenhostHelper.bufferedImage = ScreenhostHelper.getDeciScreenhost();
+                            bufferedImage = ScreenhostHelper.bufferedImage;
+                        }
+                    }
+
+                    final ByteBuf buffer = Unpooled.buffer();
+                    if (bufferedImage.getData().getDataBuffer().getSize() / 1024 < 5000) {
+                        ImageIO.write(bufferedImage, "PNG", (OutputStream)new ByteBufOutputStream(buffer));
+                        for (int ceiling_float_int = MathHelper.ceiling_float_int(buffer.readableBytes() / 32763.0f), i = 0; i < ceiling_float_int; ++i) {
+                            final int n = i * 32763;
+                            eventFMLChannels.sendToServer((IMessage) constructor.newInstance(
+                                    ceiling_float_int,
+                                    i,
+                                    buffer.slice(n, Math.min(buffer.readableBytes() - n, 32763)) )
+                            );
+                        }
+                    }
+
+                    if (close != null){ //重新打开 关闭掉的功能
+                        for (Module c : close){
+                            c.set(true);
+                        }
+                        close.clear();
+                    }
+                }catch (IOException | InstantiationException | InvocationTargetException ignored) {
+//                    ChatUtil.sendClientMessage(ignored.getMessage());
+                }
+            } catch (IllegalAccessException | NoSuchMethodException ignored) {
+            }
+        }
 
     }
 

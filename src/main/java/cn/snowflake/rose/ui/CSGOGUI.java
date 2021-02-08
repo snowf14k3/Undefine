@@ -1,28 +1,27 @@
 package cn.snowflake.rose.ui;
 
 
-import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import cn.snowflake.rose.Client;
 import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.mod.mods.RENDER.ClickGui;
-import cn.snowflake.rose.utils.*;
+import cn.snowflake.rose.utils.Value;
 import cn.snowflake.rose.utils.client.ChatUtil;
 import cn.snowflake.rose.utils.mcutil.GlStateManager;
 import cn.snowflake.rose.utils.render.*;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ChatAllowedCharacters;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.ScaledResolution;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 /**
  *
  * @author SnowFlake , SuChen
@@ -568,9 +567,9 @@ public class CSGOGUI extends GuiScreen {
         Iterator var3 = Value.list.iterator();
         while(var3.hasNext()) {
             Value value = (Value)var3.next();
-            if(currentMod == null) {
-                return null;
-            }
+//            if(currentMod == null) {
+//                return null;
+//            }
             if (value.getValueName().split("_")[0].equalsIgnoreCase(mods.getName())) {
                 valueList.add(value);
             }

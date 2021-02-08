@@ -25,12 +25,12 @@ public class TransformEntityClientPlayerMP implements Opcodes {
             //replace the shit of old
 
             InsnList preInsn = new InsnList();
-            preInsn.add(new FieldInsnNode(GETSTATIC, "com/darkmagician6/eventapi/types/EventType", "PRE", "Lcom/darkmagician6/eventapi/types/EventType;"));
+            preInsn.add(new FieldInsnNode(GETSTATIC, Type.getInternalName(EventType.class), "PRE", "Lcom/darkmagician6/eventapi/types/EventType;"));
             preInsn.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(TransformEntityClientPlayerMP.class), "onUpdateWalkingPlayerHook","(Lcom/darkmagician6/eventapi/types/EventType;)V", false));
             method.instructions.insert(preInsn);
 
             InsnList postInsn = new InsnList();
-            postInsn.add(new FieldInsnNode(GETSTATIC, "com/darkmagician6/eventapi/types/EventType", "POST", "Lcom/darkmagician6/eventapi/types/EventType;"));
+            postInsn.add(new FieldInsnNode(GETSTATIC, Type.getInternalName(EventType.class), "POST", "Lcom/darkmagician6/eventapi/types/EventType;"));
             postInsn.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(TransformEntityClientPlayerMP.class), "onUpdateWalkingPlayerHook","(Lcom/darkmagician6/eventapi/types/EventType;)V", false));
             method.instructions.insertBefore(ASMUtil.bottom(method), postInsn);
 

@@ -1,31 +1,20 @@
 package cn.snowflake.rose.ui.skeet.ui;
 
-import java.awt.Color;
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import cn.snowflake.rose.Client;
 import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.ui.skeet.SkeetClickGui;
+import cn.snowflake.rose.ui.skeet.components.Button;
+import cn.snowflake.rose.ui.skeet.components.Checkbox;
 import cn.snowflake.rose.ui.skeet.components.*;
-import cn.snowflake.rose.utils.*;
+import cn.snowflake.rose.utils.Value;
 import cn.snowflake.rose.utils.mcutil.GlStateManager;
 import cn.snowflake.rose.utils.render.ColorValue;
 import cn.snowflake.rose.utils.render.Colors;
 import cn.snowflake.rose.utils.render.Opacity;
 import cn.snowflake.rose.utils.render.RenderUtil;
+import com.google.common.collect.Lists;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ResourceLocation;
@@ -33,7 +22,14 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import com.google.common.collect.Lists;
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+import java.util.List;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class SkeetMenu
@@ -214,7 +210,7 @@ extends UI {
         } else {
             Client.f.drawStringWithShadow(Character.toString((char)p0.name.charAt(0)) + Character.toString((char)p0.name.charAt(1)), p0.x + 12.0f + p0.panel.dragX, p0.y + 13.0f + p0.panel.dragY, color);
         }*/
-        Client.fs.drawStringWithShadow(Character.toString((char)p0.name.charAt(0)), p0.x + 12.0f + p0.panel.dragX, p0.y + 13.0f + p0.panel.dragY, color);
+        Client.fs.drawStringWithShadow(Character.toString(p0.name.charAt(0)), p0.x + 12.0f + p0.panel.dragX, p0.y + 13.0f + p0.panel.dragY, color);
         if (p0.enabled) {
             p0.categoryPanel.draw(p2, p3);
         }
@@ -229,20 +225,26 @@ extends UI {
         if (categoryButton.name.equalsIgnoreCase("COMBAT")) {
             biggestY = 34.0f; // 34
             noSets = 0.0f;
-            for (Module module : ModManager.modList) {
+            ArrayList<Module> modslist = ModManager.modList;
+
+            modslist.sort(Comparator.comparingInt(Module::getValueSize).reversed());
+
+            for (int i = 0;i < modslist.size(); i++) {
+                Module module = modslist.get(i);
                 if (module.getCategory() != Category.COMBAT) continue;
                 y = 20.0f;
-                if (module.getName().equals("AutoSword")) {
-                //	yOff -= 30;
-                } 
+                if (module.getName().equalsIgnoreCase("Velocity")
+                ){
+                    yOff -= yOff % 5;
+                }
                 if (!module.openValues) {
-                    categoryPanel.buttons.add((Button)new Button(categoryPanel, module.getName(), xOff + 0.5f, yOff + 10.0f, module));
+                    categoryPanel.buttons.add(new Button(categoryPanel, module.getName(), xOff + 0.5f, yOff + 10.0f, module));
                     float x1 = 0.5f;
                     for (Value val : Value.list) {
                     	if(val.getValueName().split("_")[0].equalsIgnoreCase(module.getName())) {
                         	String sname = val.getValueName().split("_")[1];
                             if (val.isValueBoolean) {
-                            	categoryPanel.checkboxes.add((Checkbox)new Checkbox(categoryPanel, sname, xOff + x1, yOff + y, val));
+                            	categoryPanel.checkboxes.add(new Checkbox(categoryPanel, sname, xOff + x1, yOff + y, val));
                                 if ((x1 += 44.0f) != 88.5f) continue;
                                 x1 = 0.5f;
                                 y += 10.0f;
@@ -258,13 +260,13 @@ extends UI {
                     for (Value val : Value.list) {
                     	if(val.getValueName().split("_")[0].equalsIgnoreCase(module.getName())) {
                         	if (val.isValueDouble) {
-                                sliders.add((Value)val);
+                                sliders.add(val);
                             }
                     	}
                     }
                     sliders.sort(Comparator.comparing(Value::getValueName));
                     for (Value val : sliders) {
-                        categoryPanel.sliders.add((Slider)new Slider(categoryPanel, xOff + x1 + 1.0f, yOff + y + 4.0f, val));
+                        categoryPanel.sliders.add(new Slider(categoryPanel, xOff + x1 + 1.0f, yOff + y + 4.0f, val));
                         tY = 12;
                         if ((x1 += 44.0f) != 88.5f) continue;
                         tY = 0;
@@ -284,7 +286,7 @@ extends UI {
                     for (Value<?> val : Value.list) {
                     	if(val.getValueName().split("_")[0].equalsIgnoreCase(module.getName())) {
                     		if (val.isValueMode) {
-                           		categoryPanel.dropdownBoxes.add((DropdownBox)new DropdownBox(val, xOff + x1, yOff + y + 4.0f, categoryPanel));
+                           		categoryPanel.dropdownBoxes.add(new DropdownBox(val, xOff + x1, yOff + y + 4.0f, categoryPanel));
                                 tY = 17;
                                 if ((x1 += 44.0f) == 88.5f) {
                                     y += 17.0f;
@@ -294,16 +296,17 @@ extends UI {
                     		}
                     	}
                     }
-                    categoryPanel.groupBoxes.add((GroupBox)new GroupBox(module, categoryPanel, xOff, yOff, (y += (float)tY) == 34.0f ? 40.0f : y - 11.0f));
+                    float ySize = (y += (float)tY) == 34.0f ? 40.0f : y - 11.0f;
+                    categoryPanel.groupBoxes.add(new GroupBox(module, categoryPanel, xOff, yOff, ySize));
                     xOff += 95.0f;
                     if (y >= biggestY) {
                         biggestY = y;
                     }
                 } else {
                     if (noSets >= 240.0f) {
-                        categoryPanel.buttons.add((Button)new Button(categoryPanel, module.getName(), 55.0f + categoryButton.panel.x + noSets - 240.0f, 345.0f, module));
+                        categoryPanel.buttons.add(new Button(categoryPanel, module.getName(), 55.0f + categoryButton.panel.x + noSets - 240.0f, 345.0f, module));
                     } else {
-                        categoryPanel.buttons.add((Button)new Button(categoryPanel, module.getName(), 55.0f + categoryButton.panel.x + noSets, 330.0f, module));
+                        categoryPanel.buttons.add(new Button(categoryPanel, module.getName(), 55.0f + categoryButton.panel.x + noSets, 330.0f, module));
                     }
                     noSets += 40.0f;
                 }
@@ -319,13 +322,13 @@ extends UI {
                 if (module.getCategory() != Category.PLAYER) continue;
                 y = 20.0f;
                 if (!module.openValues) {
-                    categoryPanel.buttons.add((Button)new Button(categoryPanel, module.getName(), xOff + 0.5f, yOff + 10.0f, module));
+                    categoryPanel.buttons.add(new Button(categoryPanel, module.getName(), xOff + 0.5f, yOff + 10.0f, module));
                     float x1 = 0.5f;
                     for (Value<?> val : Value.list) {
                     	if(val.getValueName().split("_")[0].equalsIgnoreCase(module.getName())) {
                         	String sname = val.getValueName().split("_")[1];
                         	if (val.isValueBoolean) {
-                        		categoryPanel.checkboxes.add((Checkbox)new Checkbox(categoryPanel, sname, xOff + x1, yOff + y, val));
+                        		categoryPanel.checkboxes.add(new Checkbox(categoryPanel, sname, xOff + x1, yOff + y, val));
                                 if ((x1 += 44.0f) != 88.5f) continue;
                                 x1 = 0.5f;
                                 y += 10.0f;
@@ -347,7 +350,7 @@ extends UI {
                     }
                     sliders.sort(Comparator.comparing(Value::getValueName));
                     for (Value<?> setting : sliders) {
-                        categoryPanel.sliders.add((Slider)new Slider(categoryPanel, xOff + x1 + 1.0f, yOff + y + 4.0f, setting));
+                        categoryPanel.sliders.add(new Slider(categoryPanel, xOff + x1 + 1.0f, yOff + y + 4.0f, setting));
                         tY = 12;
                         if ((x1 += 44.0f) != 88.5f) continue;
                         tY = 0;
@@ -367,7 +370,7 @@ extends UI {
                     for (Value val : Value.list) {
                     	if(val.getValueName().split("_")[0].equalsIgnoreCase(module.getName())) {
                         	if (val.isValueMode) {
-                        		categoryPanel.dropdownBoxes.add((DropdownBox)new DropdownBox(val, xOff + x1, yOff + y + 4.0f, categoryPanel));
+                        		categoryPanel.dropdownBoxes.add(new DropdownBox(val, xOff + x1, yOff + y + 4.0f, categoryPanel));
                                 tY = 17;
                                 if ((x1 += 44.0f) == 88.5f) {
                                     y += 17.0f;
@@ -377,16 +380,16 @@ extends UI {
                         	}
                     	}
                     }
-                    categoryPanel.groupBoxes.add((GroupBox)new GroupBox(module, categoryPanel, xOff, yOff, (y += (float)tY) == 34.0f ? 40.0f : y - 11.0f));
+                    categoryPanel.groupBoxes.add(new GroupBox(module, categoryPanel, xOff, yOff, (y += (float)tY) == 34.0f ? 40.0f : y - 11.0f));
                     xOff += 95.0f;
                     if (y >= biggestY) {
                         biggestY = y;
                     }
                 } else {
                     if (noSets >= 240.0f) {
-                        categoryPanel.buttons.add((Button)new Button(categoryPanel, module.getName(), 55.0f + categoryButton.panel.x + noSets - 240.0f, 345.0f, module));
+                        categoryPanel.buttons.add(new Button(categoryPanel, module.getName(), 55.0f + categoryButton.panel.x + noSets - 240.0f, 345.0f, module));
                     } else {
-                        categoryPanel.buttons.add((Button)new Button(categoryPanel, module.getName(), 55.0f + categoryButton.panel.x + noSets, 330.0f, module));
+                        categoryPanel.buttons.add(new Button(categoryPanel, module.getName(), 55.0f + categoryButton.panel.x + noSets, 330.0f, module));
                     }
                     noSets += 40.0f;
                 }
@@ -402,13 +405,13 @@ extends UI {
                 if (module.getCategory() != Category.MOVEMENT) continue;
                 y = 20.0f;
                 if (!module.openValues) {
-                    categoryPanel.buttons.add((Button)new Button(categoryPanel, module.getName(), xOff + 0.5f, yOff + 10.0f, module));
+                    categoryPanel.buttons.add(new Button(categoryPanel, module.getName(), xOff + 0.5f, yOff + 10.0f, module));
                     float x1 = 0.5f;
                     for (Value val : Value.list) {
                     	if(val.getValueName().split("_")[0].equalsIgnoreCase(module.getName())) {
                         	String sname = val.getValueName().split("_")[1];
                         	if (val.isValueBoolean) {
-                        		categoryPanel.checkboxes.add((Checkbox)new Checkbox(categoryPanel, sname, xOff + x1, yOff + y, val));
+                        		categoryPanel.checkboxes.add(new Checkbox(categoryPanel, sname, xOff + x1, yOff + y, val));
                                 if ((x1 += 44.0f) != 88.5f) continue;
                                 x1 = 0.5f;
                                 y += 10.0f;
@@ -430,7 +433,7 @@ extends UI {
                     }
                     sliders.sort(Comparator.comparing(Value::getValueName));
                     for (Value<?> setting : sliders) {
-                        categoryPanel.sliders.add((Slider)new Slider(categoryPanel, xOff + x1 + 1.0f, yOff + y + 4.0f, setting));
+                        categoryPanel.sliders.add(new Slider(categoryPanel, xOff + x1 + 1.0f, yOff + y + 4.0f, setting));
                         tY = 12;
                         if ((x1 += 44.0f) != 88.5f) continue;
                         tY = 0;
@@ -450,7 +453,7 @@ extends UI {
                     for (Value val : Value.list) {
                     	if(val.getValueName().split("_")[0].equalsIgnoreCase(module.getName())) {
                         	if (val.isValueMode) {
-                       		 categoryPanel.dropdownBoxes.add((DropdownBox)new DropdownBox(val, xOff + x1, yOff + y + 4.0f, categoryPanel));
+                       		 categoryPanel.dropdownBoxes.add(new DropdownBox(val, xOff + x1, yOff + y + 4.0f, categoryPanel));
                                 tY = 17;
                                 if ((x1 += 44.0f) == 88.5f) {
                                     y += 17.0f;
@@ -460,16 +463,16 @@ extends UI {
                        	 }
                     	}
                     }
-                    categoryPanel.groupBoxes.add((GroupBox)new GroupBox(module, categoryPanel, xOff, yOff, (y += (float)tY) == 34.0f ? 40.0f : y - 11.0f));
+                    categoryPanel.groupBoxes.add(new GroupBox(module, categoryPanel, xOff, yOff, (y += (float)tY) == 34.0f ? 40.0f : y - 11.0f));
                     xOff += 95.0f;
                     if (y >= biggestY) {
                         biggestY = y;
                     }
                 } else {
                     if (noSets >= 240.0f) {
-                        categoryPanel.buttons.add((Button)new Button(categoryPanel, module.getName(), 55.0f + categoryButton.panel.x + noSets - 240.0f, 345.0f, module));
+                        categoryPanel.buttons.add(new Button(categoryPanel, module.getName(), 55.0f + categoryButton.panel.x + noSets - 240.0f, 345.0f, module));
                     } else {
-                        categoryPanel.buttons.add((Button)new Button(categoryPanel, module.getName(), 55.0f + categoryButton.panel.x + noSets, 330.0f, module));
+                        categoryPanel.buttons.add(new Button(categoryPanel, module.getName(), 55.0f + categoryButton.panel.x + noSets, 330.0f, module));
                     }
                     noSets += 40.0f;
                 }
@@ -485,13 +488,13 @@ extends UI {
                 if (module.getCategory() != Category.RENDER) continue;
                 y = 20.0f;
                 if (!module.openValues) {
-                    categoryPanel.buttons.add((Button)new Button(categoryPanel, module.getName(), xOff + 0.5f, yOff + 10.0f, module));
+                    categoryPanel.buttons.add(new Button(categoryPanel, module.getName(), xOff + 0.5f, yOff + 10.0f, module));
                     float x1 = 0.5f;
                     for (Value val : Value.list) {
                     	if(val.getValueName().split("_")[0].equalsIgnoreCase(module.getName())) {
                         	String sname = val.getValueName().split("_")[1];
                         	if (val.isValueBoolean) {
-                                categoryPanel.checkboxes.add((Checkbox)new Checkbox(categoryPanel, sname, xOff + x1, yOff + y, val));
+                                categoryPanel.checkboxes.add(new Checkbox(categoryPanel, sname, xOff + x1, yOff + y, val));
                                 if ((x1 += 44.0f) != 88.5f) continue;
                                 x1 = 0.5f;
                                 y += 10.0f;
@@ -507,13 +510,13 @@ extends UI {
                     for (Value val : Value.list) {
                     	if(val.getValueName().split("_")[0].equalsIgnoreCase(module.getName())) {
                         	if (val.isValueDouble) {
-                        		sliders.add((Value)val);
+                        		sliders.add(val);
                         	}
                     	}
                     }
                     sliders.sort(Comparator.comparing(Value::getValueName));
                     for (Value setting : sliders) {
-                        categoryPanel.sliders.add((Slider)new Slider(categoryPanel, xOff + x1 + 1.0f, yOff + y + 4.0f, setting));
+                        categoryPanel.sliders.add(new Slider(categoryPanel, xOff + x1 + 1.0f, yOff + y + 4.0f, setting));
                         tY = 12;
                         if ((x1 += 44.0f) != 88.5f) continue;
                         tY = 0;
@@ -533,7 +536,7 @@ extends UI {
                     for (Value val : Value.list) {
                     	if(val.getValueName().split("_")[0].equalsIgnoreCase(module.getName())) {
                         	if (val.isValueMode) {
-                                categoryPanel.dropdownBoxes.add((DropdownBox)new DropdownBox(val, xOff + x1, yOff + y + 4.0f, categoryPanel));
+                                categoryPanel.dropdownBoxes.add(new DropdownBox(val, xOff + x1, yOff + y + 4.0f, categoryPanel));
                                 tY = 17;
                                 if ((x1 += 44.0f) == 88.5f) {
                                     y += 17.0f;
@@ -543,16 +546,16 @@ extends UI {
                         	}
                     	}
                     }
-                    categoryPanel.groupBoxes.add((GroupBox)new GroupBox(module, categoryPanel, xOff, yOff, (y += (float)tY) == 34.0f ? 40.0f : y - 11.0f));
+                    categoryPanel.groupBoxes.add(new GroupBox(module, categoryPanel, xOff, yOff, (y += (float)tY) == 34.0f ? 40.0f : y - 11.0f));
                     xOff += 95.0f;
                     if (y >= biggestY) {
                         biggestY = y;
                     }
                 } else {
                     if (noSets >= 240.0f) {
-                        categoryPanel.buttons.add((Button)new Button(categoryPanel, module.getName(), 55.0f + categoryButton.panel.x + noSets - 240.0f, 345.0f, module));
+                        categoryPanel.buttons.add(new Button(categoryPanel, module.getName(), 55.0f + categoryButton.panel.x + noSets - 240.0f, 345.0f, module));
                     } else {
-                        categoryPanel.buttons.add((Button)new Button(categoryPanel, module.getName(), 55.0f + categoryButton.panel.x + noSets, 330.0f, module));
+                        categoryPanel.buttons.add(new Button(categoryPanel, module.getName(), 55.0f + categoryButton.panel.x + noSets, 330.0f, module));
                     }
                     noSets += 40.0f;
                 }
@@ -568,13 +571,13 @@ extends UI {
                 if (module.getCategory() != Category.WORLD) continue;
                 y = 20.0f;
                 if (!module.openValues) {
-                    categoryPanel.buttons.add((Button)new Button(categoryPanel, module.getName(), xOff + 0.5f, yOff + 10.0f, module));
+                    categoryPanel.buttons.add(new Button(categoryPanel, module.getName(), xOff + 0.5f, yOff + 10.0f, module));
                     float x1 = 0.5f;
                     for (Value val : Value.list) {
                     	String sname = val.getValueName().split("_")[1];
                     	if (val.isValueBoolean) {
                     		if(val.getValueName().split("_")[0].equalsIgnoreCase(module.getName())) {
-                                categoryPanel.checkboxes.add((Checkbox)new Checkbox(categoryPanel, sname, xOff + x1, yOff + y, val));
+                                categoryPanel.checkboxes.add(new Checkbox(categoryPanel, sname, xOff + x1, yOff + y, val));
                                 if ((x1 += 44.0f) != 88.5f) continue;
                                 x1 = 0.5f;
                                 y += 10.0f;
@@ -590,13 +593,13 @@ extends UI {
                     for (Value val : Value.list) {
                     	if(val.getValueName().split("_")[0].equalsIgnoreCase(module.getName())) {
                         	if (val.isValueDouble) {
-                                sliders.add((Value)val);
+                                sliders.add(val);
                         	}
                     	}
                     }
                     sliders.sort(Comparator.comparing(Value::getValueName));
                     for (Value setting : sliders) {
-                        categoryPanel.sliders.add((Slider)new Slider(categoryPanel, xOff + x1 + 1.0f, yOff + y + 4.0f, setting));
+                        categoryPanel.sliders.add(new Slider(categoryPanel, xOff + x1 + 1.0f, yOff + y + 4.0f, setting));
                         tY = 12;
                         if ((x1 += 44.0f) != 88.5f) continue;
                         tY = 0;
@@ -616,7 +619,7 @@ extends UI {
                     for (Value val : Value.list) {
                     	if(val.getValueName().split("_")[0].equalsIgnoreCase(module.getName())) {
                         	if (val.isValueMode) {
-                                categoryPanel.dropdownBoxes.add((DropdownBox)new DropdownBox(val, xOff + x1, yOff + y + 4.0f, categoryPanel));
+                                categoryPanel.dropdownBoxes.add(new DropdownBox(val, xOff + x1, yOff + y + 4.0f, categoryPanel));
                                 tY = 17;
                                 if ((x1 += 44.0f) != 88.5f) continue;
                                 y += 17.0f;
@@ -625,16 +628,16 @@ extends UI {
                         	}
                     	}
                     }
-                    categoryPanel.groupBoxes.add((GroupBox)new GroupBox(module, categoryPanel, xOff, yOff, (y += (float)tY) == 34.0f ? 40.0f : y - 11.0f));
+                    categoryPanel.groupBoxes.add(new GroupBox(module, categoryPanel, xOff, yOff, (y += (float)tY) == 34.0f ? 40.0f : y - 11.0f));
                     xOff += 95.0f;
                     if (y >= biggestY) {
                         biggestY = y;
                     }
                 } else {
                     if (noSets >= 240.0f) {
-                        categoryPanel.buttons.add((Button)new Button(categoryPanel, module.getName(), 55.0f + categoryButton.panel.x + noSets - 240.0f, 345.0f, module));
+                        categoryPanel.buttons.add(new Button(categoryPanel, module.getName(), 55.0f + categoryButton.panel.x + noSets - 240.0f, 345.0f, module));
                     } else {
-                        categoryPanel.buttons.add((Button)new Button(categoryPanel, module.getName(), 55.0f + categoryButton.panel.x + noSets, 330.0f, module));
+                        categoryPanel.buttons.add(new Button(categoryPanel, module.getName(), 55.0f + categoryButton.panel.x + noSets, 330.0f, module));
                     }
                     noSets += 40.0f;
                 }
@@ -1428,7 +1431,7 @@ extends UI {
 
     private static /* synthetic */ void lambda$categoryPanelConstructor$10(List sliders, Value setting) {
         if (setting.isValueDouble) {
-            sliders.add((Value)setting);
+            sliders.add(setting);
         }
     }
     

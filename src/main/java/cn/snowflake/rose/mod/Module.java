@@ -1,11 +1,11 @@
 package cn.snowflake.rose.mod;
 
 import cn.snowflake.rose.Client;
-import cn.snowflake.rose.mod.mods.RENDER.Chams;
 import cn.snowflake.rose.utils.Value;
 import com.darkmagician6.eventapi.EventManager;
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.common.MinecraftForge;
+
+import java.util.ArrayList;
 
 public class Module {
     private String name;
@@ -94,6 +94,16 @@ public class Module {
     }
     public void onEnable() {
 
+    }
+
+    public int getValueSize(){
+        ArrayList<Value> size = new ArrayList();
+        for (Value value : Value.list){
+            if (value.getValueName().split("_")[0].equalsIgnoreCase(this.name)){
+                size.add(value);
+            }
+        }
+        return size.size();
     }
 
     public void set(boolean state) {
