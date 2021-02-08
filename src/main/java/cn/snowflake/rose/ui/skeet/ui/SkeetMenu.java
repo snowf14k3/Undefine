@@ -214,7 +214,7 @@ extends UI {
         } else {
             Client.f.drawStringWithShadow(Character.toString((char)p0.name.charAt(0)) + Character.toString((char)p0.name.charAt(1)), p0.x + 12.0f + p0.panel.dragX, p0.y + 13.0f + p0.panel.dragY, color);
         }*/
-        Client.fs.drawStringWithShadow(Character.toString((char)p0.name.charAt(0)) + Character.toString((char)p0.name.charAt(1)), p0.x + 12.0f + p0.panel.dragX, p0.y + 13.0f + p0.panel.dragY, color);
+        Client.fs.drawStringWithShadow(Character.toString((char)p0.name.charAt(0)), p0.x + 12.0f + p0.panel.dragX, p0.y + 13.0f + p0.panel.dragY, color);
         if (p0.enabled) {
             p0.categoryPanel.draw(p2, p3);
         }
@@ -254,7 +254,7 @@ extends UI {
                     }
                     x1 = 0.5f;
                     int tY = 0;
-                    ArrayList<Value> sliders = new ArrayList();
+                    ArrayList<Value> sliders = new ArrayList<Value>();
                     for (Value val : Value.list) {
                     	if(val.getValueName().split("_")[0].equalsIgnoreCase(module.getName())) {
                         	if (val.isValueDouble) {
@@ -712,8 +712,8 @@ extends UI {
 					wtf=-280;
 				}
 			} else if (categoryPanel.categoryButton.name == "MOVEMENT") {
-				if (wtf < -280) {
-					wtf=-280;
+				if (wtf < -180) {
+					wtf=-180;
 				}
 			} else if (categoryPanel.categoryButton.name == "PLAYER") {
 				if (wtf < -100) {
@@ -734,11 +734,11 @@ extends UI {
             RenderUtil.rectangleBordered((double)xOff, (double)(yOff - 6.0f), (double)(xOff + 280.0f), (double)(yOff + 293.0f), (double)0.5, (int)Colors.getColor((int)0, (int)0), (int)Colors.getColor((int)10, (int)((int)this.opacity.getOpacity())));
             RenderUtil.rectangleBordered((double)((double)xOff + 0.5), (double)((double)yOff - 5.5), (double)((double)(xOff + 280.0f) - 0.5), (double)((double)(yOff + 293.0f) - 0.5), (double)0.5, (int)Colors.getColor((int)0, (int)0), (int)Colors.getColor((int)48, (int)((int)this.opacity.getOpacity())));
             RenderUtil.rectangle((double)(xOff + 1.0f), (double)(yOff - 5.0f), (double)(xOff + 279.0f), (double)(yOff + 293.0f - 1.0f), (int)Colors.getColor((int)17, (int)((int)this.opacity.getOpacity())));
-//            String SignTitle = "This shit clickgui is made by Arithmo then we copyd it . yeah We're super Skidder";
-//            Client.fs.drawStringWithShadow(SignTitle, xOff + 5.0f, yOff - 1.0f, Colors.getColor((int)220, (int)((int)this.opacity.getOpacity())));
-//            Client.fs.drawStringWithShadow("This clickgui has no pulley and glScissor , so we make it", xOff + 5.0f, yOff+8.0f, Colors.getColor((int)220, (int)((int)this.opacity.getOpacity())));
-//            Client.fs.drawStringWithShadow("Main: Chinazz | Helper: Mr.Su", xOff + 5.0f, yOff + 17.0f, Colors.getColor((int)220, (int)((int)this.opacity.getOpacity())));
-//            Client.fs.drawStringWithShadow("Youtube@Chinazz | E-mail: 1597369607@qq.com", xOff + 5.0f, yOff + 26.0f, Colors.getColor((int)220, (int)((int)this.opacity.getOpacity())));
+            String SignTitle = "This shit clickgui is made by Arithmo then we copyd it . yeah We're super Skidder";
+            Client.fs.drawStringWithShadow(SignTitle, xOff + 5.0f, yOff - 1.0f, Colors.getColor((int)220, (int)((int)this.opacity.getOpacity())));
+            Client.fs.drawStringWithShadow("This clickgui has no pulley and glScissor , so we make it", xOff + 5.0f, yOff+8.0f, Colors.getColor((int)220, (int)((int)this.opacity.getOpacity())));
+            Client.fs.drawStringWithShadow("Main: Chinazz | Helper: Mr.Su", xOff + 5.0f, yOff + 17.0f, Colors.getColor((int)220, (int)((int)this.opacity.getOpacity())));
+            Client.fs.drawStringWithShadow("Youtube@Chinazz | E-mail: 1597369607@qq.com", xOff + 5.0f, yOff + 26.0f, Colors.getColor((int)220, (int)((int)this.opacity.getOpacity())));
         }
         int scaleFactor = 1;
         boolean flag = Minecraft.getMinecraft().func_152349_b();//isUnicode
@@ -786,7 +786,7 @@ extends UI {
         for (Slider slider : categoryPanel.sliders) {
             slider.draw(x, y);
         }
-        ArrayList<DropdownBox> list = new ArrayList((Collection)categoryPanel.dropdownBoxes);
+        ArrayList<DropdownBox> list = new ArrayList<DropdownBox>((Collection)categoryPanel.dropdownBoxes);
         Collections.reverse((List)list);
         for (DropdownBox db : list) {
             db.draw(x, y);
@@ -847,8 +847,7 @@ extends UI {
             if (hovering) {
                 if (p4 == 0) {
                     if (!p0.isBinding) {
-//                        p0.module.t;
-                        p0.enabled = p0.module.isEnabled();
+                    	p0.module.set(!p0.module.isEnabled());
                     } else {
                         p0.isBinding = false;
                     }
@@ -883,7 +882,7 @@ extends UI {
             GlStateManager.pushMatrix();
             GlStateManager.translate((float)(p0.x + xOff + 29.0f), (float)(p0.y + 1.0f + yOff), (float)0.0f);
             GlStateManager.scale((double)0.5, (double)0.5, (double)0.5);
-            Client.fss.drawStringWithShadow(meme, 0.0f, 0.0f, p0.isBinding ? Colors.getColor((int)216, (int)56, (int)56, (int)((int)this.opacity.getOpacity())) : Colors.getColor((int)75, (int)((int)this.opacity.getOpacity())));
+            Client.fs.drawStringWithShadow(meme, 0.0f, 0.0f, p0.isBinding ? Colors.getColor((int)216, (int)56, (int)56, (int)((int)this.opacity.getOpacity())) : Colors.getColor((int)75, (int)((int)this.opacity.getOpacity())));
             GlStateManager.popMatrix();
             GlStateManager.popMatrix();
             if (p0.enabled) {
@@ -949,7 +948,8 @@ extends UI {
             	RenderUtil.rectangle((double)(p0.x + xOff + 1.0f), (double)(p0.y + yOff + 1.0f), (double)(p0.x + xOff + 5.0f), (double)(p0.y + yOff + 5.0f), (int)Colors.getColor((int)255, (int)40));
             }
             if (hovering) {
-//                mc.fontRenderer.drawStringWithShadow(this.getDescription(p0.setting), panel.categoryButton.panel.x + 2.0f + panel.categoryButton.panel.dragX + 55.0f, panel.categoryButton.panel.y + 9.0f + panel.categoryButton.panel.dragY, Colors.getColor((int)255, (int)((int)this.opacity.getOpacity())));
+            	//Client.fss.drawStringWithShadow("hello! my name is desc!", panel.categoryButton.panel.x + 2.0f + panel.categoryButton.panel.dragX + 55.0f, panel.categoryButton.panel.y + 9.0f + panel.categoryButton.panel.dragY, Colors.getColor((int)255, (int)((int)this.opacity.getOpacity())));
+                //mc.fontRenderer.drawStringWithShadow(this.getDescription(p0.setting), panel.categoryButton.panel.x + 2.0f + panel.categoryButton.panel.dragX + 55.0f, panel.categoryButton.panel.y + 9.0f + panel.categoryButton.panel.dragY, Colors.getColor((int)255, (int)((int)this.opacity.getOpacity())));
             }
             GlStateManager.popMatrix();
         }
@@ -998,22 +998,15 @@ extends UI {
         RenderUtil.rectangle((double)0.0, (double)0.5, (double)0.5, (double)2.0, (int)Colors.getColor((int)151));
         RenderUtil.rectangle((double)0.5, (double)1.0, (double)1.0, (double)1.5, (int)Colors.getColor((int)151));
         GlStateManager.popMatrix();
-        //TODO 获取Mode这里会数组越界，暂时注释掉
-        /*
         String modenow = p0.setting.getModeAt(p0.setting.getCurrentMode());
         Client.fss.drawString(modenow, p0.x + 4.0f + xOff - 1.0f, p0.y + 3.0f + yOff, Colors.getColor((int)151, (int)((int)this.opacity.getOpacity())));
-        */
-
-      //  if (p0.option.getSelected().contains((CharSequence)"180")) {
-      //      this.mc.fontRendererObj.drawString("\u6811\u5c4b", p0.x + 3.0f + xOff + Client.fss.getWidth(p0.option.getSelected()), p0.y + yOff + 0.5f, Colors.getColor((int)151, (int)((int)this.opacity.getOpacity())));
-      //  }
         if (p0.active) {
             int i = p0.buttons.size();
             RenderUtil.rectangle((double)((double)(p0.x + xOff) - 0.3), (double)((double)(p0.y + 10.0f + yOff) - 0.3), (double)((double)(p0.x + xOff + 40.0f) + 0.3), (double)((double)(p0.y + yOff + 9.0f + (float)(9 * i)) + 0.3), (int)Colors.getColor((int)10, (int)((int)this.opacity.getOpacity())));
             RenderUtil.drawGradientSideways((double)(p0.x + xOff), (double)(p0.y + yOff + 10.0f), (double)(p0.x + xOff + 40.0f), (double)(p0.y + yOff + 9.0f + (float)(9 * i)), (int)Colors.getColor((int)31, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)36, (int)((int)this.opacity.getOpacity())));
         }
         if (hovering) {
-            Client.fss.drawStringWithShadow(this.getDescription(p0.setting), panel.categoryButton.panel.x + 2.0f + panel.categoryButton.panel.dragX + 55.0f, panel.categoryButton.panel.y + 9.0f + panel.categoryButton.panel.dragY, -1);
+            //Client.fss.drawStringWithShadow(this.getDescription(p0.setting), panel.categoryButton.panel.x + 2.0f + panel.categoryButton.panel.dragX + 55.0f, panel.categoryButton.panel.y + 9.0f + panel.categoryButton.panel.dragY, -1);
         }
     }
     @Override
@@ -1031,16 +1024,10 @@ extends UI {
     public void dropDownButtonDraw(DropdownButton p0, DropdownBox p1, float x, float y) {
         float xOff = p1.panel.categoryButton.panel.dragX;
         float yOff = p1.panel.categoryButton.panel.dragY;
-        int hoverneed = GLwheel;  //TODO
+        int hoverneed = GLwheel;
         boolean hovering = x >= xOff + p0.x && y >= yOff + p0.y + hoverneed && x <= xOff + p0.x + 40.0f && (double)y <= (double)(yOff + p0.y + hoverneed) + 8.5;
         GlStateManager.pushMatrix();
-      //  boolean active = p1.option.getSelected().equalsIgnoreCase(p0.name);
-        //TODO dsadsa
-//        FontRenderer font = hovering ? Client.test2 : Client.test3;
-//        font.drawStringWithShadow((hovering ? "\u00a7l" : "") + p0.name, p0.x + 3.0f + xOff, p0.y + 2.0f + yOff,  -1);
-       // if (p0.name.contains((CharSequence)"180")) {
-       //     this.mc.fontRendererObj.drawStringWithShadow("\u6811\u5c4b", p0.x + 3.0f + xOff + font.getWidth(p0.name), p0.y + yOff - 1.0f, active ? Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)((int)this.opacity.getOpacity())) : -1);
-      //  }
+        Client.fss.drawStringWithShadow((hovering ? "\u00a7l" : "") + p0.name, p0.x + 3.0f + xOff, p0.y + 2.0f + yOff,  -1);
         GlStateManager.popMatrix();
     }
     @Override
@@ -1058,7 +1045,7 @@ extends UI {
         if (hovering) {
         	RenderUtil.rectangleBordered((double)(slButton.x + xOff + 55.0f), (double)(slButton.y + yOff - 2.0f), (double)(slButton.x + xOff + 40.0f + 55.0f), (double)(slButton.y + 8.0f + yOff + 2.0f), (double)0.6, (int)Colors.getColor((int)0, (int)0), (int)Colors.getColor((int)90, (int)((int)this.opacity.getOpacity())));
         }
-        float xOffset = Client.fs.getStringHeight(slButton.name) / 2.0f;
+        float xOffset = Client.fs.getHeight(slButton.name) / 2.0f;
         Client.fs.drawStringWithShadow(slButton.name, xOff + 25.0f + 55.0f - xOffset, slButton.y + yOff + 1.5f, -1);
     }
     @Override
@@ -1094,7 +1081,7 @@ extends UI {
         float yOff = colorPreview.y + colorPreview.categoryPanel.panel.dragY + 75.0f;
         RenderUtil.rectangleBordered((double)(xOff - 80.0f), (double)(yOff - 6.0f), (double)(xOff + 1.0f), (double)(yOff + 46.0f), (double)0.3, (int)Colors.getColor((int)48, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)10, (int)((int)this.opacity.getOpacity())));
         RenderUtil.rectangle((double)(xOff - 79.0f), (double)(yOff - 5.0f), (double)xOff, (double)(yOff + 45.0f), (int)Colors.getColor((int)17, (int)((int)this.opacity.getOpacity())));
-        RenderUtil.rectangle((double)(xOff - 74.0f), (double)(yOff - 6.0f), (double)(xOff - 73.0f + Client.fs.getStringHeight(colorPreview.colorName) + 1.0f), (double)(yOff - 4.0f), (int)Colors.getColor((int)17, (int)((int)this.opacity.getOpacity())));
+        RenderUtil.rectangle((double)(xOff - 74.0f), (double)(yOff - 6.0f), (double)(xOff - 73.0f + Client.fs.getHeight(colorPreview.colorName) + 1.0f), (double)(yOff - 4.0f), (int)Colors.getColor((int)17, (int)((int)this.opacity.getOpacity())));
         Client.fs.drawStringWithShadow(colorPreview.colorName, xOff - 73.0f, yOff - 8.0f, Colors.getColor((int)255, (int)((int)this.opacity.getOpacity())));
         colorPreview.sliders.forEach(o -> o.draw(x, y));
     }
@@ -1323,8 +1310,8 @@ extends UI {
         //    if (a.equalsIgnoreCase("Mxaxaps")) {
          //       xd = "Maxaps";
         //    }
-            float strWidth = Client.fs.getStringHeight(valu2e);
-            Client.fss.drawBoldString(valu2e, slider.x + xOff + 38.0f - strWidth, slider.y - 6.0f + yOff, Colors.getColor((int)220, (int)((int)this.opacity.getOpacity())));
+            float strWidth = Client.fs.getHeight(valu2e);
+            Client.fss.drawBorderedString(valu2e, slider.x + xOff + 38.0f - strWidth, slider.y - 6.0f + yOff, Colors.getColor((int)220, (int)((int)this.opacity.getOpacity())));
             GlStateManager.scale((float)1.0f, (float)1.0f, (float)1.0f);
             GlStateManager.popMatrix();
             Client.fss.drawStringWithShadow(xd, slider.x + xOff, slider.y - 6.0f + yOff, Colors.getColor((int)220, (int)((int)this.opacity.getOpacity())));
@@ -1430,7 +1417,7 @@ extends UI {
        /* if (setting.getDesc() != null && !setting.getDesc().equalsIgnoreCase("")) {
             return setting.getDesc();
         }*/
-        return "ERROR: No Description Found.";
+        return "";
     }
 
     private static /* synthetic */ void lambda$multiDropDownDraw$13(List enabled, Value set) {

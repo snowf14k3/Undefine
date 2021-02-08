@@ -4,6 +4,7 @@ import cn.snowflake.rose.Client;
 import cn.snowflake.rose.events.impl.EventTick;
 import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Module;
+import cn.snowflake.rose.ui.skeet.TTFFontRenderer;
 import cn.snowflake.rose.utils.client.ChatUtil;
 import com.darkmagician6.eventapi.EventManager;
 import net.minecraft.client.Minecraft;
@@ -15,6 +16,7 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodInsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
+import java.awt.Font;
 import java.util.Iterator;
 
 public class TransformMinecraft {
@@ -59,8 +61,8 @@ public class TransformMinecraft {
             }
         }
         if (!Client.instance.font){
-            Client.fs = Client.instance.fontManager.simpleton11;
-            Client.fss = Client.instance.fontManager.simpleton10;
+            Client.fs = new TTFFontRenderer(new Font("Tahoma Bold", 0, 11), true);
+            Client.fss = new TTFFontRenderer(new Font("Tahoma", 0, 10), false);
             Client.instance.font = true;
         }
     }

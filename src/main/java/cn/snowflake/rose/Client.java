@@ -11,6 +11,7 @@ import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.mod.mods.FORGE.ScreenProtect;
 import cn.snowflake.rose.mod.mods.WORLD.Xray;
 import cn.snowflake.rose.ui.skeet.SkeetClickGui;
+import cn.snowflake.rose.ui.skeet.TTFFontRenderer;
 import cn.snowflake.rose.utils.client.ChatUtil;
 import cn.snowflake.rose.utils.antianticheat.CatAntiCheatHelper;
 import cn.snowflake.rose.utils.antianticheat.HXAntiCheatHelper;
@@ -49,8 +50,8 @@ public class Client {
     public static String version = "1.0";
     public static Client instance;
     public static boolean init = false;
-    public static UnicodeFontRenderer fs;
-    public static UnicodeFontRenderer fss;
+    public static TTFFontRenderer fs;
+    public static TTFFontRenderer fss;
     private static boolean loaded =false;
     public static boolean canCancle =false;
     public boolean font = false;
@@ -59,7 +60,7 @@ public class Client {
     public CommandManager commandMgr;
     public FontManager fontManager;
     public static String username = null;
-
+    private static SkeetClickGui clickGui;
 
     public Client(){
         EventManager.register(this);
@@ -121,7 +122,7 @@ public class Client {
                         Xray.block.add(block);
                     }
                 }
-
+                clickGui = new SkeetClickGui();
                 loaded = true;
 
                 for (ModContainer modContainer : Loader.instance().getModList())  {
@@ -160,7 +161,7 @@ public class Client {
     public static boolean DEBUG = false;
 
     public static SkeetClickGui getSkeetClickGui() {
-        return new SkeetClickGui();
+        return clickGui;
     }
 
     @EventTarget

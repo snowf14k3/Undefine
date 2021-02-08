@@ -19,7 +19,7 @@ public class ClickGui extends Module {
         super("ClickGui","Click Gui", Category.RENDER);
         this.setKey(Keyboard.KEY_RSHIFT);
         this.mode.mode.add("CSGO");
-//		this.mode.mode.add("Skeet");
+		this.mode.mode.add("Skeet");
 
     }
     @Override
@@ -30,9 +30,9 @@ public class ClickGui extends Module {
             }
             Minecraft.getMinecraft().displayGuiScreen(clickgui);
         }
-//        if(this.mode.isCurrentMode("Skeet")) {
-//            Minecraft.getMinecraft().displayGuiScreen(Client.getSkeetClickGui());
-//        }
+        if(this.mode.isCurrentMode("Skeet")) {
+            Minecraft.getMinecraft().displayGuiScreen(Client.getSkeetClickGui());
+        }
         set(false);
     }
 
