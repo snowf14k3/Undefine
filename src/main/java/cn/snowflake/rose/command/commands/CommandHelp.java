@@ -2,7 +2,7 @@ package cn.snowflake.rose.command.commands;
 
 import cn.snowflake.rose.command.Command;
 import cn.snowflake.rose.management.CommandManager;
-import cn.snowflake.rose.utils.ChatUtil;
+import cn.snowflake.rose.utils.client.ChatUtil;
 
 import java.util.Iterator;
 

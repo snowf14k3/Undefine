@@ -1,17 +1,14 @@
 package cn.snowflake.rose.mod.mods.PLAYER;
 
-import cn.snowflake.rose.asm.ClassTransformer;
 import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.BlockPos;
 import cn.snowflake.rose.utils.Value;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.injection.ClientLoader;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemSword;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
-import net.minecraft.util.EnumFacing;
 
 import java.lang.reflect.InvocationTargetException;
 

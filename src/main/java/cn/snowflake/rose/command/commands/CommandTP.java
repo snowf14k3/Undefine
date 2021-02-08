@@ -3,14 +3,10 @@ package cn.snowflake.rose.command.commands;
 import cn.snowflake.rose.command.Command;
 import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.mods.MOVEMENT.Teleport;
-import cn.snowflake.rose.utils.ChatUtil;
+import cn.snowflake.rose.utils.client.ChatUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ChatComponentText;
-
-import java.util.regex.Pattern;
 
 public class CommandTP extends Command {
     public CommandTP(String[] command) {

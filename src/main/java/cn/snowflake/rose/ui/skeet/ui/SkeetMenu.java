@@ -21,6 +21,11 @@ import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.ui.skeet.SkeetClickGui;
 import cn.snowflake.rose.ui.skeet.components.*;
 import cn.snowflake.rose.utils.*;
+import cn.snowflake.rose.utils.mcutil.GlStateManager;
+import cn.snowflake.rose.utils.render.ColorValue;
+import cn.snowflake.rose.utils.render.Colors;
+import cn.snowflake.rose.utils.render.Opacity;
+import cn.snowflake.rose.utils.render.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ResourceLocation;
@@ -44,7 +49,7 @@ extends UI {
     
     @Override
     public void mainPanelDraw(MainPanel panel, int p0, int p1) {
-        RenderUtil.rectangleBordered((double)((double)(panel.x + panel.dragX) - 0.3), (double)((double)(panel.y + panel.dragY) - 0.3), (double)((double)(panel.x + 340.0f + panel.dragX) + 0.5), (double)((double)(panel.y + 310.0f + panel.dragY) + 0.3), (double)0.5, (int)Colors.getColor((int)0, (int)0), (int)Colors.getColor((int)10, (int)((int)this.opacity.getOpacity())));
+        RenderUtil.rectangleBordered((double)((double)(panel.x + panel.dragX) - 0.3), (double)((double)(panel.y + panel.dragY) - 0.3), (double)((double)(panel.x + 340.0f + panel.dragX) + 0.5), (double)((double)(panel.y + 310.0f + panel.dragY) + 0.3), (double)0.5, (int) Colors.getColor((int)0, (int)0), (int)Colors.getColor((int)10, (int)((int)this.opacity.getOpacity())));
         RenderUtil.rectangleBordered((double)(panel.x + panel.dragX), (double)(panel.y + panel.dragY), (double)(panel.x + 340.0f + panel.dragX), (double)(panel.y + 310.0f + panel.dragY), (double)0.5, (int)Colors.getColor((int)0, (int)0), (int)Colors.getColor((int)60, (int)((int)this.opacity.getOpacity())));
         RenderUtil.rectangleBordered((double)(panel.x + panel.dragX + 2.0f), (double)(panel.y + panel.dragY + 2.0f), (double)(panel.x + 340.0f + panel.dragX - 2.0f), (double)(panel.y + 310.0f + panel.dragY - 2.0f), (double)0.5, (int)Colors.getColor((int)0, (int)0), (int)Colors.getColor((int)60, (int)((int)this.opacity.getOpacity())));
         RenderUtil.rectangleBordered((double)((double)(panel.x + panel.dragX) + 0.6), (double)((double)(panel.y + panel.dragY) + 0.6), (double)((double)(panel.x + 340.0f + panel.dragX) - 0.5), (double)((double)(panel.y + 310.0f + panel.dragY) - 0.6), (double)1.3, (int)Colors.getColor((int)0, (int)0), (int)Colors.getColor((int)40, (int)((int)this.opacity.getOpacity())));

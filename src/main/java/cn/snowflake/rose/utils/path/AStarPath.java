@@ -2,7 +2,7 @@ package cn.snowflake.rose.utils.path;
 
 
 
-import cn.snowflake.rose.utils.BlockPos;
+import cn.snowflake.rose.utils.mcutil.BlockPos;
 
 import java.util.ArrayList;
 import java.util.Iterator;

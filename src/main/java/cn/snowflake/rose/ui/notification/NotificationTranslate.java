@@ -1,6 +1,6 @@
 package cn.snowflake.rose.ui.notification;
 
-import cn.snowflake.rose.utils.AnimationUtil;
+import cn.snowflake.rose.utils.render.AnimationUtil;
 
 public class NotificationTranslate {
     private double x;

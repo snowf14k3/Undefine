@@ -3,17 +3,10 @@ package cn.snowflake.rose.mod.mods.MOVEMENT;
 import cn.snowflake.rose.events.impl.EventMotion;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.PlayerUtil;
-import cn.snowflake.rose.utils.TimeHelper;
+import cn.snowflake.rose.utils.client.PlayerUtil;
+import cn.snowflake.rose.utils.time.TimeHelper;
 import cn.snowflake.rose.utils.Value;
 import com.darkmagician6.eventapi.EventTarget;
-
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.network.play.client.C03PacketPlayer;
-import net.minecraft.util.AxisAlignedBB;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 public class Fly extends Module {
     public Value<Double> boost = new Value<Double>("Fly_MoitonBoost", 4.5, 1.0, 7.0, 0.1);

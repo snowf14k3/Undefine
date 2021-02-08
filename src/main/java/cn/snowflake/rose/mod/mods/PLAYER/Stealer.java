@@ -3,7 +3,7 @@ package cn.snowflake.rose.mod.mods.PLAYER;
 import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.TimeHelper;
+import cn.snowflake.rose.utils.time.TimeHelper;
 import cn.snowflake.rose.utils.Value;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.inventory.Container;

@@ -4,15 +4,17 @@ import cn.snowflake.rose.events.impl.EventRender2D;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.*;
+import cn.snowflake.rose.utils.mcutil.GlStateManager;
+import cn.snowflake.rose.utils.other.JReflectUtility;
+import cn.snowflake.rose.utils.render.Colors;
+import cn.snowflake.rose.utils.render.GLUProjection;
+import cn.snowflake.rose.utils.render.RenderUtil;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.newdawn.slick.util.Log;
 
 import javax.vecmath.Vector3d;
 import javax.vecmath.Vector4f;
@@ -36,7 +38,7 @@ public class ItemESP extends Module {
             if (entity instanceof EntityItem) {
                 EntityItem ent = (EntityItem)entity;
 
-                double posX = ent.lastTickPosX + (ent.posX - ent.lastTickPosX) * (double)JReflectUtility.getRenderPartialTicks();
+                double posX = ent.lastTickPosX + (ent.posX - ent.lastTickPosX) * (double) JReflectUtility.getRenderPartialTicks();
                 double posY = ent.lastTickPosY + (ent.posY - ent.lastTickPosY) * (double)JReflectUtility.getRenderPartialTicks();
                 double posZ = ent.lastTickPosZ + (ent.posZ - ent.lastTickPosZ) * (double)JReflectUtility.getRenderPartialTicks();
 

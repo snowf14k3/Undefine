@@ -1,14 +1,13 @@
 package cn.snowflake.rose.mod.mods.MOVEMENT;
 
-import cn.snowflake.rose.events.impl.EventTick;
 import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.ChatUtil;
-import cn.snowflake.rose.utils.TPUtil;
+import cn.snowflake.rose.utils.client.ChatUtil;
+import cn.snowflake.rose.utils.path.TPUtil;
 import cn.snowflake.rose.utils.Value;
 
-import cn.snowflake.rose.utils.Vec3Util;
+import cn.snowflake.rose.utils.math.Vec3Util;
 import com.darkmagician6.eventapi.EventTarget;
 
 import net.minecraft.entity.player.PlayerCapabilities;

@@ -5,9 +5,9 @@ import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.opengl.GL11;
 
 import cn.snowflake.rose.Client;
-import cn.snowflake.rose.utils.AnimationUtil;
-import cn.snowflake.rose.utils.RenderUtil;
-import cn.snowflake.rose.utils.UnicodeFontRenderer;
+import cn.snowflake.rose.utils.render.AnimationUtil;
+import cn.snowflake.rose.utils.render.RenderUtil;
+import cn.snowflake.rose.utils.render.UnicodeFontRenderer;
 
 import java.awt.Color;
 import java.util.List;

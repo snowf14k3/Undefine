@@ -8,7 +8,7 @@ import com.darkmagician6.eventapi.EventTarget;
 import cn.snowflake.rose.events.impl.EventRender2D;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.RenderUtil;
+import cn.snowflake.rose.utils.render.RenderUtil;
 import cn.snowflake.rose.utils.Value;
 import net.minecraft.client.gui.ScaledResolution;
 

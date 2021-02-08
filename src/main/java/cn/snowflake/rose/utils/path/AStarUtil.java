@@ -1,6 +1,6 @@
 package cn.snowflake.rose.utils.path;
 
-import cn.snowflake.rose.utils.BlockPos;
+import cn.snowflake.rose.utils.mcutil.BlockPos;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 

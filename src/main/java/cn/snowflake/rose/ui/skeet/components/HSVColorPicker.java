@@ -2,10 +2,7 @@ package cn.snowflake.rose.ui.skeet.components;
 
 import cn.snowflake.rose.Client;
 import cn.snowflake.rose.ui.skeet.ui.UI;
-import cn.snowflake.rose.utils.ColorValue;
-
-import java.util.ArrayList;
-
+import cn.snowflake.rose.utils.render.ColorValue;
 
 
 public class HSVColorPicker {

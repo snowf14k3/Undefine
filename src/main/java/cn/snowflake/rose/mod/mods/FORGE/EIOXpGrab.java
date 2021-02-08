@@ -5,7 +5,6 @@ import java.util.List;
 
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.JReflectUtility;
 import cn.snowflake.rose.utils.forge.ForgePacketHelper;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.client.multiplayer.ChunkProviderClient;

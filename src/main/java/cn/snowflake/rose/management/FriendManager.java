@@ -3,7 +3,7 @@ package cn.snowflake.rose.management;
 import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import cn.snowflake.rose.friend.Friend;
+import cn.snowflake.rose.utils.Friend;
 import net.minecraft.entity.player.EntityPlayer;
 
 public class FriendManager {

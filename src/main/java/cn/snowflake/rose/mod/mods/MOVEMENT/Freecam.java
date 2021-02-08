@@ -4,13 +4,11 @@ import cn.snowflake.rose.Client;
 import cn.snowflake.rose.events.impl.*;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.JReflectUtility;
-import cn.snowflake.rose.utils.PlayerUtil;
+import cn.snowflake.rose.utils.client.PlayerUtil;
 import com.darkmagician6.eventapi.EventTarget;
 
 import com.darkmagician6.eventapi.types.EventType;
 import com.mojang.authlib.GameProfile;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;

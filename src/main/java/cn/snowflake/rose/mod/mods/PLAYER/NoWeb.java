@@ -1,11 +1,9 @@
 package cn.snowflake.rose.mod.mods.PLAYER;
 
-import cn.snowflake.rose.asm.ClassTransformer;
 import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.JReflectUtility;
-import cn.snowflake.rose.utils.PlayerUtil;
+import cn.snowflake.rose.utils.client.PlayerUtil;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.block.material.Material;
 import net.minecraft.network.play.client.C03PacketPlayer;

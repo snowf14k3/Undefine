@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import cn.snowflake.rose.Client;
 import cn.snowflake.rose.ui.skeet.ui.UI;
-import cn.snowflake.rose.utils.ColorValue;
+import cn.snowflake.rose.utils.render.ColorValue;
 
 public class ColorPreview {
     public String colorName;

@@ -3,8 +3,8 @@ package cn.snowflake.rose.command.commands;
 
 import cn.snowflake.rose.command.Command;
 import cn.snowflake.rose.mod.mods.WORLD.Bot;
-import cn.snowflake.rose.utils.BlockPos;
-import cn.snowflake.rose.utils.ChatUtil;
+import cn.snowflake.rose.utils.mcutil.BlockPos;
+import cn.snowflake.rose.utils.client.ChatUtil;
 import cn.snowflake.rose.utils.path.AStarPath;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;

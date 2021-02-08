@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import cn.snowflake.rose.utils.UnicodeFontRenderer;
+import cn.snowflake.rose.utils.render.UnicodeFontRenderer;
 import net.minecraft.client.Minecraft;
 
 /**

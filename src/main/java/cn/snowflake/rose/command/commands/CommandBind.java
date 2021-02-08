@@ -4,7 +4,7 @@ import cn.snowflake.rose.Client;
 import cn.snowflake.rose.command.Command;
 import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.ChatUtil;
+import cn.snowflake.rose.utils.client.ChatUtil;
 import org.lwjgl.input.Keyboard;
 
 

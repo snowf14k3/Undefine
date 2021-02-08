@@ -3,7 +3,7 @@ package cn.snowflake.rose.mod.mods.COMBAT;
 import cn.snowflake.rose.events.impl.EventPacket;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.TimeHelper;
+import cn.snowflake.rose.utils.time.TimeHelper;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.network.play.client.C02PacketUseEntity;
 import net.minecraft.network.play.client.C0APacketAnimation;

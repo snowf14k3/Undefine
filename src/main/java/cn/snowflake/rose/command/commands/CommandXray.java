@@ -3,7 +3,7 @@ package cn.snowflake.rose.command.commands;
 import cn.snowflake.rose.Client;
 import cn.snowflake.rose.command.Command;
 import cn.snowflake.rose.mod.mods.WORLD.Xray;
-import cn.snowflake.rose.utils.ChatUtil;
+import cn.snowflake.rose.utils.client.ChatUtil;
 import net.minecraft.block.Block;
 
 import java.util.regex.Pattern;

@@ -1,26 +1,14 @@
 package cn.snowflake.rose.mod.mods.WORLD;
 
 
-import java.util.Random;
-
 import cn.snowflake.rose.events.impl.EventMotion;
 import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.ChatUtil;
 import cn.snowflake.rose.utils.Value;
 import com.darkmagician6.eventapi.EventTarget;
 
 
-import io.netty.buffer.Unpooled;
-import net.minecraft.client.network.NetHandlerPlayClient;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagString;
-import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.client.*;
 
 public class ServerCrasher extends Module {

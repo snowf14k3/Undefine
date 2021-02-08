@@ -1,7 +1,7 @@
 package cn.snowflake.rose.command.commands;
 
 import cn.snowflake.rose.command.Command;
-import cn.snowflake.rose.utils.ChatUtil;
+import cn.snowflake.rose.utils.client.ChatUtil;
 
 public class CommandVClip extends Command {
     public CommandVClip(String[] commands) {

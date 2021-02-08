@@ -4,28 +4,23 @@ package cn.snowflake.rose.mod.mods.MOVEMENT;
 import cn.snowflake.rose.events.impl.EventMotion;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.BlockPos;
-import cn.snowflake.rose.utils.EnumFacing;
+import cn.snowflake.rose.utils.mcutil.BlockPos;
+import cn.snowflake.rose.utils.mcutil.EnumFacing;
 import cn.snowflake.rose.utils.Value;
-import cn.snowflake.rose.utils.Vec3Util;
+import cn.snowflake.rose.utils.math.Vec3Util;
 import com.darkmagician6.eventapi.EventTarget;
 import com.darkmagician6.eventapi.types.EventType;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockSnow;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C09PacketHeldItemChange;
-import net.minecraft.network.play.client.C0APacketAnimation;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
 import org.lwjgl.input.Keyboard;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Scaffold
         extends Module {

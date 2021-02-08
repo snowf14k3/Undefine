@@ -10,9 +10,9 @@ import cn.snowflake.rose.Client;
 import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.ChatUtil;
-import cn.snowflake.rose.utils.TimeHelper;
-import cn.snowflake.rose.utils.verify.HWIDUtils;
+import cn.snowflake.rose.utils.client.ChatUtil;
+import cn.snowflake.rose.utils.time.TimeHelper;
+import cn.snowflake.rose.utils.auth.HWIDUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
 

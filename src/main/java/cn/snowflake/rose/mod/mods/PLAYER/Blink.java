@@ -2,21 +2,16 @@ package cn.snowflake.rose.mod.mods.PLAYER;
 
 import cn.snowflake.rose.Client;
 import cn.snowflake.rose.events.impl.EventPacket;
-import cn.snowflake.rose.events.impl.EventRender3D;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.Colors;
-import cn.snowflake.rose.utils.PlayerUtil;
-import cn.snowflake.rose.utils.RenderUtil;
-import cn.snowflake.rose.utils.TimeHelper;
+import cn.snowflake.rose.utils.client.PlayerUtil;
+import cn.snowflake.rose.utils.time.TimeHelper;
 import com.darkmagician6.eventapi.EventTarget;
 import com.darkmagician6.eventapi.types.EventType;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.*;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
-import org.lwjgl.opengl.GL11;
 
 import javax.vecmath.Vector3f;
 import java.util.ArrayList;

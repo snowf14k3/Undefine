@@ -3,7 +3,7 @@ package cn.snowflake.rose.mod.mods.PLAYER;
 import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.JReflectUtility;
+import cn.snowflake.rose.utils.other.JReflectUtility;
 import com.darkmagician6.eventapi.EventTarget;
 
 

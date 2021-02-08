@@ -5,6 +5,8 @@ import cn.snowflake.rose.events.impl.EventRender2D;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.*;
+import cn.snowflake.rose.utils.render.Colors;
+import cn.snowflake.rose.utils.render.RenderUtil;
 import net.minecraft.client.resources.I18n;
 
 import com.darkmagician6.eventapi.EventTarget;

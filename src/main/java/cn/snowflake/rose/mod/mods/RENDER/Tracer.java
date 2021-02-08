@@ -3,12 +3,9 @@ package cn.snowflake.rose.mod.mods.RENDER;
 import cn.snowflake.rose.events.impl.EventRender3D;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.JReflectUtility;
-import cn.snowflake.rose.utils.RenderUtil;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.opengl.GL11;
 

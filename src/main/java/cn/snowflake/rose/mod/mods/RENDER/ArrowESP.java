@@ -2,29 +2,18 @@ package cn.snowflake.rose.mod.mods.RENDER;
 
 
 import java.awt.Color;
-import java.util.List;
-import java.util.Objects;
 
 import cn.snowflake.rose.events.impl.EventRender2D;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.GlStateManager;
-import cn.snowflake.rose.utils.JReflectUtility;
-import cn.snowflake.rose.utils.RenderUtil;
+import cn.snowflake.rose.utils.mcutil.GlStateManager;
+import cn.snowflake.rose.utils.other.JReflectUtility;
+import cn.snowflake.rose.utils.render.RenderUtil;
 import cn.snowflake.rose.utils.Value;
 import com.darkmagician6.eventapi.EventTarget;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiChat;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
-import org.lwjgl.input.Mouse;
 
 
 public class ArrowESP

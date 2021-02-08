@@ -1,17 +1,13 @@
 package cn.snowflake.rose.mod.mods.PLAYER;
 
-import cn.snowflake.rose.events.impl.EventPacket;
 import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.BlockPos;
-import cn.snowflake.rose.utils.JReflectUtility;
+import cn.snowflake.rose.utils.other.JReflectUtility;
 import cn.snowflake.rose.utils.Value;
 import com.darkmagician6.eventapi.EventTarget;
-import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.EnumFacing;
 
 
 public class FastBreak extends Module {

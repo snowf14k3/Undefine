@@ -3,7 +3,7 @@ package cn.snowflake.rose.mod.mods.COMBAT;
 import cn.snowflake.rose.events.impl.EventAura;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.JReflectUtility;
+import cn.snowflake.rose.utils.other.JReflectUtility;
 import cn.snowflake.rose.utils.Value;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.entity.EntityLivingBase;

@@ -1,8 +1,8 @@
 package cn.snowflake.rose.command.commands;
 
 import cn.snowflake.rose.command.Command;
-import cn.snowflake.rose.utils.ChatUtil;
-import cn.snowflake.rose.utils.LoginUtil;
+import cn.snowflake.rose.utils.client.ChatUtil;
+import cn.snowflake.rose.utils.auth.LoginUtil;
 import net.minecraft.client.Minecraft;
 
 public class CommandLogin extends Command {

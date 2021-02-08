@@ -3,7 +3,7 @@ package cn.snowflake.rose.mod.mods.COMBAT;
 import cn.snowflake.rose.events.impl.EventMotion;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.TimeHelper;
+import cn.snowflake.rose.utils.time.TimeHelper;
 import cn.snowflake.rose.utils.Value;
 import com.darkmagician6.eventapi.EventTarget;
 import com.darkmagician6.eventapi.types.EventType;

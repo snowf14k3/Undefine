@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 
 import cn.snowflake.rose.Client;
 import cn.snowflake.rose.management.ModManager;
@@ -13,6 +12,9 @@ import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.mod.mods.RENDER.ClickGui;
 import cn.snowflake.rose.utils.*;
+import cn.snowflake.rose.utils.client.ChatUtil;
+import cn.snowflake.rose.utils.mcutil.GlStateManager;
+import cn.snowflake.rose.utils.render.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatAllowedCharacters;
 import org.lwjgl.input.Keyboard;

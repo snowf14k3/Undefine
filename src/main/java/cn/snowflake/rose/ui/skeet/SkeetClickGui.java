@@ -1,13 +1,12 @@
 package cn.snowflake.rose.ui.skeet;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import cn.snowflake.rose.Client;
 import cn.snowflake.rose.ui.skeet.components.MainPanel;
 import cn.snowflake.rose.ui.skeet.ui.SkeetMenu;
 import cn.snowflake.rose.ui.skeet.ui.UI;
-import cn.snowflake.rose.utils.GlStateManager;
+import cn.snowflake.rose.utils.mcutil.GlStateManager;
 import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Keyboard;
 
