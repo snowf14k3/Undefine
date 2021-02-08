@@ -5,7 +5,9 @@ buildscript {
         maven {
             url = "https://maven.aliyun.com/repository/gradle-plugin"
         }
-
+        maven {
+            url = "https://mvnrepository.com/artifact/net.dv8tion/JDA"
+        }
         maven {
             name = "forge"
             url = "https://files.minecraftforge.net/maven"
@@ -81,6 +83,7 @@ minecraft {
 }
 
 dependencies {
+    shade group: 'net.dv8tion', name: 'JDA', version: '4.2.0_219'
 }
 
 jar {
