@@ -255,11 +255,8 @@ public class CSGOGUI extends GuiScreen {
                     -1);
             CY += 18;
         }
-        Client.instance.fontManager.simpleton20.drawCenteredString(
-                "Season",
-                (startX + 4* 7+1) - 14,
-                startY,
-                -1);
+        Client.instance.fontManager.simpleton20.drawCenteredString("S",(startX + 4* 3) - 14,startY,new Color(ClickGui.r.getValueState().intValue(), ClickGui.g.getValueState().intValue(), ClickGui.b.getValueState().intValue()).getRGB());
+        Client.instance.fontManager.simpleton20.drawCenteredString("eason",(startX + 4* 7+1) - 14,startY,-1);
         //windows title
 //        Client.instance.fontManager.simpleton13.drawCenteredString("ClickGui", startX + 3 * 10, startY - 5, new Color(170, 170, 170).getRGB());
 
@@ -407,13 +404,13 @@ public class CSGOGUI extends GuiScreen {
                                     vY + 2 + scrollY,
                                     valu + 2,
                                     vY + 6 + scrollY,
-                                    new Color(253, 105, 229).getRGB());
+                                    new Color(ClickGui.r.getValueState().intValue(), ClickGui.g.getValueState().intValue(), ClickGui.b.getValueState().intValue()).getRGB());
 
                             RenderUtil.drawRect(x + 145,
                                     vY + 3 + scrollY,
                                     valu + 2,
                                     vY + 5 + scrollY,
-                                    new Color(253, 105, 229).getRGB());
+                                    new Color(ClickGui.r.getValueState().intValue(), ClickGui.g.getValueState().intValue(), ClickGui.b.getValueState().intValue()).getRGB());
 
                             font2.drawBoldString("" + (Double) value.getValueState(), x + 145, vY - 4 + scrollY, new Color(153, 153, 169).getRGB());
 
@@ -435,7 +432,7 @@ public class CSGOGUI extends GuiScreen {
                             String modeName = value.getModeAt(value.getCurrentMode());
                             String NameText = String.valueOf((Object) value.getModeTitle());
                             String modeCountText = String.valueOf((int) (value.getCurrentMode() + 1)) + "/" + value.mode.size();
-                            RenderUtil.drawRect(x + 145, vY + scrollY - 1, x + 151, vY + 7 + scrollY, new Color(253, 105, 229).getRGB());
+                            RenderUtil.drawRect(x + 145, vY + scrollY - 1, x + 151, vY + 7 + scrollY, new Color(ClickGui.r.getValueState().intValue(), ClickGui.g.getValueState().intValue(), ClickGui.b.getValueState().intValue()).getRGB());
 
                             GlStateManager.pushMatrix();
                             GlStateManager.translate((double) (x + 148.0F), (double) vY + scrollY + 4, 0.0D);
@@ -448,7 +445,7 @@ public class CSGOGUI extends GuiScreen {
 
                             RenderUtil.drawRect(x + 152, vY + scrollY - 1, x + 208, vY + 7 + scrollY, Colors.GREY.c);
 
-                            RenderUtil.drawRect(x + 209, vY + scrollY - 1, x + 215, vY + 7 + scrollY, new Color(253, 105, 229).getRGB());
+                            RenderUtil.drawRect(x + 209, vY + scrollY - 1, x + 215, vY + 7 + scrollY, new Color(ClickGui.r.getValueState().intValue(), ClickGui.g.getValueState().intValue(), ClickGui.b.getValueState().intValue()).getRGB());
 
                             GlStateManager.pushMatrix();
                             GlStateManager.translate((double) (x + 212.0F), (double) vY + scrollY + 1.8, 0.0D);
@@ -493,7 +490,7 @@ public class CSGOGUI extends GuiScreen {
                         if (value.isValueBoolean) {
                             RenderUtil.drawRect(x + 210, vY + scrollY - 1, x + 230, vY + 7 + scrollY, new Color(115, 130, 140).getRGB());
                             if ((Boolean) value.getValueState()) {
-                                RenderUtil.drawRect(x + 220, vY + scrollY, x + 229, vY + 6 + scrollY, new Color(253, 105, 229).getRGB());
+                                RenderUtil.drawRect(x + 220, vY + scrollY, x + 229, vY + 6 + scrollY, new Color(ClickGui.r.getValueState().intValue(), ClickGui.g.getValueState().intValue(), ClickGui.b.getValueState().intValue()).getRGB());
                             } else {
                                 RenderUtil.drawRect(x + 211, vY + scrollY, x + 220, vY + 6 + scrollY, new Color(153, 153, 153).getRGB());
                             }
