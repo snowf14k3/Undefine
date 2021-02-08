@@ -257,7 +257,7 @@ public class CSGOGUI extends GuiScreen {
         }
         Client.instance.fontManager.simpleton20.drawCenteredString(
                 "Season",
-                (startX + 4* 7+1) - 10,
+                (startX + 4* 7+1) - 14,
                 startY,
                 -1);
         //windows title
