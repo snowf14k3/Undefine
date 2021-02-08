@@ -1,10 +1,9 @@
-package cn.snowflake.rose.utils;
+package cn.snowflake.rose.utils.antianticheat;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import org.apache.commons.codec.digest.DigestUtils;
 
-import javax.swing.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;

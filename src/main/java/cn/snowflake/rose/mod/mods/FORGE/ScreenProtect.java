@@ -13,7 +13,4 @@ public class ScreenProtect extends Module {
         mode.addValue("Custom");
     }
 
-
-
-
 }

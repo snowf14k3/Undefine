@@ -1,4 +1,4 @@
-package cn.snowflake.rose.utils;
+package cn.snowflake.rose.utils.antianticheat;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.shader.*;
@@ -31,6 +31,7 @@ public class CatAntiCheatHelper {
         catch (Exception ex) {}
         return out.toByteArray();
     }
+
     public static BufferedImage createScreenshot(int width, int height, final Framebuffer framebufferIn) {
         IntBuffer pixelBuffer = (IntBuffer)ReflectionHelper.getPrivateValue((Class)ScreenShotHelper.class, (Object)null, new String[] { "pixelBuffer" });
         final int[] pixelValues = (int[])ReflectionHelper.getPrivateValue((Class)ScreenShotHelper.class, (Object)null, new String[] { "pixelValues" });

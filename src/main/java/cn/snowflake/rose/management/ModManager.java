@@ -5,7 +5,6 @@ import cn.snowflake.rose.mod.mods.COMBAT.*;
 import cn.snowflake.rose.mod.mods.FORGE.EIOXpGrab;
 import cn.snowflake.rose.mod.mods.MOVEMENT.*;
 import cn.snowflake.rose.mod.mods.PLAYER.*;
-import cn.snowflake.rose.mod.mods.MOVEMENT.Teleport;
 import cn.snowflake.rose.mod.mods.PLAYER.Blink;
 import cn.snowflake.rose.mod.mods.RENDER.*;
 import cn.snowflake.rose.mod.mods.WORLD.*;
@@ -20,6 +19,7 @@ public class ModManager {
         //COMBAT
         addMod(new Aura());
         addMod(new Regen());
+        addMod(new NoRecoil());
         addMod(new Criticals());
         addMod(new FastBow());
         addMod(new AntiAim());
@@ -29,7 +29,6 @@ public class ModManager {
         addMod(new AutoFish());
         addMod(new Blink());
         //MOVEMENT
-        addMod(new Teleport());
         addMod(new Sprint());
         addMod(new AirJump());
         addMod(new Fly());
@@ -39,7 +38,7 @@ public class ModManager {
         addMod(new NoFall());
         addMod(new Jesus());
         addMod(new Step());
-        addMod(new TP());
+        addMod(new Teleport());
         //RENDER
         addMod(new HUD());
         addMod(new NoHurtcam());

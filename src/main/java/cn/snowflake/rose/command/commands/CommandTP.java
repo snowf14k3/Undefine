@@ -2,7 +2,7 @@ package cn.snowflake.rose.command.commands;
 
 import cn.snowflake.rose.command.Command;
 import cn.snowflake.rose.management.ModManager;
-import cn.snowflake.rose.mod.mods.MOVEMENT.TP;
+import cn.snowflake.rose.mod.mods.MOVEMENT.Teleport;
 import cn.snowflake.rose.utils.ChatUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -38,9 +38,9 @@ public class CommandTP extends Command {
                 String sx = xyz[0];
                 String sy = xyz[1];
                 String sz = xyz[2];
-                TP.x = Integer.parseInt(sx);
-                TP.y = Integer.parseInt(sy);
-                TP.z = Integer.parseInt(sz);
+                Teleport.x = Integer.parseInt(sx);
+                Teleport.y = Integer.parseInt(sy);
+                Teleport.z = Integer.parseInt(sz);
                 ModManager.getModByName("TP").set(true);
             } else {
                 String playername = args[1];
@@ -52,9 +52,9 @@ public class CommandTP extends Command {
                                 ChatUtil.sendClientMessage(" can not tp youself");
                                 return;
                             }
-                            TP.x = (int) entity1.posX;
-                            TP.y = (int) entity1.posY;
-                            TP.z = (int) entity1.posZ;
+                            Teleport.x = (int) entity1.posX;
+                            Teleport.y = (int) entity1.posY;
+                            Teleport.z = (int) entity1.posZ;
                             ModManager.getModByName("TP").set(true);
                         } else {
                             System.out.println(playername + " " + entity1.getCommandSenderName());

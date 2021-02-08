@@ -50,7 +50,6 @@ public class Aimbot extends Module {
     public Value<Boolean> village = new Value<Boolean>("Aimbot_village", false);
     public Value<Boolean> invisible = new Value<Boolean>("Aimbot_Invisible", false);
     public Value<Boolean> silent = new Value<Boolean>("Aimbot_Silent", false);
-    public Value<Boolean> recoil = new Value<Boolean>("Aimbot_NoRecoil", true);
 
     public Value<String> sortingMode = new Value<String>("Aimbot","SortingMode", 0);
 
@@ -221,14 +220,7 @@ public class Aimbot extends Module {
 
         return false;
     }
-    @EventTarget
-    public void ontick(EventTick e){
-        if (mc.thePlayer != null && mc.theWorld != null)
-        if (recoil.getValueState()) {
-            mc.thePlayer.rotationPitch = mc.thePlayer.prevRotationPitch;
-            mc.thePlayer.rotationYaw = mc.thePlayer.prevRotationYaw;
-        }
-    }
+
 
     private boolean canTarget(Entity entity) {
         if(!mc.thePlayer.canEntityBeSeen(entity) && !throughwall.getValueState()) {

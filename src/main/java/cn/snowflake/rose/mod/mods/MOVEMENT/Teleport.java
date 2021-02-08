@@ -1,93 +1,94 @@
 package cn.snowflake.rose.mod.mods.MOVEMENT;
 
+import cn.snowflake.rose.events.impl.EventTick;
 import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.BlockPos;
-import cn.snowflake.rose.utils.MouseInputHandler;
-import cn.snowflake.rose.utils.PlayerUtil;
+import cn.snowflake.rose.utils.ChatUtil;
+import cn.snowflake.rose.utils.TPUtil;
 import cn.snowflake.rose.utils.Value;
+
+import cn.snowflake.rose.utils.Vec3Util;
 import com.darkmagician6.eventapi.EventTarget;
 
-
-import java.util.ArrayList;
-
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.player.PlayerCapabilities;
 import net.minecraft.network.play.client.C03PacketPlayer;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.util.vector.Vector3f;
+import net.minecraft.network.play.client.C0CPacketInput;
+import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
+import net.minecraft.network.play.client.C13PacketPlayerAbilities;
 
-public class Teleport
-        extends Module
-{
-    public static Value<Double> reach = new Value<Double>("Teleport_Reach",20d,10d,100d);
-    private Value<String> mode = new Value("Teleport_Mode", "Mode", 0);
-    private Value<String> useMode = new Value("Teleport_UseMode", "UseMode", 0);
-    private MouseInputHandler handler = new MouseInputHandler(0);
-    private int tick = 0;
+
+public class Teleport extends Module {
+    public static Value modes = new Value("Teleport", "Mode", 0);
+    public static boolean isTPPlayer;
+    public static int x;
+    public static int y;
+    public static int z;
 
     public Teleport(){
         super("Teleport","Teleport", Category.MOVEMENT);
-        this.mode.mode.add("Vanilla");
-        this.useMode.addValue("Right");
+        modes.addValue("God");
     }
-
+    @Override
+    public void onEnable() {
+        //sb disabler
+        PlayerCapabilities playerCapabilities = new PlayerCapabilities();
+        playerCapabilities.isFlying = true;
+        playerCapabilities.allowFlying = true;
+//		playerCapabilities.setFlySpeed((float) MathUtils.randomNumber(0.1, 9.0));
+        mc.getNetHandler().addToSendQueue(new C0FPacketConfirmTransaction(0, (short)(-1), false));
+        mc.getNetHandler().addToSendQueue(new C13PacketPlayerAbilities(playerCapabilities));
+        mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 0.17,mc.thePlayer.posY + 0.17, mc.thePlayer.posZ, true));
+        mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 0.06,mc.thePlayer.posY + 0.06, mc.thePlayer.posZ, true));
+        mc.thePlayer.stepHeight = 0.0f;
+        mc.thePlayer.motionX = 0.0;
+        mc.thePlayer.motionZ = 0.0;
+    }
+    @Override
+    public void onDisable() {
+        mc.thePlayer.stepHeight = 0.625f;
+        mc.thePlayer.motionX = 0.0;
+        mc.thePlayer.motionZ = 0.0;
+        PlayerCapabilities playerCapabilities = new PlayerCapabilities();
+        playerCapabilities.isFlying = false;
+        playerCapabilities.allowFlying = true;
+        mc.getNetHandler().addToSendQueue(new C13PacketPlayerAbilities(playerCapabilities));
+    }
     @EventTarget
     public void onUpdate(EventUpdate event) {
-        if (Mouse.isButtonDown(1) && this.useMode.isCurrentMode("Right")) {
-            double[] startPos = {mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ};
-            BlockPos endPos = new BlockPos(mc.objectMouseOver.blockX,mc.objectMouseOver.blockY,mc.objectMouseOver.blockZ);
-            if (mc.theWorld.getBlock(endPos.getX(),endPos.getY(),endPos.getZ()) != Blocks.air){
-                teleport(startPos, endPos);
+        if (x == 0 && y == 0 && z == 0){
+            ChatUtil.sendClientMessage("pls input position");
+            set(false);
+            return;
+        }
+        mc.getNetHandler().addToSendQueue(new C0CPacketInput(0.0f, 0.0f, true, true));
+        double lastY = mc.thePlayer.posY, downY = 0;
+        for (Vec3Util vec3 : TPUtil.computePath(
+                new Vec3Util(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ),
+                new Vec3Util(Teleport.x, Teleport.y, Teleport.z))) {
+            if (vec3.getY() < lastY) {
+                downY += (lastY - vec3.getY());
             }
-        }
-    }
-
-    public void teleport(final double[] startPos, final BlockPos endPos){
-        double distx = startPos[0] - endPos.getX()+ 0.5;
-        double disty = startPos[1] - endPos.getY();
-        double distz = startPos[2] - endPos.getZ()+ 0.5;
-        double dist = Math.sqrt(mc.thePlayer.getDistanceSq(endPos.getX(),endPos.getY(),endPos.getZ()));
-        double distanceEntreLesPackets = 5;
-        double xtp, ytp, ztp = 0;
-
-        if(dist> distanceEntreLesPackets){
-            double nbPackets = Math.round(dist / distanceEntreLesPackets + 0.49999999999) - 1;
-            xtp = mc.thePlayer.posX;
-            ytp = mc.thePlayer.posY;
-            ztp = mc.thePlayer.posZ;
-            double count = 0;
-            for (int i = 1; i < nbPackets;i++){
-                double xdi = (endPos.getX() - mc.thePlayer.posX)/( nbPackets);
-                xtp += xdi;
-
-                double zdi = (endPos.getZ() - mc.thePlayer.posZ)/( nbPackets);
-                ztp += zdi;
-
-                double ydi = (endPos.getY() - mc.thePlayer.posY)/( nbPackets);
-                ytp += ydi;
-                count ++;
-                C03PacketPlayer.C04PacketPlayerPosition Packet= new C03PacketPlayer.C04PacketPlayerPosition(xtp,-999, ytp, ztp, true);
-
-                mc.thePlayer.sendQueue.addToSendQueue(Packet);
+            if (downY > 2.5) {
+                downY = 0;
+                mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(vec3.getX(),
+                        vec3.getY(), vec3.getY(), vec3.getZ(), true));
+            } else {
+                mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(vec3.getX(),
+                        vec3.getY(), vec3.getY(), vec3.getZ(), false));
             }
-
-            mc.thePlayer.setPosition(endPos.getX() + 0.5, endPos.getY() + 2, endPos.getZ() + 0.5);
-        }else{
-            mc.thePlayer.setPosition(endPos.getX(), endPos.getY(), endPos.getZ());
+            lastY = vec3.getY();
         }
+        //Teleported
+        mc.thePlayer.setPosition(x, y, z);
+        ChatUtil.sendClientMessage("传送到"+x+" "+y+" "+z);
+        x = 0;
+        y = 0;
+        z = 0;
+        set(false);
+
     }
 
 
-    private void teleport(double x, double y, double z) {
-        this.doVanilla(x, y, z);
-    }
-
-    private void doVanilla(double posX, double posY, double posZ) {
-        ArrayList<Vector3f> vecs = PlayerUtil.vanillaTeleportPositions(posX, posY, posZ, 8.0);
-        for (Vector3f vec : vecs) {
-            this.mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(vec.x,mc.thePlayer.boundingBox.minY,vec.y, vec.z, true));
-        }
-    }
 
 }

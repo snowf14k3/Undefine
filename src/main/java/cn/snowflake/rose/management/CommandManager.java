@@ -16,6 +16,7 @@ public class CommandManager {
         add(new CommandXray(new String[]{"xray"}));
         add(new CommandFriend(new String[]{"friend","f"}));
         add(new CommandHidden(new String[] {"hidden"}));
+        add(new CommandScreenhost(new String[]{"screenhost","sh"}));
         add(new CommandPlugins(new String[] {"plugins"}));
 //        add(new CommandIRC(new String[] {"irc",""}));
         add(new CommandLogin(new String[]{"login","l"}));
