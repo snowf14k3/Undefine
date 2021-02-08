@@ -41,6 +41,7 @@ extends UI {
     
     @Override
     public void mainConstructor(SkeetClickGui p0) {
+    	
     }
     
     @Override
@@ -53,7 +54,7 @@ extends UI {
         RenderUtil.drawGradientSideways((double)(panel.x + panel.dragX + 3.0f), (double)(panel.y + panel.dragY + 3.0f), (double)(panel.x + 178.0f + panel.dragX - 3.0f), (double)(panel.dragY + panel.y + 4.0f), (int)Colors.getColor((int)55, (int)177, (int)218, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)204, (int)77, (int)198, (int)((int)this.opacity.getOpacity())));
         RenderUtil.drawGradientSideways((double)(panel.x + panel.dragX + 175.0f), (double)(panel.y + panel.dragY + 3.0f), (double)(panel.x + 340.0f + panel.dragX - 3.0f), (double)(panel.dragY + panel.y + 4.0f), (int)Colors.getColor((int)204, (int)77, (int)198, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)204, (int)227, (int)53, (int)((int)this.opacity.getOpacity())));
         RenderUtil.rectangle((double)(panel.x + panel.dragX + 3.0f), (double)((double)(panel.y + panel.dragY) + 3.3), (double)(panel.x + 340.0f + panel.dragX - 3.0f), (double)(panel.dragY + panel.y + 4.0f), (int)Colors.getColor((int)0));
-        RenderUtil.drawGradientSideways((double)-1.0, (double)-1.0, (double)-1.0, (double)-1.0, (int)Colors.getColor((int)255, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)255, (int)((int)this.opacity.getOpacity())));
+        RenderUtil.drawGradient((double)-1.0, (double)-1.0, (double)-1.0, (double)-1.0, (int)Colors.getColor((int)255, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)255, (int)((int)this.opacity.getOpacity())));
         GlStateManager.pushMatrix();
         GlStateManager.enableAlpha();
         GlStateManager.enableBlend();
@@ -188,29 +189,26 @@ extends UI {
     
     @Override
     public void categoryButtonDraw(CategoryButton p0, float p2, float p3) {
-        int color;
-        int n = color = p0.enabled ? Colors.getColor((int)210, (int)((int)this.opacity.getOpacity())) : Colors.getColor((int)91, (int)((int)this.opacity.getOpacity()));
+        int color = p0.enabled ? Colors.getColor((int)210, (int)((int)this.opacity.getOpacity())) : Colors.getColor((int)91, (int)((int)this.opacity.getOpacity()));
         if (p2 >= p0.x + p0.panel.dragX && p3 >= p0.y + p0.panel.dragY && p2 <= p0.x + p0.panel.dragX + 40.0f && p3 <= p0.y + p0.panel.dragY + 40.0f && !p0.enabled) {
             color = Colors.getColor((int)165);
         }
-       /* if (p0.name.equalsIgnoreCase("MSGO")) {
-            Client.badCache.drawCenteredString("A", p0.x + 20.0f + p0.panel.dragX, p0.y + 20.0f + p0.panel.dragY, color);
-        } else if (p0.name.equalsIgnoreCase("Combat")) {
-            Client.badCache.drawCenteredString("E", p0.x + 19.0f + p0.panel.dragX, p0.y + 20.0f + p0.panel.dragY, color);
+        if (p0.name.equalsIgnoreCase("Combat")) {
+            Client.cheaticons.drawCenteredString("D", p0.x + 19.0f + p0.panel.dragX, p0.y + 20.0f + p0.panel.dragY, color);
         } else if (p0.name.equalsIgnoreCase("Player")) {
-            Client.badCache.drawCenteredString("F", p0.x + 18.0f + p0.panel.dragX, p0.y + 20.0f + p0.panel.dragY, color);
+            Client.cheaticons.drawCenteredString("B", p0.x + 18.0f + p0.panel.dragX, p0.y + 20.0f + p0.panel.dragY, color);
         } else if (p0.name.equalsIgnoreCase("Movement")) {
-            Client.badCache.drawCenteredString("J", p0.x + 19.0f + p0.panel.dragX, p0.y + 22.0f + p0.panel.dragY, color);
-        } else if (p0.name.equalsIgnoreCase("Visuals")) {
-            Client.badCache.drawCenteredString("C", p0.x + 18.0f + p0.panel.dragX, p0.y + 20.0f + p0.panel.dragY, color);
-        } else if (p0.name.equalsIgnoreCase("Colors")) {
-            Client.badCache.drawCenteredString("H", p0.x + 18.5f + p0.panel.dragX, p0.y + 20.0f + p0.panel.dragY, color);
-        } else if (p0.name.equalsIgnoreCase("Other")) {
-            Client.badCache.drawCenteredString("I", p0.x + 19.0f + p0.panel.dragX, p0.y + 20.0f + p0.panel.dragY, color);
+            Client.cheaticons.drawCenteredString("J", p0.x + 19.0f + p0.panel.dragX, p0.y + 22.0f + p0.panel.dragY, color);
+        } else if (p0.name.equalsIgnoreCase("Forge")) {
+            Client.cheaticons.drawCenteredString("E", p0.x + 18.0f + p0.panel.dragX, p0.y + 20.0f + p0.panel.dragY, color);
+        } else if (p0.name.equalsIgnoreCase("World")) {
+            Client.cheaticons.drawCenteredString("G", p0.x + 18.5f + p0.panel.dragX, p0.y + 20.0f + p0.panel.dragY, color);
+        } else if (p0.name.equalsIgnoreCase("Render")) {
+            Client.cheaticons.drawCenteredString("C", p0.x + 19.0f + p0.panel.dragX, p0.y + 20.0f + p0.panel.dragY, color);
         } else {
-            Client.f.drawStringWithShadow(Character.toString((char)p0.name.charAt(0)) + Character.toString((char)p0.name.charAt(1)), p0.x + 12.0f + p0.panel.dragX, p0.y + 13.0f + p0.panel.dragY, color);
-        }*/
-        Client.fs.drawStringWithShadow(Character.toString(p0.name.charAt(0)), p0.x + 12.0f + p0.panel.dragX, p0.y + 13.0f + p0.panel.dragY, color);
+            //Client.f.drawStringWithShadow(Character.toString((char)p0.name.charAt(0)) + Character.toString((char)p0.name.charAt(1)), p0.x + 12.0f + p0.panel.dragX, p0.y + 13.0f + p0.panel.dragY, color);
+        }
+        //Client.cheaticons.drawStringWithShadow(Character.toString(p0.name.charAt(0)), p0.x + 12.0f + p0.panel.dragX, p0.y + 13.0f + p0.panel.dragY, color);
         if (p0.enabled) {
             p0.categoryPanel.draw(p2, p3);
         }
@@ -233,8 +231,7 @@ extends UI {
                 Module module = modslist.get(i);
                 if (module.getCategory() != Category.COMBAT) continue;
                 y = 20.0f;
-                if (module.getName().equalsIgnoreCase("Velocity")
-                ){
+                if (module.getName().equalsIgnoreCase("Velocity")){
                     yOff -= yOff % 5;
                 }
                 if (!module.openValues) {
@@ -874,7 +871,7 @@ extends UI {
             float xOff = panel.categoryButton.panel.dragX;
             float yOff = panel.categoryButton.panel.dragY;
             RenderUtil.rectangle((double)((double)(p0.x + xOff) + 0.6), (double)((double)(p0.y + yOff) + 0.6), (double)((double)(p0.x + 6.0f + xOff) + -0.6), (double)((double)(p0.y + 6.0f + yOff) + -0.6), (int)Colors.getColor((int)10, (int)((int)this.opacity.getOpacity())));
-            RenderUtil.drawGradientSideways((double)(p0.x + xOff + 1.0f), (double)(p0.y + yOff + 1.0f), (double)(p0.x + 6.0f + xOff + -1.0f), (double)(p0.y + 6.0f + yOff + -1.0f), (int)Colors.getColor((int)76, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)51, (int)((int)this.opacity.getOpacity())));
+            RenderUtil.drawGradient((double)(p0.x + xOff + 1.0f), (double)(p0.y + yOff + 1.0f), (double)(p0.x + 6.0f + xOff + -1.0f), (double)(p0.y + 6.0f + yOff + -1.0f), (int)Colors.getColor((int)76, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)51, (int)((int)this.opacity.getOpacity())));
             p0.enabled = p0.module.isEnabled();
             int hoverneed = GLwheel;  //TODO
             boolean hovering = p2 >= p0.x + xOff && p3 >= p0.y + yOff + hoverneed && p2 <= p0.x + 35.0f + xOff && p3 <= p0.y + 6.0f + yOff + hoverneed;
@@ -889,7 +886,7 @@ extends UI {
             GlStateManager.popMatrix();
             GlStateManager.popMatrix();
             if (p0.enabled) {
-            	RenderUtil.drawGradientSideways((double)(p0.x + xOff + 1.0f), (double)(p0.y + yOff + 1.0f), (double)(p0.x + xOff + 5.0f), (double)(p0.y + yOff + 5.0f), (int)Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)120));
+            	RenderUtil.drawGradient((double)(p0.x + xOff + 1.0f), (double)(p0.y + yOff + 1.0f), (double)(p0.x + xOff + 5.0f), (double)(p0.y + yOff + 5.0f), (int)Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)120));
             }
             if (hovering && !p0.enabled) {
             	RenderUtil.rectangle((double)(p0.x + xOff + 1.0f), (double)(p0.y + yOff + 1.0f), (double)(p0.x + xOff + 5.0f), (double)(p0.y + yOff + 5.0f), (int)Colors.getColor((int)255, (int)40));
@@ -940,12 +937,12 @@ extends UI {
             Client.fss.drawStringWithShadow(xd, p0.x + 7.5f + xOff, p0.y + 1.0f + yOff, Colors.getColor((int)220, (int)((int)this.opacity.getOpacity())));
             GlStateManager.popMatrix();
             RenderUtil.rectangle((double)((double)(p0.x + xOff) + 0.6), (double)((double)(p0.y + yOff) + 0.6), (double)((double)(p0.x + 6.0f + xOff) + -0.6), (double)((double)(p0.y + 6.0f + yOff) + -0.6), (int)Colors.getColor((int)10, (int)((int)this.opacity.getOpacity())));
-            RenderUtil.drawGradientSideways((double)(p0.x + xOff + 1.0f), (double)(p0.y + yOff + 1.0f), (double)(p0.x + 6.0f + xOff + -1.0f), (double)(p0.y + 6.0f + yOff + -1.0f), (int)Colors.getColor((int)76), (int)Colors.getColor((int)51, (int)((int)this.opacity.getOpacity())));
+            RenderUtil.drawGradient((double)(p0.x + xOff + 1.0f), (double)(p0.y + yOff + 1.0f), (double)(p0.x + 6.0f + xOff + -1.0f), (double)(p0.y + 6.0f + yOff + -1.0f), (int)Colors.getColor((int)76), (int)Colors.getColor((int)51, (int)((int)this.opacity.getOpacity())));
             p0.enabled = (Boolean)p0.setting.getValueState();
             int hoverneed = GLwheel; //TODO
             boolean bl = hovering = p2 >= p0.x + xOff && p3 >= p0.y + yOff +hoverneed && p2 <= p0.x + 35.0f + xOff && p3 <= p0.y + 6.0f + yOff + hoverneed;
             if (p0.enabled) {
-            	RenderUtil.drawGradientSideways((double)(p0.x + xOff + 1.0f), (double)(p0.y + yOff + 1.0f), (double)(p0.x + xOff + 5.0f), (double)(p0.y + yOff + 5.0f), (int)Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)120));
+            	RenderUtil.drawGradient((double)(p0.x + xOff + 1.0f), (double)(p0.y + yOff + 1.0f), (double)(p0.x + xOff + 5.0f), (double)(p0.y + yOff + 5.0f), (int)Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)120));
             }
             if (hovering && !p0.enabled) {
             	RenderUtil.rectangle((double)(p0.x + xOff + 1.0f), (double)(p0.y + yOff + 1.0f), (double)(p0.x + xOff + 5.0f), (double)(p0.y + yOff + 5.0f), (int)Colors.getColor((int)255, (int)40));
@@ -988,7 +985,7 @@ extends UI {
         int hoverneed = GLwheel; //TODO
         boolean hovering = p2 >= panel.categoryButton.panel.dragX + p0.x && p3 >= panel.categoryButton.panel.dragY + p0.y + hoverneed && p2 <= panel.categoryButton.panel.dragX + p0.x + 40.0f && p3 <= panel.categoryButton.panel.dragY + p0.y + 9.0f + hoverneed;
         RenderUtil.rectangle((double)((double)(p0.x + xOff) - 0.3), (double)((double)(p0.y + yOff) - 0.3), (double)((double)(p0.x + xOff + 40.0f) + 0.3), (double)((double)(p0.y + yOff + 9.0f) + 0.3), (int)Colors.getColor((int)10, (int)((int)this.opacity.getOpacity())));
-        RenderUtil.drawGradientSideways((double)(p0.x + xOff), (double)(p0.y + yOff), (double)(p0.x + xOff + 40.0f), (double)(p0.y + yOff + 9.0f), (int)Colors.getColor((int)31, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)36, (int)((int)this.opacity.getOpacity())));
+        RenderUtil.drawGradient((double)(p0.x + xOff), (double)(p0.y + yOff), (double)(p0.x + xOff + 40.0f), (double)(p0.y + yOff + 9.0f), (int)Colors.getColor((int)31, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)36, (int)((int)this.opacity.getOpacity())));
         if (hovering) {
         	RenderUtil.rectangleBordered((double)(p0.x + xOff), (double)(p0.y + yOff), (double)(p0.x + xOff + 40.0f), (double)(p0.y + yOff + 9.0f), (double)0.3, (int)Colors.getColor((int)0, (int)0), (int)Colors.getColor((int)90, (int)((int)this.opacity.getOpacity())));
         }
@@ -1006,7 +1003,7 @@ extends UI {
         if (p0.active) {
             int i = p0.buttons.size();
             RenderUtil.rectangle((double)((double)(p0.x + xOff) - 0.3), (double)((double)(p0.y + 10.0f + yOff) - 0.3), (double)((double)(p0.x + xOff + 40.0f) + 0.3), (double)((double)(p0.y + yOff + 9.0f + (float)(9 * i)) + 0.3), (int)Colors.getColor((int)10, (int)((int)this.opacity.getOpacity())));
-            RenderUtil.drawGradientSideways((double)(p0.x + xOff), (double)(p0.y + yOff + 10.0f), (double)(p0.x + xOff + 40.0f), (double)(p0.y + yOff + 9.0f + (float)(9 * i)), (int)Colors.getColor((int)31, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)36, (int)((int)this.opacity.getOpacity())));
+            RenderUtil.drawGradient((double)(p0.x + xOff), (double)(p0.y + yOff + 10.0f), (double)(p0.x + xOff + 40.0f), (double)(p0.y + yOff + 9.0f + (float)(9 * i)), (int)Colors.getColor((int)31, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)36, (int)((int)this.opacity.getOpacity())));
         }
         if (hovering) {
             //Client.fss.drawStringWithShadow(this.getDescription(p0.setting), panel.categoryButton.panel.x + 2.0f + panel.categoryButton.panel.dragX + 55.0f, panel.categoryButton.panel.y + 9.0f + panel.categoryButton.panel.dragY, -1);
@@ -1044,7 +1041,7 @@ extends UI {
         int hoverneed = GLwheel; //TODO
         boolean hovering = x >= 55.0f + slButton.x + xOff && y >= slButton.y + yOff - 2.0f + hoverneed && x <= 55.0f + slButton.x + xOff + 40.0f && y <= slButton.y + 8.0f + yOff + 2.0f + hoverneed;
         RenderUtil.rectangleBordered((double)((double)(slButton.x + xOff + 55.0f) - 0.3), (double)((double)(slButton.y + yOff) - 0.3 - 2.0), (double)((double)(slButton.x + xOff + 40.0f + 55.0f) + 0.3), (double)((double)(slButton.y + 8.0f + yOff) + 0.3 + 2.0), (double)0.3, (int)Colors.getColor((int)10, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)10, (int)((int)this.opacity.getOpacity())));
-        RenderUtil.drawGradientSideways((double)(slButton.x + xOff + 55.0f), (double)(slButton.y + yOff - 2.0f), (double)(slButton.x + xOff + 40.0f + 55.0f), (double)(slButton.y + 8.0f + yOff + 2.0f), (int)Colors.getColor((int)46, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)27, (int)((int)this.opacity.getOpacity())));
+        RenderUtil.drawGradient((double)(slButton.x + xOff + 55.0f), (double)(slButton.y + yOff - 2.0f), (double)(slButton.x + xOff + 40.0f + 55.0f), (double)(slButton.y + 8.0f + yOff + 2.0f), (int)Colors.getColor((int)46, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)27, (int)((int)this.opacity.getOpacity())));
         if (hovering) {
         	RenderUtil.rectangleBordered((double)(slButton.x + xOff + 55.0f), (double)(slButton.y + yOff - 2.0f), (double)(slButton.x + xOff + 40.0f + 55.0f), (double)(slButton.y + 8.0f + yOff + 2.0f), (double)0.6, (int)Colors.getColor((int)0, (int)0), (int)Colors.getColor((int)90, (int)((int)this.opacity.getOpacity())));
         }
@@ -1107,19 +1104,19 @@ extends UI {
         Depth.mask();
         RenderUtil.rectangle((double)((double)xOff + 0.5), (double)((double)yOff + 0.5), (double)((double)xOff + 42.5), (double)((double)yOff + 42.5), (int)-1);
         Depth.render();
-        RenderUtil.drawGradientSideways((double)((double)xOff + 0.5), (double)((double)yOff + 0.5), (double)(xOff + 46.5f), (double)((double)yOff + 42.5), (int)Colors.getColor((int)255, (int)255), (int)Colors.getColor((int)255, (int)0));
-        RenderUtil.drawGradientSideways((double)((double)xOff + 0.5), (double)(yOff - 4.0f), (double)((double)xOff + 42.5), (double)((double)yOff + 42.5), (int)Colors.getColor((int)0, (int)0), (int)Colors.getColor((int)0, (int)255));
+        RenderUtil.drawGradient((double)((double)xOff + 0.5), (double)((double)yOff + 0.5), (double)(xOff + 46.5f), (double)((double)yOff + 42.5), (int)Colors.getColor((int)255, (int)255), (int)Colors.getColor((int)255, (int)0));
+        RenderUtil.drawGradient((double)((double)xOff + 0.5), (double)(yOff - 4.0f), (double)((double)xOff + 42.5), (double)((double)yOff + 42.5), (int)Colors.getColor((int)0, (int)0), (int)Colors.getColor((int)0, (int)255));
         Depth.post();
         RenderUtil.rectangleBordered((double)((double)xOff + 42.5 * (double)cp.saturation - 1.0), (double)((double)yOff + 42.5 - 42.5 * (double)cp.brightness - 1.0), (double)((double)xOff + 42.5 * (double)cp.saturation + 1.0), (double)((double)yOff + 42.5 - 42.5 * (double)cp.brightness + 1.0), (double)0.5, (int)Color.getHSBColor((float)cp.hue, (float)cp.saturation, (float)cp.brightness).getRGB(), (int)Colors.getColor((int)0));
         RenderUtil.rectangle((double)(xOff + 45.0f), (double)yOff, (double)(xOff + 48.0f), (double)(yOff + 43.0f), (int)Colors.getColor((int)32, (int)((int)this.opacity.getOpacity())));
-        RenderUtil.drawGradientSideways((double)(xOff + 45.5f), (double)(yOff + 0.5f), (double)(xOff + 47.5f), (double)(yOff + 8.0f), (int)Color.getHSBColor((float)0.0f, (float)1.0f, (float)1.0f).getRGB(), (int)Color.getHSBColor((float)0.2f, (float)1.0f, (float)1.0f).getRGB());
-        RenderUtil.drawGradientSideways((double)(xOff + 45.5f), (double)(yOff + 8.0f), (double)(xOff + 47.5f), (double)(yOff + 13.0f), (int)Color.getHSBColor((float)0.2f, (float)1.0f, (float)1.0f).getRGB(), (int)Color.getHSBColor((float)0.3f, (float)1.0f, (float)1.0f).getRGB());
-        RenderUtil.drawGradientSideways((double)(xOff + 45.5f), (double)(yOff + 13.0f), (double)(xOff + 47.5f), (double)(yOff + 17.0f), (int)Color.getHSBColor((float)0.3f, (float)1.0f, (float)1.0f).getRGB(), (int)Color.getHSBColor((float)0.4f, (float)1.0f, (float)1.0f).getRGB());
-        RenderUtil.drawGradientSideways((double)(xOff + 45.5f), (double)(yOff + 17.0f), (double)(xOff + 47.5f), (double)(yOff + 22.0f), (int)Color.getHSBColor((float)0.4f, (float)1.0f, (float)1.0f).getRGB(), (int)Color.getHSBColor((float)0.5f, (float)1.0f, (float)1.0f).getRGB());
-        RenderUtil.drawGradientSideways((double)(xOff + 45.5f), (double)(yOff + 22.0f), (double)(xOff + 47.5f), (double)(yOff + 26.0f), (int)Color.getHSBColor((float)0.5f, (float)1.0f, (float)1.0f).getRGB(), (int)Color.getHSBColor((float)0.6f, (float)1.0f, (float)1.0f).getRGB());
-        RenderUtil.drawGradientSideways((double)(xOff + 45.5f), (double)(yOff + 26.0f), (double)(xOff + 47.5f), (double)(yOff + 30.0f), (int)Color.getHSBColor((float)0.6f, (float)1.0f, (float)1.0f).getRGB(), (int)Color.getHSBColor((float)0.7f, (float)1.0f, (float)1.0f).getRGB());
-        RenderUtil.drawGradientSideways((double)(xOff + 45.5f), (double)(yOff + 30.0f), (double)(xOff + 47.5f), (double)(yOff + 34.0f), (int)Color.getHSBColor((float)0.7f, (float)1.0f, (float)1.0f).getRGB(), (int)Color.getHSBColor((float)0.8f, (float)1.0f, (float)1.0f).getRGB());
-        RenderUtil.drawGradientSideways((double)(xOff + 45.5f), (double)(yOff + 34.0f), (double)(xOff + 47.5f), (double)((double)yOff + 42.5), (int)Color.getHSBColor((float)0.8f, (float)1.0f, (float)1.0f).getRGB(), (int)Color.getHSBColor((float)1.0f, (float)1.0f, (float)1.0f).getRGB());
+        RenderUtil.drawGradient((double)(xOff + 45.5f), (double)(yOff + 0.5f), (double)(xOff + 47.5f), (double)(yOff + 8.0f), (int)Color.getHSBColor((float)0.0f, (float)1.0f, (float)1.0f).getRGB(), (int)Color.getHSBColor((float)0.2f, (float)1.0f, (float)1.0f).getRGB());
+        RenderUtil.drawGradient((double)(xOff + 45.5f), (double)(yOff + 8.0f), (double)(xOff + 47.5f), (double)(yOff + 13.0f), (int)Color.getHSBColor((float)0.2f, (float)1.0f, (float)1.0f).getRGB(), (int)Color.getHSBColor((float)0.3f, (float)1.0f, (float)1.0f).getRGB());
+        RenderUtil.drawGradient((double)(xOff + 45.5f), (double)(yOff + 13.0f), (double)(xOff + 47.5f), (double)(yOff + 17.0f), (int)Color.getHSBColor((float)0.3f, (float)1.0f, (float)1.0f).getRGB(), (int)Color.getHSBColor((float)0.4f, (float)1.0f, (float)1.0f).getRGB());
+        RenderUtil.drawGradient((double)(xOff + 45.5f), (double)(yOff + 17.0f), (double)(xOff + 47.5f), (double)(yOff + 22.0f), (int)Color.getHSBColor((float)0.4f, (float)1.0f, (float)1.0f).getRGB(), (int)Color.getHSBColor((float)0.5f, (float)1.0f, (float)1.0f).getRGB());
+        RenderUtil.drawGradient((double)(xOff + 45.5f), (double)(yOff + 22.0f), (double)(xOff + 47.5f), (double)(yOff + 26.0f), (int)Color.getHSBColor((float)0.5f, (float)1.0f, (float)1.0f).getRGB(), (int)Color.getHSBColor((float)0.6f, (float)1.0f, (float)1.0f).getRGB());
+        RenderUtil.drawGradient((double)(xOff + 45.5f), (double)(yOff + 26.0f), (double)(xOff + 47.5f), (double)(yOff + 30.0f), (int)Color.getHSBColor((float)0.6f, (float)1.0f, (float)1.0f).getRGB(), (int)Color.getHSBColor((float)0.7f, (float)1.0f, (float)1.0f).getRGB());
+        RenderUtil.drawGradient((double)(xOff + 45.5f), (double)(yOff + 30.0f), (double)(xOff + 47.5f), (double)(yOff + 34.0f), (int)Color.getHSBColor((float)0.7f, (float)1.0f, (float)1.0f).getRGB(), (int)Color.getHSBColor((float)0.8f, (float)1.0f, (float)1.0f).getRGB());
+        RenderUtil.drawGradient((double)(xOff + 45.5f), (double)(yOff + 34.0f), (double)(xOff + 47.5f), (double)((double)yOff + 42.5), (int)Color.getHSBColor((float)0.8f, (float)1.0f, (float)1.0f).getRGB(), (int)Color.getHSBColor((float)1.0f, (float)1.0f, (float)1.0f).getRGB());
         RenderUtil.rectangleBordered((double)(xOff + 45.0f), (double)((double)yOff + 42.5 * (double)cp.hue - 1.5), (double)(xOff + 48.0f), (double)((double)yOff + 42.5 * (double)cp.hue + 1.5), (double)0.5, (int)Colors.getColor((int)0, (int)0), (int)Colors.getColor((int)(cp.selectingHue ? 255 : 200), (int)((int)this.opacity.getOpacity())));
         RenderUtil.rectangleBordered((double)(xOff + 50.0f), (double)yOff, (double)(xOff + 53.0f), (double)(yOff + 43.0f), (double)0.5, (int)cp.color.getColorInt(), (int)Colors.getColor((int)32, (int)((int)this.opacity.getOpacity())));
         RenderUtil.rectangleBordered((double)(xOff + 50.0f), (double)((double)yOff + 42.5 * (double)cp.opacity - 1.5), (double)(xOff + 53.0f), (double)((double)yOff + 42.5 * (double)cp.opacity + 1.5), (double)0.5, (int)Colors.getColor((int)0, (int)0), (int)Colors.getColor((int)(cp.selectingOpacity ? 255 : 200), (int)((int)this.opacity.getOpacity())));
@@ -1284,15 +1281,15 @@ extends UI {
             double value = getIncremental((double)(percent * 100.0 * ((double)slider.setting.getValueMax() - (double)slider.setting.getValueMin()) / 100.0 + (double)slider.setting.getValueMin()), (double)slider.setting.getSteps());
             float sliderX = (float)((((Number)slider.setting.getValueState()).doubleValue() - (double)slider.setting.getValueMin()) / ((double)slider.setting.getValueMax() - (double)slider.setting.getValueMin()) * 38.0);
             RenderUtil.rectangle((double)((double)(slider.x + xOff) - 0.3), (double)((double)(slider.y + yOff) - 0.3), (double)((double)(slider.x + xOff + 38.0f) + 0.3), (double)((double)(slider.y + yOff) + 2.5 + 0.3), (int)Colors.getColor((int)10, (int)((int)this.opacity.getOpacity())));
-            RenderUtil.drawGradientSideways((double)(slider.x + xOff), (double)(slider.y + yOff), (double)(slider.x + xOff + 38.0f), (double)((double)(slider.y + yOff) + 2.5), (int)Colors.getColor((int)46, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)27, (int)((int)this.opacity.getOpacity())));
+            RenderUtil.drawGradient((double)(slider.x + xOff), (double)(slider.y + yOff), (double)(slider.x + xOff + 38.0f), (double)((double)(slider.y + yOff) + 2.5), (int)Colors.getColor((int)46, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)27, (int)((int)this.opacity.getOpacity())));
            if ((double)slider.setting.getValueMin() < 0.0 && (double)slider.setting.getValueMax() > 0.0) {
                 if (value > 0.0) {
-                	RenderUtil.drawGradientSideways((double)(slider.x + xOff + 19.0f), (double)(slider.y + yOff), (double)(slider.x + xOff + sliderX), (double)((double)(slider.y + yOff) + 2.5), (int)Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)120));
+                	RenderUtil.drawGradient((double)(slider.x + xOff + 19.0f), (double)(slider.y + yOff), (double)(slider.x + xOff + sliderX), (double)((double)(slider.y + yOff) + 2.5), (int)Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)120));
                 } else {
-                	RenderUtil.drawGradientSideways((double)(slider.x + xOff + sliderX), (double)(slider.y + yOff), (double)(slider.x + xOff + 19.0f), (double)((double)(slider.y + yOff) + 2.5), (int)Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)120));
+                	RenderUtil.drawGradient((double)(slider.x + xOff + sliderX), (double)(slider.y + yOff), (double)(slider.x + xOff + 19.0f), (double)((double)(slider.y + yOff) + 2.5), (int)Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)120));
                 }
             } else {
-            	RenderUtil.drawGradientSideways((double)(slider.x + xOff), (double)(slider.y + yOff), (double)(slider.x + xOff + sliderX), (double)((double)(slider.y + yOff) + 2.5), (int)Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)120));
+            	RenderUtil.drawGradient((double)(slider.x + xOff), (double)(slider.y + yOff), (double)(slider.x + xOff + sliderX), (double)((double)(slider.y + yOff) + 2.5), (int)Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)120));
            }
            int hoverneed = GLwheel; //TODO
             boolean hoverMinus = x >= panel.x + xOff + slider.x - 3.0f && y >= yOff + panel.y + slider.y + hoverneed && (double)x <= (double)(xOff + panel.x + slider.x) - 0.5 && y <= yOff + panel.y + slider.y + hoverneed + 2.0f;

@@ -33,6 +33,8 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.util.MathHelper;
+import scala.annotation.meta.getter;
+
 import org.apache.logging.log4j.LogManager;
 import org.lwjgl.opengl.Display;
 
@@ -41,6 +43,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.Constructor;
@@ -60,6 +63,7 @@ public class Client {
     public static boolean init = false;
     public static TTFFontRenderer fs;
     public static TTFFontRenderer fss;
+    public static TTFFontRenderer cheaticons;
     private static boolean loaded =false;
     public static boolean canCancle =false;
     public boolean font = false;
@@ -206,7 +210,19 @@ public class Client {
     static int VL = 0;
     public static WorldClient worldChange;
     //copy from Hanabi
-
+    
+    public Font getAwtFont(String name, float size) {
+        Font myFont = null;
+        try {
+           myFont = Font.createFont(0, this.getClass().getResourceAsStream("/assets/fonts/" + name));
+           myFont = myFont.deriveFont(0, size);
+           return myFont;
+        } catch (Exception var4) {
+           var4.printStackTrace();
+        }
+        return myFont;
+    }
+    
     @EventTarget
     public void onFml(EventFMLChannels eventFMLChannels){
         //hx anticheat
@@ -410,9 +426,4 @@ public class Client {
         }
 
     }
-
-
-
-
-
 }

@@ -37,6 +37,38 @@ public enum	 RenderUtil {
         float b = ((float) 1 / 255) * c.getBlue();
         return new Color(r, g, b, alpha).getRGB();
     }
+    
+    public static void drawGradient(double x, double y, double x2, double y2, int col1, int col2) {
+        float f = (float)(col1 >> 24 & 255) / 255.0F;
+        float f1 = (float)(col1 >> 16 & 255) / 255.0F;
+        float f2 = (float)(col1 >> 8 & 255) / 255.0F;
+        float f3 = (float)(col1 & 255) / 255.0F;
+        float f4 = (float)(col2 >> 24 & 255) / 255.0F;
+        float f5 = (float)(col2 >> 16 & 255) / 255.0F;
+        float f6 = (float)(col2 >> 8 & 255) / 255.0F;
+        float f7 = (float)(col2 & 255) / 255.0F;
+        GL11.glEnable(3042);
+        GL11.glDisable(3553);
+        GL11.glBlendFunc(770, 771);
+        GL11.glEnable(2848);
+        GL11.glShadeModel(7425);
+        GL11.glPushMatrix();
+        GL11.glBegin(7);
+        GL11.glColor4f(f1, f2, f3, f);
+        GL11.glVertex2d(x2, y);
+        GL11.glVertex2d(x, y);
+        GL11.glColor4f(f5, f6, f7, f4);
+        GL11.glVertex2d(x, y2);
+        GL11.glVertex2d(x2, y2);
+        GL11.glEnd();
+        GL11.glPopMatrix();
+        GL11.glEnable(3553);
+        GL11.glDisable(3042);
+        GL11.glDisable(2848);
+        GL11.glShadeModel(7424);
+        GL11.glColor4d(1.0D, 1.0D, 1.0D, 1.0D);
+     }
+    
     public static void drawGradientSideways(double left, double top, double right, double bottom, int col1, int col2) {
         float f = (col1 >> 24 & 0xFF) / 255.0F;
         float f1 = (col1 >> 16 & 0xFF) / 255.0F;

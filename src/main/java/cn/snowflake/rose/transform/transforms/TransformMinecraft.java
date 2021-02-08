@@ -63,6 +63,7 @@ public class TransformMinecraft {
         if (!Client.instance.font){
             Client.fs = new TTFFontRenderer(new Font("Tahoma Bold", 0, 11), true);
             Client.fss = new TTFFontRenderer(new Font("Tahoma", 0, 10), false);
+            Client.cheaticons = new TTFFontRenderer(Client.instance.getAwtFont("stylesicons.ttf", 35.0f), false);
             Client.instance.font = true;
         }
     }

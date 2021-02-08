@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 
 public class MainPanel {
-    public int opacity = 0;
     public float x;
     public float y;
     public String headerString;

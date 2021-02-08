@@ -27,7 +27,6 @@ extends GuiScreen {
     
     @Override
     public void initGui() {
-        this.mainPanel.opacity =255;
     }
     
     @Override
@@ -56,7 +55,6 @@ extends GuiScreen {
     public void onGuiClosed() {
     	Client.instance.fileMgr.saveMods();
     	Client.instance.fileMgr.saveValues();
-        this.mainPanel.opacity = 0;
         Keyboard.enableRepeatEvents((boolean)false);
     }
 }
