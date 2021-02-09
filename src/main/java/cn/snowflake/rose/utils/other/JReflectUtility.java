@@ -265,8 +265,13 @@ public class JReflectUtility {
             e.printStackTrace();
         }
     }
-    
-    public static AxisAlignedBB newInstanceAxisAlignedBB(double x, double y, double z){
+//    public double minX;
+//    public double minY;
+//    public double minZ;
+//    public double maxX;
+//    public double maxY;
+//    public double maxZ;
+    public static AxisAlignedBB newInstanceAxisAlignedBB(double minX, double minY, double minZ, double maxX, double maxY, double maxZ){
         Class<AxisAlignedBB> clazz = null;
         try {
             clazz = (Class<AxisAlignedBB>) Class.forName("net.minecraft.util.AxisAlignedBB");
@@ -279,7 +284,7 @@ public class JReflectUtility {
         }
         aabb.setAccessible(true);
         try {
-            return (AxisAlignedBB) aabb.newInstance(x,y,z);
+            return (AxisAlignedBB) aabb.newInstance(minX,minY,minZ,maxX,maxY,maxZ);
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {

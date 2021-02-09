@@ -131,7 +131,7 @@ public class HUD extends Module {
 
     private void RenderArraylist() {
         ScaledResolution sr = new ScaledResolution(mc,mc.displayWidth,mc.displayHeight);
-        UnicodeFontRenderer arraylistfont = Client.instance.fontManager.robotoregular19;
+        UnicodeFontRenderer arraylistfont = Client.instance.fontManager.robotoregular22;
         ArrayList<Module> mods = new ArrayList<>(ModManager.getModList());
         mods.sort(Comparator.comparingDouble(m1 -> - arraylistfont.getStringWidth(m1.getRenderName() + (m1.getdisplayName() == null ? "" : m1.getdisplayName()))));
         int countMod = 0;

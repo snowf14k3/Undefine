@@ -1,8 +1,5 @@
 package cn.snowflake.rose.mod.mods.FORGE;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.forge.ForgePacketHelper;
@@ -11,6 +8,9 @@ import net.minecraft.client.multiplayer.ChunkProviderClient;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EIOXpGrab extends Module{
 

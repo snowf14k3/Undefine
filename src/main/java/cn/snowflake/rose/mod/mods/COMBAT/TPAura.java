@@ -1,21 +1,38 @@
 package cn.snowflake.rose.mod.mods.COMBAT;
 
-import static org.lwjgl.opengl.GL11.GL_BLEND;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
-import static org.lwjgl.opengl.GL11.GL_LINE_SMOOTH;
-import static org.lwjgl.opengl.GL11.GL_LINE_STRIP;
-import static org.lwjgl.opengl.GL11.GL_ONE_MINUS_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glBlendFunc;
-import static org.lwjgl.opengl.GL11.glColor4d;
-import static org.lwjgl.opengl.GL11.glDisable;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glPopMatrix;
-import static org.lwjgl.opengl.GL11.glPushMatrix;
-import static org.lwjgl.opengl.GL11.glVertex3d;
+import cn.snowflake.rose.events.impl.EventMotion;
+import cn.snowflake.rose.events.impl.EventPacket;
+import cn.snowflake.rose.events.impl.EventRender3D;
+import cn.snowflake.rose.management.FriendManager;
+import cn.snowflake.rose.management.ModManager;
+import cn.snowflake.rose.mod.Category;
+import cn.snowflake.rose.mod.Module;
+import cn.snowflake.rose.utils.Value;
+import cn.snowflake.rose.utils.client.ChatUtil;
+import cn.snowflake.rose.utils.client.RotationUtil;
+import cn.snowflake.rose.utils.math.Vec3Util;
+import cn.snowflake.rose.utils.mcutil.BlockPos;
+import cn.snowflake.rose.utils.path.AStarCustomPathFinder;
+import cn.snowflake.rose.utils.render.ColorUtil;
+import cn.snowflake.rose.utils.render.RenderUtil;
+import cn.snowflake.rose.utils.time.TimeHelper;
+import com.darkmagician6.eventapi.EventTarget;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemSword;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -23,42 +40,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import cn.snowflake.rose.events.impl.EventPacket;
-import cn.snowflake.rose.events.impl.EventMotion;
-import cn.snowflake.rose.events.impl.EventRender3D;
-
-import cn.snowflake.rose.management.FriendManager;
-import cn.snowflake.rose.management.ModManager;
-import cn.snowflake.rose.mod.Category;
-import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.*;
-import cn.snowflake.rose.utils.client.ChatUtil;
-import cn.snowflake.rose.utils.client.RotationUtil;
-import cn.snowflake.rose.utils.path.AStarCustomPathFinder;
-import cn.snowflake.rose.utils.mcutil.BlockPos;
-import cn.snowflake.rose.utils.math.Vec3Util;
-import cn.snowflake.rose.utils.render.ColorUtil;
-import cn.snowflake.rose.utils.render.RenderUtil;
-import cn.snowflake.rose.utils.time.TimeHelper;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.item.ItemSword;
-
-import com.darkmagician6.eventapi.EventTarget;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.client.C03PacketPlayer;
-import net.minecraft.network.play.server.S08PacketPlayerPosLook;
+import static org.lwjgl.opengl.GL11.*;
 
 public class TPAura extends Module
 {

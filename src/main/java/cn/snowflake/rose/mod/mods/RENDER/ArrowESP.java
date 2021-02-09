@@ -1,19 +1,19 @@
 package cn.snowflake.rose.mod.mods.RENDER;
 
 
-import java.awt.Color;
-
 import cn.snowflake.rose.events.impl.EventRender2D;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
+import cn.snowflake.rose.utils.Value;
 import cn.snowflake.rose.utils.mcutil.GlStateManager;
 import cn.snowflake.rose.utils.other.JReflectUtility;
 import cn.snowflake.rose.utils.render.RenderUtil;
-import cn.snowflake.rose.utils.Value;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
+
+import java.awt.*;
 
 
 public class ArrowESP
@@ -58,8 +58,8 @@ public class ArrowESP
                     GlStateManager.translate(x, y, 0);
                     GlStateManager.rotate(angle, 0, 0, 1);
                     float scale=this.scale.getValueState().floatValue();
-                    GlStateManager.scale(scale, scale,scale);
                     float i = 3f;
+                    GlStateManager.scale(scale, scale,scale);
                     while (i >0f) {
                         RenderUtil.drawESPCircle(this.size.getValueState().floatValue(), 0, i, 3, new Color(255,255,255,50));
                         i-=0.1f;

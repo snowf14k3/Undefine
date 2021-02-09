@@ -1,12 +1,5 @@
 package cn.snowflake.rose.mod.mods.COMBAT;
 
-import java.awt.*;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
-
 import cn.snowflake.rose.Client;
 import cn.snowflake.rose.events.impl.EventAura;
 import cn.snowflake.rose.events.impl.EventMotion;
@@ -15,7 +8,7 @@ import cn.snowflake.rose.management.FriendManager;
 import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.*;
+import cn.snowflake.rose.utils.Value;
 import cn.snowflake.rose.utils.client.ChatUtil;
 import cn.snowflake.rose.utils.client.RotationUtil;
 import cn.snowflake.rose.utils.mcutil.GlStateManager;
@@ -24,7 +17,6 @@ import cn.snowflake.rose.utils.render.RenderUtil;
 import cn.snowflake.rose.utils.time.TimeHelper;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
-
 import com.darkmagician6.eventapi.types.EventType;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.gui.ScaledResolution;
@@ -41,6 +33,13 @@ import net.minecraft.network.play.client.C02PacketUseEntity;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.Cylinder;
+
+import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Random;
 
 /**
  *
@@ -367,11 +366,7 @@ public class Aura extends Module {
         if (entity.isInvisible() && !invisible.getValueState()) {
             return false;
         }
-//        if (!(entity instanceof EntityMob || entity instanceof EntityAnimal)
-//                && entity instanceof EntityCreature
-//                && !otherentity.getValueState()) {
-//            return false;
-//        }
+
         return entity != mc.thePlayer && entity.isEntityAlive() && mc.thePlayer.getDistanceToEntity(entity) <= range.getValueState();
     }
 

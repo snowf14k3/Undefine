@@ -1,24 +1,24 @@
 package cn.snowflake.rose;
 
-import java.lang.instrument.Instrumentation;
-import java.lang.instrument.UnmodifiableClassException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.net.URL;
-
 import cn.snowflake.rose.transform.ClassTransformer;
 import net.minecraft.launchwrapper.LaunchClassLoader;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 
+import java.lang.instrument.Instrumentation;
+import java.lang.instrument.UnmodifiableClassException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.URL;
+
 
 public class Agent {
 	public static void agentmain(String args, Instrumentation instrumentation){
 		try {
+			Agent.classloadername = args;
 			Agent.instrumentation = instrumentation;
 			loadThisJar();
-//			addToMinecraftClassLoader(ClassTransformer.class);
 			forceloadclass();
 			retransform();
 		}catch (Exception e){
@@ -27,7 +27,7 @@ public class Agent {
 	}
 
 
-
+	public static String classloadername;
 	public static Instrumentation instrumentation;
 
 	public static void retransform() throws ClassNotFoundException {

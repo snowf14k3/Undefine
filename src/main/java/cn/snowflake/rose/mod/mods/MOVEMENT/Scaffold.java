@@ -45,7 +45,7 @@ public class Scaffold
     public void onPre(EventMotion event) {
         if (event.isPre()) {
             double x = mc.thePlayer.posX;
-            double y = mc.thePlayer.posY - 2;
+            double y = mc.thePlayer.posY - 2.5;
             double z = mc.thePlayer.posZ;
             BlockPos blockBelow = new BlockPos(x, y, z);
             if (mc.thePlayer != null) {
@@ -136,7 +136,7 @@ public class Scaffold
         double x = (double)block.getX() + 0.5 - mc.thePlayer.posX + (double)face.getFrontOffsetX() / 2.0;
         double z = (double)block.getZ() + 0.5 - mc.thePlayer.posZ + (double)face.getFrontOffsetZ() / 2.0;
         double y = (double)block.getY() + 0.5;
-        double d1 = mc.thePlayer.posY + (double)mc.thePlayer.getEyeHeight() - y;
+        double d1 = mc.thePlayer.posY - 1 + (double)mc.thePlayer.getEyeHeight() - y;
         double d3 = MathHelper.sqrt_double(x * x + z * z);
         float yaw = (float)(Math.atan2(z, x) * 180.0 / 3.141592653589793) - 90.0f;
         float pitch = (float)(Math.atan2(d1, d3) * 180.0 / 3.141592653589793);
@@ -169,16 +169,16 @@ public class Scaffold
             return new BlockData(pos.add(0, -1, 0), EnumFacing.UP);
         }
         if (!blacklistedBlocks.contains(getBlock(pos.add(-1, 0, 0)))) {
-            return new BlockData(pos.add(-1, 0, 0), Keyboard.isKeyDown(42) && mc.thePlayer.onGround && mc.thePlayer.fallDistance == 0.0f && getBlock(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1.0, mc.thePlayer.posZ)) == Blocks.air ? EnumFacing.DOWN : EnumFacing.EAST);
+            return new BlockData(pos.add(-1, 0, 0), Keyboard.isKeyDown(42) && mc.thePlayer.onGround && mc.thePlayer.fallDistance == 0.0f && getBlock(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 2.0, mc.thePlayer.posZ)) == Blocks.air ? EnumFacing.DOWN : EnumFacing.EAST);
         }
         if (!blacklistedBlocks.contains(getBlock(pos.add(1, 0, 0)))) {
-            return new BlockData(pos.add(1, 0, 0), Keyboard.isKeyDown(42) && mc.thePlayer.onGround && mc.thePlayer.fallDistance == 0.0f && getBlock(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1.0, mc.thePlayer.posZ)) == Blocks.air ? EnumFacing.DOWN : EnumFacing.WEST);
+            return new BlockData(pos.add(1, 0, 0), Keyboard.isKeyDown(42) && mc.thePlayer.onGround && mc.thePlayer.fallDistance == 0.0f && getBlock(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 2.0, mc.thePlayer.posZ)) == Blocks.air ? EnumFacing.DOWN : EnumFacing.WEST);
         }
         if (!blacklistedBlocks.contains(getBlock(pos.add(0, 0, -1)))) {
-            return new BlockData(pos.add(0, 0, -1), Keyboard.isKeyDown(42) && mc.thePlayer.onGround && mc.thePlayer.fallDistance == 0.0f && getBlock(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1.0, mc.thePlayer.posZ)) == Blocks.air ? EnumFacing.DOWN : EnumFacing.SOUTH);
+            return new BlockData(pos.add(0, 0, -1), Keyboard.isKeyDown(42) && mc.thePlayer.onGround && mc.thePlayer.fallDistance == 0.0f && getBlock(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 2.0, mc.thePlayer.posZ)) == Blocks.air ? EnumFacing.DOWN : EnumFacing.SOUTH);
         }
         if (!blacklistedBlocks.contains(getBlock(pos.add(0, 0, 1)))) {
-            return new BlockData(pos.add(0, 0, 1), Keyboard.isKeyDown(42) && mc.thePlayer.onGround && mc.thePlayer.fallDistance == 0.0f && getBlock(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1.0, mc.thePlayer.posZ)) == Blocks.air ? EnumFacing.DOWN : EnumFacing.NORTH);
+            return new BlockData(pos.add(0, 0, 1), Keyboard.isKeyDown(42) && mc.thePlayer.onGround && mc.thePlayer.fallDistance == 0.0f && getBlock(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 2.0, mc.thePlayer.posZ)) == Blocks.air ? EnumFacing.DOWN : EnumFacing.NORTH);
         }
         BlockPos add = pos.add(-1, 0, 0);
         if (!blacklistedBlocks.contains(getBlock(add.add(-1, 0, 0)))) {

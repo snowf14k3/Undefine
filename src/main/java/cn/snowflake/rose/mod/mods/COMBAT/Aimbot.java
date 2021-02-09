@@ -3,6 +3,7 @@ package cn.snowflake.rose.mod.mods.COMBAT;
 import cn.snowflake.rose.Client;
 import cn.snowflake.rose.events.impl.EventMotion;
 import cn.snowflake.rose.events.impl.EventRender2D;
+import cn.snowflake.rose.events.impl.EventTick;
 import cn.snowflake.rose.management.FriendManager;
 import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Category;
@@ -13,6 +14,7 @@ import cn.snowflake.rose.utils.math.Location;
 import cn.snowflake.rose.utils.other.JReflectUtility;
 import com.darkmagician6.eventapi.EventTarget;
 import com.darkmagician6.eventapi.types.EventType;
+import com.darkmagician6.eventapi.types.Priority;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.Entity;
@@ -122,24 +124,39 @@ public class Aimbot extends Module {
 		GL11.glScalef(2F, 2F, 2F);
 	}
 
+    @EventTarget(Priority.HIGH)
+    public void ontick(EventTick e){
+        if (mc.thePlayer != null) {
+            if (ModManager.getModByName("NoRecoil").isEnabled() && NoRecoil.horizontal.getValueState()) {
+                mc.thePlayer.rotationPitch = mc.thePlayer.prevRotationPitch;
+            }
+            if (ModManager.getModByName("NoRecoil").isEnabled() && NoRecoil.vertical.getValueState()){
+                mc.thePlayer.rotationYaw = mc.thePlayer.prevRotationYaw;
+            }
+            if(!silent.getValueState() && yaw != 0 && pitch != 0) {
+                Minecraft.getMinecraft().thePlayer.rotationYaw = yaw;
+                Minecraft.getMinecraft().thePlayer.rotationPitch = pitch;
+            }
+        }
+    }
 
-    @EventTarget
+    private float yaw;
+    private float pitch;
+
+    @EventTarget(Priority.LOWEST)
     public void onEvent(EventMotion em) {
         if (em.isPre()) {
             target = getTarget();
             if(shouldAim()){
                 if (target != null) {
                     float[] rotations = getRotationByBoundingBox(target,range.getValueState().floatValue(),false);
-//                    atuoSetPitchIndex(target);
+                    yaw = rotations[0];
+                    pitch = rotations[1];
                     if(silent.getValueState()){
-                    	em.setYaw(rotations[0]);
-                    	em.setPitch(rotations[1]);
-                    }else{
-                        mc.thePlayer.rotationYaw = rotations[0];
-                        mc.thePlayer.rotationPitch = rotations[1];
+                    	em.setYaw(yaw);
+                    	em.setPitch(pitch);
                     }
                 }
-
             }
         }else if (em.getEventType() == EventType.POST){
 
