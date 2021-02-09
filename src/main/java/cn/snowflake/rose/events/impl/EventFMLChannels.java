@@ -22,7 +22,7 @@ public class EventFMLChannels implements Event {
 
     public FMLProxyPacket fmlProxyPacket;
 
-    public EventFMLChannels(Object object,EnumMap channels){
+    public EventFMLChannels(Object object, EnumMap channels ){
         if (object instanceof IMessage){
             this.iMessage = (IMessage) object;
         }

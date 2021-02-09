@@ -20,9 +20,9 @@ public class CommandScreenhost extends Command {
             if (c.equalsIgnoreCase("cac")){
                 ScreenhostHelper.catanticheatImage = ScreenhostHelper.catAnticheatScreenhost();
             }
-            if (c.equalsIgnoreCase("deci")){
-                ScreenhostHelper.bufferedImage = ScreenhostHelper.customScreenshot();
-            }
+//            if (c.equalsIgnoreCase("deci")){
+//                ScreenhostHelper.bufferedImage = ScreenhostHelper.customScreenshot();
+//            }
             ChatUtil.sendClientMessage("Set screenhost successfully !");
         }
         super.onCmd(args);

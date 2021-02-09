@@ -1,24 +1,17 @@
 package cn.snowflake.rose.mod.mods.RENDER;
 
-import java.awt.Color;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-import java.text.NumberFormat;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import cn.snowflake.rose.Client;
 import cn.snowflake.rose.events.impl.EventRender2D;
 import cn.snowflake.rose.events.impl.EventRender3D;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.*;
+import cn.snowflake.rose.utils.Value;
 import cn.snowflake.rose.utils.mcutil.GlStateManager;
 import cn.snowflake.rose.utils.other.JReflectUtility;
 import cn.snowflake.rose.utils.render.Colors;
 import cn.snowflake.rose.utils.render.RenderUtil;
 import cn.snowflake.rose.utils.render.UnicodeFontRenderer;
+import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.ScaledResolution;
@@ -33,7 +26,13 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
-import com.darkmagician6.eventapi.EventTarget;
+import java.awt.*;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.text.NumberFormat;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 
 
@@ -127,7 +126,7 @@ public class ESP2D extends Module {
 //                    color = -7924716;
                         color = new Color(r.getValueState().intValue(),g.getValueState().intValue(),b.getValueState().intValue()).getRGB();
                     }
-                    if(BOX.getValueState().booleanValue()) {
+                    if(BOX.getValueState()) {
                         if(MODE.isCurrentMode("Box")) {
                             RenderUtil.rectangleBordered((double)x, (double)y, (double)endx, (double)endy, 2.25D, Colors.getColor(2, 0, 0, 0), color);
                             RenderUtil.rectangleBordered((double)x - 0.5D, (double)y - 0.5D, (double)endx + 0.5D, (double)endy + 0.5D, 0.9D, Colors.getColor(0, 0), Colors.getColor(0));
@@ -202,7 +201,7 @@ public class ESP2D extends Module {
 
 
                     float health;
-                    if(HEALTH.getValueState().booleanValue()) {
+                    if(HEALTH.getValueState()) {
                         health = ((EntityPlayer)ent).getHealth();
                         float[] fractions = new float[]{0.0F, 0.5F, 1.0F};
                         Color[] colors = new Color[]{Color.RED, Color.YELLOW, Color.GREEN};
