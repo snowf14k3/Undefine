@@ -24,11 +24,10 @@ public class Teleport extends Module {
     public static int y;
     public static int z;
 
-    public Teleport() {
-        super("Teleport", "Teleport", Category.MOVEMENT);
+    public Teleport(){
+        super("Teleport","Teleport", Category.MOVEMENT);
         modes.addValue("God");
     }
-
     @Override
     public void onEnable() {
         //sb disabler
@@ -36,16 +35,15 @@ public class Teleport extends Module {
         playerCapabilities.isFlying = true;
         playerCapabilities.allowFlying = true;
 //		playerCapabilities.setFlySpeed((float) MathUtils.randomNumber(0.1, 9.0));
-        mc.getNetHandler().addToSendQueue(new C0FPacketConfirmTransaction(0, (short) (-1), false));
+        mc.getNetHandler().addToSendQueue(new C0FPacketConfirmTransaction(0, (short)(-1), false));
         mc.getNetHandler().addToSendQueue(new C13PacketPlayerAbilities(playerCapabilities));
         mc.getNetHandler().addToSendQueue(new C03PacketPlayer(true));
-        mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 0.17, mc.thePlayer.posY + 0.17, mc.thePlayer.posZ, true));
-        mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 0.06, mc.thePlayer.posY + 0.06, mc.thePlayer.posZ, true));
+        mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 0.17,mc.thePlayer.posY + 0.17, mc.thePlayer.posZ, true));
+        mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 0.06,mc.thePlayer.posY + 0.06, mc.thePlayer.posZ, true));
         mc.thePlayer.stepHeight = 0.0f;
         mc.thePlayer.motionX = 0.0;
         mc.thePlayer.motionZ = 0.0;
     }
-
     @Override
     public void onDisable() {
         mc.thePlayer.stepHeight = 0.625f;
@@ -56,52 +54,47 @@ public class Teleport extends Module {
         playerCapabilities.allowFlying = true;
         mc.getNetHandler().addToSendQueue(new C13PacketPlayerAbilities(playerCapabilities));
     }
-
     @EventTarget
     public void onUpdate(EventUpdate event) {
-        if (x == 0 && y == 0 && z == 0) {
+        if (x == 0 && y == 0 && z == 0){
             ChatUtil.sendClientMessage("pls input position");
             set(false);
             return;
         }
         for (int i = 0; i < 20; i++) {
-            mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer(true));
+                    mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer(true));
+                }
+        mc.getNetHandler().addToSendQueue(new C0CPacketInput(0.0f, 0.0f, true, true));
+        double lastY = mc.thePlayer.posY, downY = 0;
+        for (Vec3Util vec3 : TPUtil.computePath(
+                new Vec3Util(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ),
+                new Vec3Util(Teleport.x, Teleport.y, Teleport.z))) {
+            if (vec3.getY() < lastY) {
+                downY += (lastY - vec3.getY());
+            }
+            if (downY > 2.5) {
+                downY = 0;
+                mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(vec3.getX(),
+                        vec3.getY(), vec3.getY(), vec3.getZ(), true));
+            } else {
+                mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(vec3.getX(),
+                        vec3.getY(), vec3.getY(), vec3.getZ(), false));
+            }
+            lastY = vec3.getY();
         }
+        //Teleported
         mc.thePlayer.sendQueue.addToSendQueue(new C0FPacketConfirmTransaction(0, (short) -1, false));
-        //tp y
-        for (double yPos = mc.thePlayer.posY; yPos < y - 3; yPos += 5) {
-            mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, yPos, yPos, mc.thePlayer.posZ, true));
-            mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer(true));
-        }
-        for (double yPos = mc.thePlayer.posY; yPos > y + 3; yPos -= 5) {
-            mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, yPos, yPos, mc.thePlayer.posZ, true));
-            mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer(true));
-        }
-        //tp x
-        for (double xPos = mc.thePlayer.posX; xPos < x - 3; xPos += 5) {
-            mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(xPos, mc.thePlayer.posY, mc.thePlayer.posY, mc.thePlayer.posZ, true));
-            mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer(true));
-        }
-        for (double xPos = mc.thePlayer.posX; xPos > x + 3; xPos -= 5) {
-            mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(xPos, mc.thePlayer.posY, mc.thePlayer.posY, mc.thePlayer.posZ, true));
-            mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer(true));
-        }
-        //tp z
-        for (double zPos = mc.thePlayer.posZ; zPos < z - 3; zPos += 5) {
-            mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posY, zPos, true));
-            mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer(true));
-        }
-        for (double zPos = mc.thePlayer.posZ; zPos > z + 3; zPos -= 5) {
-            mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posY, zPos, true));
-            mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer(true));
-        }
-        //tp
-        mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(x,y,y,z,true));
-        mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(x,y-0.5,y-0.5,z,false));
-        ChatUtil.sendClientMessage("传送到" + x + " " + y + " " + z);
+        PlayerCapabilities capabilities = new PlayerCapabilities();
+        capabilities.allowFlying = true;
+        capabilities.isFlying = true;
+        mc.thePlayer.sendQueue.addToSendQueue(new C13PacketPlayerAbilities(capabilities));
+        mc.thePlayer.setPosition(x, y, z);
+        //mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(x,y,y,z,true));
+        ChatUtil.sendClientMessage("传送到"+x+" "+y+" "+z);
         x = 0;
         y = 0;
         z = 0;
         set(false);
+
     }
 }
