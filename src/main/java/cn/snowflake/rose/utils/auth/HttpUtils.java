@@ -78,6 +78,10 @@ public class HttpUtils {
             e.printStackTrace();
         }
     }
+
+    public static boolean nmsl;
+
+
     public void Test3(){
         try {
             Class clazz = Class.forName("javax.swing.JOptionPane");

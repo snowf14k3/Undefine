@@ -84,8 +84,9 @@ public class ModManager {
         addMod(new ScreenProtect());
         addMod(new SecretClose());
 
+        ok = true;
     }
-
+    public static boolean ok = false;
 
     public void addMod(Module m) {
         modList.add(m);

@@ -1,11 +1,9 @@
 package cn.snowflake.rose.utils.other;
 
-import cn.snowflake.rose.Client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.injection.ClientLoader;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Timer;
 import net.minecraft.util.Vec3;
@@ -91,53 +89,7 @@ public class JReflectUtility {
         return pTicks;
     }
 
-    public static int getAmmo(ItemStack gun) {
-    	try {
-    	if (Client.mw) {
-			Class<?> tags = Class.forName("com.vicmatskiv.weaponlib.Tags");
-			try {
-				return (int) tags.getMethod("getAmmo", ItemStack.class).invoke(tags, gun);
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
-			} catch (NoSuchMethodException e) {
-				e.printStackTrace();
-			} catch (SecurityException e) {
-				e.printStackTrace();
-			}
-		}
-    	} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		return 0;
-    }
-    
-    public static void setAmmo(ItemStack gun,int ammo) {
-    	try {
-    	if (Client.mw) {
-			Class<?> tags = Class.forName("com.vicmatskiv.weaponlib.Tags");
-			try {
-				tags.getMethod("setAmmo", ItemStack.class,int.class).invoke(tags, gun,ammo);
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-				e.printStackTrace();
-			} catch (NoSuchMethodException e) {
-				e.printStackTrace();
-			} catch (SecurityException e) {
-				e.printStackTrace();
-			}
-		}
-    	} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-    }
-    
+
     public static Object getMethodAsObject(Class<?> inClass, Object instance,
                                            String name, boolean secureAccess, Object... parameter){
         try{

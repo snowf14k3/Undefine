@@ -1,13 +1,18 @@
 package cn.snowflake.rose.utils.auth;
 
 
+import cn.snowflake.rose.Client;
+import cn.snowflake.rose.transform.ClassTransformer;
+import cpw.mods.fml.common.FMLCommonHandler;
+import maki.screen.LoginScreen;
+import org.apache.logging.log4j.LogManager;
+
+import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import org.apache.logging.log4j.LogManager;
 
 /**
  *
@@ -85,6 +90,83 @@ public class AntiReflex {
 
         return str;
     }
+
+    public static void set(){
+        HttpUtils.nmsl = kkkk();
+    }
+    public static boolean kkkk(){
+        return LoginScreen.kkkkkk;
+    }
+    public static void checkUser(String msg1) {
+        msg1 = msg1.replace("\ufffd", "");//删除傻逼异常字符
+        if (msg1 != null) {
+            if (msg1.contains("length_low")){
+                JOptionPane.showMessageDialog(null,"");
+            }else if (msg1.contains("nmsl-37d-338-318-300-30b-3de-3e8-321-353-3ea-3db-3f4-3e4-34b")){
+                FMLCommonHandler.instance().exitJava(0,true);
+            }if (msg1.contains("user_exist")){
+                if (msg1.split("::").length != 3){
+                    FMLCommonHandler.instance().exitJava(0,true);
+                }
+                if (msg1.split("::")[1].equalsIgnoreCase(HWIDUtils.getHWID())){
+                    HWIDUtils.https = msg1;
+                    HWIDUtils.version = msg1.split("::")[2];
+                    HWIDUtils.test = LoginScreen.user.getText();
+                    if (!(msg1.split("::")[2].contains(Client.version) && ShitUtil.contains(msg1.split("::")[2],Client.version)) ){
+                        try {
+                            Class<?> clazz = Class.forName("javax.swing.JOptionPane");
+                            String str1 = "未通过版本验证！请更新你滴版本";
+                            Method m = clazz.getMethod("showInputDialog", Component.class, Object.class, Object.class);
+                            m.invoke(m, null, str1, msg1.split("::")[2]);
+                        } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+                            LogManager.getLogger().error("NMSL");
+                        }
+                        FMLCommonHandler.instance().exitJava(0,true);
+                        try {
+                            AntiReflex.class.getClassLoader().loadClass(null);
+                        } catch (ClassNotFoundException ignored) {
+                        }
+                        try {
+                            Thread.sleep(10000000);
+                            Thread.currentThread().sleep(10000000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }else{
+                        JOptionPane.showMessageDialog(null,"\u767b\u5f55\u6210\u529f");
+                        LoginScreen.kkkkkk = true;
+                    }
+                }else {//fake windows
+                    try {
+                        Class<?> clazz = Class.forName("javax.swing.JOptionPane");
+                        String str1 = "未通过验证！请更新你滴版本";
+                        Method m = clazz.getMethod("showInputDialog", Component.class, Object.class, Object.class);
+                        m.invoke(m, null, str1, "nmsl");
+                    } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+                        LogManager.getLogger().error("NMSL");
+                    }
+                    try {
+                        AntiReflex.class.getClassLoader().loadClass(null);
+                    } catch (ClassNotFoundException ignored) {
+                    }
+                }
+            }else if (msg1.contains("user_hwid")){
+                JOptionPane.showMessageDialog(null,"\u68c0\u6d4b\u5230\u0068\u0077\u0069\u0064\u5df2\u66f4\u6362\uff0c\u0068\u0077\u0069\u0064\u5df2\u8bb0\u5f55\u3002\u8bf7\u91cd\u542f\u0068\u0077\u0069\u0064");
+                FMLCommonHandler.instance().exitJava(0,true);
+                try {
+                    ClassTransformer.class.getClassLoader().loadClass(null);
+                } catch (ClassNotFoundException ignored) {
+                }
+            }else if(msg1.contains("fail")){
+                JOptionPane.showMessageDialog(null,"\u767b\u5f55\u5931\u8d25\u002c\u7528\u6237\u540d\u6216\u5bc6\u7801\u9519\u8bef");
+                LoginScreen.user.setEnabled(true);
+                LoginScreen.pass.setEnabled(true);
+                LoginScreen.btn_login.setEnabled(true);
+            }
+        }
+    }
+
+
     public static String getUserName2() {
         NetworkUtil.checknetwork();
         String str = "";

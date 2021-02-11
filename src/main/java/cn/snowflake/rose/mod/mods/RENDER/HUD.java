@@ -51,7 +51,7 @@ public class HUD extends Module {
                     LogManager.getLogger().error("NMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMsl");
                 }
             }
-            String info = (Client.shitname.contains("SnowFlake") ? "\247cDev: \247f" : Client.shitname.contains("Chentg") ? "\247cHelper: \247f" : "\247cUser: \247f") + Client.shitname.substring(0,Client.shitname.length() -1) ;
+            String info = (Client.shitname.toLowerCase().contains("snowflake") ? "\247cDev: \247f" : Client.shitname.toLowerCase().contains("chentg") ? "\247cHelper: \247f" : "\247cUser: \247f") + Client.shitname;
             font.drawStringWithColor(xyz, sr.getScaledWidth() - font.getStringWidth(clean(xyz))-4, sr.getScaledHeight() - font.FONT_HEIGHT - (mc.currentScreen instanceof GuiChat ? 20 : 5), -1,0);
             font.drawStringWithColor(info, sr.getScaledWidth() - font.getStringWidth(clean(info)) -3, sr.getScaledHeight() - font.FONT_HEIGHT - (mc.currentScreen instanceof GuiChat ? 14 : 0), -1,0);
         }
@@ -141,7 +141,7 @@ public class HUD extends Module {
             if (m2.hidden)continue;
             ++countMod;
             Color col2 = new Color(rainbow(System.nanoTime(), (float) countMod, 1).getRGB());
-            if(m2.isEnabled()) {
+            if(m2.isEnabled() && !m2.getName().equalsIgnoreCase("IRC")) {
                 String disname = m2.getdisplayName() == null ? "" : "" + m2.getdisplayName();
                 switch (rainbow.getModeName()){
                     case "Rainbow" :

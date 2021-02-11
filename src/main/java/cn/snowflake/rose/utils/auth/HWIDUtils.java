@@ -1,14 +1,13 @@
 package cn.snowflake.rose.utils.auth;
 
 
-import java.awt.*;
-import java.lang.reflect.InvocationTargetException;
+import cn.snowflake.rose.Client;
+import cpw.mods.fml.common.FMLCommonHandler;
+import maki.screen.LoginScreen;
+
 import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
-import cn.snowflake.rose.Client;
-import org.apache.logging.log4j.LogManager;
 
 /**
  *
@@ -22,6 +21,7 @@ public class HWIDUtils {
     public static String https;
     public static String version;
     public static String hwid;
+    public static String test;
 
     public static void main(String[] args){
 
@@ -30,61 +30,20 @@ public class HWIDUtils {
 
     public static String getUserName() {
 //        NetworkUtil.checknetwork();
-        String str = "";
+        String str = LoginScreen.user.getText();
 //        version = HttpUtils.sendGet("http://seasonclient.cf/rose/version.txt");
 //        https = HttpUtils.sendGet("h"+"t"+"t"+"p"+":"+"/"+"/"+"w"+"w"+"w"+"."+"s"+"e"+"a"+"s"+"o"+"n"+"c"+"l"+"i"+"e"+"n"+"t"+"."+"c"+"f"+"/"+"r"+"o"+"s"+"e"+"/"+"h"+"w"+"i"+"d"+"."+"t"+"x"+"t");
-        version = HttpUtils.sendGet("https://gitee.com/cnsnowflake/seasonclient/raw/master/season/version.txt");
-        https = HttpUtils.sendGet("https://gitee.com/cnsnowflake/seasonclient/raw/master/season/hwid.txt");
+//        version = HttpUtils.sendGet("https://gitee.com/cnsnowflake/seasonclient/raw/master/season/version.txt");
+//        https = HttpUtils.sendGet("https://gitee.com/cnsnowflake/seasonclient/raw/master/season/hwid.txt");
         hwid = HWIDUtils.getHWID();
         //https://gitee.com/cnsnowflake/seasonclient/raw/master/season/hwid.txt
-        str = getSubString(https, getHWID()+" ", "\n");
-        Client.shitname = str.replace("\n","");
-        if (!https.contains(HWIDUtils.getHWID()) && !ShitUtil.contains(https,HWIDUtils.getHWID())) {
-            try {
-                Class clazz = Class.forName("javax.swing.JOptionPane");
-                String str1 = new String("未通过HWID验证！请复制以下的hwid提交给管理员");
-                Method m = clazz.getDeclaredMethod("showInputDialog", Component.class, Object.class, Object.class);
-                /**
-                 *  第一个参数 是调用的 方法Object
-                 */
-                m.invoke(m, null, str1, getHWID());
-            } catch (ClassNotFoundException e) {
-                LogManager.getLogger().error("NMSL");
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
+        String hwids = https.split("::")[1];
+        Client.shitname = str;
+        if (!hwid.contains(hwids)){
+            if (!ShitUtil.contains(hwid,hwids)){
+                FMLCommonHandler.instance().exitJava(0,true
+                );
             }
-            try {
-                Thread.sleep(10000000);
-                Thread.currentThread().sleep(10000000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-//            ThreadGroup group = Thread.currentThread().getThreadGroup();
-//            ThreadGroup topGroup = group;
-//            // 遍历线程组树，获取根线程组
-//            while (group != null) {
-//                topGroup = group;
-//                group = group.getParent();
-//            }
-//            // 激活的线程数加倍
-//            int estimatedSize = topGroup.activeCount() * 2;
-//            Thread[] slackList = new Thread[estimatedSize];
-//            // 获取根线程组的所有线程
-//            int actualSize = topGroup.enumerate(slackList);
-//            // copy into a list that is the exact size
-//            Thread[] list = new Thread[actualSize];
-//            System.arraycopy(slackList, 0, list, 0, actualSize);
-//            for (Thread thread : list) {
-//                try {
-//                    thread.sleep(100000000000000L);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
         }
         return str;
     }

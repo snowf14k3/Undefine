@@ -1,7 +1,7 @@
 package cn.snowflake.rose.command.commands;
 
+import cn.snowflake.rose.Client;
 import cn.snowflake.rose.command.Command;
-import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.mods.WORLD.IRC;
 
 public class CommandIRC
@@ -16,12 +16,11 @@ public class CommandIRC
         }
         String msg = "";
         for (int i = 1; i < args.length; ++i) {
-            msg = String.valueOf((Object)String.valueOf((Object)String.valueOf((Object)msg))) + args[i] + " ";
+            msg = String.valueOf(String.valueOf(String.valueOf(msg))) + args[i] + " ";
         }
-        if (ModManager.getModByName((String)"IRC").isEnabled()) {
-            IRC.sendIRCMessage((String)msg, (boolean)true);
-        } else {
-            System.out.println("error");
-        }
+//        if (ModManager.getModByName("IRC").isEnabled()) {
+            IRC.sendIRCMessage("#IRC#Message::"+ Client.shitname+ " : " + msg, true);
+//        } else {
+//        }
     }
 }
