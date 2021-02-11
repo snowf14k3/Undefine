@@ -118,11 +118,7 @@ extends UI {
     
     @Override
     public void mainPanelKeyPress(MainPanel panel, int key) {
-        if (this.opacity.getOpacity() < 10.0f) {
-            return;
-        }
         panel.typeButton.forEach(o -> o.categoryPanel.buttons.forEach(b -> b.keyPressed(key)));
-      //  panel.typeButton.forEach(o -> o.categoryPanel.textBoxes.forEach(t -> t.keyPressed(key)));
     }
     
     @Override
@@ -198,15 +194,15 @@ extends UI {
         } else if (p0.name.equalsIgnoreCase("Player")) {
             Client.cheaticons.drawCenteredString("B", p0.x + 18.0f + p0.panel.dragX, p0.y + 20.0f + p0.panel.dragY, color);
         } else if (p0.name.equalsIgnoreCase("Movement")) {
-            Client.cheaticons.drawCenteredString("J", p0.x + 19.0f + p0.panel.dragX, p0.y + 22.0f + p0.panel.dragY, color);
+            Client.cheaticons.drawCenteredString("A", p0.x + 19.0f + p0.panel.dragX, p0.y + 22.0f + p0.panel.dragY, color);
         } else if (p0.name.equalsIgnoreCase("Forge")) {
             Client.cheaticons.drawCenteredString("E", p0.x + 18.0f + p0.panel.dragX, p0.y + 20.0f + p0.panel.dragY, color);
         } else if (p0.name.equalsIgnoreCase("World")) {
             Client.cheaticons.drawCenteredString("G", p0.x + 18.5f + p0.panel.dragX, p0.y + 20.0f + p0.panel.dragY, color);
         } else if (p0.name.equalsIgnoreCase("Render")) {
             Client.cheaticons.drawCenteredString("C", p0.x + 19.0f + p0.panel.dragX, p0.y + 20.0f + p0.panel.dragY, color);
-        } else {
-            //Client.f.drawStringWithShadow(Character.toString((char)p0.name.charAt(0)) + Character.toString((char)p0.name.charAt(1)), p0.x + 12.0f + p0.panel.dragX, p0.y + 13.0f + p0.panel.dragY, color);
+        } else if(p0.name.equalsIgnoreCase("Title")) {
+            Client.cheaticons.drawStringWithShadow("F", p0.x + 8.0f + p0.panel.dragX, p0.y + 13.0f + p0.panel.dragY, color);
         }
         //Client.cheaticons.drawStringWithShadow(Character.toString(p0.name.charAt(0)), p0.x + 12.0f + p0.panel.dragX, p0.y + 13.0f + p0.panel.dragY, color);
         if (p0.enabled) {
@@ -224,9 +220,7 @@ extends UI {
             biggestY = 34.0f; // 34
             noSets = 0.0f;
             ArrayList<Module> modslist = ModManager.modList;
-
             modslist.sort(Comparator.comparingInt(Module::getValueSize).reversed());
-
             for (int i = 0;i < modslist.size(); i++) {
                 Module module = modslist.get(i);
                 if (module.getCategory() != Category.COMBAT) continue;
@@ -643,7 +637,95 @@ extends UI {
                 yOff += y == 20.0f && biggestY == 20.0f ? 26.0f : biggestY;
             }
         }
-      
+        if (categoryButton.name.equalsIgnoreCase("FORGE")) {
+            biggestY = 34.0f; // 34
+            noSets = 0.0f;
+            ArrayList<Module> modslist = ModManager.modList;
+
+            modslist.sort(Comparator.comparingInt(Module::getValueSize).reversed());
+
+            for (int i = 0;i < modslist.size(); i++) {
+                Module module = modslist.get(i);
+                if (module.getCategory() != Category.FORGE) continue;
+                y = 20.0f;
+                if (!module.openValues) {
+                    categoryPanel.buttons.add(new Button(categoryPanel, module.getName(), xOff + 0.5f, yOff + 10.0f, module));
+                    float x1 = 0.5f;
+                    for (Value val : Value.list) {
+                    	if(val.getValueName().split("_")[0].equalsIgnoreCase(module.getName())) {
+                        	String sname = val.getValueName().split("_")[1];
+                            if (val.isValueBoolean) {
+                            	categoryPanel.checkboxes.add(new Checkbox(categoryPanel, sname, xOff + x1, yOff + y, val));
+                                if ((x1 += 44.0f) != 88.5f) continue;
+                                x1 = 0.5f;
+                                y += 10.0f;
+                            }
+                    	}
+                    }
+                    if (x1 == 44.5f) {
+                        y += 10.0f;
+                    }
+                    x1 = 0.5f;
+                    int tY = 0;
+                    ArrayList<Value> sliders = new ArrayList<Value>();
+                    for (Value val : Value.list) {
+                    	if(val.getValueName().split("_")[0].equalsIgnoreCase(module.getName())) {
+                        	if (val.isValueDouble) {
+                                sliders.add(val);
+                            }
+                    	}
+                    }
+                    sliders.sort(Comparator.comparing(Value::getValueName));
+                    for (Value val : sliders) {
+                        categoryPanel.sliders.add(new Slider(categoryPanel, xOff + x1 + 1.0f, yOff + y + 4.0f, val));
+                        tY = 12;
+                        if ((x1 += 44.0f) != 88.5f) continue;
+                        tY = 0;
+                        x1 = 0.5f;
+                        y += 12.0f;
+                    }
+                    for (Value<?> val : Value.list) {
+                    	if(val.getValueName().split("_")[0].equalsIgnoreCase(module.getName())) {
+                        	if (val.isValueMode) {
+                        		if (x1 == 44.5f) {
+                                    y += 14.0f;
+                                }
+                                x1 = 0.5f;
+                        	}  
+                    	}  
+                    }
+                    for (Value<?> val : Value.list) {
+                    	if(val.getValueName().split("_")[0].equalsIgnoreCase(module.getName())) {
+                    		if (val.isValueMode) {
+                           		categoryPanel.dropdownBoxes.add(new DropdownBox(val, xOff + x1, yOff + y + 4.0f, categoryPanel));
+                                tY = 17;
+                                if ((x1 += 44.0f) == 88.5f) {
+                                    y += 17.0f;
+                                    tY = 0;
+                                    x1 = 0.5f;
+                                }
+                    		}
+                    	}
+                    }
+                    float ySize = (y += (float)tY) == 34.0f ? 40.0f : y - 11.0f;
+                    categoryPanel.groupBoxes.add(new GroupBox(module, categoryPanel, xOff, yOff, ySize));
+                    xOff += 95.0f;
+                    if (y >= biggestY) {
+                        biggestY = y;
+                    }
+                } else {
+                    if (noSets >= 240.0f) {
+                        categoryPanel.buttons.add(new Button(categoryPanel, module.getName(), 55.0f + categoryButton.panel.x + noSets - 240.0f, 345.0f, module));
+                    } else {
+                        categoryPanel.buttons.add(new Button(categoryPanel, module.getName(), 55.0f + categoryButton.panel.x + noSets, 330.0f, module));
+                    }
+                    noSets += 40.0f;
+                }
+                if (!(xOff > 20.0f + categoryButton.panel.y + 310.0f)) continue;
+                xOff = 50.0f + categoryButton.panel.x;
+                yOff += y == 20.0f && biggestY == 20.0f ? 26.0f : biggestY; //       yOff += y;
+            }
+        }
     }
     
     @Override
@@ -731,14 +813,11 @@ extends UI {
         if (categoryPanel.categoryButton.name.equalsIgnoreCase("Title")) {
             float xOff = 100.0f + categoryPanel.categoryButton.panel.dragX - 2.5f;
             float yOff = 62.0f + categoryPanel.categoryButton.panel.dragY;
-            RenderUtil.rectangleBordered((double)xOff, (double)(yOff - 6.0f), (double)(xOff + 280.0f), (double)(yOff + 293.0f), (double)0.5, (int)Colors.getColor((int)0, (int)0), (int)Colors.getColor((int)10, (int)((int)this.opacity.getOpacity())));
-            RenderUtil.rectangleBordered((double)((double)xOff + 0.5), (double)((double)yOff - 5.5), (double)((double)(xOff + 280.0f) - 0.5), (double)((double)(yOff + 293.0f) - 0.5), (double)0.5, (int)Colors.getColor((int)0, (int)0), (int)Colors.getColor((int)48, (int)((int)this.opacity.getOpacity())));
-            RenderUtil.rectangle((double)(xOff + 1.0f), (double)(yOff - 5.0f), (double)(xOff + 279.0f), (double)(yOff + 293.0f - 1.0f), (int)Colors.getColor((int)17, (int)((int)this.opacity.getOpacity())));
-            String SignTitle = "This shit clickgui is made by Arithmo then we copyd it . yeah We're super Skidder";
-            Client.fs.drawStringWithShadow(SignTitle, xOff + 5.0f, yOff - 1.0f, Colors.getColor((int)220, (int)((int)this.opacity.getOpacity())));
-            Client.fs.drawStringWithShadow("This clickgui has no pulley and glScissor , so we make it", xOff + 5.0f, yOff+8.0f, Colors.getColor((int)220, (int)((int)this.opacity.getOpacity())));
-            Client.fs.drawStringWithShadow("Main: Chinazz | Helper: Mr.Su", xOff + 5.0f, yOff + 17.0f, Colors.getColor((int)220, (int)((int)this.opacity.getOpacity())));
-            Client.fs.drawStringWithShadow("Youtube@Chinazz | E-mail: 1597369607@qq.com", xOff + 5.0f, yOff + 26.0f, Colors.getColor((int)220, (int)((int)this.opacity.getOpacity())));
+            RenderUtil.rectangleBordered((double)xOff, (double)(yOff - 6.0f), (double)(xOff + 280.0f), (double)(yOff + 200.0f), (double)0.5, (int)Colors.getColor((int)0, (int)0), (int)Colors.getColor((int)10, (int)((int)this.opacity.getOpacity())));
+            RenderUtil.rectangleBordered((double)((double)xOff + 0.5), (double)((double)yOff - 5.5), (double)((double)(xOff + 280.0f) - 0.5), (double)((double)(yOff + 200.0f) - 0.5), (double)0.5, (int)Colors.getColor((int)0, (int)0), (int)Colors.getColor((int)48, (int)((int)this.opacity.getOpacity())));
+            RenderUtil.rectangle((double)(xOff + 1.0f), (double)(yOff - 5.0f), (double)(xOff + 279.0f), (double)(yOff + 200.0f - 1.0f), (int)Colors.getColor((int)17, (int)((int)this.opacity.getOpacity())));
+            Client.fs.drawStringWithShadow("Info", xOff + 5.0f, yOff-7.0f, Colors.getColor((int)220, (int)((int)this.opacity.getOpacity())));
+            Client.fs.drawStringWithShadow("Cheat By Snowflake", xOff + 8.0f, yOff + 2.0f, Colors.getColor((int)220, (int)((int)this.opacity.getOpacity())));
         }
         int scaleFactor = 1;
         boolean flag = Minecraft.getMinecraft().func_152349_b();//isUnicode
@@ -880,8 +959,7 @@ extends UI {
             Client.fs.drawStringWithShadow("Enable", p0.x + 7.6f + xOff, p0.y + 1.0f + yOff, Colors.getColor((int)220, (int)((int)this.opacity.getOpacity())));
             String meme = p0.module.getKey() > 0 ? ("[" +Keyboard.getKeyName(p0.module.getKey())+ "]") : "[-]";
             GlStateManager.pushMatrix();
-            GlStateManager.translate((float)(p0.x + xOff + 29.0f), (float)(p0.y + 1.0f + yOff), (float)0.0f);
-            GlStateManager.scale((double)0.5, (double)0.5, (double)0.5);
+            GlStateManager.translate((float)(p0.x + xOff + 28.0f), (float)(p0.y + 1.0f + yOff), (float)0.0f);
             Client.fs.drawStringWithShadow(meme, 0.0f, 0.0f, p0.isBinding ? Colors.getColor((int)216, (int)56, (int)56, (int)((int)this.opacity.getOpacity())) : Colors.getColor((int)75, (int)((int)this.opacity.getOpacity())));
             GlStateManager.popMatrix();
             GlStateManager.popMatrix();
@@ -897,19 +975,19 @@ extends UI {
             GlStateManager.popMatrix();
         }
     }
+    
     @Override
     public void buttonKeyPressed(Button button, int key) {
         if (button.isBinding && key != 0) {
             int keyToBind = key;
-            if (key == 1 || key == 14) {
-                keyToBind = Keyboard.getKeyIndex((String)"NONE");
+            if (key == Keyboard.KEY_ESCAPE || key == Keyboard.KEY_DELETE) {
+            	keyToBind = Keyboard.getKeyIndex((String)"NONE");
             }
-            //Keybind keybind = new Keybind((Bindable)button.module, keyToBind);
-           // button.module.setKeybind(keybind);
-           // ModuleManager.saveStatus();
+            button.module.setKey(keyToBind);
             button.isBinding = false;
         }
     }
+    
     @Override
     public void checkBoxMouseClicked(Checkbox p0, int p2, int p3, int p4, CategoryPanel panel) {
         if (panel.categoryButton.enabled) {
@@ -1418,18 +1496,6 @@ extends UI {
             return setting.getDesc();
         }*/
         return "";
-    }
-
-    private static /* synthetic */ void lambda$multiDropDownDraw$13(List enabled, Value set) {
-     /*   if (((Boolean)set.getValueState()).booleanValue()) {
-            enabled.add((Object)(set.getName().charAt(0) + set.getName().toLowerCase().substring(1)));
-        }*/
-    }
-
-    private static /* synthetic */ void lambda$categoryPanelConstructor$10(List sliders, Value setting) {
-        if (setting.isValueDouble) {
-            sliders.add(setting);
-        }
     }
     
     static class Depth {
