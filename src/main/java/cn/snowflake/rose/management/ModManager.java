@@ -66,6 +66,7 @@ public class ModManager {
         addMod(new FastPlace());
         addMod(new FastUse());
         addMod(new InvMove());
+        addMod(new Timer());
         //WORLD
         addMod(new ServerCrasher());
         addMod(new Bot());
