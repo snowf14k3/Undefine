@@ -133,7 +133,6 @@ public class AntiReflex {
                             e.printStackTrace();
                         }
                     }else{
-                        JOptionPane.showMessageDialog(null,"\u767b\u5f55\u6210\u529f");
                         LoginScreen.kkkkkk = true;
                     }
                 }else {//fake windows
