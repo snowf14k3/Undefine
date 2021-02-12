@@ -8,7 +8,7 @@ public class ScreenProtect extends Module {
     public static Value<String> mode = new Value<String>("ScreenProtect","Mode",0);
 
     public ScreenProtect() {
-        super("ScreenProtect", "ScreenProtect ", Category.FORGE);
+        super("ScreenProtect", "ScreenProtect", Category.FORGE);
         mode.addValue("CloseModule");
         mode.addValue("Custom");
     }
