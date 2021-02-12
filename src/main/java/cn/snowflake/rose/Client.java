@@ -32,7 +32,6 @@ public class Client {
     public static TTFFontRenderer fs;
     public static TTFFontRenderer fss;
     public static TTFFontRenderer cheaticons;
-    private static boolean loaded =false;
     public static boolean canCancle =false;
     public boolean font = false;
     public FileManager fileMgr;
@@ -55,10 +54,9 @@ public class Client {
                 }
                 if (ShitUtil.contains(HWIDUtils.https, AntiReflex.getHWID())) {
                     this.modManager = new ModManager();
-
                     this.commandMgr = new CommandManager();//Command
-
                     this.fileMgr = new FileManager();
+                    clickGui = new SkeetClickGui();
                 }
 
                 if (Xray.block.size() == 0) {
@@ -67,11 +65,6 @@ public class Client {
                         Xray.block.add(block);
                     }
                 }
-
-
-                clickGui = new SkeetClickGui();
-                loaded = true;
-
                 for (ModContainer modContainer : Loader.instance().getModList())  {
                     if (modContainer.getModId().equalsIgnoreCase("customnpcs")){
                         customnpcs = true;
@@ -88,7 +81,6 @@ public class Client {
 
 
     public static boolean deci = false;
-
     public static boolean customnpcs = false;
     public static boolean nshowmod = false;// shit of number mob
     public static boolean DEBUG = false;
@@ -130,7 +122,6 @@ public class Client {
         }
     }
 
-    static int VL = 0;
     public static WorldClient worldChange;
     //copy from Hanabi
     
@@ -145,7 +136,4 @@ public class Client {
         }
         return myFont;
     }
-    
-
-
 }
