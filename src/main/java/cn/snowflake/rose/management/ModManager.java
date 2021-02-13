@@ -32,6 +32,7 @@ public class ModManager {
         addMod(new Sprint());
         addMod(new AirJump());
         addMod(new Fly());
+        addMod(new VehicleSpeed());
         addMod(new Scaffold());
         addMod(new Speed());
         addMod(new NoFall());

@@ -1,8 +1,5 @@
 package maki.screen;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import maki.utils.LoginUtil;
-
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
@@ -22,6 +19,9 @@ public class LoginScreen {
         btn_login = new JButton("Login");
         user = new JTextField();
         pass = new JPasswordField ();
+        btn_login.setEnabled(false);
+        user.setEnabled(false);
+        pass.setEnabled(false);
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(new TitledBorder("Login"));
         panel.setLayout(new GridLayout(5, -10));
@@ -40,7 +40,7 @@ public class LoginScreen {
         frame.setResizable(false);
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                FMLCommonHandler.instance().exitJava(0,true);
+//                FMLCommonHandler.instance().exitJava(0,true);
             }
         });
         btn_login.addActionListener(new ActionListener() {
@@ -53,7 +53,7 @@ public class LoginScreen {
                 user.setEnabled(false);
                 pass.setEnabled(false);
                 btn_login.setEnabled(false);
-                LoginUtil.doLogin(username, password);
+//                LoginUtil.doLogin(username, password);
             }
         });
         kkkkkk = false;

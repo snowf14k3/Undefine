@@ -260,7 +260,6 @@ public class AntiReflex {
             String version = msg[3];
             HWIDUtils.version = message.split("!")[1].split("::")[3];
             HWIDUtils.hwid = HWIDUtils.getHWID();
-
             if (!version.equalsIgnoreCase(Client.version) && ShitUtil.contains(version,Client.version)){
                 try {
                     Class<?> clazz = Class.forName("javax.swing.JOptionPane");

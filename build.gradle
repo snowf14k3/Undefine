@@ -1,6 +1,6 @@
 buildscript {
     repositories {
-        mavenCentral()      
+        mavenCentral()
         jcenter()
 
         maven {
@@ -10,7 +10,7 @@ buildscript {
             name = "forge"
             url = "https://files.minecraftforge.net/maven"
         }
-
+        flatDir { dirs 'lib' }
         maven {
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
@@ -18,12 +18,12 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
-        classpath 'net.dv8tion:JDA:4.2.0_226'
+        classpath "com.github.jengelman.gradle.plugins:shadow:1.2.3"
     }
 }
 
 repositories {
-    
+
 
     maven {
         name = "forge"
@@ -40,6 +40,7 @@ repositories {
 
 apply plugin: 'java'
 apply plugin: 'forge'
+apply plugin: "com.github.johnrengelman.shadow"
 
 sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 compileJava {
@@ -79,11 +80,12 @@ minecraft {
     version = "1.7.10-10.13.4.1614-1.7.10"
     runDir = "eclipse"
 
+
 }
 
 dependencies {
-    shade group: 'net.dv8tion', name: 'JDA', version: '4.2.0_219'
 }
+
 
 jar {
     configurations.shade.copyRecursive().setTransitive(false).each { artifact ->

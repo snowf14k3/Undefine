@@ -64,7 +64,7 @@ public class Agent {
 
 	public static LaunchClassLoader getLaunchClassLoader() {
 		for (Class<?> c : instrumentation.getAllLoadedClasses()) {
-			if (c.getClassLoader() == null || !c.getClassLoader().getClass().getName().equals((Object)"net.minecraft.launchwrapper.LaunchClassLoader")) continue;
+			if (c.getClassLoader() == null || !c.getClassLoader().getClass().getName().equals("net.minecraft.launchwrapper.LaunchClassLoader")) continue;
 			ClassLoader cl = c.getClassLoader();
 			return (LaunchClassLoader)cl;
 		}
@@ -73,25 +73,17 @@ public class Agent {
 
 	public static void addToMinecraftClassLoader(Class ... classes) {
 		for (Class c : instrumentation.getAllLoadedClasses()) {
-			if (c.getClassLoader() == null || !c.getClassLoader().getClass().getName().equals((Object)"net.minecraft.launchwrapper.LaunchClassLoader")) continue;
+			if (c.getClassLoader() == null || !c.getClassLoader().getClass().getName().equals("net.minecraft.launchwrapper.LaunchClassLoader")) continue;
 			ClassLoader cl = c.getClassLoader();
 			try {
-				Method addUrl = cl.getClass().getDeclaredMethod("addURL", new Class[]{URL.class});
+				Method addUrl = cl.getClass().getDeclaredMethod("addURL", URL.class);
 				addUrl.setAccessible(true);
 				for (Class clazz : classes) {
-					addUrl.invoke((Object)cl, new Object[]{clazz.getProtectionDomain().getCodeSource().getLocation()});
+					addUrl.invoke(cl, clazz.getProtectionDomain().getCodeSource().getLocation());
 				}
 				break;
 			}
-			catch (NoSuchMethodException e) {
-				e.printStackTrace();
-				break;
-			}
-			catch (InvocationTargetException e) {
-				e.printStackTrace();
-				break;
-			}
-			catch (IllegalAccessException e) {
+			catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
 				e.printStackTrace();
 				break;
 			}

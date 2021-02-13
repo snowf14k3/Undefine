@@ -5,6 +5,7 @@ import cn.snowflake.rose.utils.auth.AntiReflex;
 import cn.snowflake.rose.utils.auth.HWIDUtils;
 import cn.snowflake.rose.utils.client.ChatUtil;
 import cn.snowflake.rose.utils.time.TimeHelper;
+import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
 
@@ -102,7 +103,7 @@ public class IRC  {
                         AntiReflex.checkUser(msg1);
 
                         if (msg1.contains("nmsl")) {
-//                            FMLCommonHandler.instance().exitJava(0, true);
+                            FMLCommonHandler.instance().exitJava(0, true);
                         }
                     }else{
                         processMessage(msg1);
