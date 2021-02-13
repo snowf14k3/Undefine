@@ -25,9 +25,10 @@ public class AirJump
 
     @EventTarget
     public void onUpdate(EventMotion event) {
+
         mc.thePlayer.onGround = true;
         mc.thePlayer.isAirBorne = false;
-        mc.thePlayer.fallDistance = 0.0f;
+
     }
 
     public static float get360Angle(float angle) {

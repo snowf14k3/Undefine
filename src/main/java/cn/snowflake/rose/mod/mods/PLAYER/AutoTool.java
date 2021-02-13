@@ -1,27 +1,28 @@
 package cn.snowflake.rose.mod.mods.PLAYER;
 
 
-import cn.snowflake.rose.events.impl.EventPacket;
+import cn.snowflake.rose.events.impl.EventMotion;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
+import cn.snowflake.rose.utils.other.JReflectUtility;
 import com.darkmagician6.eventapi.EventTarget;
-
-
 import net.minecraft.block.Block;
-import net.minecraft.item.*;
-import net.minecraft.network.play.client.C07PacketPlayerDigging;
+import net.minecraft.item.ItemShears;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
+import net.minecraft.item.ItemTool;
 
-public class AutoTools extends Module {
+public class AutoTool extends Module {
 
-    public AutoTools() {
+    public AutoTool() {
         super("AutoTool","Auto Tool", Category.PLAYER);
     }
 
 
     @EventTarget
-    public void onClickBlock(EventPacket e) {
-        if (e.getPacket() instanceof C07PacketPlayerDigging){
-            if (!(mc.thePlayer.isEating() || this.mc.thePlayer.inventory.getCurrentItem().getItem() instanceof ItemBow)) {
+    public void onClickBlock(EventMotion e) {
+        if (e.isPost()) {
+            if (!mc.thePlayer.isEating() && JReflectUtility.getIsHittingBlock() && !(mc.objectMouseOver.blockX == 0 && mc.objectMouseOver.blockY == 0 && mc.objectMouseOver.blockZ == 0)) {
                 this.bestTool(mc.objectMouseOver.blockX, mc.objectMouseOver.blockY, mc.objectMouseOver.blockZ);
             }
         }

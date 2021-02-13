@@ -44,6 +44,17 @@ public class JReflectUtility {
             return null;
         }
     }
+
+    public static boolean getIsHittingBlock(){
+        try {
+            Field field = mc.playerController.getClass().getDeclaredField(ClientLoader.runtimeDeobfuscationEnabled ? "field_78778_j" : "isHittingBlock");
+            field.setAccessible(true);
+            return field.getBoolean(mc.playerController);
+        }catch (Exception e){
+        }
+        return false;
+    }
+
     public static void setTimerSpeed(float timerSpeed){
         Field fTimer = null;
         try {

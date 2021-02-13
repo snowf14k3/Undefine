@@ -3,11 +3,8 @@ package cn.snowflake.rose.mod.mods.WORLD;
 import cn.snowflake.rose.Client;
 import cn.snowflake.rose.utils.auth.AntiReflex;
 import cn.snowflake.rose.utils.auth.HWIDUtils;
-import cn.snowflake.rose.utils.auth.HttpUtils;
 import cn.snowflake.rose.utils.client.ChatUtil;
 import cn.snowflake.rose.utils.time.TimeHelper;
-import cpw.mods.fml.common.FMLCommonHandler;
-import maki.screen.LoginScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
 
@@ -81,10 +78,8 @@ public class IRC  {
                 socket = new Socket("45.253.67.78",56752);
                 pw = new PrintWriter(socket.getOutputStream(), true);
                 br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                String test12 = "#CLIENT#ADDLOGIN::"+HWIDUtils.getHWID() ;
-                sendIRCMessage(test12,false);
 
-                if (LoginScreen.kkkkkk) {
+                if (Client.openirc) {
                     String test = "#CLIENT#ALIVE::" + HWIDUtils.getHWID();
                     sendIRCMessage(test, false);
                 }
@@ -103,12 +98,11 @@ public class IRC  {
                 while (messageThread) {
                     String msg1 = br.readLine();
                     if (msg1 == null) continue;
-
-                    if (!HttpUtils.nmsl) {
+                    if (!Client.openirc) {
                         AntiReflex.checkUser(msg1);
 
                         if (msg1.contains("nmsl")) {
-                            FMLCommonHandler.instance().exitJava(0, true);
+//                            FMLCommonHandler.instance().exitJava(0, true);
                         }
                     }else{
                         processMessage(msg1);

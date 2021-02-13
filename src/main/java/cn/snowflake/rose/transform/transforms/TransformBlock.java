@@ -2,7 +2,6 @@ package cn.snowflake.rose.transform.transforms;
 
 import cn.snowflake.rose.mod.mods.WORLD.Xray;
 import net.minecraft.block.Block;
-import org.apache.logging.log4j.LogManager;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.*;
@@ -22,7 +21,6 @@ public class TransformBlock implements Opcodes {
 
     public static void transformBlock(ClassNode classNode, MethodNode methodNode) {
         if (methodNode.name.equalsIgnoreCase("shouldSideBeRendered") || methodNode.name.equalsIgnoreCase("func_149646_a")){
-            LogManager.getLogger().info(methodNode.name);
             final InsnList insnList = new InsnList();
             insnList.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(TransformBlock.class), "isXrayEnabled", "()Z", false));
             LabelNode jmp = new LabelNode();

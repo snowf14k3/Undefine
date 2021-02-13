@@ -65,7 +65,9 @@ public class EventMotion implements Event, Cancellable
     public boolean isPre() {
         return this.type == EventType.PRE;
     }
-
+    public boolean isPost() {
+        return this.type == EventType.POST;
+    }
     @Override
     public boolean isCancelled() {
         return this.cancel;

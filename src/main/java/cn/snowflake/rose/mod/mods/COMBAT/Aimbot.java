@@ -4,11 +4,12 @@ import cn.snowflake.rose.Client;
 import cn.snowflake.rose.events.impl.EventMotion;
 import cn.snowflake.rose.events.impl.EventRender2D;
 import cn.snowflake.rose.events.impl.EventTick;
+import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.management.FriendManager;
 import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.*;
+import cn.snowflake.rose.utils.Value;
 import cn.snowflake.rose.utils.client.RotationUtil;
 import cn.snowflake.rose.utils.math.Location;
 import cn.snowflake.rose.utils.other.JReflectUtility;
@@ -78,12 +79,9 @@ public class Aimbot extends Module {
     @EventTarget
     public void on2D(EventRender2D eventRender2D){
 		ScaledResolution res = new ScaledResolution(this.mc,this.mc.displayWidth,this.mc.displayHeight);
-        if (Client.DEBUG) {
-            mc.fontRenderer.drawStringWithShadow(target.getClass().getName(),
-                    100, 90, 16777215); // 测试模式画Entity信息
-            mc.fontRenderer.drawStringWithShadow(target.toString(),
-                    100, 100, 16777215); // 测试模式画Entity信息
-        }
+
+        mc.fontRenderer.drawStringWithShadow(target.getCommandSenderName() + " | hurt : " + (target.hurtTime > 0),res.getScaledWidth() / 2 + 10, res.getScaledHeight() / 2 - 3, 16777215); // 测试模式画Entity信息
+
 		drawCircle(res.getScaledWidth() / 2, res.getScaledHeight() / 2,
 					fov.getValueState().floatValue() * 3.5f, 500, -1);
     }
@@ -125,6 +123,23 @@ public class Aimbot extends Module {
 	}
 
     @EventTarget(Priority.HIGH)
+    public void ontick(EventUpdate e){
+
+        if (mc.thePlayer != null) {
+            if (ModManager.getModByName("NoRecoil").isEnabled() && NoRecoil.horizontal.getValueState()) {
+                mc.thePlayer.rotationPitch = mc.thePlayer.prevRotationPitch;
+            }
+            if (ModManager.getModByName("NoRecoil").isEnabled() && NoRecoil.vertical.getValueState()){
+                mc.thePlayer.rotationYaw = mc.thePlayer.prevRotationYaw;
+            }
+            if(!silent.getValueState() && yaw != 0 && pitch != 0 && shouldAim()) {
+                Minecraft.getMinecraft().thePlayer.rotationYaw = yaw;
+                Minecraft.getMinecraft().thePlayer.rotationPitch = pitch;
+            }
+        }
+
+    }
+    @EventTarget(Priority.HIGH)
     public void ontick(EventTick e){
         if (mc.thePlayer != null) {
             if (ModManager.getModByName("NoRecoil").isEnabled() && NoRecoil.horizontal.getValueState()) {
@@ -133,7 +148,7 @@ public class Aimbot extends Module {
             if (ModManager.getModByName("NoRecoil").isEnabled() && NoRecoil.vertical.getValueState()){
                 mc.thePlayer.rotationYaw = mc.thePlayer.prevRotationYaw;
             }
-            if(!silent.getValueState() && yaw != 0 && pitch != 0) {
+            if(!silent.getValueState() && yaw != 0 && pitch != 0 && shouldAim()) {
                 Minecraft.getMinecraft().thePlayer.rotationYaw = yaw;
                 Minecraft.getMinecraft().thePlayer.rotationPitch = pitch;
             }
@@ -319,7 +334,7 @@ public class Aimbot extends Module {
     }
 //|| !(deci.getValueState() && Objects.requireNonNull(JReflectUtility.getGunItem()).isInstance(mc.thePlayer.inventory.getCurrentItem().getItem()))
     public boolean shouldAim(){
-    	if (Keyboard.isKeyDown(Keyboard.KEY_LMETA)) {
+    	if (Keyboard.isKeyDown(Keyboard.KEY_LMENU)) {
 			return false;
 		}
         if(mc.thePlayer.inventory.getCurrentItem() == null ){

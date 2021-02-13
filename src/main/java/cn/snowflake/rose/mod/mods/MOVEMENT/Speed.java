@@ -3,13 +3,11 @@ package cn.snowflake.rose.mod.mods.MOVEMENT;
 import cn.snowflake.rose.events.impl.EventMotion;
 import cn.snowflake.rose.events.impl.EventMove;
 import cn.snowflake.rose.events.impl.EventUpdate;
-import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.other.JReflectUtility;
+import cn.snowflake.rose.utils.Value;
 import cn.snowflake.rose.utils.client.PlayerUtil;
 import cn.snowflake.rose.utils.time.TimeHelper;
-import cn.snowflake.rose.utils.Value;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
@@ -33,7 +31,6 @@ public class Speed extends Module {
         mode.mode.add("Bhop");
         mode.addValue("Bhop1");
         mode.addValue("Bhop2");
-        mode.addValue("OnGroundNCP");
         mode.addValue("YportNCP");
     }
     private int jumps;
@@ -72,33 +69,6 @@ public class Speed extends Module {
                     mc.thePlayer.motionY = -5D;
 
                 PlayerUtil.strafe();
-            }
-            if (this.mode.isCurrentMode("OnGroundNCP"))
-            {
-                if(!PlayerUtil.isMoving())
-                    return;
-
-                if(mc.thePlayer.fallDistance > 3.994)
-                    return;
-
-                if(mc.thePlayer.isInWater() || mc.thePlayer.isOnLadder() || mc.thePlayer.isCollidedHorizontally)
-                    return;
-
-                mc.thePlayer.posY -= 0.3993000090122223;
-                mc.thePlayer.motionY = -1000.0;
-                mc.thePlayer.cameraPitch = 0.3F;
-                mc.thePlayer.distanceWalkedModified = 44.0F;
-                JReflectUtility.setTimerSpeed(1f);
-
-                if(mc.thePlayer.onGround) {
-                    mc.thePlayer.posY += 0.3993000090122223;
-                    mc.thePlayer.motionY = 0.3993000090122223;
-                    mc.thePlayer.distanceWalkedOnStepModified = 44.0f;
-                    mc.thePlayer.motionX *= 1.590000033378601;
-                    mc.thePlayer.motionZ *= 1.590000033378601;
-                    mc.thePlayer.cameraPitch = 0.0f;
-                    JReflectUtility.setTimerSpeed(1.199F);
-                }
             }
         }
     }
@@ -211,10 +181,6 @@ public class Speed extends Module {
                 this.setMotion(e, this.speed * 1.5d);
                 ++this.stage;
             }
-        }
-        TargetStrafe ts = (TargetStrafe) ModManager.getModByName("TargetStrafe");
-        if (ts.isEnabled()){
-            ts.doStrafe(e,speed);
         }
     }
 

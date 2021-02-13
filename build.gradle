@@ -18,7 +18,7 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
-        classpath 'net.dv8tion:JDA:4.2.0_228'
+        classpath 'net.dv8tion:JDA:4.2.0_226'
     }
 }
 

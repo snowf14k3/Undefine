@@ -33,7 +33,6 @@ public class ModManager {
         addMod(new AirJump());
         addMod(new Fly());
         addMod(new Scaffold());
-        addMod(new TargetStrafe());
         addMod(new Speed());
         addMod(new NoFall());
         addMod(new Jesus());
@@ -57,7 +56,7 @@ public class ModManager {
 //        addMod(new Notifications());
         //PLAYER
         addMod(new NoSlowDown());
-        addMod(new AutoTools());
+        addMod(new AutoTool());
         addMod(new Stealer());
         addMod(new AntiEffect());
         addMod(new FastBreak());

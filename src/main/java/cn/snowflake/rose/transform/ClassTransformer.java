@@ -1,33 +1,35 @@
 package cn.snowflake.rose.transform;
 
-import java.lang.instrument.ClassFileTransformer;
-import java.lang.instrument.IllegalClassFormatException;
-import java.security.ProtectionDomain;
-import java.util.*;
-import java.util.function.BiConsumer;
-
 import cn.snowflake.rose.transform.transforms.*;
 import net.minecraft.injection.ClientLoader;
+import net.minecraft.launchwrapper.IClassTransformer;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
-
-import net.minecraft.launchwrapper.IClassTransformer;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.tree.*;
+import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.MethodNode;
+
+import java.lang.instrument.ClassFileTransformer;
+import java.lang.instrument.IllegalClassFormatException;
+import java.security.ProtectionDomain;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.BiConsumer;
 
 
 public class ClassTransformer implements IClassTransformer, ClassFileTransformer,Opcodes{
-	
+
 	private byte[] transformMethods(byte[] bytes, BiConsumer<ClassNode, MethodNode> transformer) {
 		ClassReader classReader = new ClassReader(bytes);
 		ClassNode classNode = new ClassNode();
 		classReader.accept(classNode, 0);
 		LogManager.getLogger().info("transform -> "+classNode.name);
 		classNode.methods.forEach(m ->
-			transformer.accept(classNode, m)
+				transformer.accept(classNode, m)
 		);
 		ClassWriter classWriter = new ClassWriter(0);
 		classNode.accept(classWriter);
@@ -57,9 +59,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 				"net.minecraft.network.NetHandlerPlayServer",
 				"net.minecraft.util.MovementInputFromOptions"
 		};
-		for (int i=0; i<nameArray.length; i++) {
-				classNameSet.add(nameArray[i]);
-		}
+		classNameSet.addAll(Arrays.asList(nameArray));
 	}
 
 	public static boolean needTransform(String name) {
@@ -69,7 +69,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 
 	public byte[] transform(String name, byte[] classByte) {
 		try {
-			 if (name.equals("net.minecraft.client.entity.EntityClientPlayerMP")) {
+			if (name.equals("net.minecraft.client.entity.EntityClientPlayerMP")) {
 				return transformMethods(classByte,TransformEntityClientPlayerMP::transformEntityClientPlayerMP);
 			}
 			else if (name.equals("net.minecraft.client.Minecraft")) {
@@ -78,9 +78,9 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			else if (name.equalsIgnoreCase("net.minecraft.client.renderer.EntityRenderer")){//3d
 				return transformMethods(classByte, TransformEntityRenderer::transformRenderEntityRenderer);
 			}
-			 else if (name.equalsIgnoreCase("net.minecraft.util.MovementInputFromOptions")){
-				 return transformMethods(classByte, TransformMovementInputFromOptions::transformMovementInputFromOptions);
-			 }
+			else if (name.equalsIgnoreCase("net.minecraft.util.MovementInputFromOptions")){
+				return transformMethods(classByte, TransformMovementInputFromOptions::transformMovementInputFromOptions);
+			}
 			else if(name.equals("net.minecraft.client.entity.EntityPlayerSP")){
 				return  transformMethods(classByte, TransformEntityPlayerSP::transformEntityPlayerSP);
 			}
@@ -89,7 +89,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			}
 			else if (name.equalsIgnoreCase("net.minecraft.entity.player.EntityPlayer")){
 				return this.transformMethods(classByte,TransformEntityPlayer::transformEntityPlayer);
-			 }
+			}
 			else if (name.equalsIgnoreCase("net.minecraft.block.Block")){
 				return this.transformMethods(classByte,TransformBlock::transformBlock);
 			}
@@ -103,20 +103,20 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 				return this.transformMethods(classByte,TransformProfiler::transformProfiler);
 			}
 			else if (name.equalsIgnoreCase("net.minecraft.network.NetHandlerPlayServer")){
-				 return this.transformMethods(classByte,TransformNetHandlerPlayServer::transformNetHandlerPlayServer);
-			 }
-			 else if (name.equalsIgnoreCase("net.minecraft.client.renderer.entity.RenderPlayer")){
-				 return this.transformMethods(classByte, TransformRenderPlayer::transformRenderPlayer);
-			 }
-			 else if (name.equalsIgnoreCase("cpw.mods.fml.common.network.FMLEventChannel")){
-			 	return this.transformMethods(classByte,TransformFMLEventChannel::transformFMLEventChannel);
-			 }
-			 else if (name.equalsIgnoreCase("net.minecraft.client.renderer.entity.RendererLivingEntity")){
-				 return this.transformMethods(classByte, TransformRendererLivingEntity::transformRendererLivingEntity);
-			 }
+				return this.transformMethods(classByte,TransformNetHandlerPlayServer::transformNetHandlerPlayServer);
+			}
+			else if (name.equalsIgnoreCase("net.minecraft.client.renderer.entity.RenderPlayer")){
+				return this.transformMethods(classByte, TransformRenderPlayer::transformRenderPlayer);
+			}
+			else if (name.equalsIgnoreCase("cpw.mods.fml.common.network.FMLEventChannel")){
+				return this.transformMethods(classByte,TransformFMLEventChannel::transformFMLEventChannel);
+			}
+			else if (name.equalsIgnoreCase("net.minecraft.client.renderer.entity.RendererLivingEntity")){
+				return this.transformMethods(classByte, TransformRendererLivingEntity::transformRendererLivingEntity);
+			}
 		}catch(Exception e) {
 			LogManager.getLogger().log(Level.ERROR, ExceptionUtils.getStackTrace(e));
-			
+
 		}
 		return classByte;
 	}

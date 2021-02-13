@@ -12,40 +12,38 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 
-
 public class Agent {
-	public static void agentmain(String args, Instrumentation instrumentation){
+	public static Instrumentation instrumentation;
+
+	public static void agentmain(String args, Instrumentation instrumentation) {
 		try {
-			Agent.classloadername = args;
 			Agent.instrumentation = instrumentation;
-			loadThisJar();
-			forceloadclass();
-			retransform();
-		}catch (Exception e){
+			Agent.loadThisJar();
+			Agent.forceloadclass();
+			Agent.retransform();
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-
-	public static String classloadername;
-	public static Instrumentation instrumentation;
-
 	public static void retransform() throws ClassNotFoundException {
 		ClassTransformer ct = new ClassTransformer();
 		instrumentation.addTransformer(ct, true);
-		for (Class clazz : instrumentation.getAllLoadedClasses()) {
-			if (ClassTransformer.needTransform(clazz.getName())) {
-				try {
-					instrumentation.retransformClasses(clazz);
-				} catch (UnmodifiableClassException e) {
-					LogManager.getLogger().log(Level.ERROR, ExceptionUtils.getStackTrace(e));
-				}
+		for (Class<?> clazz : instrumentation.getAllLoadedClasses()) {
+			if (!ClassTransformer.needTransform(clazz.getName())) continue;
+			try {
+				instrumentation.retransformClasses(clazz);
+			}
+			catch (UnmodifiableClassException e) {
+				LogManager.getLogger().log(Level.ERROR, ExceptionUtils.getStackTrace((Throwable)e));
 			}
 		}
 		instrumentation.removeTransformer(ct);
 	}
+
 	public static void loadThisJar() {
-		LaunchClassLoader cl = getLaunchClassLoader();
+		LaunchClassLoader cl = Agent.getLaunchClassLoader();
 		if (cl != null) {
 			URL url = Agent.class.getProtectionDomain().getCodeSource().getLocation();
 			cl.addURL(url);
@@ -53,50 +51,50 @@ public class Agent {
 	}
 
 	public static void forceloadclass() {
-		LaunchClassLoader cl = getLaunchClassLoader();
+		LaunchClassLoader cl = Agent.getLaunchClassLoader();
 		if (cl != null) {
 			for (String name : ClassTransformer.classNameSet) {
 				try {
 					cl.loadClass(name);
-				} catch (ClassNotFoundException e) {
-//					LogManager.getLogger().log(Level.ERROR, "can not load class " + name);
 				}
+				catch (ClassNotFoundException classNotFoundException) {}
 			}
 		}
 	}
 
 	public static LaunchClassLoader getLaunchClassLoader() {
-		for (Class c : instrumentation.getAllLoadedClasses()) {
-			if (c.getClassLoader() != null
-					&& c.getClassLoader().getClass().getName().equals("net.minecraft.launchwrapper.LaunchClassLoader")) {
-				Object cl = c.getClassLoader();
-				return (LaunchClassLoader)cl;
-			}
+		for (Class<?> c : instrumentation.getAllLoadedClasses()) {
+			if (c.getClassLoader() == null || !c.getClassLoader().getClass().getName().equals((Object)"net.minecraft.launchwrapper.LaunchClassLoader")) continue;
+			ClassLoader cl = c.getClassLoader();
+			return (LaunchClassLoader)cl;
 		}
 		return null;
 	}
 
-	public static void addToMinecraftClassLoader(Class... classes) {
+	public static void addToMinecraftClassLoader(Class ... classes) {
 		for (Class c : instrumentation.getAllLoadedClasses()) {
-			if (c.getClassLoader() != null
-					&& c.getClassLoader().getClass().getName().equals("net.minecraft.launchwrapper.LaunchClassLoader")) {
-				Object cl = c.getClassLoader();
-				try {
-					Method addUrl = cl.getClass().getDeclaredMethod("addURL", URL.class);
-					addUrl.setAccessible(true);
-					for (Class clazz : classes )
-						addUrl.invoke(cl, clazz.getProtectionDomain().getCodeSource().getLocation());
-				} catch (NoSuchMethodException e) {
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
+			if (c.getClassLoader() == null || !c.getClassLoader().getClass().getName().equals((Object)"net.minecraft.launchwrapper.LaunchClassLoader")) continue;
+			ClassLoader cl = c.getClassLoader();
+			try {
+				Method addUrl = cl.getClass().getDeclaredMethod("addURL", new Class[]{URL.class});
+				addUrl.setAccessible(true);
+				for (Class clazz : classes) {
+					addUrl.invoke((Object)cl, new Object[]{clazz.getProtectionDomain().getCodeSource().getLocation()});
 				}
+				break;
+			}
+			catch (NoSuchMethodException e) {
+				e.printStackTrace();
+				break;
+			}
+			catch (InvocationTargetException e) {
+				e.printStackTrace();
+				break;
+			}
+			catch (IllegalAccessException e) {
+				e.printStackTrace();
 				break;
 			}
 		}
 	}
-
-
 }

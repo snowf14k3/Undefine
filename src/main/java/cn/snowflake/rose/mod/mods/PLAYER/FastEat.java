@@ -5,6 +5,7 @@ import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemPotion;
 import net.minecraft.network.play.client.C03PacketPlayer;
 
 public class FastEat extends Module
@@ -17,7 +18,7 @@ public class FastEat extends Module
     public void onUpdate(EventUpdate e) {
         if (this.mc.thePlayer.isEating()
                 && this.mc.thePlayer.getItemInUse() != null
-                && this.mc.thePlayer.getItemInUse().getItem() instanceof ItemFood
+                && (this.mc.thePlayer.getItemInUse().getItem() instanceof ItemFood || this.mc.thePlayer.getItemInUse().getItem() instanceof ItemPotion)
                 && this.mc.thePlayer.fallDistance < 3.0f
         ) {
             for (int i = 0; i < 8; ++i) {

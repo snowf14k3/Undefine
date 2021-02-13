@@ -2,7 +2,6 @@ package cn.snowflake.rose.transform.transforms;
 
 import cn.snowflake.rose.events.impl.EventFMLChannels;
 import com.darkmagician6.eventapi.EventManager;
-import org.apache.logging.log4j.LogManager;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.*;
@@ -27,8 +26,6 @@ public class TransformSimpleNetworkWrapper implements Opcodes {
             insnList.add(labelNode);
 //			insnList.add(new FrameNode(F_APPEND, 1, new Object[]{"cn/snowflake/rose/events/impl/EventFMLChannels"}, 0, null));
             methodNode.instructions.insert(insnList);
-            LogManager.getLogger().info("Successfully initialized FML hook !");
-
         }
     }
 

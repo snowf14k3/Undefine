@@ -3,7 +3,6 @@ package cn.snowflake.rose.transform.transforms;
 import cn.snowflake.rose.events.impl.EventFMLChannels;
 import com.darkmagician6.eventapi.EventManager;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
-import org.apache.logging.log4j.LogManager;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.*;
@@ -26,8 +25,6 @@ public class TransformFMLEventChannel implements Opcodes {
             insnList.add(new InsnNode(RETURN));
             insnList.add(labelNode);
             methodNode.instructions.insert(insnList);
-            LogManager.getLogger().info("Successfully initialized FML hook !");
-
         }
     }
 

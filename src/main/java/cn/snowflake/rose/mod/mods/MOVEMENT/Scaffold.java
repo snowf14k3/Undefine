@@ -4,10 +4,10 @@ package cn.snowflake.rose.mod.mods.MOVEMENT;
 import cn.snowflake.rose.events.impl.EventMotion;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.mcutil.BlockPos;
-import cn.snowflake.rose.utils.mcutil.EnumFacing;
 import cn.snowflake.rose.utils.Value;
 import cn.snowflake.rose.utils.math.Vec3Util;
+import cn.snowflake.rose.utils.mcutil.BlockPos;
+import cn.snowflake.rose.utils.mcutil.EnumFacing;
 import com.darkmagician6.eventapi.EventTarget;
 import com.darkmagician6.eventapi.types.EventType;
 import net.minecraft.block.Block;
@@ -16,6 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C09PacketHeldItemChange;
+import net.minecraft.network.play.client.C0APacketAnimation;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.input.Keyboard;
 
@@ -81,7 +82,7 @@ public class Scaffold
             for (i = 36; i < 45; ++i) {
                 ItemStack is;
                 Item item;
-                if (!mc.thePlayer.inventoryContainer.getSlot(i).getHasStack() || !((item = (is = mc.thePlayer.inventoryContainer.getSlot(i).getStack()).getItem()) instanceof ItemBlock) || this.blacklisted.contains(((ItemBlock)item)) || ((ItemBlock)item).getUnlocalizedName().toLowerCase().contains("chest") || this.blockData == null) continue;
+                if (!mc.thePlayer.inventoryContainer.getSlot(i).getHasStack() || !((item = (is = mc.thePlayer.inventoryContainer.getSlot(i).getStack()).getItem()) instanceof ItemBlock) || this.blacklisted.contains(item) || item.getUnlocalizedName().toLowerCase().contains("chest") || item.getUnlocalizedName().toLowerCase().contains("torch") || this.blockData == null) continue;
                 int currentItem = mc.thePlayer.inventory.currentItem;
                 mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(i - 36));
                 mc.thePlayer.inventory.currentItem = i - 36;
@@ -96,8 +97,8 @@ public class Scaffold
                             BlockData.face.getIndex(),//enumface
                             new Vec3Util(blockData.getPosition()).addVector(0.5, 0.5, 0.5).add(new Vec3Util(this.blockData.getFacing().getDirectionVec())).scale(0.5).toVec3());
 
-                    if (this.noSwing.getValueState().booleanValue()) {
-//                        mc.thePlayer.sendQueue.addToSendQueue(new C0APacketAnimation());
+                    if (this.noSwing.getValueState()) {
+                        mc.thePlayer.sendQueue.addToSendQueue(new C0APacketAnimation());
                     } else {
                         mc.thePlayer.swingItem();
                     }
@@ -156,7 +157,7 @@ public class Scaffold
     private boolean invCheck() {
         for (int i = 36; i < 45; ++i) {
             Item item;
-            if (!mc.thePlayer.inventoryContainer.getSlot(i).getHasStack() || !((item = mc.thePlayer.inventoryContainer.getSlot(i).getStack().getItem()) instanceof ItemBlock) || this.blacklisted.contains(((ItemBlock)item))) continue;
+            if (!mc.thePlayer.inventoryContainer.getSlot(i).getHasStack() || !((item = mc.thePlayer.inventoryContainer.getSlot(i).getStack().getItem()) instanceof ItemBlock) || this.blacklisted.contains((item))) continue;
             return false;
         }
         return true;
