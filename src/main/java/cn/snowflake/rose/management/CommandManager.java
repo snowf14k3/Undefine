@@ -21,6 +21,7 @@ public class CommandManager {
         add(new CommandIRC(new String[] {"irc",""}));
         add(new CommandLogin(new String[]{"login","l"}));
         add(new CommandVClip(new String[]{"vclip","v"}));
+        add(new CommandTP2(new String[]{"tp2"}));
     }
 
     public void add(Command c) {

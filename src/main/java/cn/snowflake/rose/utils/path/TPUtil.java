@@ -14,59 +14,58 @@ import java.util.Comparator;
 public class TPUtil {
     private static final Minecraft mc = Minecraft.getMinecraft();
 
-    public static ArrayList<Vec3Util> computePath(Vec3Util from, Vec3Util to, double dashDistance, boolean isTeleport) {
-            if (!canPassThrow(new BlockPos(from.toVec3()))) {
-                from = from.addVector(0, 1, 0);
-            }
-        TPUtil$1 pathfinder = new TPUtil$1(from, to);
-        pathfinder.compute();
-
-        int i = 0;
-        Vec3Util lastLoc = null;
-        Vec3Util lastDashLoc = null;
-        ArrayList<Vec3Util> path = new ArrayList<>();
-        ArrayList<Vec3Util> pathFinderPath = pathfinder.getPath();
-        for (Vec3Util pathElm : pathFinderPath) {
-            if (i == 0 || i == pathFinderPath.size() - 1) {
-                if (lastLoc != null) {
-                    path.add(lastLoc.addVector(0.5, 0, 0.5));
-                }
-                path.add(pathElm.addVector(0.5, 0, 0.5));
-                lastDashLoc = pathElm;
-            } else {
-                boolean canContinue = true;
-                if (pathElm.squareDistanceTo(lastDashLoc) > (isTeleport ? dashDistance : (dashDistance * dashDistance))) {
-                    canContinue = false;
-                } else {
-                    double smallX = Math.min(lastDashLoc.x, pathElm.x);
-                    double smallY = Math.min(lastDashLoc.y, pathElm.y);
-                    double smallZ = Math.min(lastDashLoc.z, pathElm.z);
-                    double bigX = Math.max(lastDashLoc.x, pathElm.x);
-                    double bigY = Math.max(lastDashLoc.y, pathElm.y);
-                    double bigZ = Math.max(lastDashLoc.z, pathElm.z);
-                    cordsLoop:
-                    for (int x = (int) smallX; x <= bigX; x++) {
-                        for (int y = (int) smallY; y <= bigY; y++) {
-                            for (int z = (int) smallZ; z <= bigZ; z++) {
-                                if (!TPUtil$1.checkPositionValidity(x, y, z)) {
-                                    canContinue = false;
-                                    break cordsLoop;
-                                }
-                            }
-                        }
-                    }
-                }
-                if (!canContinue) {
-                    path.add(lastLoc.addVector(0.5, 0, 0.5));
-                    lastDashLoc = lastLoc;
-                }
-            }
-            lastLoc = pathElm;
-            i++;
-        }
-        return path;
-    }
-
+   // public static ArrayList<Vec3Util> computePath(Vec3Util from, Vec3Util to, double dashDistance, boolean isTeleport) {
+   //            if (!canPassThrow(new BlockPos(from.toVec3()))) {
+   //                from = from.addVector(0, 1, 0);
+   //            }
+   //        TPUtil$1 pathfinder = new TPUtil$1(from, to);
+   //        pathfinder.compute();
+   //
+   //        int i = 0;
+   //        Vec3Util lastLoc = null;
+   //        Vec3Util lastDashLoc = null;
+   //        ArrayList<Vec3Util> path = new ArrayList<>();
+   //        ArrayList<Vec3Util> pathFinderPath = pathfinder.getPath();
+   //        for (Vec3Util pathElm : pathFinderPath) {
+   //            if (i == 0 || i == pathFinderPath.size() - 1) {
+   //                if (lastLoc != null) {
+   //                    path.add(lastLoc.addVector(0.5, 0, 0.5));
+   //                }
+   //                path.add(pathElm.addVector(0.5, 0, 0.5));
+   //                lastDashLoc = pathElm;
+   //            } else {
+   //                boolean canContinue = true;
+   //                if (pathElm.squareDistanceTo(lastDashLoc) > (isTeleport ? dashDistance : (dashDistance * dashDistance))) {
+   //                    canContinue = false;
+   //                } else {
+   //                    double smallX = Math.min(lastDashLoc.x, pathElm.x);
+   //                    double smallY = Math.min(lastDashLoc.y, pathElm.y);
+   //                    double smallZ = Math.min(lastDashLoc.z, pathElm.z);
+   //                    double bigX = Math.max(lastDashLoc.x, pathElm.x);
+   //                    double bigY = Math.max(lastDashLoc.y, pathElm.y);
+   //                    double bigZ = Math.max(lastDashLoc.z, pathElm.z);
+   //                    cordsLoop:
+   //                    for (int x = (int) smallX; x <= bigX; x++) {
+   //                        for (int y = (int) smallY; y <= bigY; y++) {
+   //                            for (int z = (int) smallZ; z <= bigZ; z++) {
+   //                                if (!TPUtil$1.checkPositionValidity(x, y, z)) {
+   //                                    canContinue = false;
+   //                                    break cordsLoop;
+   //                                }
+   //                            }
+   //                        }
+   //                    }
+   //                }
+   //                if (!canContinue) {
+   //                    path.add(lastLoc.addVector(0.5, 0, 0.5));
+   //                    lastDashLoc = lastLoc;
+   //                }
+   //            }
+   //            lastLoc = pathElm;
+   //            i++;
+   //        }
+   //        return path;
+   //    }
     private static boolean canPassThrow(BlockPos pos) {
         Block block = mc.theWorld.getBlock(pos.getX(), pos.getY(), pos.getZ());
         return (block.getMaterial() != Material.air && block.getMaterial() != Material.plants && block.getMaterial() != Material.vine && block != Blocks.ladder && block != Blocks.water && block != Blocks.flowing_water && block != Blocks.wall_sign && block != Blocks.standing_sign);
@@ -120,7 +119,7 @@ public class TPUtil {
                 }
             }
             lastLoc = pathElm;
-            i++;
+            ++i;
         }
         return path;
     }
