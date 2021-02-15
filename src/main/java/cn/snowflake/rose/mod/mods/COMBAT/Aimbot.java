@@ -1,8 +1,8 @@
 package cn.snowflake.rose.mod.mods.COMBAT;
 
 import cn.snowflake.rose.Client;
+import cn.snowflake.rose.events.impl.EventMotion;
 import cn.snowflake.rose.events.impl.EventRender2D;
-import cn.snowflake.rose.events.impl.EventTick;
 import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.management.FriendManager;
 import cn.snowflake.rose.management.ModManager;
@@ -89,7 +89,7 @@ public class Aimbot extends Module {
     public void on2D(EventRender2D eventRender2D){
 		ScaledResolution res = new ScaledResolution(this.mc,this.mc.displayWidth,this.mc.displayHeight);
 
-		if (target != null) {
+		if (target != null  && target.getHealth() != 0.0) {
             mc.fontRenderer.drawStringWithShadow(
                     "HP: " + target.getHealth(),
                     res.getScaledWidth() / 2 - 10 - mc.fontRenderer.getStringWidth("HP: " + target.getHealth()),
@@ -196,50 +196,56 @@ public class Aimbot extends Module {
 
 
     @EventTarget
-    public void onTick(EventTick eventTick){
-        double targetWeight = Double.NEGATIVE_INFINITY;
-        for (EntityLivingBase livingBase : getTarget()) {
-               if (target == null) {
-                   target = livingBase;
-                   targetWeight = this.getTargetWeight(livingBase);
-               } else {
-                   if (this.getTargetWeight(livingBase) <= targetWeight) {
-                      continue;
-                   }
-                  target = livingBase;
-                  targetWeight = this.getTargetWeight(livingBase);
-              }
-        }
-        addTarget();
-        if (target != null){
-            Entity ey = null;
-            if (target instanceof EntityPlayer){
-                ey = this.predictPlayerMovement(((EntityPlayer)target),predict.getValueState().intValue());
-            }else{
-                ey = target;
-            }
-
-
-            double rotY = ey.posY;
-            if (ey instanceof EntityPlayer) {
-                if (roundToPlace(ey.boundingBox.maxY - ey.boundingBox.minY, 2) == 0.6) {//lying
-                    rotY = ey.boundingBox.minY + 0.15;
-                } else if (roundToPlace(ey.boundingBox.maxY - ey.boundingBox.minY, 2) == 1.3) {//squatting
-                    rotY = ey.boundingBox.minY + 0.65 + index.getValueState();
-                } else if (roundToPlace(ey.boundingBox.maxY - ey.boundingBox.minY, 2) == 1.8) {//standing
-                    rotY = ey.boundingBox.minY + 0.45 + index.getValueState();
+    public void onTick(EventMotion eventMotion){
+        if (eventMotion.isPre()) {
+            double targetWeight = Double.NEGATIVE_INFINITY;
+            for (EntityLivingBase livingBase : getTarget()) {
+                if (target == null) {
+                    target = livingBase;
+                    targetWeight = this.getTargetWeight(livingBase);
+                } else {
+                    if (this.getTargetWeight(livingBase) <= targetWeight) {
+                        continue;
+                    }
+                    target = livingBase;
+                    targetWeight = this.getTargetWeight(livingBase);
                 }
-            }else{
-                rotY = ey.posY + ey.getEyeHeight() - index.getValueState();
             }
-            double X = Math.abs(target.motionX);
-            double Z = Math.abs(target.motionZ);
-            targetspeed = X + Z;
-            float[] rotations = this.getPlayerRotations(mc.thePlayer, ey.posX, rotY , ey.posZ);
-            if(!silent.getValueState()&& shouldAim() && target.getHealth() != 0.0) {
-                Minecraft.getMinecraft().thePlayer.rotationYaw = rotations[0];
-                Minecraft.getMinecraft().thePlayer.rotationPitch = rotations[1];
+            addTarget();
+            if (target != null) {
+                Entity ey = null;
+                if (target instanceof EntityPlayer) {
+                    ey = this.predictPlayerMovement(((EntityPlayer) target), predict.getValueState().intValue());
+                } else {
+                    ey = target;
+                }
+                double rotY = ey.posY;
+                if (ey instanceof EntityPlayer) {
+                    if (roundToPlace(ey.boundingBox.maxY - ey.boundingBox.minY, 2) == 0.6) {//lying
+                        rotY = ey.boundingBox.minY + 0.15;
+                    } else if (roundToPlace(ey.boundingBox.maxY - ey.boundingBox.minY, 2) == 1.3) {//squatting
+                        rotY = ey.boundingBox.minY + 0.65 + index.getValueState();
+                    } else if (roundToPlace(ey.boundingBox.maxY - ey.boundingBox.minY, 2) == 1.8) {//standing
+                        rotY = ey.boundingBox.minY + 0.45 + index.getValueState();
+                    }
+                } else {
+                    rotY = ey.posY + ey.getEyeHeight() - index.getValueState();
+                }
+                double X = Math.abs(target.motionX);
+                double Z = Math.abs(target.motionZ);
+                targetspeed = X + Z;
+                float[] rotations = this.getPlayerRotations(mc.thePlayer, ey.posX, rotY, ey.posZ);
+                if (shouldAim() && target.getHealth() != 0.0) {
+                    if (!silent.getValueState()){
+                        Minecraft.getMinecraft().thePlayer.rotationYaw = rotations[0];
+                        Minecraft.getMinecraft().thePlayer.rotationPitch = rotations[1];
+                    }else{
+                        eventMotion.setYaw(rotations[0]);
+                        eventMotion.setPitch(rotations[1]);
+                    }
+                }
             }
+
         }
     }
 
