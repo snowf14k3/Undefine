@@ -36,7 +36,7 @@ public class TransformMinecraft {
 
     public static void dispatchKeypressesHook(){
         if (Keyboard.getEventKeyState()) {
-            for (Module mod : ModManager.getModList()) {
+            for (Module mod : Client.instance.modManager.getModList()) {
                 if (Minecraft.getMinecraft().currentScreen == null) {
                     if (mod.getKey() != (Keyboard.getEventKey() == 0 ? Keyboard.getEventCharacter() + 256 : Keyboard.getEventKey())) continue;
                     mod.set(!mod.isEnabled());

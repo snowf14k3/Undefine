@@ -55,6 +55,7 @@ public class ModManager {
         addMod(new ViewClip());
         addMod(new ESP2D());
         addMod(new ChestESP());
+        addMod(new SimpleHUD());
 //        addMod(new BlockOverlay());
         addMod(new ESP());
 //        addMod(new Notifications());
@@ -104,7 +105,7 @@ public class ModManager {
         return null;
     }
 
-    public static ArrayList<Module> getModList() {
+    public ArrayList<Module> getModList() {
         return modList;
     }
 
