@@ -41,7 +41,7 @@ import java.util.Objects;
 public class Client {
     public static String shitname =null;
     public static String name = "Season";
-    public static String version = "1.1";
+    public static String version = "1.1-fix";
     public static Client instance;
     public static boolean init = false;
     public static TTFFontRenderer fs;

@@ -39,7 +39,7 @@ public class Decimation {
 //            } catch (NoSuchFieldException | IllegalAccessException e) {
 //            }
 //        }
-            if (ScreenProtect.leave.getValueState()){
+        if (ScreenProtect.mode.isCurrentMode("leave") && mc.theWorld != null){
                 if (eventFMLChannels.iMessage.toString().contains("deci.aE.a$ab")) {
                     eventFMLChannels.setCancelled(true);
                     mc.theWorld.sendQuittingDisconnectingPacket();

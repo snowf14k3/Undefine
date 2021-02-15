@@ -62,7 +62,7 @@ public class HUD extends Module {
             String server = mc.isSingleplayer() ? "local_server" : mc.func_147104_D().serverIP.toLowerCase();//getCurrentServerData
             String text = null;
             String text2 = null;
-            String info = (Client.shitname.toLowerCase().contains("snowflake") ? "Dev: " : Client.shitname.toLowerCase().contains("chentg") ? "\247cHelper: \247f" : "\247cUser: \247f") + Client.shitname;
+            String info = (Client.shitname.toLowerCase().contains("snowflake") ? "Dev: " : Client.shitname.toLowerCase().contains("chentg") ? "Helper: f" : "User: ") + Client.shitname;
             try {
                 text2 = JReflectUtility.getField(mc.getClass(), ClientLoader.runtimeDeobfuscationEnabled ? "field_71470_ab": "debugFPS",true).getInt(mc) + " fps | " +result +" | " + server;
                 text = this.text.getText()+"\2472sense\247f | "+info+" | " +text2;

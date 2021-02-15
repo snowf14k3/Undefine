@@ -18,9 +18,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.monster.EntitySlime;
+import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntitySquid;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
@@ -43,10 +48,10 @@ public class Aimbot extends Module {
     public Value<Boolean> throughwall = new Value<Boolean>("Aimbot_ThroughWall", false);
 
     public Value<Boolean> players = new Value<Boolean>("Aimbot_Player", true);
-//    public Value<Boolean> otherentity = new Value<Boolean>("Aimbot_ModsEntity", false);
-//    public Value<Boolean> animal = new Value<Boolean>("Aimbot_Animal", false);
-//    public Value<Boolean> moster = new Value<Boolean>("Aimbot_Mob", false);
-//    public Value<Boolean> village = new Value<Boolean>("Aimbot_village", false);
+    public Value<Boolean> otherentity = new Value<Boolean>("Aimbot_ModsEntity", false);
+    public Value<Boolean> animal = new Value<Boolean>("Aimbot_Animal", false);
+    public Value<Boolean> moster = new Value<Boolean>("Aimbot_Mob", false);
+    public Value<Boolean> village = new Value<Boolean>("Aimbot_village", false);
     public Value<Boolean> invisible = new Value<Boolean>("Aimbot_Invisible", false);
     public Value<Boolean> silent = new Value<Boolean>("Aimbot_Silent", false);
     public Value<Boolean> circle = new Value<Boolean>("Aimbot_Circle", false);
@@ -84,39 +89,41 @@ public class Aimbot extends Module {
     public void on2D(EventRender2D eventRender2D){
 		ScaledResolution res = new ScaledResolution(this.mc,this.mc.displayWidth,this.mc.displayHeight);
 
-        mc.fontRenderer.drawStringWithShadow(
-                "HP: "+target.getHealth(),
-                res.getScaledWidth() / 2 - 10 - mc.fontRenderer.getStringWidth("HP: "+target.getHealth()),
-                res.getScaledHeight() / 2 - 10,
-                16777215); // 测试模式画Entity信息
+		if (target != null) {
+            mc.fontRenderer.drawStringWithShadow(
+                    "HP: " + target.getHealth(),
+                    res.getScaledWidth() / 2 - 10 - mc.fontRenderer.getStringWidth("HP: " + target.getHealth()),
+                    res.getScaledHeight() / 2 - 10,
+                    16777215); // 测试模式画Entity信息
 
-        mc.fontRenderer.drawStringWithShadow(
-                "SPD: "+targetspeed,
-                res.getScaledWidth() / 2 - 10 - mc.fontRenderer.getStringWidth("SPD: "+targetspeed),
-                res.getScaledHeight() / 2,
-                16777215); // 测试模式画Entity信息
+            mc.fontRenderer.drawStringWithShadow(
+                    "SPD: " + targetspeed,
+                    res.getScaledWidth() / 2 - 10 - mc.fontRenderer.getStringWidth("SPD: " + targetspeed),
+                    res.getScaledHeight() / 2,
+                    16777215); // 测试模式画Entity信息
 
-        mc.fontRenderer.drawStringWithShadow(
-                "name: "+target.getCommandSenderName(),
-                res.getScaledWidth() / 2 + 10,
-                res.getScaledHeight() / 2,
-                16777215); // 测试模式画Entity信息
+            mc.fontRenderer.drawStringWithShadow(
+                    "name: " + target.getCommandSenderName(),
+                    res.getScaledWidth() / 2 + 10,
+                    res.getScaledHeight() / 2,
+                    16777215); // 测试模式画Entity信息
 
-        mc.fontRenderer.drawStringWithShadow(
-                "hurt : " + (target.hurtTime > 0),
-                res.getScaledWidth() / 2 + 10,
-                res.getScaledHeight() / 2 - 10,
-                16777215); // 测试模式画Entity信息
+            mc.fontRenderer.drawStringWithShadow(
+                    "hurt : " + (target.hurtTime > 0),
+                    res.getScaledWidth() / 2 + 10,
+                    res.getScaledHeight() / 2 - 10,
+                    16777215); // 测试模式画Entity信息
 
-        mc.fontRenderer.drawStringWithShadow(
-                "aabbx : " + target.boundingBox.minY + " | " + target.boundingBox.maxY + " | different: " + (roundToPlace(target.boundingBox.maxY - target.boundingBox.minY,2)) + " eye: "+ target.getEyeHeight(),
-                0,
-                res.getScaledHeight() / 2 - 20,
-                16777215); // 测试模式画Entity信息
-        if (circle.getValueState()){
+//            mc.fontRenderer.drawStringWithShadow(
+//                    "aabbx : " + target.boundingBox.minY + " | " + target.boundingBox.maxY + " | different: " + (roundToPlace(target.boundingBox.maxY - target.boundingBox.minY, 2)) + " eye: " + target.getEyeHeight(),
+//                    0,
+//                    res.getScaledHeight() / 2 - 20,
+//                    16777215); // 测试模式画Entity信息
+            if (circle.getValueState()) {
 
-            drawCircle(res.getScaledWidth() / 2, res.getScaledHeight() / 2,
-                    fov.getValueState().floatValue() * 3.5f, 500, -1);
+                drawCircle(res.getScaledWidth() / 2, res.getScaledHeight() / 2,
+                        fov.getValueState().floatValue() * 3.5f, 500, -1);
+            }
         }
     }
 
@@ -191,47 +198,45 @@ public class Aimbot extends Module {
     @EventTarget
     public void onTick(EventTick eventTick){
         double targetWeight = Double.NEGATIVE_INFINITY;
-        for (Object o : mc.theWorld.playerEntities) {
-            EntityLivingBase p = (EntityLivingBase)o;
-            if (canTarget(p)) {
-                    if (target == null) {
-                        target = p;
-                        targetWeight = this.getTargetWeight(p);
-                    } else {
-                        if (this.getTargetWeight(p) <= targetWeight) {
-                            continue;
-                        }
-                        target = p;
-                        targetWeight = this.getTargetWeight(p);
-                    }
-//                else {
-//                    if (target == null) {
-//                        target = p;
-//                    }
-//                }
-            }
+        for (EntityLivingBase livingBase : getTarget()) {
+               if (target == null) {
+                   target = livingBase;
+                   targetWeight = this.getTargetWeight(livingBase);
+               } else {
+                   if (this.getTargetWeight(livingBase) <= targetWeight) {
+                      continue;
+                   }
+                  target = livingBase;
+                  targetWeight = this.getTargetWeight(livingBase);
+              }
         }
         addTarget();
         if (target != null){
-            Entity enity = null;
+            Entity ey = null;
             if (target instanceof EntityPlayer){
-                enity = this.predictPlayerMovement(((EntityPlayer)target),predict.getValueState().intValue());
-            }else {
-                enity = getTarget();
+                ey = this.predictPlayerMovement(((EntityPlayer)target),predict.getValueState().intValue());
+            }else{
+                ey = target;
             }
-            double rotY = enity.posY;
-            if (roundToPlace(enity.boundingBox.maxY - enity.boundingBox.minY,2) == 0.6){//lying
-                rotY = enity.boundingBox.minY + 0.15;
-            }else if (roundToPlace(enity.boundingBox.maxY - enity.boundingBox.minY,2) == 1.3){//squatting
-                rotY = enity.boundingBox.minY + 0.65 + index.getValueState();
-            }else if (roundToPlace(enity.boundingBox.maxY - enity.boundingBox.minY,2) == 1.8){//standing
-                rotY = enity.boundingBox.minY + 0.45 + index.getValueState();
+
+
+            double rotY = ey.posY;
+            if (ey instanceof EntityPlayer) {
+                if (roundToPlace(ey.boundingBox.maxY - ey.boundingBox.minY, 2) == 0.6) {//lying
+                    rotY = ey.boundingBox.minY + 0.15;
+                } else if (roundToPlace(ey.boundingBox.maxY - ey.boundingBox.minY, 2) == 1.3) {//squatting
+                    rotY = ey.boundingBox.minY + 0.65 + index.getValueState();
+                } else if (roundToPlace(ey.boundingBox.maxY - ey.boundingBox.minY, 2) == 1.8) {//standing
+                    rotY = ey.boundingBox.minY + 0.45 + index.getValueState();
+                }
+            }else{
+                rotY = ey.posY + ey.getEyeHeight() - index.getValueState();
             }
             double X = Math.abs(target.motionX);
             double Z = Math.abs(target.motionZ);
             targetspeed = X + Z;
-            float[] rotations = this.getPlayerRotations(mc.thePlayer, enity.posX, rotY , enity.posZ);
-            if(!silent.getValueState()&& shouldAim()) {
+            float[] rotations = this.getPlayerRotations(mc.thePlayer, ey.posX, rotY , ey.posZ);
+            if(!silent.getValueState()&& shouldAim() && target.getHealth() != 0.0) {
                 Minecraft.getMinecraft().thePlayer.rotationYaw = rotations[0];
                 Minecraft.getMinecraft().thePlayer.rotationPitch = rotations[1];
             }
@@ -330,18 +335,18 @@ public class Aimbot extends Module {
         if (!ModManager.getModByName("NoFriend").isEnabled() && FriendManager.isFriend(entity.getCommandSenderName())){
             return false;
         }
-//        if (entity instanceof EntityAnimal && !animal.getValueState()) {
-//            return false;
-//        }
-//        if ((entity instanceof EntitySlime || entity instanceof EntityMob )&& !moster.getValueState()) {
-//            return false;
-//        }
+        if (entity instanceof EntityAnimal && !animal.getValueState()) {
+            return false;
+        }
+        if ((entity instanceof EntitySlime || entity instanceof EntityMob)&& !moster.getValueState()) {
+            return false;
+        }
         if (entity instanceof EntityBat){
             return false;
         }
-//        if (entity instanceof EntityVillager && !village.getValueState()) {
-//            return false;
-//        }
+        if (entity instanceof EntityVillager && !village.getValueState()) {
+            return false;
+        }
         if (entity.isInvisible() && !invisible.getValueState()) {
             return false;
         }
@@ -358,9 +363,9 @@ public class Aimbot extends Module {
                 return false;
             }
         }
-//        if ( (entity instanceof EntityCreature) && !otherentity.getValueState() ) {
-//            return false;
-//        }
+        if ( (entity instanceof EntityCreature) && !otherentity.getValueState() ) {
+            return false;
+        }
         return entity != mc.thePlayer && entity.isEntityAlive();
     }
 
@@ -398,36 +403,27 @@ public class Aimbot extends Module {
     }
 
 
-    private EntityLivingBase getTarget() {
+    private List<EntityLivingBase> getTarget() {
         List<EntityLivingBase> loaded = new ArrayList<EntityLivingBase>();
         for (Object o : mc.theWorld.getLoadedEntityList()) {
             if (o instanceof EntityLivingBase) {
                 EntityLivingBase ent = (EntityLivingBase) o;
                 if (canTarget(ent)) {
-                    if (ent == Aura.target) {
-                        return ent;
-                    }
                     loaded.add(ent);
                 }
             }
         }
-        if (loaded.isEmpty()) {
-            return null;
-        }
-        EntityLivingBase target = null;
-
-	        if (sortingMode.isCurrentMode("Distance")) {
+	    if (sortingMode.isCurrentMode("Distance")) {
 	            loaded.sort((o1, o2) ->
 	                    (int) (o1.getDistanceToEntity(mc.thePlayer) - o2.getDistanceToEntity(mc.thePlayer))
 	            );
-	        }
-	        if (sortingMode.isCurrentMode("Health")){
+	    }
+	    if (sortingMode.isCurrentMode("Health")){
 	            loaded.sort((o1, o2) ->
 	                    (int) (o1.getHealth() - o2.getHealth())
 	            );
-	        }
-	         target = loaded.get(0);
-        return target;
+	    }
+        return loaded;
     }
 
     public static float[] getRotationByBoundingBox(Entity ent,float maxRange ,boolean random){

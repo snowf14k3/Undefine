@@ -22,7 +22,7 @@ public class ModManager {
         addMod(new Criticals());
         addMod(new FastBow());
         addMod(new AntiAim());
-        addMod(new Aimbot2());
+//        addMod(new Aimbot2());
         addMod(new TPAura());
         addMod(new Aimbot());
         addMod(new Velocity());

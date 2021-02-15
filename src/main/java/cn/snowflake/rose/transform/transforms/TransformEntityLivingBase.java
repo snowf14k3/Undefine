@@ -2,9 +2,9 @@ package cn.snowflake.rose.transform.transforms;
 
 import cn.snowflake.rose.events.impl.EventLivingUpdate;
 import com.darkmagician6.eventapi.EventManager;
-import jdk.nashorn.internal.codegen.types.Type;
 import net.minecraft.entity.Entity;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.*;
 
 public class TransformEntityLivingBase implements Opcodes {

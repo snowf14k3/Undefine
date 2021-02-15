@@ -6,6 +6,8 @@ import cn.snowflake.rose.utils.antianticheat.ScreenhostHelper;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiMainMenu;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -22,6 +24,7 @@ public class CatAntiCheat {
         EventManager.register(this);
     }
 
+    Minecraft mc = Minecraft.getMinecraft();
 
     @EventTarget
     public void onFml(EventFMLChannels eventFMLChannels){
@@ -106,6 +109,11 @@ public class CatAntiCheat {
 //                                    in = new ByteArrayInputStream(CatAntiCheatHelper.screenshot());
 //                                }
 //                            }
+                            if (ScreenProtect.mode.isCurrentMode("leave") && mc.theWorld != null){
+                                mc.theWorld.sendQuittingDisconnectingPacket();
+                                mc.loadWorld(null);
+                                this.mc.displayGuiScreen(new GuiMainMenu());
+                            }
 
                             if (ScreenProtect.mode.isCurrentMode("Custom")) {
                                 if (ScreenhostHelper.catanticheatImage != null) {

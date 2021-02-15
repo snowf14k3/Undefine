@@ -188,7 +188,7 @@ public class CSGOGUI extends GuiScreen {
         GlStateManager.translate(anim,anim,anim);
 
         //GLScissor
-        RenderUtil.doGlScissor(startX - 20,startY - 8, startX +300, startY + 198);
+        RenderUtil.doGlScissor(startX - 20,startY - 7, startX +300, startY + 198);
         //Category
         RenderUtil.drawRect(startX - 20, startY - 8, startX + 66, startY  + 198,new Color(64,64,64).getRGB());
         //Mods
@@ -208,6 +208,7 @@ public class CSGOGUI extends GuiScreen {
 
             if(isHovered(startX - 17, startY + 14 + CY, startX + 50, startY + 32+ CY, mouseX, mouseY) ) {
                 if (handler.canExcecute()){
+                    modscrollY = 0;
                     this.selectCategory = i;
                     this.modlistsize = getModsInCategory(Category.values()[selectCategory]).size();
                 }

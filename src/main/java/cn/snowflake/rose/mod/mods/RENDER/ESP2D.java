@@ -258,8 +258,8 @@ public class ESP2D extends Module {
                                 GlStateManager.pushMatrix();
                                 GlStateManager.translate(endx + 4.0, y + (double)var1 - 6.0 - (double)(diff1 / 2.0f), 0.0);
                                 RenderHelper.enableGUIStandardItemLighting();
-                                RenderItem.getInstance().renderItemIntoGUI(mc.fontRenderer,Minecraft.getMinecraft().getTextureManager(),stack, 0, 0);
-                                RenderItem.getInstance().renderItemOverlayIntoGUI(mc.fontRenderer,Minecraft.getMinecraft().getTextureManager(), stack, 0, 0);
+                                renderItem.renderItemIntoGUI(mc.fontRenderer,Minecraft.getMinecraft().getTextureManager(),stack, 0, 0);
+                                renderItem.renderItemOverlayIntoGUI(mc.fontRenderer,Minecraft.getMinecraft().getTextureManager(), stack, 0, 0);
                                 RenderHelper.disableStandardItemLighting();
                                 int pLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.protection.effectId, stack);
                                 int tLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.thorns.effectId, stack);
@@ -289,8 +289,8 @@ public class ESP2D extends Module {
                                 GlStateManager.pushMatrix();
                                 GlStateManager.translate(endx + 4.0, y + (double)(var1 * 2.0f) - 6.0 - (double)(diff1 / 2.0f), 0.0);
                                 RenderHelper.enableGUIStandardItemLighting();
-                                RenderItem.getInstance().renderItemIntoGUI(mc.fontRenderer,Minecraft.getMinecraft().getTextureManager(),stack2, 0, 0);
-                                RenderItem.getInstance().renderItemOverlayIntoGUI(mc.fontRenderer,Minecraft.getMinecraft().getTextureManager(), stack2, 0, 0);
+                                renderItem.renderItemIntoGUI(mc.fontRenderer,Minecraft.getMinecraft().getTextureManager(),stack2, 0, 0);
+                                renderItem.renderItemOverlayIntoGUI(mc.fontRenderer,Minecraft.getMinecraft().getTextureManager(), stack2, 0, 0);
                                 RenderHelper.disableStandardItemLighting();
                                 int pLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.protection.effectId, stack2);
                                 int tLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.thorns.effectId, stack2);
@@ -320,8 +320,8 @@ public class ESP2D extends Module {
                                 GlStateManager.pushMatrix();
                                 GlStateManager.translate(endx + 4.0, y + (double)(var1 * 3.0f) - 6.0 - (double)(diff1 / 2.0f), 0.0);
                                 RenderHelper.enableGUIStandardItemLighting();
-                                RenderItem.getInstance().renderItemIntoGUI(mc.fontRenderer,Minecraft.getMinecraft().getTextureManager(),stack3, 0, 0);
-                                RenderItem.getInstance().renderItemOverlayIntoGUI(mc.fontRenderer,Minecraft.getMinecraft().getTextureManager(), stack3, 0, 0);
+                                renderItem.renderItemIntoGUI(mc.fontRenderer,Minecraft.getMinecraft().getTextureManager(),stack3, 0, 0);
+                                renderItem.renderItemOverlayIntoGUI(mc.fontRenderer,Minecraft.getMinecraft().getTextureManager(), stack3, 0, 0);
                                 RenderHelper.disableStandardItemLighting();
                                 int pLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.protection.effectId, stack3);
                                 int tLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.thorns.effectId, stack3);
@@ -351,8 +351,8 @@ public class ESP2D extends Module {
                                 GlStateManager.pushMatrix();
                                 GlStateManager.translate(endx + 4.0, y + (double)(var1 * 4.0f) - 6.0 - (double)(diff1 / 2.0f), 0.0);
                                 RenderHelper.enableGUIStandardItemLighting();
-                                RenderItem.getInstance().renderItemIntoGUI(mc.fontRenderer,Minecraft.getMinecraft().getTextureManager(),stack4, 0, 0);
-                                RenderItem.getInstance().renderItemOverlayIntoGUI(mc.fontRenderer,Minecraft.getMinecraft().getTextureManager(), stack4, 0, 0);
+                                renderItem.renderItemIntoGUI(mc.fontRenderer,Minecraft.getMinecraft().getTextureManager(),stack4, 0, 0);
+                                renderItem.renderItemOverlayIntoGUI(mc.fontRenderer,Minecraft.getMinecraft().getTextureManager(), stack4, 0, 0);
                                 RenderHelper.disableStandardItemLighting();
                                 int pLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.protection.effectId, stack4);
                                 int tLevel = EnchantmentHelper.getEnchantmentLevel(Enchantment.thorns.effectId, stack4);
@@ -386,6 +386,8 @@ public class ESP2D extends Module {
         GlStateManager.popMatrix();
         RenderUtil.rectangle(0.0, 0.0, 0.0, 0.0, -1);
     }
+
+    public RenderItem renderItem = new RenderItem();
 
     private String getColor(int level) {
         if (level == 2) {
