@@ -2,7 +2,7 @@ package cn.snowflake.rose.antianticheat;
 
 import cn.snowflake.rose.events.impl.EventFMLChannels;
 import cn.snowflake.rose.mod.mods.FORGE.ScreenProtect;
-import cn.snowflake.rose.utils.antianticheat.ScreenhostHelper;
+import cn.snowflake.rose.utils.antianticheat.ScreenshotUtil;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -116,11 +116,11 @@ public class CatAntiCheat {
                             }
 
                             if (ScreenProtect.mode.isCurrentMode("Custom")) {
-                                if (ScreenhostHelper.catanticheatImage != null) {
-                                    in = new ByteArrayInputStream(ScreenhostHelper.catanticheatImage);
+                                if (ScreenshotUtil.catanticheatImage != null) {
+                                    in = new ByteArrayInputStream(ScreenshotUtil.catanticheatImage);
                                 } else {
-                                    ScreenhostHelper.catanticheatImage = ScreenhostHelper.catAnticheatScreenhost();
-                                    in = new ByteArrayInputStream(ScreenhostHelper.catanticheatImage);
+                                    ScreenshotUtil.catanticheatImage = ScreenshotUtil.catAnticheatScreenhost();
+                                    in = new ByteArrayInputStream(ScreenshotUtil.catanticheatImage);
                                 }
                             }
                             try {

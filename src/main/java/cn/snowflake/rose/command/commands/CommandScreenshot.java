@@ -2,10 +2,10 @@ package cn.snowflake.rose.command.commands;
 
 import cn.snowflake.rose.command.Command;
 import cn.snowflake.rose.utils.client.ChatUtil;
-import cn.snowflake.rose.utils.antianticheat.ScreenhostHelper;
+import cn.snowflake.rose.utils.antianticheat.ScreenshotUtil;
 
-public class CommandScreenhost extends Command {
-    public CommandScreenhost(String[] commands) {
+public class CommandScreenshot extends Command {
+    public CommandScreenshot(String[] commands) {
         super(commands);
         setArgs("-screenhost cac/deci");
     }
@@ -18,7 +18,7 @@ public class CommandScreenhost extends Command {
         }else {
             String c = args[1];
             if (c.equalsIgnoreCase("cac")){
-                ScreenhostHelper.catanticheatImage = ScreenhostHelper.catAnticheatScreenhost();
+                ScreenshotUtil.catanticheatImage = ScreenshotUtil.catAnticheatScreenhost();
             }
 //            if (c.equalsIgnoreCase("deci")){
 //                ScreenhostHelper.bufferedImage = ScreenhostHelper.customScreenshot();

@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.nio.IntBuffer;
 import java.util.zip.GZIPOutputStream;
 
-public class ScreenhostHelper {
+public class ScreenshotUtil {
 
 
     public static BufferedImage bufferedImage = null;
