@@ -217,7 +217,7 @@ public class ESP2D extends Module {
                         if (scale > 1.0f)
                             scale = 1.0f;
                         GlStateManager.scale(scale, scale, scale);
-                        String renderName = "\u00a7a" + (int)mc.thePlayer.getDistanceToEntity(ent) + "m \u00a7r\u00a7l" + ent.getDisplayName();
+                        String renderName = "\u00a7a" + (int)mc.thePlayer.getDistanceToEntity(ent) + "m \u00a7r\u00a7l" + ent.getCommandSenderName();
                         float meme2 = (float)((endx - x) - (double)(Minecraft.getMinecraft().fontRenderer.getStringWidth(renderName) / 1.0f));
                         Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(renderName, (int)((x + (meme2 / 2)) / scale),(int)(((y) / scale) - 10),-1);
                         GlStateManager.popMatrix();

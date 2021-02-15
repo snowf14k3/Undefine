@@ -1,19 +1,53 @@
 package cn.snowflake.rose.antianticheat;
 
 import cn.snowflake.rose.events.impl.EventFMLChannels;
+import cn.snowflake.rose.mod.mods.FORGE.ScreenProtect;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiMainMenu;
 
-public class DeciScreen {
+public class Decimation {
+    Minecraft mc = Minecraft.getMinecraft();
 
-    public DeciScreen(){
+    public Decimation(){
         EventManager.register(this);
     }
 
 
     @EventTarget
     public void onFml(EventFMLChannels eventFMLChannels){
-//            if (eventFMLChannels.iMessage.toString().contains("deci.aE.a$ab")){
+//        if (eventFMLChannels.iMessage.toString().contains("a$r")){
+//            try {
+//                Field field = eventFMLChannels.iMessage.getClass().getDeclaredField("awZ");
+//                field.setAccessible(true);
+//
+//                Field field2 = eventFMLChannels.iMessage.getClass().getDeclaredField("UZ");
+//                field2.setAccessible(true);
+//
+//                Field field3 = eventFMLChannels.iMessage.getClass().getDeclaredField("Va");
+//                field3.setAccessible(true);
+//
+//                if (mc.thePlayer.isRiding()){
+//                    if (mc.gameSettings.keyBindForward.getIsKeyPressed()){
+//                        field2.set(eventFMLChannels.iMessage,100);
+//                    }
+//                }
+//
+////                ChatUtil.sendClientMessage("½Ç¶È :  "+field.getFloat(eventFMLChannels.iMessage) + " " + field2.getFloat(eventFMLChannels.iMessage) + " | " + field3.getFloat(eventFMLChannels.iMessage));
+//
+//            } catch (NoSuchFieldException | IllegalAccessException e) {
+//            }
+//        }
+            if (ScreenProtect.leave.getValueState()){
+                if (eventFMLChannels.iMessage.toString().contains("deci.aE.a$ab")) {
+                    eventFMLChannels.setCancelled(true);
+                    mc.theWorld.sendQuittingDisconnectingPacket();
+                    mc.loadWorld(null);
+                    this.mc.displayGuiScreen(new GuiMainMenu());
+                }
+            }
+
 //            try {
 //                Field fceiling_float_int = eventFMLChannels.iMessage.getClass().getDeclaredField("axM");
 //                Field fi = eventFMLChannels.iMessage.getClass().getDeclaredField("axL");

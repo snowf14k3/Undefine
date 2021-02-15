@@ -1,11 +1,7 @@
 package cn.snowflake.rose.antianticheat;
 
 import cn.snowflake.rose.events.impl.EventFMLChannels;
-import cn.snowflake.rose.management.ModManager;
-import cn.snowflake.rose.mod.Category;
-import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.mod.mods.FORGE.ScreenProtect;
-import cn.snowflake.rose.utils.antianticheat.CatAntiCheatHelper;
 import cn.snowflake.rose.utils.antianticheat.ScreenhostHelper;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
@@ -86,19 +82,30 @@ public class CatAntiCheat {
                         Constructor<? extends IMessage> screenhost = eventFMLChannels.iMessage.getClass().getDeclaredConstructor(
                                 boolean.class, byte[].class);
                         if (screenhost != null) {
+
                             eventFMLChannels.setCancelled(true);
                             ByteArrayInputStream in = null;
-                            ArrayList<Module> close = new ArrayList<>();
+                            boolean reopen = false;
+//                            ArrayList<Module> render = new ArrayList();
+//                            ArrayList<Module> close = new ArrayList();
 
-                            if (ScreenProtect.mode.isCurrentMode("CloseModule")) {
-                                for (Module m : ModManager.modList) {
-                                    if (m.getCategory() == Category.RENDER) {
-                                        m.set(false);
-                                        close.add(m);//添加已经关闭的功能
-                                    }
-                                }
-                                in = new ByteArrayInputStream(CatAntiCheatHelper.screenshot());
-                            }
+//                            if (ScreenProtect.mode.isCurrentMode("CloseModule")) {
+//                                ChatUtil.sendClientMessage("You've been screenshotted by the op");
+//                                for (Module m : ModManager.modList){
+//                                    if (m.getCategory() == Category.RENDER) {
+//                                        render.add(m);//添加已经关闭的功能
+//                                    }
+//                                }
+//                                for (Module m1 : render){
+//                                    if (m1.isEnabled()){
+//                                        m1.set(false);
+//                                        close.add(m1);
+//                                    }
+//                                }
+//                                if (delay.isDelayComplete(100000L)){
+//                                    in = new ByteArrayInputStream(CatAntiCheatHelper.screenshot());
+//                                }
+//                            }
 
                             if (ScreenProtect.mode.isCurrentMode("Custom")) {
                                 if (ScreenhostHelper.catanticheatImage != null) {
@@ -108,25 +115,17 @@ public class CatAntiCheat {
                                     in = new ByteArrayInputStream(ScreenhostHelper.catanticheatImage);
                                 }
                             }
-
-
                             try {
                                 byte[] networkData = new byte[32763];
                                 int size;
                                 while ((size = in.read(networkData)) >= 0) {
                                     try {
                                         if (networkData.length == size) {
-                                            eventFMLChannels.sendToServer((IMessage) screenhost.newInstance(
+                                            eventFMLChannels.sendToServer(screenhost.newInstance(
                                                     in.available() == 0, networkData));
                                         } else {
-                                            eventFMLChannels.sendToServer((IMessage) screenhost.newInstance(
+                                            eventFMLChannels.sendToServer(screenhost.newInstance(
                                                     in.available() == 0, Arrays.copyOf(networkData, size)));
-                                        }
-                                        if (close != null) { //重新打开 关闭掉的功能
-                                            for (Module c : close) {
-                                                c.set(true);
-                                            }
-                                            close.clear();
                                         }
                                     } catch (InstantiationException | IllegalAccessException | InvocationTargetException instantiationException) {
                                     }
@@ -144,7 +143,6 @@ public class CatAntiCheat {
                                     eventFMLChannels.sendToServer((IMessage) datacheck.newInstance(
                                             false, false));
                                 } catch (Exception e1) {
-                                    e1.printStackTrace();
                                 }
                             }
                         } catch (NoSuchMethodException e1) {

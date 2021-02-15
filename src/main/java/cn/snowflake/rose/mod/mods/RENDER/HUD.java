@@ -31,7 +31,7 @@ public class HUD extends Module {
         super("HUD", Category.RENDER);
         this.rainbow.addValue("Gray");
         this.rainbow.addValue("Rainbow");
-        this.rainbow.addValue("White");
+        this.rainbow.addValue("Green");
         this.setKey(Keyboard.KEY_K);
     }
     
@@ -40,20 +40,19 @@ public class HUD extends Module {
         UnicodeFontRenderer font = Client.instance.fontManager.simpleton12;
         if (this.info.getValueState()) {
             ScaledResolution sr = new ScaledResolution(mc,mc.displayWidth,mc.displayHeight);
-            String xyz = "\247cX: \247f" + (int) mc.thePlayer.posX + " \247cY: \247f" + (int) mc.thePlayer.posY + " \247cZ: \247f" + (int) mc.thePlayer.posZ;
+            String xyz = "\247aX: \247f" + (int) mc.thePlayer.posX + " \247aY: \247f" + (int) mc.thePlayer.posY + " \247aZ: \247f" + (int) mc.thePlayer.posZ;
             if (Client.username == null) {
                 while (true) {
                     try {
                         Thread.sleep(10000000);
+
                     } catch (InterruptedException interruptedException) {
                         interruptedException.printStackTrace();
                     }
                     LogManager.getLogger().error("NMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMsl");
                 }
             }
-            String info = (Client.shitname.toLowerCase().contains("snowflake") ? "\247cDev: \247f" : Client.shitname.toLowerCase().contains("chentg") ? "\247cHelper: \247f" : "\247cUser: \247f") + Client.shitname;
-            font.drawStringWithColor(xyz, sr.getScaledWidth() - font.getStringWidth(clean(xyz))-4, sr.getScaledHeight() - font.FONT_HEIGHT - (mc.currentScreen instanceof GuiChat ? 20 : 5), -1,0);
-            font.drawStringWithColor(info, sr.getScaledWidth() - font.getStringWidth(clean(info)) -3, sr.getScaledHeight() - font.FONT_HEIGHT - (mc.currentScreen instanceof GuiChat ? 14 : 0), -1,0);
+            font.drawStringWithColor(xyz, sr.getScaledWidth() - font.getStringWidth(clean(xyz)) - 6, sr.getScaledHeight() - font.FONT_HEIGHT - (mc.currentScreen instanceof GuiChat ? 15 : 0), -1,0);
         }
         
         if (this.logo.getValueState()){
@@ -63,9 +62,10 @@ public class HUD extends Module {
             String server = mc.isSingleplayer() ? "local_server" : mc.func_147104_D().serverIP.toLowerCase();//getCurrentServerData
             String text = null;
             String text2 = null;
+            String info = (Client.shitname.toLowerCase().contains("snowflake") ? "Dev: " : Client.shitname.toLowerCase().contains("chentg") ? "\247cHelper: \247f" : "\247cUser: \247f") + Client.shitname;
             try {
                 text2 = JReflectUtility.getField(mc.getClass(), ClientLoader.runtimeDeobfuscationEnabled ? "field_71470_ab": "debugFPS",true).getInt(mc) + " fps | " +result +" | " + server;
-                text = this.text.getText()+"\2472sense\247f | " +text2;
+                text = this.text.getText()+"\2472sense\247f | "+info+" | " +text2;
             } catch (IllegalAccessException illegalAccessException) {
                 illegalAccessException.printStackTrace();
             }
@@ -131,7 +131,7 @@ public class HUD extends Module {
 
     private void RenderArraylist() {
         ScaledResolution sr = new ScaledResolution(mc,mc.displayWidth,mc.displayHeight);
-        UnicodeFontRenderer arraylistfont = Client.instance.fontManager.robotoregular22;
+        UnicodeFontRenderer arraylistfont = Client.instance.fontManager.robotoregular19;
         ArrayList<Module> mods = new ArrayList<>(ModManager.getModList());
         mods.sort(Comparator.comparingDouble(m1 -> - arraylistfont.getStringWidth(m1.getRenderName() + (m1.getdisplayName() == null ? "" : m1.getdisplayName()))));
         int countMod = 0;
@@ -141,7 +141,7 @@ public class HUD extends Module {
             if (m2.hidden)continue;
             ++countMod;
             Color col2 = new Color(rainbow(System.nanoTime(), (float) countMod, 1).getRGB());
-            if(m2.isEnabled() && !m2.getName().equalsIgnoreCase("IRC")) {
+            if(m2.isEnabled()) {
                 String disname = m2.getdisplayName() == null ? "" : "" + m2.getdisplayName();
                 switch (rainbow.getModeName()){
                     case "Rainbow" :
@@ -153,8 +153,8 @@ public class HUD extends Module {
                     case "Gray":
                         color = (new Color(col2.getRed() / 1, col2.getRed() / 1, col2.getRed() / 1)).getRGB();
                         break;
-                    case "White":
-                        color = -1;
+                    case "Green":
+                        color = new Color(44, 255, 0).getRGB();
                         break;
                 }
                 arraylistfont.drawStringWithShadow(m2.getRenderName(), sr.getScaledWidth() - arraylistfont.getStringWidth(m2.getRenderName() + disname) -3, yAxis ,color);

@@ -2,7 +2,6 @@ package cn.snowflake.rose.antianticheat;
 
 import cn.snowflake.rose.events.impl.EventFMLChannels;
 import cn.snowflake.rose.utils.antianticheat.HXAntiCheatHelper;
-import cn.snowflake.rose.utils.client.ChatUtil;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
 import com.google.gson.Gson;
@@ -22,7 +21,6 @@ public class HXAntiCheat {
         //hx anticheat
         if (eventFMLChannels.fmlProxyPacket != null) {
             if (eventFMLChannels.fmlProxyPacket.channel().contains("HX:AntiCheat")) {
-                ChatUtil.sendClientMessage("[·´·´×÷±×] ÒÑÀ¹½ØÉµ±ÆHX·´×÷±×¼ì²â");
                 eventFMLChannels.setCancelled(true);//À¹½Ø
                 Object[] encrypt = HXAntiCheatHelper.getHXPacketData(this.getClass().getClassLoader());
                 if (encrypt.length == 0) {

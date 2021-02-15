@@ -1,17 +1,74 @@
 package cn.snowflake.rose.utils.client;
 
 
-import java.util.Random;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.Vec3;
+
+import java.util.Random;
 
 public class RotationUtil {
     private static final Minecraft mc = Minecraft.getMinecraft();
 
+    public static boolean canEntityBeSeen(Entity e){
+        Vec3 vec1 = Vec3.createVectorHelper(mc.thePlayer.posX, mc.thePlayer.posY + mc.thePlayer.getEyeHeight(),mc.thePlayer.posZ);
+
+        AxisAlignedBB box = e.boundingBox;
+        Vec3 vec2 = Vec3.createVectorHelper(e.posX, e.posY + (e.getEyeHeight()/1.32F),e.posZ);
+        double minx = e.posX - 0.25;
+        double maxx = e.posX + 0.25;
+        double miny = e.posY;
+        double maxy = e.posY + Math.abs(e.posY - box.maxY) ;
+        double minz = e.posZ - 0.25;
+        double maxz = e.posZ + 0.25;
+        boolean see =  mc.theWorld.rayTraceBlocks(vec1, vec2) == null? true:false;
+        if(see)
+            return true;
+        vec2 = Vec3.createVectorHelper(maxx,miny,minz);
+        see = mc.theWorld.rayTraceBlocks(vec1, vec2) == null? true:false;
+        if(see)
+            return true;
+        vec2 = Vec3.createVectorHelper(minx,miny,minz);
+        see = mc.theWorld.rayTraceBlocks(vec1, vec2) == null? true:false;
+
+        if(see)
+            return true;
+        vec2 = Vec3.createVectorHelper(minx,miny,maxz);
+        see = mc.theWorld.rayTraceBlocks(vec1, vec2) == null? true:false;
+        if(see)
+            return true;
+        vec2 = Vec3.createVectorHelper(maxx,miny,maxz);
+        see = mc.theWorld.rayTraceBlocks(vec1, vec2) == null? true:false;
+        if(see)
+            return true;
+
+        vec2 = Vec3.createVectorHelper(maxx, maxy,minz);
+        see = mc.theWorld.rayTraceBlocks(vec1, vec2) == null? true:false;
+
+        if(see)
+            return true;
+        vec2 = Vec3.createVectorHelper(minx, maxy,minz);
+
+        see = mc.theWorld.rayTraceBlocks(vec1, vec2) == null? true:false;
+        if(see)
+            return true;
+        vec2 = Vec3.createVectorHelper(minx, maxy,maxz - 0.1);
+        see = mc.theWorld.rayTraceBlocks(vec1, vec2) == null? true:false;
+        if(see)
+            return true;
+        vec2 = Vec3.createVectorHelper(maxx, maxy,maxz);
+        see = mc.theWorld.rayTraceBlocks(vec1, vec2) == null? true:false;
+        if(see)
+            return true;
+
+
+        return false;
+    }
+    
     public static float[] getRotations(Entity ent) {
         double x = ent.posX;
         double z = ent.posZ;

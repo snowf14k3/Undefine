@@ -1,7 +1,6 @@
 package cn.snowflake.rose.mod.mods.COMBAT;
 
 import cn.snowflake.rose.Client;
-import cn.snowflake.rose.events.impl.EventMotion;
 import cn.snowflake.rose.events.impl.EventRender2D;
 import cn.snowflake.rose.events.impl.EventTick;
 import cn.snowflake.rose.events.impl.EventUpdate;
@@ -14,34 +13,29 @@ import cn.snowflake.rose.utils.client.RotationUtil;
 import cn.snowflake.rose.utils.math.Location;
 import cn.snowflake.rose.utils.other.JReflectUtility;
 import com.darkmagician6.eventapi.EventTarget;
-import com.darkmagician6.eventapi.types.EventType;
 import com.darkmagician6.eventapi.types.Priority;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.monster.EntitySlime;
-import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntitySquid;
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.*;
 
 public class Aimbot extends Module {
 
-    public static Value<Double> index = new Value<Double>("Aimbot_pitchIndex", 1.0, -0.5, 1.0, 0.01);
+    public static Value<Double> index = new Value<Double>("Aimbot_pitchIndex", 1.0, -0.01, 1.0, 0.01);
+    public static Value<Double> predict = new Value<Double>("Aimbot_Predict", 8.0, 0.0, 15.0, 1);
 
     public static Value<Double> range= new Value<Double>("Aimbot_Reach", 10.5D, 3.0D, 65.0D,0.1D);
 
@@ -49,22 +43,32 @@ public class Aimbot extends Module {
     public Value<Boolean> throughwall = new Value<Boolean>("Aimbot_ThroughWall", false);
 
     public Value<Boolean> players = new Value<Boolean>("Aimbot_Player", true);
-    public Value<Boolean> otherentity = new Value<Boolean>("Aimbot_ModsEntity", false);
-    public Value<Boolean> animal = new Value<Boolean>("Aimbot_Animal", false);
-    public Value<Boolean> moster = new Value<Boolean>("Aimbot_Mob", false);
-    public Value<Boolean> village = new Value<Boolean>("Aimbot_village", false);
+//    public Value<Boolean> otherentity = new Value<Boolean>("Aimbot_ModsEntity", false);
+//    public Value<Boolean> animal = new Value<Boolean>("Aimbot_Animal", false);
+//    public Value<Boolean> moster = new Value<Boolean>("Aimbot_Mob", false);
+//    public Value<Boolean> village = new Value<Boolean>("Aimbot_village", false);
     public Value<Boolean> invisible = new Value<Boolean>("Aimbot_Invisible", false);
     public Value<Boolean> silent = new Value<Boolean>("Aimbot_Silent", false);
+    public Value<Boolean> circle = new Value<Boolean>("Aimbot_Circle", false);
 
     public Value<String> sortingMode = new Value<String>("Aimbot","SortingMode", 0);
 
     public static EntityLivingBase target;
 
+    public int buffer;
+    private Map<EntityPlayer, List<Vec3>> playerPositions;
+
+
     public Aimbot() {
         super("Aimbot","Aim Bot", Category.COMBAT);
         this.sortingMode.addValue("Health");
         this.sortingMode.addValue("Distance");
+
+        this.playerPositions = new HashMap<>();
+        this.buffer = 10;
     }
+
+
     @Override
     public void onDisable(){
         target = null;
@@ -80,10 +84,47 @@ public class Aimbot extends Module {
     public void on2D(EventRender2D eventRender2D){
 		ScaledResolution res = new ScaledResolution(this.mc,this.mc.displayWidth,this.mc.displayHeight);
 
-        mc.fontRenderer.drawStringWithShadow(target.getCommandSenderName() + " | hurt : " + (target.hurtTime > 0),res.getScaledWidth() / 2 + 10, res.getScaledHeight() / 2 - 3, 16777215); // 测试模式画Entity信息
+        mc.fontRenderer.drawStringWithShadow(
+                "HP: "+target.getHealth(),
+                res.getScaledWidth() / 2 - 10 - mc.fontRenderer.getStringWidth("HP: "+target.getHealth()),
+                res.getScaledHeight() / 2 - 10,
+                16777215); // 测试模式画Entity信息
 
-		drawCircle(res.getScaledWidth() / 2, res.getScaledHeight() / 2,
-					fov.getValueState().floatValue() * 3.5f, 500, -1);
+        mc.fontRenderer.drawStringWithShadow(
+                "SPD: "+targetspeed,
+                res.getScaledWidth() / 2 - 10 - mc.fontRenderer.getStringWidth("SPD: "+targetspeed),
+                res.getScaledHeight() / 2,
+                16777215); // 测试模式画Entity信息
+
+        mc.fontRenderer.drawStringWithShadow(
+                "name: "+target.getCommandSenderName(),
+                res.getScaledWidth() / 2 + 10,
+                res.getScaledHeight() / 2,
+                16777215); // 测试模式画Entity信息
+
+        mc.fontRenderer.drawStringWithShadow(
+                "hurt : " + (target.hurtTime > 0),
+                res.getScaledWidth() / 2 + 10,
+                res.getScaledHeight() / 2 - 10,
+                16777215); // 测试模式画Entity信息
+
+        mc.fontRenderer.drawStringWithShadow(
+                "aabbx : " + target.boundingBox.minY + " | " + target.boundingBox.maxY + " | different: " + (roundToPlace(target.boundingBox.maxY - target.boundingBox.minY,2)) + " eye: "+ target.getEyeHeight(),
+                0,
+                res.getScaledHeight() / 2 - 20,
+                16777215); // 测试模式画Entity信息
+        if (circle.getValueState()){
+
+            drawCircle(res.getScaledWidth() / 2, res.getScaledHeight() / 2,
+                    fov.getValueState().floatValue() * 3.5f, 500, -1);
+        }
+    }
+
+    public static double roundToPlace(double p_roundToPlace_0_,int p_roundToPlace_2_) {
+        if (p_roundToPlace_2_ < 0) {
+            throw new IllegalArgumentException();
+        }
+        return new BigDecimal(p_roundToPlace_0_).setScale(p_roundToPlace_2_, RoundingMode.HALF_UP).doubleValue();
     }
 
 	public static void drawCircle(float cx, float cy, float r, int num_segments, int c) {
@@ -124,7 +165,6 @@ public class Aimbot extends Module {
 
     @EventTarget(Priority.HIGH)
     public void ontick(EventUpdate e){
-
         if (mc.thePlayer != null) {
             if (ModManager.getModByName("NoRecoil").isEnabled() && NoRecoil.horizontal.getValueState()) {
                 mc.thePlayer.rotationPitch = mc.thePlayer.prevRotationPitch;
@@ -132,134 +172,155 @@ public class Aimbot extends Module {
             if (ModManager.getModByName("NoRecoil").isEnabled() && NoRecoil.vertical.getValueState()){
                 mc.thePlayer.rotationYaw = mc.thePlayer.prevRotationYaw;
             }
-            if(!silent.getValueState() && yaw != 0 && pitch != 0 && shouldAim()) {
-                Minecraft.getMinecraft().thePlayer.rotationYaw = yaw;
-                Minecraft.getMinecraft().thePlayer.rotationPitch = pitch;
-            }
-        }
-
-    }
-    @EventTarget(Priority.HIGH)
-    public void ontick(EventTick e){
-        if (mc.thePlayer != null) {
-            if (ModManager.getModByName("NoRecoil").isEnabled() && NoRecoil.horizontal.getValueState()) {
-                mc.thePlayer.rotationPitch = mc.thePlayer.prevRotationPitch;
-            }
-            if (ModManager.getModByName("NoRecoil").isEnabled() && NoRecoil.vertical.getValueState()){
-                mc.thePlayer.rotationYaw = mc.thePlayer.prevRotationYaw;
-            }
-            if(!silent.getValueState() && yaw != 0 && pitch != 0 && shouldAim()) {
-                Minecraft.getMinecraft().thePlayer.rotationYaw = yaw;
-                Minecraft.getMinecraft().thePlayer.rotationPitch = pitch;
-            }
         }
     }
 
-    private float yaw;
-    private float pitch;
+    public double getTargetWeight(EntityLivingBase p) {
+        double weight = -mc.thePlayer.getDistanceToEntity(p);
+        if (p.lastTickPosX == p.posX && p.lastTickPosY == p.posY && p.lastTickPosZ == p.posZ) {
+            weight += 200.0;
+        }
+        weight -= p.getDistanceToEntity(mc.thePlayer) / 5.0f;
+        return weight;
+    }
 
-    @EventTarget(Priority.LOWEST)
-    public void onEvent(EventMotion em) {
-        if (em.isPre()) {
-            target = getTarget();
-            if(shouldAim()){
-                if (target != null) {
-                    float[] rotations = getRotationByBoundingBox(target,range.getValueState().floatValue(),false);
-                    yaw = rotations[0];
-                    pitch = rotations[1];
-                    if(silent.getValueState()){
-                    	em.setYaw(yaw);
-                    	em.setPitch(pitch);
+    double targetspeed;
+
+
+
+    @EventTarget
+    public void onTick(EventTick eventTick){
+        double targetWeight = Double.NEGATIVE_INFINITY;
+        for (Object o : mc.theWorld.playerEntities) {
+            EntityLivingBase p = (EntityLivingBase)o;
+            if (canTarget(p)) {
+                    if (target == null) {
+                        target = p;
+                        targetWeight = this.getTargetWeight(p);
+                    } else {
+                        if (this.getTargetWeight(p) <= targetWeight) {
+                            continue;
+                        }
+                        target = p;
+                        targetWeight = this.getTargetWeight(p);
                     }
-                }
+//                else {
+//                    if (target == null) {
+//                        target = p;
+//                    }
+//                }
             }
-        }else if (em.getEventType() == EventType.POST){
-
+        }
+        addTarget();
+        if (target != null){
+            Entity enity = null;
+            if (target instanceof EntityPlayer){
+                enity = this.predictPlayerMovement(((EntityPlayer)target),predict.getValueState().intValue());
+            }else {
+                enity = getTarget();
+            }
+            double rotY = enity.posY;
+            if (roundToPlace(enity.boundingBox.maxY - enity.boundingBox.minY,2) == 0.6){//lying
+                rotY = enity.boundingBox.minY + 0.15;
+            }else if (roundToPlace(enity.boundingBox.maxY - enity.boundingBox.minY,2) == 1.3){//squatting
+                rotY = enity.boundingBox.minY + 0.65 + index.getValueState();
+            }else if (roundToPlace(enity.boundingBox.maxY - enity.boundingBox.minY,2) == 1.8){//standing
+                rotY = enity.boundingBox.minY + 0.45 + index.getValueState();
+            }
+            double X = Math.abs(target.motionX);
+            double Z = Math.abs(target.motionZ);
+            targetspeed = X + Z;
+            float[] rotations = this.getPlayerRotations(mc.thePlayer, enity.posX, rotY , enity.posZ);
+            if(!silent.getValueState()&& shouldAim()) {
+                Minecraft.getMinecraft().thePlayer.rotationYaw = rotations[0];
+                Minecraft.getMinecraft().thePlayer.rotationPitch = rotations[1];
+            }
         }
     }
-    public boolean atuoSetPitchIndex(Entity e){
-        Vec3 vec1 = Vec3.createVectorHelper(mc.thePlayer.posX, mc.thePlayer.posY + mc.thePlayer.getEyeHeight(),mc.thePlayer.posZ);
 
-        AxisAlignedBB box = e.boundingBox;
-        Vec3 vec2 = Vec3.createVectorHelper(e.posX, e.posY + (e.getEyeHeight()/1.32F),e.posZ);
-        double minx = e.posX - 0.25;
-        double maxx = e.posX + 0.25;
-        double miny = e.posY;
-        double maxy = e.posY + Math.abs(e.posY - box.maxY) ;
-        double minz = e.posZ - 0.25;
-        double maxz = e.posZ + 0.25;
-        boolean see =  mc.theWorld.rayTraceBlocks(vec1, vec2) == null? true:false;
-        if(see) {//露头
-            index.setValueState(-0.5d);
-            return true;
+    private float[] getPlayerRotations( Entity player,  double x,  double y,  double z) {
+        double deltaX = x - player.posX;
+        double deltaY = y - player.posY - player.getEyeHeight() - 0.1;
+        double deltaZ = z - player.posZ;
+        double yawToEntity;
+        if (deltaZ < 0.0 && deltaX < 0.0) {
+            yawToEntity = 90.0 + Math.toDegrees(Math.atan(deltaZ / deltaX));
         }
-        vec2 = Vec3.createVectorHelper(maxx,miny,minz);
-        see = mc.theWorld.rayTraceBlocks(vec1, vec2) == null? true:false;
-        if(see) {
-            Log.info("feet11");
-            return true;
+        else if (deltaZ < 0.0 && deltaX > 0.0) {
+            yawToEntity = -90.0 + Math.toDegrees(Math.atan(deltaZ / deltaX));
         }
-        vec2 = Vec3.createVectorHelper(minx,miny,minz);
-        see = mc.theWorld.rayTraceBlocks(vec1, vec2) == null? true:false;
-
-        if(see) {
-            Log.info("feet9");
-
-            return true;
+        else {
+            yawToEntity = Math.toDegrees(-Math.atan(deltaX / deltaZ));
         }
-        vec2 = Vec3.createVectorHelper(minx,miny,maxz);
-        see = mc.theWorld.rayTraceBlocks(vec1, vec2) == null? true:false;
-        if(see) {
-            Log.info("feet6");
-
-            return true;
-        }
-        vec2 = Vec3.createVectorHelper(maxx,miny,maxz);
-        see = mc.theWorld.rayTraceBlocks(vec1, vec2) == null? true:false;
-        if(see) {
-            Log.info("feet1");
-
-            return true;
-        }
-        vec2 = Vec3.createVectorHelper(maxx, maxy,minz);
-        see = mc.theWorld.rayTraceBlocks(vec1, vec2) == null? true:false;
-
-        if(see) {// ???????不知道怎么描述
-            index.setValueState(1d);
-
-
-            return true;
-        }
-        vec2 = Vec3.createVectorHelper(minx, maxy,minz);
-
-        see = mc.theWorld.rayTraceBlocks(vec1, vec2) == null? true:false;
-        if(see) {
-            Log.info("feet2");
-
-            return true;
-        }
-        vec2 = Vec3.createVectorHelper(minx, maxy,maxz - 0.1);
-        see = mc.theWorld.rayTraceBlocks(vec1, vec2) == null? true:false;
-        if(see) {
-            Log.info("feet3");
-
-            return true;
-        }
-        vec2 = Vec3.createVectorHelper(maxx, maxy,maxz);
-        see = mc.theWorld.rayTraceBlocks(vec1, vec2) == null? true:false;
-        if(see) {
-            Log.info("feet4");
-            return true;
-        }
-
-        return false;
+        double distanceXZ = Math.sqrt(deltaX * deltaX + deltaZ * deltaZ);
+        double pitchToEntity = -Math.toDegrees(Math.atan(deltaY / distanceXZ));
+        yawToEntity = wrapAngleTo180((float)yawToEntity);
+        pitchToEntity = wrapAngleTo180((float)pitchToEntity);
+        return new float[] { (float)yawToEntity, (float)pitchToEntity };
     }
+
+    private static float wrapAngleTo180(float angle) {
+        for (angle %= 360.0f; angle >= 180.0f; angle -= 360.0f) {}
+        while (angle < -180.0f) {
+            angle += 360.0f;
+        }
+        return angle;
+    }
+
+    public Entity predictPlayerMovement(EntityPlayer player,  int ticks) {
+        if (this.playerPositions.containsKey(player)) {
+            List<Vec3> previousPositions = this.playerPositions.get(player);
+            if (previousPositions.size() > 1) {
+                Vec3 origin = previousPositions.get(0);
+                List<Vec3> deltas = new ArrayList<Vec3>();
+                Vec3 previous = origin;
+                for ( Vec3 position : previousPositions) {
+                    deltas.add(Vec3.createVectorHelper(position.xCoord - previous.xCoord, position.yCoord - previous.yCoord, position.zCoord - previous.zCoord));
+                    previous = position;
+                }
+                double x = 0.0;
+                double y = 0.0;
+                double z = 0.0;
+                for ( Vec3 delta : deltas) {
+                    x += delta.xCoord;
+                    y += delta.yCoord;
+                    z += delta.zCoord;
+                }
+                x /= deltas.size();
+                y /= deltas.size();
+                z /= deltas.size();
+                EntityPlayer simulated = new EntityOtherPlayerMP(mc.theWorld, player.getGameProfile());
+                simulated.noClip = false;
+                simulated.setPosition(player.posX, player.posY, player.posZ);
+                for (int i = 0; i < ticks; ++i) {
+                    simulated.moveEntity(x, y, z);
+                }
+                return simulated;
+            }
+        }
+        return player;
+    }
+
+//    @EventTarget(Priority.LOWEST)
+//    public void onEvent(EventMotion em) {
+//        target = getTarget();
+//        if(shouldAim()){
+//            if (target != null) {
+//                float[] rotations = getRotationByBoundingBox(target,range.getValueState().floatValue(),false);
+//                if(silent.getValueState()){
+//                    em.setYaw(yaw);
+//                    em.setPitch(pitch);
+//                }
+//            }
+//       }
+//    }
 
 
     private boolean canTarget(Entity entity) {
-        if(!mc.thePlayer.canEntityBeSeen(entity) && !throughwall.getValueState()) {
+        if(!RotationUtil.canEntityBeSeen(entity) && !throughwall.getValueState()) {
             return false;
         }
+
 		if(!RotationUtil.isVisibleFOV((EntityLivingBase) entity, fov.getValueState().floatValue())){
 			return false;
 		}
@@ -269,18 +330,18 @@ public class Aimbot extends Module {
         if (!ModManager.getModByName("NoFriend").isEnabled() && FriendManager.isFriend(entity.getCommandSenderName())){
             return false;
         }
-        if (entity instanceof EntityAnimal && !animal.getValueState()) {
-            return false;
-        }
-        if ((entity instanceof EntitySlime || entity instanceof EntityMob )&& !moster.getValueState()) {
-            return false;
-        }
+//        if (entity instanceof EntityAnimal && !animal.getValueState()) {
+//            return false;
+//        }
+//        if ((entity instanceof EntitySlime || entity instanceof EntityMob )&& !moster.getValueState()) {
+//            return false;
+//        }
         if (entity instanceof EntityBat){
             return false;
         }
-        if (entity instanceof EntityVillager && !village.getValueState()) {
-            return false;
-        }
+//        if (entity instanceof EntityVillager && !village.getValueState()) {
+//            return false;
+//        }
         if (entity.isInvisible() && !invisible.getValueState()) {
             return false;
         }
@@ -297,50 +358,43 @@ public class Aimbot extends Module {
                 return false;
             }
         }
-        if ( (entity instanceof EntityCreature) && !otherentity.getValueState() ) {
-            return false;
-        }
+//        if ( (entity instanceof EntityCreature) && !otherentity.getValueState() ) {
+//            return false;
+//        }
         return entity != mc.thePlayer && entity.isEntityAlive();
     }
 
-    public static float getYawChange(Entity entity) {
-        double x = entity.posX - Minecraft.getMinecraft().thePlayer.posX;
-        double z = entity.posZ - Minecraft.getMinecraft().thePlayer.posZ;
-        double yawToEntity;
-        if ((z < 0.0D) && (x < 0.0D)) {
-            yawToEntity = 90.0D + Math.toDegrees(Math.atan(z / x));
-        } else {
-            if ((z < 0.0D) && (x > 0.0D)) {
-                yawToEntity = -90.0D + Math.toDegrees(Math.atan(z / x));
-            } else {
-                yawToEntity = Math.toDegrees(-Math.atan(x / z));
-            }
-        }
-
-        return wrapAngleTo180_float(-(Minecraft.getMinecraft().thePlayer.rotationYaw - (float) yawToEntity));
-    }
-    public static float wrapAngleTo180_float(float par0) {
-        par0 %= 360.0F;
-
-        if (par0 >= 180.0F) {
-            par0 -= 360.0F;
-        }
-
-        if (par0 < -180.0F) {
-            par0 += 360.0F;
-        }
-
-        return par0;
-    }
-//|| !(deci.getValueState() && Objects.requireNonNull(JReflectUtility.getGunItem()).isInstance(mc.thePlayer.inventory.getCurrentItem().getItem()))
     public boolean shouldAim(){
     	if (Keyboard.isKeyDown(Keyboard.KEY_LMENU)) {
 			return false;
 		}
-        if(mc.thePlayer.inventory.getCurrentItem() == null ){
+        if(mc.thePlayer.inventory.getCurrentItem() == null){
             return false;
         }
         return true;
+    }
+
+    private void addTarget(){
+        for (EntityPlayer player : this.playerPositions.keySet()) {
+            if (!mc.theWorld.playerEntities.contains(player)) {
+                this.playerPositions.remove(player);
+            }
+        }
+        for (Object o : mc.theWorld.playerEntities) {
+            EntityPlayer player = (EntityPlayer)o;
+            this.playerPositions.putIfAbsent(player, new ArrayList<Vec3>());
+            List<Vec3> previousPositions = this.playerPositions.get(player);
+            previousPositions.add(Vec3.createVectorHelper(player.posX, player.posY, player.posZ));
+            if (previousPositions.size() > this.buffer) {
+                int i = 0;
+                for (Vec3 position : new ArrayList<Vec3>(previousPositions)) {
+                    if (i < previousPositions.size() - this.buffer) {
+                        previousPositions.remove(previousPositions.get(i));
+                    }
+                    ++i;
+                }
+            }
+        }
     }
 
 

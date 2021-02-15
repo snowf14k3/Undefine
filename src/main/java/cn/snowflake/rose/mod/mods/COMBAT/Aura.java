@@ -132,7 +132,6 @@ public class Aura extends Module {
                 e.setPitch(rotations[1]);
                 mc.thePlayer.rotationYawHead = rotations[0];
                 mc.thePlayer.renderYawOffset = rotations[0];
-
             }
         }else if (e.getEventType() == EventType.POST){
             if(target != null) {

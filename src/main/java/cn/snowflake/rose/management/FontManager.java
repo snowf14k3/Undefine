@@ -25,7 +25,7 @@ public class FontManager {
     public UnicodeFontRenderer simpleton20;
     public UnicodeFontRenderer simpleton30;
 
-    public UnicodeFontRenderer robotoregular22;
+    public UnicodeFontRenderer robotoregular19;
     
     public UnicodeFontRenderer notif;
 
@@ -35,7 +35,7 @@ public class FontManager {
         this.simpleton12 = this.getFont("simpleton", 12.0f, true);
         this.simpleton13 = this.getFont("simpleton", 13.0f, true);
         this.simpleton15 = this.getFont("simpleton", 15.0f, true);
-        this.robotoregular22 = this.getFont("roboto-regular", 22.0f);
+        this.robotoregular19 = this.getFont("roboto-regular", 19.0f);
         this.simpleton20 = this.getFont("simpleton", 20.0f, true);
         this.simpleton30 = this.getFont("simpleton", 30.0f, true);
         this.notif = this.getFont("stylesicons", 20.0f);

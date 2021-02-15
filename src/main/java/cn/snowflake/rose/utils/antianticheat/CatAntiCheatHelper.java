@@ -1,40 +1,71 @@
 package cn.snowflake.rose.utils.antianticheat;
 
+import cn.snowflake.rose.mod.Module;
+import cn.snowflake.rose.utils.other.JReflectUtility;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.shader.*;
-import java.awt.image.*;
-import java.io.ByteArrayOutputStream;
-import java.nio.*;
-import java.util.zip.GZIPOutputStream;
-
-import net.minecraft.util.*;
-import cpw.mods.fml.relauncher.*;
-import net.minecraft.client.renderer.*;
-import org.lwjgl.*;
-import org.lwjgl.opengl.*;
-import net.minecraft.client.renderer.texture.*;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.texture.TextureUtil;
+import net.minecraft.client.shader.Framebuffer;
+import net.minecraft.injection.ClientLoader;
+import net.minecraft.util.ScreenShotHelper;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
 
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.nio.IntBuffer;
+import java.util.ArrayList;
+import java.util.zip.GZIPOutputStream;
 
 public class CatAntiCheatHelper {
-
+    static ArrayList<Module> render = new ArrayList<>();
+    static boolean fucku;
+    static ArrayList<Module> close = new ArrayList<>();
 
     public static byte[] screenshot() {
+
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
             final GZIPOutputStream gzipOutputStream = new GZIPOutputStream(out);
-            final BufferedImage bufferedImage = createScreenshot(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight, Minecraft.getMinecraft().getFramebuffer());
+//            if (ScreenProtect.mode.isCurrentMode("CloseModule")) {
+
+//                new Timer().schedule(new TimerTask() {
+//                    @Override
+//                    public void run() {
+//                        fucku = true;
+//                    }
+//                }, 3000);
+//            }
+
+            BufferedImage bufferedImage = createScreenshot(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight, Minecraft.getMinecraft().getFramebuffer());
             ImageIO.write(bufferedImage, "png", gzipOutputStream);
             gzipOutputStream.flush();
             gzipOutputStream.close();
+
+
+//            if (close != null) { //重新打开 关闭掉的功能
+//                for (Module c : close) {
+//                    c.set(true);
+//                }
+//                close.clear();
+//            }
         }
-        catch (Exception ex) {}
+        catch (Exception ignored) {}
         return out.toByteArray();
     }
 
     public static BufferedImage createScreenshot(int width, int height, final Framebuffer framebufferIn) {
-        IntBuffer pixelBuffer = (IntBuffer)ReflectionHelper.getPrivateValue((Class)ScreenShotHelper.class, (Object)null, new String[] { "pixelBuffer" });
-        final int[] pixelValues = (int[])ReflectionHelper.getPrivateValue((Class)ScreenShotHelper.class, (Object)null, new String[] { "pixelValues" });
+        IntBuffer pixelBuffer = null;
+        try {
+            pixelBuffer = (IntBuffer) JReflectUtility.getField(ScreenShotHelper.class, ClientLoader.runtimeDeobfuscationEnabled ? "field_74293_b":"pixelBuffer",true).get(null);
+        } catch (IllegalAccessException ignored) {
+        }
+        int[] pixelValues =null;
+        try {
+            pixelValues = (int[]) JReflectUtility.getField(ScreenShotHelper.class, ClientLoader.runtimeDeobfuscationEnabled ? "field_74294_c":"pixelValues",true).get(null);
+        } catch (IllegalAccessException ignored) {
+        }
         if (OpenGlHelper.isFramebufferEnabled()) {
             width = framebufferIn.framebufferTextureWidth;
             height = framebufferIn.framebufferTextureHeight;
@@ -42,7 +73,7 @@ public class CatAntiCheatHelper {
         final int k = width * height;
         if (pixelBuffer == null || pixelBuffer.capacity() < k) {
             pixelBuffer = BufferUtils.createIntBuffer(k);
-            ReflectionHelper.setPrivateValue((Class)ScreenShotHelper.class, (Object)null, (Object)new int[k], new String[] { "pixelValues" });
+            JReflectUtility.setField(ScreenShotHelper.class,null,ClientLoader.runtimeDeobfuscationEnabled ? "field_74294_c" : "pixelValues",new int[k]);
         }
         GL11.glPixelStorei(3333, 1);
         GL11.glPixelStorei(3317, 1);
@@ -50,8 +81,7 @@ public class CatAntiCheatHelper {
         if (OpenGlHelper.isFramebufferEnabled()) {
             GL11.glBindTexture(3553, framebufferIn.framebufferTexture);
             GL11.glGetTexImage(3553, 0, 32993, 33639, pixelBuffer);
-        }
-        else {
+        }else {
             GL11.glReadPixels(0, 0, width, height, 32993, 33639, pixelBuffer);
         }
         pixelBuffer.get(pixelValues);
@@ -70,6 +100,7 @@ public class CatAntiCheatHelper {
             bufferedimage = new BufferedImage(width, height, 1);
             bufferedimage.setRGB(0, 0, width, height, pixelValues, 0, width);
         }
+
         return bufferedimage;
     }
 

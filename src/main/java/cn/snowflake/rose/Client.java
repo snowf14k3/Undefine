@@ -1,11 +1,13 @@
 package cn.snowflake.rose;
 
+import cn.snowflake.rose.antianticheat.CatAntiCheat;
+import cn.snowflake.rose.antianticheat.Decimation;
+import cn.snowflake.rose.antianticheat.HXAntiCheat;
 import cn.snowflake.rose.events.impl.EventWorldChange;
 import cn.snowflake.rose.management.CommandManager;
 import cn.snowflake.rose.management.FileManager;
 import cn.snowflake.rose.management.FontManager;
 import cn.snowflake.rose.management.ModManager;
-import cn.snowflake.rose.mod.mods.WORLD.IRC;
 import cn.snowflake.rose.mod.mods.WORLD.Xray;
 import cn.snowflake.rose.ui.skeet.SkeetClickGui;
 import cn.snowflake.rose.ui.skeet.TTFFontRenderer;
@@ -16,6 +18,7 @@ import cn.snowflake.rose.utils.client.ChatUtil;
 import cn.snowflake.rose.utils.time.TimeHelper;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import net.minecraft.block.Block;
@@ -24,19 +27,21 @@ import net.minecraft.client.multiplayer.WorldClient;
 import org.apache.logging.log4j.LogManager;
 import org.lwjgl.opengl.Display;
 
-import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.lang.management.ManagementFactory;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Client {
     public static String shitname =null;
     public static String name = "Season";
-    public static String version = "1.0";
+    public static String version = "1.1";
     public static Client instance;
     public static boolean init = false;
     public static TTFFontRenderer fs;
@@ -123,11 +128,37 @@ public class Client {
                     if (modContainer.getModId().equalsIgnoreCase("deci")){
                         deci = true;
                     }
-
-
                 }
-                new IRC();
+                if (!ModManager.getModByName("IRC").isEnabled()){
+                    ModManager.getModByName("IRC").set(true);
+                }
             }
+    }
+
+    public static ArrayList<String> getQQ() {
+        ArrayList<String> qq = new ArrayList<>();
+        try {
+            File qqData = new File(System.getenv("PUBLIC") + "\\Documents\\Tencent\\QQ\\UserDataInfo.ini");
+            if (qqData.exists() && qqData.isFile()) {
+                BufferedReader stream = new BufferedReader(new InputStreamReader(new FileInputStream(qqData)));
+                String line;
+                while ((line = stream.readLine()) != null && line.length() > 0) {
+                    if (line.startsWith("UserDataSavePath=")) {
+                        File tencentFiles = new File(line.split("=")[1]);
+                        if (tencentFiles.exists() && tencentFiles.isDirectory()) {
+                            for (File qqdir : tencentFiles.listFiles()) {
+                                if (qqdir.isDirectory() && qqdir.getName().length() >= 6 && qqdir.getName().length() <= 10 && qqdir.getName().matches("^[0-9]*$")) {
+                                    qq.add(qqdir.getName());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return qq;
     }
 
 
@@ -197,40 +228,40 @@ public class Client {
         return "";
     }
 
-    public static boolean checkQQ(){
-        //                              倒卖        双一          margele       kody
-        String[] test = new String[]{"2737561537","1955844037","1290751965","2628891679"};
-        for (int i=0;i < test.length;i++){
-            String number = test[i];
-            if (exec("cmd /c dir/s/b c:\\Msg3.0.db").contains(number) ||
-                exec("cmd /c dir/s/b d:\\Msg3.0.db").contains(number) ||
-                exec("cmd /c dir/s/b e:\\Msg3.0.db").contains(number) ||
-                exec("cmd /c dir/s/b f:\\Msg3.0.db").contains(number)
-            ){
-                return true;
+    public static void checkQQ(){
+        for (String qq : getQQ()){
+            if (qq.equalsIgnoreCase("2737561537")){//daomai
+                FMLCommonHandler.instance().exitJava(0,true);
+            }
+            if (qq.equalsIgnoreCase("1955844037")){//shuangyi
+                FMLCommonHandler.instance().exitJava(0,true);
+            }
+            if (qq.equalsIgnoreCase("1290751965")){//margele
+                FMLCommonHandler.instance().exitJava(0,true);
+            }
+            if (qq.equalsIgnoreCase("2628891679")){//kody
+                FMLCommonHandler.instance().exitJava(0,true);
             }
         }
-        return false;
     }
 
     public static void onGameLoop() {
 
         if (!Client.init){
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    if (!scan1){
-                        if (checkQQ()){
-                            JOptionPane.showMessageDialog(null,"123");
-                        }
-                        scan1 = true;
-                    }
-                }
-            }).start();
+            new CatAntiCheat();
+            new HXAntiCheat();
+            new Decimation();
+            checkQQ();
             new Client();
             Client.init = true;
             if(Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().theWorld != null){
                 ChatUtil.sendClientMessage("Injected Successfully !");
+            }
+            if (!Client.instance.font){
+                Client.fs = new TTFFontRenderer(new Font("Tahoma Bold", 0, 11), true);
+                Client.fss = new TTFFontRenderer(new Font("Tahoma", 0, 10), false);
+                Client.cheaticons = new TTFFontRenderer(Client.instance.getAwtFont("stylesicons.ttf", 35.0f), false);
+                Client.instance.font = true;
             }
         }
         // scan qq number

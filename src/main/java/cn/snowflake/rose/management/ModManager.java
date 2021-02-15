@@ -3,12 +3,11 @@ package cn.snowflake.rose.management;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.mod.mods.COMBAT.*;
 import cn.snowflake.rose.mod.mods.FORGE.EIOXpGrab;
+import cn.snowflake.rose.mod.mods.FORGE.ScreenProtect;
 import cn.snowflake.rose.mod.mods.MOVEMENT.*;
 import cn.snowflake.rose.mod.mods.PLAYER.*;
-import cn.snowflake.rose.mod.mods.PLAYER.Blink;
 import cn.snowflake.rose.mod.mods.RENDER.*;
 import cn.snowflake.rose.mod.mods.WORLD.*;
-import cn.snowflake.rose.mod.mods.FORGE.*;
 
 import java.util.ArrayList;
 
@@ -23,6 +22,7 @@ public class ModManager {
         addMod(new Criticals());
         addMod(new FastBow());
         addMod(new AntiAim());
+        addMod(new Aimbot2());
         addMod(new TPAura());
         addMod(new Aimbot());
         addMod(new Velocity());
@@ -32,7 +32,10 @@ public class ModManager {
         addMod(new Sprint());
         addMod(new AirJump());
         addMod(new Fly());
-        addMod(new VehicleSpeed());
+        addMod(new VClipDown());
+        addMod(new VClipUP());
+//        addMod(new VehicleSpeed());
+        addMod(new FastClimb());
         addMod(new Scaffold());
         addMod(new Speed());
         addMod(new NoFall());
@@ -84,7 +87,7 @@ public class ModManager {
         addMod(new EIOXpGrab());
         addMod(new ScreenProtect());
         addMod(new SecretClose());
-
+        addMod(new IRC());
         ok = true;
     }
     public static boolean ok = false;
