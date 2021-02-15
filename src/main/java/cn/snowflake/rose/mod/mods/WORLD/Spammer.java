@@ -15,15 +15,18 @@ public class Spammer extends Module {
     TimeHelper delay = new TimeHelper();
     Random random = new Random();
     double state = 0.0D;
-    private Value<Double>  spammerdelay = new Value("Spammer_Delay", Double.valueOf(2000.0D), Double.valueOf(500.0D), Double.valueOf(10000.0D), 100D);
+    private Value<Double>  spammerdelay = new Value("Spammer_Delay", 2000.0D, 100.0D, 10000.0D, 100D);
     private Value<Boolean> randomstring = new Value<Boolean>("Spammer_RandomString", true);
     private Value<String> mode = new Value<String>("Spammer","Mode",0);
     private Value<String> text = new Value<String>("Spammer_Text","","Season Code by CNSnowFlake.");
     private int num;
 
+    public static String customtext = "Ë§¸çÄãºÃ!";
+
     public Spammer() {
         super("Spammer","Spammer", Category.PLAYER);
-        this.mode.addValue("Custome");
+        this.mode.addValue("Custome1");
+        this.mode.addValue("Custome2");
         this.mode.addValue("Abuse");
     }
 
@@ -44,8 +47,11 @@ public class Spammer extends Module {
             if (this.mode.isCurrentMode("Abuse")){
                 message = AbuseUtils.getAbuse()+AbuseUtils.getAbuse();
             }
-            if (this.mode.isCurrentMode("Custome")){
+            if (this.mode.isCurrentMode("Custome2")){
                 message = text.getText();
+            }
+            if (this.mode.isCurrentMode("Custome1")){
+                message = customtext;
             }
             if(this.randomstring.getValueState()) {
                 message = message + " >" + new StringRandom().getStringRandom(6) + "<";

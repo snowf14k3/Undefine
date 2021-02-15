@@ -1,6 +1,7 @@
 package cn.snowflake.rose.management;
 
 import cn.snowflake.rose.mod.Module;
+import cn.snowflake.rose.mod.mods.WORLD.Spammer;
 import cn.snowflake.rose.mod.mods.WORLD.Xray;
 import cn.snowflake.rose.utils.Value;
 import net.minecraft.block.Block;
@@ -30,6 +31,42 @@ public class FileManager {
         }
         catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+
+    public void saveSpammerText() {
+        File f = new File(fileDir + "/spammertext.txt");
+        try {
+            if (!f.exists()) {
+                f.createNewFile();
+            }
+            PrintWriter pw = new PrintWriter(f);
+            pw.print(Spammer.customtext);
+            pw.close();
+        } catch (Exception var2) {
+            var2.printStackTrace();
+        }
+    }
+
+    public void loadSpammerText() {
+        try{
+            File f = new File(fileDir + "/spammertext.txt");
+            if (!f.exists()) {
+                f.createNewFile();
+            } else {
+                BufferedReader br = new BufferedReader(new FileReader(f));
+                String line;
+                while((line = br.readLine()) != null) {
+                    try {
+                        String name = String.valueOf(line);
+                        Spammer.customtext = name;
+                    } catch (Exception var4) {
+                        ;
+                    }
+                }
+            }
+        }catch (Exception e){
         }
     }
 
