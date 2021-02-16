@@ -585,7 +585,7 @@ public class CSGOGUI extends GuiScreen {
      */
     public static List getModsInCategory(Category category) {
         List modList = new ArrayList();
-        Iterator var3 = ModManager.getModList().iterator();
+        Iterator var3 = Client.instance.modManager.getModList().iterator();
 
         while(var3.hasNext()) {
             Module mod = (Module)var3.next();

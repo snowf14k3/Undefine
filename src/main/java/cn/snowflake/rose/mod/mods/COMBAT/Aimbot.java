@@ -8,6 +8,7 @@ import cn.snowflake.rose.management.FriendManager;
 import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
+import cn.snowflake.rose.mod.mods.WORLD.MCF;
 import cn.snowflake.rose.utils.Value;
 import cn.snowflake.rose.utils.client.RotationUtil;
 import cn.snowflake.rose.utils.math.Location;
@@ -16,7 +17,9 @@ import com.darkmagician6.eventapi.EventTarget;
 import com.darkmagician6.eventapi.types.Priority;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
@@ -54,6 +57,7 @@ public class Aimbot extends Module {
     public Value<Boolean> village = new Value<Boolean>("Aimbot_village", false);
     public Value<Boolean> invisible = new Value<Boolean>("Aimbot_Invisible", false);
     public Value<Boolean> silent = new Value<Boolean>("Aimbot_Silent", false);
+    public Value<Boolean> targetinfo = new Value<Boolean>("Aimbot_TargetInfo", false);
     public Value<Boolean> circle = new Value<Boolean>("Aimbot_Circle", false);
 
     public Value<String> sortingMode = new Value<String>("Aimbot","SortingMode", 0);
@@ -90,40 +94,41 @@ public class Aimbot extends Module {
 		ScaledResolution res = new ScaledResolution(this.mc,this.mc.displayWidth,this.mc.displayHeight);
 
 		if (target != null  && target.getHealth() != 0.0) {
-            mc.fontRenderer.drawStringWithShadow(
-                    "HP: " + target.getHealth(),
-                    res.getScaledWidth() / 2 - 10 - mc.fontRenderer.getStringWidth("HP: " + target.getHealth()),
-                    res.getScaledHeight() / 2 - 10,
-                    16777215); // 测试模式画Entity信息
+			if(targetinfo.getValueState()) {
+				mc.fontRenderer.drawStringWithShadow(
+	                    "HP: " + target.getHealth(),
+	                    res.getScaledWidth() / 2 - 10 - mc.fontRenderer.getStringWidth("HP: " + target.getHealth()),
+	                    res.getScaledHeight() / 2 - 10,
+	                    16777215); // 测试模式画Entity信息
 
-            mc.fontRenderer.drawStringWithShadow(
-                    "SPD: " + targetspeed,
-                    res.getScaledWidth() / 2 - 10 - mc.fontRenderer.getStringWidth("SPD: " + targetspeed),
-                    res.getScaledHeight() / 2,
-                    16777215); // 测试模式画Entity信息
+	            mc.fontRenderer.drawStringWithShadow(
+	                    "SPD: " + targetspeed,
+	                    res.getScaledWidth() / 2 - 10 - mc.fontRenderer.getStringWidth("SPD: " + targetspeed),
+	                    res.getScaledHeight() / 2,
+	                    16777215); // 测试模式画Entity信息
 
-            mc.fontRenderer.drawStringWithShadow(
-                    "name: " + target.getCommandSenderName(),
-                    res.getScaledWidth() / 2 + 10,
-                    res.getScaledHeight() / 2,
-                    16777215); // 测试模式画Entity信息
+	            mc.fontRenderer.drawStringWithShadow(
+	                    "name: " + target.getCommandSenderName(),
+	                    res.getScaledWidth() / 2 + 10,
+	                    res.getScaledHeight() / 2,
+	                    16777215); // 测试模式画Entity信息
 
-            mc.fontRenderer.drawStringWithShadow(
-                    "hurt : " + (target.hurtTime > 0),
-                    res.getScaledWidth() / 2 + 10,
-                    res.getScaledHeight() / 2 - 10,
-                    16777215); // 测试模式画Entity信息
+	            mc.fontRenderer.drawStringWithShadow(
+	                    "hurt : " + (target.hurtTime > 0),
+	                    res.getScaledWidth() / 2 + 10,
+	                    res.getScaledHeight() / 2 - 10,
+	                    16777215); // 测试模式画Entity信息
 
-//            mc.fontRenderer.drawStringWithShadow(
-//                    "aabbx : " + target.boundingBox.minY + " | " + target.boundingBox.maxY + " | different: " + (roundToPlace(target.boundingBox.maxY - target.boundingBox.minY, 2)) + " eye: " + target.getEyeHeight(),
-//                    0,
-//                    res.getScaledHeight() / 2 - 20,
-//                    16777215); // 测试模式画Entity信息
-            if (circle.getValueState()) {
-
-                drawCircle(res.getScaledWidth() / 2, res.getScaledHeight() / 2,
-                        fov.getValueState().floatValue() * 3.5f, 500, -1);
-            }
+//	            mc.fontRenderer.drawStringWithShadow(
+//	                    "aabbx : " + target.boundingBox.minY + " | " + target.boundingBox.maxY + " | different: " + (roundToPlace(target.boundingBox.maxY - target.boundingBox.minY, 2)) + " eye: " + target.getEyeHeight(),
+//	                    0,
+//	                    res.getScaledHeight() / 2 - 20,
+//	                    16777215); // 测试模式画Entity信息
+			}
+        }
+        if (circle.getValueState()) {
+            drawCircle(res.getScaledWidth() / 2, res.getScaledHeight() / 2,
+                    fov.getValueState().floatValue() * 3.5f, 500, -1);
         }
     }
 
@@ -201,14 +206,18 @@ public class Aimbot extends Module {
             double targetWeight = Double.NEGATIVE_INFINITY;
             for (EntityLivingBase livingBase : getTarget()) {
                 if (target == null) {
-                    target = livingBase;
-                    targetWeight = this.getTargetWeight(livingBase);
+                	if(canTarget(livingBase)) {
+                        target = livingBase;
+                        targetWeight = this.getTargetWeight(livingBase);
+                	}
                 } else {
-                    if (this.getTargetWeight(livingBase) <= targetWeight) {
-                        continue;
-                    }
-                    target = livingBase;
-                    targetWeight = this.getTargetWeight(livingBase);
+                	if(canTarget(livingBase)) {
+                        if (this.getTargetWeight(livingBase) <= targetWeight) {
+                            continue;
+                        }
+                        target = livingBase;
+                        targetWeight = this.getTargetWeight(livingBase);
+                	}
                 }
             }
             addTarget();
@@ -411,24 +420,9 @@ public class Aimbot extends Module {
 
     private List<EntityLivingBase> getTarget() {
         List<EntityLivingBase> loaded = new ArrayList<EntityLivingBase>();
-        for (Object o : mc.theWorld.getLoadedEntityList()) {
-            if (o instanceof EntityLivingBase) {
-                EntityLivingBase ent = (EntityLivingBase) o;
-                if (canTarget(ent)) {
-                    loaded.add(ent);
-                }
-            }
-        }
-	    if (sortingMode.isCurrentMode("Distance")) {
-	            loaded.sort((o1, o2) ->
-	                    (int) (o1.getDistanceToEntity(mc.thePlayer) - o2.getDistanceToEntity(mc.thePlayer))
-	            );
-	    }
-	    if (sortingMode.isCurrentMode("Health")){
-	            loaded.sort((o1, o2) ->
-	                    (int) (o1.getHealth() - o2.getHealth())
-	            );
-	    }
+        mc.theWorld.loadedEntityList.stream().filter(f -> f instanceof EntityLivingBase).filter(f -> !(f instanceof EntityPlayerSP)).forEach(ent -> {
+        	loaded.add((EntityLivingBase)ent);
+        });
         return loaded;
     }
 

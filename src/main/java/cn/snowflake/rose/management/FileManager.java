@@ -1,5 +1,6 @@
 package cn.snowflake.rose.management;
 
+import cn.snowflake.rose.Client;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.mod.mods.WORLD.Spammer;
 import cn.snowflake.rose.mod.mods.WORLD.Xray;
@@ -112,7 +113,7 @@ public class FileManager {
                 f.createNewFile();
             }
             PrintWriter pw = new PrintWriter(f);
-            for (Module m : ModManager.getModList()) {
+            for (Module m : Client.instance.modManager.getModList()) {
                 String keyName = m.getKey() < 0 ? "None" : Keyboard.getKeyName((int)m.getKey());
                 pw.write(String.valueOf((Object)m.getName()) + ":" + keyName + "\n");
             }
@@ -149,7 +150,7 @@ public class FileManager {
                 f.createNewFile();
             }
             PrintWriter pw = new PrintWriter(f);
-            for (Module m : ModManager.getModList()) {
+            for (Module m : Client.instance.modManager.getModList()) {
                 pw.print(String.valueOf((Object)m.getName()) + ":" + m.isEnabled() + "\n");
             }
             pw.close();
@@ -245,7 +246,7 @@ public class FileManager {
                 f.createNewFile();
             }
             PrintWriter pw = new PrintWriter(f);
-            for (Module m : ModManager.getModList()) {
+            for (Module m : Client.instance.modManager.getModList()) {
                 pw.print(String.valueOf((Object)m.getName()) + ":" + m.isHidden() + "\n");
             }
             pw.close();

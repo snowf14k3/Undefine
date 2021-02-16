@@ -1,6 +1,7 @@
 package cn.snowflake.rose.command.commands;
 
 
+import cn.snowflake.rose.Client;
 import cn.snowflake.rose.command.Command;
 import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Module;
@@ -19,7 +20,7 @@ public class CommandToggle extends Command {
             ChatUtil.sendClientMessage(this.getArgs());
         } else {
             String mod = args[1];
-            for (Module m : ModManager.getModList()) {
+            for (Module m : Client.instance.modManager.getModList()) {
                 if(m.getName().equalsIgnoreCase(mod)) {
                     m.set(!m.isEnabled());
                     ChatUtil.sendClientMessage("Module " + m.getName() + " " + (!m.isEnabled() ? "Disable" : "Toggle"));

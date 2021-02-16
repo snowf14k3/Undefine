@@ -22,7 +22,7 @@ public class CommandHidden extends Command {
             Minecraft.getMinecraft().thePlayer.addChatComponentMessage(new ChatComponentText(this.getArgs()));
         } else {
             String mod = args[1];
-            for (Module m : ModManager.getModList()) {
+            for (Module m : Client.instance.modManager.getModList()) {
                 if(m.getName().equalsIgnoreCase(mod)) {
                     m.setHidden(!m.isHidden());
                     Client.instance.fileMgr.saveHidden();
