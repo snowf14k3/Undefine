@@ -8,6 +8,7 @@ import cn.snowflake.rose.management.FriendManager;
 import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
+import cn.snowflake.rose.mod.mods.WORLD.MCF;
 import cn.snowflake.rose.utils.Value;
 import cn.snowflake.rose.utils.client.RotationUtil;
 import cn.snowflake.rose.utils.math.Location;
@@ -16,6 +17,7 @@ import com.darkmagician6.eventapi.EventTarget;
 import com.darkmagician6.eventapi.types.Priority;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
@@ -123,10 +125,10 @@ public class Aimbot extends Module {
 //	                    res.getScaledHeight() / 2 - 20,
 //	                    16777215); // 测试模式画Entity信息
 			}
-            if (circle.getValueState()) {
-                drawCircle(res.getScaledWidth() / 2, res.getScaledHeight() / 2,
-                        fov.getValueState().floatValue() * 3.5f, 500, -1);
-            }
+        }
+        if (circle.getValueState()) {
+            drawCircle(res.getScaledWidth() / 2, res.getScaledHeight() / 2,
+                    fov.getValueState().floatValue() * 3.5f, 500, -1);
         }
     }
 
@@ -204,14 +206,18 @@ public class Aimbot extends Module {
             double targetWeight = Double.NEGATIVE_INFINITY;
             for (EntityLivingBase livingBase : getTarget()) {
                 if (target == null) {
-                    target = livingBase;
-                    targetWeight = this.getTargetWeight(livingBase);
+                	if(canTarget(livingBase)) {
+                        target = livingBase;
+                        targetWeight = this.getTargetWeight(livingBase);
+                	}
                 } else {
-                    if (this.getTargetWeight(livingBase) <= targetWeight) {
-                        continue;
-                    }
-                    target = livingBase;
-                    targetWeight = this.getTargetWeight(livingBase);
+                	if(canTarget(livingBase)) {
+                        if (this.getTargetWeight(livingBase) <= targetWeight) {
+                            continue;
+                        }
+                        target = livingBase;
+                        targetWeight = this.getTargetWeight(livingBase);
+                	}
                 }
             }
             addTarget();
@@ -414,24 +420,9 @@ public class Aimbot extends Module {
 
     private List<EntityLivingBase> getTarget() {
         List<EntityLivingBase> loaded = new ArrayList<EntityLivingBase>();
-        for (Object o : mc.theWorld.getLoadedEntityList()) {
-            if (o instanceof EntityLivingBase) {
-                EntityLivingBase ent = (EntityLivingBase) o;
-                if (canTarget(ent)) {
-                    loaded.add(ent);
-                }
-            }
-        }
-	    if (sortingMode.isCurrentMode("Distance")) {
-	            loaded.sort((o1, o2) ->
-	                    (int) (o1.getDistanceToEntity(mc.thePlayer) - o2.getDistanceToEntity(mc.thePlayer))
-	            );
-	    }
-	    if (sortingMode.isCurrentMode("Health")){
-	            loaded.sort((o1, o2) ->
-	                    (int) (o1.getHealth() - o2.getHealth())
-	            );
-	    }
+        mc.theWorld.loadedEntityList.stream().filter(f -> f instanceof EntityLivingBase).filter(f -> !(f instanceof EntityPlayerSP)).forEach(ent -> {
+        	loaded.add((EntityLivingBase)ent);
+        });
         return loaded;
     }
 
