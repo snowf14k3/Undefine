@@ -11,31 +11,19 @@ import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.mods.WORLD.Xray;
 import cn.snowflake.rose.ui.skeet.SkeetClickGui;
 import cn.snowflake.rose.ui.skeet.TTFFontRenderer;
-import cn.snowflake.rose.utils.auth.AntiReflex;
-import cn.snowflake.rose.utils.auth.HWIDUtils;
-import cn.snowflake.rose.utils.auth.ShitUtil;
 import cn.snowflake.rose.utils.client.ChatUtil;
 import cn.snowflake.rose.utils.time.TimeHelper;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
-import org.apache.logging.log4j.LogManager;
-import org.lwjgl.opengl.Display;
 
 import java.awt.*;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.lang.management.ManagementFactory;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class Client {
@@ -58,58 +46,59 @@ public class Client {
 
     public Client(){
         EventManager.register(this);
-        username = HWIDUtils.getUserName();
-        DEBUG = username.equalsIgnoreCase("SnowFlake");//Debug
+//        username = HWIDUtils.getUserName();
+        DEBUG = true;//Debug
         this.init = true;
         instance = this;
-        if (!(HWIDUtils.version.contains(Client.version)
-                && ShitUtil.contains(HWIDUtils.version,Client.version)) )
-        {
-            try {
-                Class clazz = Class.forName("javax.swing.JOptionPane");
-                String str1 = new String("未通过版本验证！请更新你滴版本");
-                Method m = clazz.getDeclaredMethod("showInputDialog", Component.class, Object.class, Object.class);
-                /**
-                 *  第一个参数 是调用的 方法Object
-                 */
-                m.invoke(m, null, str1, HWIDUtils.version);
-            } catch (ClassNotFoundException e) {
-                LogManager.getLogger().error("NMSL");
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            }
-            try {
-                this.getClass().getClassLoader().loadClass(null);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-        if (ManagementFactory.getRuntimeMXBean().getBootClassPath().split(";")[0].contains("\\lib\\"))
-            if (HWIDUtils.version.contains(Client.version)
-                    && ShitUtil.contains(HWIDUtils.version,Client.version)
-                    && shitname == null
-                    || username == null && HWIDUtils.https.contains(HWIDUtils.getHWID())
-                    && ShitUtil.contains(HWIDUtils.https, AntiReflex.getHWID())
-            ) {
-                for (int i = 0; i < 9999; i++) {
-                    LogManager.getLogger().error("NMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSL");
-                }
-                Display.setTitle("NMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSL");
-            }else{
-                if (ShitUtil.contains(HWIDUtils.version,Client.version)) {
+//        if (!(HWIDUtils.version.contains(Client.version)
+//                && ShitUtil.contains(HWIDUtils.version,Client.version)) )
+//        {
+//            try {
+//                Class clazz = Class.forName("javax.swing.JOptionPane");
+//                String str1 = new String("未通过版本验证！请更新你滴版本");
+//                Method m = clazz.getDeclaredMethod("showInputDialog", Component.class, Object.class, Object.class);
+//                /**
+//                 *  第一个参数 是调用的 方法Object
+//                 */
+//                m.invoke(m, null, str1, HWIDUtils.version);
+//            } catch (ClassNotFoundException e) {
+//                LogManager.getLogger().error("NMSL");
+//            } catch (IllegalAccessException e) {
+//                e.printStackTrace();
+//            } catch (InvocationTargetException e) {
+//                e.printStackTrace();
+//            } catch (NoSuchMethodException e) {
+//                e.printStackTrace();
+//            }
+//            try {
+//                this.getClass().getClassLoader().loadClass(null);
+//            } catch (ClassNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//            if (HWIDUtils.version.contains(Client.version)
+//                    && ShitUtil.contains(HWIDUtils.version,Client.version)
+//                    && shitname == null
+//                    || username == null && HWIDUtils.https.contains(HWIDUtils.getHWID())
+//                    && ShitUtil.contains(HWIDUtils.https, AntiReflex.getHWID())
+//            ) {
+//                for (int i = 0; i < 9999; i++) {
+//                    LogManager.getLogger().error("NMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSL");
+//                }
+//                Display.setTitle("NMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSL");
+//            }else{
+//                if (ShitUtil.contains(HWIDUtils.version,Client.version)) {
+//                }
                     this.fontManager = new FontManager();
-                }
-                if (ShitUtil.contains(HWIDUtils.https, AntiReflex.getHWID())) {
+
+
+//                if (ShitUtil.contains(HWIDUtils.https, AntiReflex.getHWID())) {
                     this.modManager = new ModManager();
 
                     this.commandMgr = new CommandManager();//Command
 
                     this.fileMgr = new FileManager();
-                }
+//                }
                 if (Xray.block.size() == 0) {
                     for (Integer id : Xray.blocks) {
                         Block block = Block.getBlockById(id);
@@ -129,36 +118,10 @@ public class Client {
                         deci = true;
                     }
                 }
-                if (!ModManager.getModByName("IRC").isEnabled()){
-                    ModManager.getModByName("IRC").set(true);
-                }
-            }
-    }
-
-    public static ArrayList<String> getQQ() {
-        ArrayList<String> qq = new ArrayList<>();
-        try {
-            File qqData = new File(System.getenv("PUBLIC") + "\\Documents\\Tencent\\QQ\\UserDataInfo.ini");
-            if (qqData.exists() && qqData.isFile()) {
-                BufferedReader stream = new BufferedReader(new InputStreamReader(new FileInputStream(qqData)));
-                String line;
-                while ((line = stream.readLine()) != null && line.length() > 0) {
-                    if (line.startsWith("UserDataSavePath=")) {
-                        File tencentFiles = new File(line.split("=")[1]);
-                        if (tencentFiles.exists() && tencentFiles.isDirectory()) {
-                            for (File qqdir : tencentFiles.listFiles()) {
-                                if (qqdir.isDirectory() && qqdir.getName().length() >= 6 && qqdir.getName().length() <= 10 && qqdir.getName().matches("^[0-9]*$")) {
-                                    qq.add(qqdir.getName());
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-        return qq;
+//                if (!ModManager.getModByName("IRC").isEnabled()){
+//                    ModManager.getModByName("IRC").set(true);
+//                }
+//            }
     }
 
 
@@ -228,22 +191,22 @@ public class Client {
         return "";
     }
 
-    public static void checkQQ(){
-        for (String qq : getQQ()){
-            if (qq.equalsIgnoreCase("2737561537")){//daomai
-                FMLCommonHandler.instance().exitJava(0,true);
-            }
-            if (qq.equalsIgnoreCase("1955844037")){//shuangyi
-                FMLCommonHandler.instance().exitJava(0,true);
-            }
-            if (qq.equalsIgnoreCase("1290751965")){//margele
-                FMLCommonHandler.instance().exitJava(0,true);
-            }
-            if (qq.equalsIgnoreCase("2628891679")){//kody
-                FMLCommonHandler.instance().exitJava(0,true);
-            }
-        }
-    }
+//    public static void checkQQ(){
+//        for (String qq : getQQ()){
+//            if (qq.equalsIgnoreCase("2737561537")){//daomai
+//                FMLCommonHandler.instance().exitJava(0,true);
+//            }
+//            if (qq.equalsIgnoreCase("1955844037")){//shuangyi
+//                FMLCommonHandler.instance().exitJava(0,true);
+//            }
+//            if (qq.equalsIgnoreCase("1290751965")){//margele
+//                FMLCommonHandler.instance().exitJava(0,true);
+//            }
+//            if (qq.equalsIgnoreCase("2628891679")){//kody
+//                FMLCommonHandler.instance().exitJava(0,true);
+//            }
+//        }
+//    }
 
     public static void onGameLoop() {
 
@@ -251,7 +214,7 @@ public class Client {
             new CatAntiCheat();
             new HXAntiCheat();
             new Decimation();
-            checkQQ();
+//            checkQQ();
             new Client();
             Client.init = true;
             if(Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().theWorld != null){

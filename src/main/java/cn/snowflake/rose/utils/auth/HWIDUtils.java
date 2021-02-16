@@ -27,7 +27,6 @@ public class HWIDUtils {
     public static String test;
 
     public static void main(String[] args){
-
        System.out.println(HttpUtils.sendGet("https://gitee.com/cnsnowflake/seasonclient/raw/master/season/hwid.txt"));
     }
 

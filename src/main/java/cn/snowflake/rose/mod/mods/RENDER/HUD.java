@@ -5,7 +5,7 @@ import cn.snowflake.rose.events.impl.EventRender2D;
 import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.*;
+import cn.snowflake.rose.utils.Value;
 import cn.snowflake.rose.utils.other.JReflectUtility;
 import cn.snowflake.rose.utils.render.RenderUtil;
 import cn.snowflake.rose.utils.render.UnicodeFontRenderer;
@@ -13,12 +13,14 @@ import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.injection.ClientLoader;
-import org.apache.logging.log4j.LogManager;
 import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.Locale;
 
 public class HUD extends Module {
     public Value<String> text = new Value<>("HUD_Text","","Season");
@@ -41,17 +43,17 @@ public class HUD extends Module {
         if (this.info.getValueState()) {
             ScaledResolution sr = new ScaledResolution(mc,mc.displayWidth,mc.displayHeight);
             String xyz = "\247aX: \247f" + (int) mc.thePlayer.posX + " \247aY: \247f" + (int) mc.thePlayer.posY + " \247aZ: \247f" + (int) mc.thePlayer.posZ;
-            if (Client.username == null) {
-                while (true) {
-                    try {
-                        Thread.sleep(10000000);
-
-                    } catch (InterruptedException interruptedException) {
-                        interruptedException.printStackTrace();
-                    }
-                    LogManager.getLogger().error("NMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMsl");
-                }
-            }
+//            if (Client.username == null) {
+//                while (true) {
+//                    try {
+//                        Thread.sleep(10000000);
+//
+//                    } catch (InterruptedException interruptedException) {
+//                        interruptedException.printStackTrace();
+//                    }
+//                    LogManager.getLogger().error("NMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMsl");
+//                }
+//            }
             font.drawStringWithColor(xyz, sr.getScaledWidth() - font.getStringWidth(clean(xyz)) - 6, sr.getScaledHeight() - font.FONT_HEIGHT - (mc.currentScreen instanceof GuiChat ? 15 : 0), -1,0);
         }
         
@@ -62,10 +64,9 @@ public class HUD extends Module {
             String server = mc.isSingleplayer() ? "local_server" : mc.func_147104_D().serverIP.toLowerCase();//getCurrentServerData
             String text = null;
             String text2 = null;
-            String info = (Client.shitname.toLowerCase().contains("snowflake") ? "Dev: " : Client.shitname.toLowerCase().contains("chentg") ? "Helper: f" : "User: ") + Client.shitname;
             try {
                 text2 = JReflectUtility.getField(mc.getClass(), ClientLoader.runtimeDeobfuscationEnabled ? "field_71470_ab": "debugFPS",true).getInt(mc) + " fps | " +result +" | " + server;
-                text = this.text.getText()+"\2472sense\247f | "+info+" | " +text2;
+                text = this.text.getText()+"\2472sense\247f | " +text2;
             } catch (IllegalAccessException illegalAccessException) {
                 illegalAccessException.printStackTrace();
             }

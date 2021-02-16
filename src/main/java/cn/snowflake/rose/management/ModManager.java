@@ -87,7 +87,7 @@ public class ModManager {
         addMod(new EIOXpGrab());
         addMod(new ScreenProtect());
         addMod(new SecretClose());
-        addMod(new IRC());
+//        addMod(new IRC());
         ok = true;
     }
     public static boolean ok = false;
