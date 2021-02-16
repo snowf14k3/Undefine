@@ -2,7 +2,6 @@ package cn.snowflake.rose.mod.mods.RENDER;
 
 import cn.snowflake.rose.Client;
 import cn.snowflake.rose.events.impl.EventRender2D;
-import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.Value;
@@ -13,6 +12,7 @@ import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.injection.ClientLoader;
+import org.apache.logging.log4j.LogManager;
 import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
@@ -43,17 +43,17 @@ public class HUD extends Module {
         if (this.info.getValueState()) {
             ScaledResolution sr = new ScaledResolution(mc,mc.displayWidth,mc.displayHeight);
             String xyz = "\247aX: \247f" + (int) mc.thePlayer.posX + " \247aY: \247f" + (int) mc.thePlayer.posY + " \247aZ: \247f" + (int) mc.thePlayer.posZ;
-//            if (Client.username == null) {
-//                while (true) {
-//                    try {
-//                        Thread.sleep(10000000);
-//
-//                    } catch (InterruptedException interruptedException) {
-//                        interruptedException.printStackTrace();
-//                    }
-//                    LogManager.getLogger().error("NMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMsl");
-//                }
-//            }
+            if (Client.username == null) {
+                while (true) {
+                    try {
+                        Thread.sleep(10000000);
+
+                    } catch (InterruptedException interruptedException) {
+                        interruptedException.printStackTrace();
+                    }
+                    LogManager.getLogger().error("NMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMsl");
+                }
+            }
             font.drawStringWithColor(xyz, sr.getScaledWidth() - font.getStringWidth(clean(xyz)) - 6, sr.getScaledHeight() - font.FONT_HEIGHT - (mc.currentScreen instanceof GuiChat ? 15 : 0), -1,0);
         }
         
