@@ -59,6 +59,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 				"net.minecraft.network.NetHandlerPlayServer",
 				"net.minecraft.util.MovementInputFromOptions",
 				"net.minecraft.entity.EntityLivingBase",
+				"net.minecraft.client.gui.GuiScreen",
 //				"cpw.mods.fml.common.network.simpleimpl.SimpleIndexedCodec"
 		};
 		classNameSet.addAll(Arrays.asList(nameArray));
@@ -119,6 +120,9 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			else if (name.equalsIgnoreCase("net.minecraft.entity.EntityLivingBase")){
 				return this.transformMethods(classByte, TransformEntityLivingBase::transformEntityLivingBase);
 			}
+//			else if (name.equalsIgnoreCase("net.minecraft.client.gui.GuiScreen")){
+//				return this.transformMethods(classByte, TransformGuiScreen::transformGuiScreen);
+//			}
 //			else if (name.equalsIgnoreCase("cpw.mods.fml.common.network.simpleimpl.SimpleIndexedCodec")){
 //				return this.transformMethods(classByte, TransformSimpleIndexedCodec::transformSimpleIndexedCodec);
 //			}

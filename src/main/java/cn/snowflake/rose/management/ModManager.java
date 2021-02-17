@@ -3,11 +3,14 @@ package cn.snowflake.rose.management;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.mod.mods.COMBAT.*;
 import cn.snowflake.rose.mod.mods.FORGE.EIOXpGrab;
+import cn.snowflake.rose.mod.mods.FORGE.FTBSatchelDupe;
+import cn.snowflake.rose.mod.mods.FORGE.OneWayTicket;
 import cn.snowflake.rose.mod.mods.FORGE.ScreenProtect;
 import cn.snowflake.rose.mod.mods.MOVEMENT.*;
 import cn.snowflake.rose.mod.mods.PLAYER.*;
 import cn.snowflake.rose.mod.mods.RENDER.*;
 import cn.snowflake.rose.mod.mods.WORLD.*;
+import cpw.mods.fml.common.Loader;
 
 import java.util.ArrayList;
 
@@ -85,9 +88,19 @@ public class ModManager {
         addMod(new Plugins());
 
         //FORGE
-        addMod(new EIOXpGrab());
         addMod(new ScreenProtect());
         addMod(new SecretClose());
+
+        if (Loader.isModLoaded("EnderIO")) {
+            addMod(new EIOXpGrab());
+        }
+        if (Loader.isModLoaded("Railcraft")){
+            addMod(new OneWayTicket());
+        }
+        if (Loader.isModLoaded("ThermalExpansion") && Loader.isModLoaded("FTBL")){
+            addMod(new FTBSatchelDupe());
+        }
+
 //        addMod(new IRC());
         ok = true;
     }

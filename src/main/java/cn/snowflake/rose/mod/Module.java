@@ -61,6 +61,7 @@ public class Module {
     public boolean isEnabled() {
         return this.isEnabled;
     }
+
     public Category getCategory() {
         return this.category;
     }
