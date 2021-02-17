@@ -34,7 +34,7 @@ public class ESP extends Module {
     private static Map<EntityPlayer, float[][]> entities = new HashMap<EntityPlayer, float[][]>();
     public Value<String> mode = new Value<>("ESP","Mode",0);
     public ESP() {
-        super("ESP", Category.RENDER);
+        super("ESP","ESP",  Category.RENDER);
 //        this.mode.addValue("2DBox");
         this.mode.addValue("2DBox");
         this.mode.addValue("Box");

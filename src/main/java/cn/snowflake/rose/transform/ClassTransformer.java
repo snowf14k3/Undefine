@@ -58,7 +58,8 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 				"net.minecraft.client.renderer.entity.RenderPlayer",
 				"net.minecraft.network.NetHandlerPlayServer",
 				"net.minecraft.util.MovementInputFromOptions",
-				"net.minecraft.entity.EntityLivingBase"
+				"net.minecraft.entity.EntityLivingBase",
+//				"cpw.mods.fml.common.network.simpleimpl.SimpleIndexedCodec"
 		};
 		classNameSet.addAll(Arrays.asList(nameArray));
 	}
@@ -118,6 +119,9 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			else if (name.equalsIgnoreCase("net.minecraft.entity.EntityLivingBase")){
 				return this.transformMethods(classByte, TransformEntityLivingBase::transformEntityLivingBase);
 			}
+//			else if (name.equalsIgnoreCase("cpw.mods.fml.common.network.simpleimpl.SimpleIndexedCodec")){
+//				return this.transformMethods(classByte, TransformSimpleIndexedCodec::transformSimpleIndexedCodec);
+//			}
 		}catch(Exception e) {
 			LogManager.getLogger().log(Level.ERROR, ExceptionUtils.getStackTrace(e));
 

@@ -211,6 +211,7 @@ public class Client {
     public static void onGameLoop() {
 
         if (!Client.init){
+//            new AnotherAntiCheat();
             new CatAntiCheat();
             new HXAntiCheat();
             new Decimation();

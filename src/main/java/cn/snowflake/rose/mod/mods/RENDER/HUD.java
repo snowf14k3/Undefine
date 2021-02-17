@@ -30,7 +30,7 @@ public class HUD extends Module {
     public static Value<Double> rainbowindex = new Value<Double>("HUD_rainbow", 1.0, 1.0, 20.0, 1.0);
 
     public HUD() {
-        super("HUD", Category.RENDER);
+        super("HUD","HUD", Category.RENDER);
         this.rainbow.addValue("Gray");
         this.rainbow.addValue("Rainbow");
         this.rainbow.addValue("Green");

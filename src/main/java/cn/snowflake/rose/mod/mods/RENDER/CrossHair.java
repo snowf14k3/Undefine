@@ -1,16 +1,15 @@
 package cn.snowflake.rose.mod.mods.RENDER;
 
 
-import java.awt.Color;
-
-import com.darkmagician6.eventapi.EventTarget;
-
 import cn.snowflake.rose.events.impl.EventRender2D;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.render.RenderUtil;
 import cn.snowflake.rose.utils.Value;
+import cn.snowflake.rose.utils.render.RenderUtil;
+import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.client.gui.ScaledResolution;
+
+import java.awt.*;
 
 public class CrossHair extends Module{
 	public Value<String> mode = new Value("CrossHair_Mode", "Mode", 0);
@@ -18,7 +17,7 @@ public class CrossHair extends Module{
 	public int corlor;
 	
 	public CrossHair() {
-		super("CrossHair", Category.RENDER);
+		super("CrossHair","Cross Hair", Category.RENDER);
 		mode.mode.add("Red");
 		mode.mode.add("Pink");
 		mode.mode.add("White");
