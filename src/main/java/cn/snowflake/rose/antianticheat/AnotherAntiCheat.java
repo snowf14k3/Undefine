@@ -17,14 +17,14 @@ public class AnotherAntiCheat {
 
     @EventTarget
     public void onFml(EventFMLChannels eventFMLChannels){
-        try {
-            if (eventFMLChannels.iMessage.toString().contains("AntiCheatSTCPacketMessage")){
-//                eventFMLChannels.setCancelled(true);//À¹½Ø
-//                Constructor constructor = eventFMLChannels.iMessage.getClass().getConstructor(byte[][].class);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            if (eventFMLChannels.iMessage.toString().contains("AntiCheatSTCPacketMessage")){
+////                eventFMLChannels.setCancelled(true);//À¹½Ø
+////                Constructor constructor = eventFMLChannels.iMessage.getClass().getConstructor(byte[][].class);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
 //    @EventTarget

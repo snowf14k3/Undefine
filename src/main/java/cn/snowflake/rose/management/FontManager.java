@@ -48,6 +48,7 @@ public class FontManager {
                 return (UnicodeFontRenderer)((HashMap)this.fonts.get(name)).get(Float.valueOf(size));
             }
             InputStream inputStream = this.getClass().getResourceAsStream("/assets/fonts/" + name + ".otf");
+
             Font font = null;
             font = Font.createFont((int)0, (InputStream)inputStream);
             unicodeFont = new UnicodeFontRenderer(font.deriveFont(size));

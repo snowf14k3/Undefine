@@ -8,7 +8,6 @@ import cn.snowflake.rose.management.FriendManager;
 import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.mod.mods.WORLD.MCF;
 import cn.snowflake.rose.utils.Value;
 import cn.snowflake.rose.utils.client.RotationUtil;
 import cn.snowflake.rose.utils.math.Location;
@@ -19,7 +18,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
@@ -224,7 +222,7 @@ public class Aimbot extends Module {
             if (target != null) {
                 Entity ey = null;
                 if (target instanceof EntityPlayer) {
-                    ey = this.predictPlayerMovement(((EntityPlayer) target), predict.getValueState().intValue());
+                    ey = this.predict(((EntityPlayer) target), predict.getValueState().intValue());
                 } else {
                     ey = target;
                 }
@@ -287,7 +285,7 @@ public class Aimbot extends Module {
         return angle;
     }
 
-    public Entity predictPlayerMovement(EntityPlayer player,  int ticks) {
+    public Entity predict(EntityPlayer player,  int ticks) {
         if (this.playerPositions.containsKey(player)) {
             List<Vec3> previousPositions = this.playerPositions.get(player);
             if (previousPositions.size() > 1) {
