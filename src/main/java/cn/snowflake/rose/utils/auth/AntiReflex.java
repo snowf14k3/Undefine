@@ -225,16 +225,6 @@ public class AntiReflex {
     }
     public static String https;
 
-    public static String getUserName1() {
-        NetworkUtil.checknetwork();
-        String str = "";
-        https = HttpUtils.sendGet("h"+"t"+"t"+"p"+":"+"/"+"/"+"w"+"w"+"w"+"."+"s"+"e"+"a"+"s"+"o"+"n"+"c"+"l"+"i"+"e"+"n"+"t"+"."+"c"+"f"+"/"+"r"+"o"+"s"+"e"+"/"+"h"+"w"+"i"+"d"+"."+"t"+"x"+"t");
-        str = getSubString(https, getHWID()+"|", " ");
-        JOptionPane.showMessageDialog(null,"Server Error");
-
-        return str;
-    }
-
     public static void set(){
         HttpUtils.nmsl = kkkk();
     }
@@ -421,29 +411,6 @@ public class AntiReflex {
 //        }
     }
 
-
-    public static String getUserName2() {
-        NetworkUtil.checknetwork();
-        String str = "";
-        https = HttpUtils.sendGet("h"+"t"+"t"+"p"+":"+"/"+"/"+"w"+"w"+"w"+"."+"s"+"e"+"a"+"s"+"o"+"n"+"c"+"l"+"i"+"e"+"n"+"t"+"."+"c"+"f"+"/"+"r"+"o"+"s"+"e"+"/"+"h"+"w"+"i"+"d"+"."+"t"+"x"+"t");
-        str = getSubString(https, getHWID()+"|", " ");
-        return str;//https://cnsnowflake.gitee.io/seasonclient/rose/hwid.txt
-    }
-    public static String getUserName3() {
-        NetworkUtil.checknetwork();
-        String str = "";
-        https = HttpUtils.sendGet("h"+"t"+"t"+"p"+":"+"/"+"/"+"w"+"w"+"w"+"."+"s"+"e"+"a"+"s"+"o"+"n"+"c"+"l"+"i"+"e"+"n"+"t"+"."+"c"+"f"+"/"+"r"+"o"+"s"+"e"+"/"+"h"+"w"+"i"+"d"+"."+"t"+"x"+"t");
-        str = getSubString(https, getHWID()+"|", " ");
-
-        return str;
-    }
-    public static String getUserName4() {
-        NetworkUtil.checknetwork();
-        String str = "";
-        https = HttpUtils.sendGet("h"+"t"+"t"+"p"+":"+"/"+"/"+"w"+"w"+"w"+"."+"s"+"e"+"a"+"s"+"o"+"n"+"c"+"l"+"i"+"e"+"n"+"t"+"."+"c"+"f"+"/"+"r"+"o"+"s"+"e"+"/"+"h"+"w"+"i"+"d"+"."+"t"+"x"+"t");
-        str = getSubString(https, getHWID()+"|", " ");
-        return str;
-    }
     public static byte[] generateHWID() {
         try {
             MessageDigest hash = MessageDigest.getInstance("MD5");

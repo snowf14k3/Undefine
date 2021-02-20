@@ -27,6 +27,7 @@ import java.io.InputStreamReader;
 import java.util.Objects;
 
 public class Client {
+	public static boolean isAuthed = false;
     public static String shitname =null;
     public static String name = "Season";
     public static String version = "1.1-fix";
@@ -46,7 +47,6 @@ public class Client {
 
     public Client(){
         EventManager.register(this);
-//        username = HWIDUtils.getUserName();
         DEBUG = true;//Debug
         this.init = true;
         instance = this;

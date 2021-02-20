@@ -4,6 +4,8 @@ import cn.snowflake.rose.Client;
 import cn.snowflake.rose.events.impl.EventTick;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
+import me.skids.margeleisgay.AuthMain;
+
 import com.darkmagician6.eventapi.EventManager;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Keyboard;
@@ -37,10 +39,11 @@ public class TransformMinecraft {
             }
         }
     }
-
     public static void runTick() {
+    	if(!Client.isAuthed) {
+    		new AuthMain().setup();
+    	}
         Client.onGameLoop();
-
         EventManager.call(new EventTick());
     }
 

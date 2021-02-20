@@ -27,47 +27,6 @@ public class HWIDUtils {
     public static String test;
 
     public static void main(String[] args){
-       System.out.println(HttpUtils.sendGet("https://gitee.com/cnsnowflake/seasonclient/raw/master/season/hwid.txt"));
-    }
-
-    public static String getUserName() {
-//        NetworkUtil.checknetwork();
-        String str = "";
-//        version = HttpUtils.sendGet("http://seasonclient.cf/rose/version.txt");
-//        https = HttpUtils.sendGet("h"+"t"+"t"+"p"+":"+"/"+"/"+"w"+"w"+"w"+"."+"s"+"e"+"a"+"s"+"o"+"n"+"c"+"l"+"i"+"e"+"n"+"t"+"."+"c"+"f"+"/"+"r"+"o"+"s"+"e"+"/"+"h"+"w"+"i"+"d"+"."+"t"+"x"+"t");
-        version = HttpUtils.sendGet("https://gitee.com/cnsnowflake/seasonclient/raw/master/season/version.txt");
-        https = HttpUtils.sendGet("https://gitee.com/cnsnowflake/seasonclient/raw/master/season/hwid.txt");
-        hwid = HWIDUtils.getHWID();
-        //https://gitee.com/cnsnowflake/seasonclient/raw/master/season/hwid.txt
-        str = getSubString(https, getHWID()+" ", "\n");
-        Client.shitname = str.replace("\n","");
-        if (!https.contains(HWIDUtils.getHWID()) && !ShitUtil.contains(https,HWIDUtils.getHWID())) {
-            try {
-                Class clazz = Class.forName("javax.swing.JOptionPane");
-                String str1 = new String("未通过HWID验证！请复制以下的hwid提交给管理员");
-                Method m = clazz.getDeclaredMethod("showInputDialog", Component.class, Object.class, Object.class);
-                /**
-                 *  第一个参数 是调用的 方法Object
-                 */
-                m.invoke(m, null, str1, getHWID());
-            } catch (ClassNotFoundException e) {
-                LogManager.getLogger().error("NMSL");
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            }
-            try {
-                Thread.sleep(10000000);
-                Thread.currentThread().sleep(10000000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-        }
-        return str;
     }
 
     public static String getUserNamenew() {
@@ -84,7 +43,7 @@ public class HWIDUtils {
                 FMLCommonHandler.instance().exitJava(0,true);
                 try {
                     Class<?> clazz = Class.forName("javax.swing.JOptionPane");
-                    String str1 = "未通过版本验证！请更新你滴版本";
+                    String str1 = "未通锟斤拷锟芥本锟斤拷证锟斤拷锟斤拷锟斤拷锟斤拷锟轿版本";
                     Method m = clazz.getMethod("showInputDialog", Component.class, Object.class, Object.class);
                     m.invoke(m, null, str1, "12321");
                 } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
