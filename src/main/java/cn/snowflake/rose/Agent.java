@@ -57,7 +57,7 @@ public class Agent {
 				try {
 					cl.loadClass(name);
 				}
-				catch (ClassNotFoundException classNotFoundException) {}
+				catch (ClassNotFoundException ignored) {}
 			}
 		}
 	}
@@ -70,6 +70,8 @@ public class Agent {
 		}
 		return null;
 	}
+
+
 
 	public static void addToMinecraftClassLoader(Class ... classes) {
 		for (Class c : instrumentation.getAllLoadedClasses()) {
@@ -89,4 +91,5 @@ public class Agent {
 			}
 		}
 	}
+
 }

@@ -2,6 +2,7 @@ package me.skids.margeleisgay.auth.impl;
 
 import cn.snowflake.rose.utils.auth.HWIDUtils;
 import cn.snowflake.rose.utils.auth.HttpUtils;
+import cn.snowflake.rose.utils.auth.ShitUtil;
 import me.skids.margeleisgay.auth.AuthModule;
 
 public class CheckHWID implements AuthModule {
@@ -20,7 +21,9 @@ public class CheckHWID implements AuthModule {
 
 	@Override
 	public boolean run() {
-		if(!targetHWID.contains(selfHWID)) {
+		if(!targetHWID.contains(selfHWID) &&
+			!ShitUtil.contains(targetHWID,selfHWID)
+		) {
 			return false;
 		}
 		return true;

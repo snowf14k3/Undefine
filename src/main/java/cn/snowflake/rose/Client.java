@@ -27,7 +27,6 @@ import java.io.InputStreamReader;
 import java.util.Objects;
 
 public class Client {
-	public static boolean isAuthed = false;
     public static String shitname =null;
     public static String name = "Season";
     public static String version = "1.1-fix";
@@ -50,55 +49,15 @@ public class Client {
         DEBUG = true;//Debug
         this.init = true;
         instance = this;
-//        if (!(HWIDUtils.version.contains(Client.version)
-//                && ShitUtil.contains(HWIDUtils.version,Client.version)) )
-//        {
-//            try {
-//                Class clazz = Class.forName("javax.swing.JOptionPane");
-//                String str1 = new String("未通过版本验证！请更新你滴版本");
-//                Method m = clazz.getDeclaredMethod("showInputDialog", Component.class, Object.class, Object.class);
-//                /**
-//                 *  第一个参数 是调用的 方法Object
-//                 */
-//                m.invoke(m, null, str1, HWIDUtils.version);
-//            } catch (ClassNotFoundException e) {
-//                LogManager.getLogger().error("NMSL");
-//            } catch (IllegalAccessException e) {
-//                e.printStackTrace();
-//            } catch (InvocationTargetException e) {
-//                e.printStackTrace();
-//            } catch (NoSuchMethodException e) {
-//                e.printStackTrace();
-//            }
-//            try {
-//                this.getClass().getClassLoader().loadClass(null);
-//            } catch (ClassNotFoundException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//            if (HWIDUtils.version.contains(Client.version)
-//                    && ShitUtil.contains(HWIDUtils.version,Client.version)
-//                    && shitname == null
-//                    || username == null && HWIDUtils.https.contains(HWIDUtils.getHWID())
-//                    && ShitUtil.contains(HWIDUtils.https, AntiReflex.getHWID())
-//            ) {
-//                for (int i = 0; i < 9999; i++) {
-//                    LogManager.getLogger().error("NMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSL");
-//                }
-//                Display.setTitle("NMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSLNMSL");
-//            }else{
-//                if (ShitUtil.contains(HWIDUtils.version,Client.version)) {
-//                }
                     this.fontManager = new FontManager();
 
 
-//                if (ShitUtil.contains(HWIDUtils.https, AntiReflex.getHWID())) {
-                    this.modManager = new ModManager();
+               this.modManager = new ModManager();
 
-                    this.commandMgr = new CommandManager();//Command
+               this.commandMgr = new CommandManager();//Command
 
-                    this.fileMgr = new FileManager();
-//                }
+               this.fileMgr = new FileManager();
+
                 if (Xray.block.size() == 0) {
                     for (Integer id : Xray.blocks) {
                         Block block = Block.getBlockById(id);
@@ -121,7 +80,6 @@ public class Client {
 //                if (!ModManager.getModByName("IRC").isEnabled()){
 //                    ModManager.getModByName("IRC").set(true);
 //                }
-//            }
     }
 
 

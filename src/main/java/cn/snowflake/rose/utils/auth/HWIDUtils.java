@@ -1,14 +1,13 @@
 package cn.snowflake.rose.utils.auth;
 
 
-import cn.snowflake.rose.Client;
 import cpw.mods.fml.common.FMLCommonHandler;
-import maki.screen.LoginScreen;
 import org.apache.logging.log4j.LogManager;
 
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -31,19 +30,17 @@ public class HWIDUtils {
 
     public static String getUserNamenew() {
 //        NetworkUtil.checknetwork();
-        String str = LoginScreen.user.getText();
 //        version = HttpUtils.sendGet("http://seasonclient.cf/rose/version.txt");
 //        https = HttpUtils.sendGet("h"+"t"+"t"+"p"+":"+"/"+"/"+"w"+"w"+"w"+"."+"s"+"e"+"a"+"s"+"o"+"n"+"c"+"l"+"i"+"e"+"n"+"t"+"."+"c"+"f"+"/"+"r"+"o"+"s"+"e"+"/"+"h"+"w"+"i"+"d"+"."+"t"+"x"+"t");
 //        version = HttpUtils.sendGet("https://gitee.com/cnsnowflake/seasonclient/raw/master/season/version.txt");
 //        https = HttpUtils.sendGet("https://gitee.com/cnsnowflake/seasonclient/raw/master/season/hwid.txt");
         //https://gitee.com/cnsnowflake/seasonclient/raw/master/season/hwid.txt
-        Client.shitname = str;
         if (!HWIDUtils.https.contains(HWIDUtils.getHWID())){
             if (!ShitUtil.contains(https, HWIDUtils.getHWID())){
                 FMLCommonHandler.instance().exitJava(0,true);
                 try {
                     Class<?> clazz = Class.forName("javax.swing.JOptionPane");
-                    String str1 = "δͨ���汾��֤���������ΰ汾";
+                    String str1 = "12312321123";
                     Method m = clazz.getMethod("showInputDialog", Component.class, Object.class, Object.class);
                     m.invoke(m, null, str1, "12321");
                 } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
@@ -55,13 +52,13 @@ public class HWIDUtils {
                 }
                 try {
                     Thread.sleep(10000000);
-                    Thread.currentThread().sleep(10000000);
+                    Thread.sleep(10000000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
         }
-        return str;
+        return null;
     }
 
     public static byte[] generateHWID() {
@@ -115,7 +112,7 @@ public class HWIDUtils {
                 ;
 
         try {
-            byte[] bytes = main.getBytes("UTF-8");
+            byte[] bytes = main.getBytes(StandardCharsets.UTF_8);
             MessageDigest md = MessageDigest.getInstance("MD5");
             byte[] md5 = md.digest(bytes);
             int i = 0;
@@ -196,7 +193,7 @@ public class HWIDUtils {
             }
         }
         int yLen = text.indexOf(right, zLen);
-        if (yLen < 0 || right == null || right.isEmpty()) {
+        if (yLen < 0 || right.isEmpty()) {
             yLen = text.length();
         }
         result = text.substring(zLen, yLen);

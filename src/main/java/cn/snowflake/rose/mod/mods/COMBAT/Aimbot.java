@@ -43,7 +43,7 @@ public class Aimbot extends Module {
     public static Value<Double> index = new Value<Double>("Aimbot_pitchIndex", 1.0, -0.01, 1.0, 0.01);
     public static Value<Double> predict = new Value<Double>("Aimbot_Predict", 8.0, 0.0, 15.0, 1);
 
-    public static Value<Double> range= new Value<Double>("Aimbot_Reach", 10.5D, 3.0D, 65.0D,0.1D);
+    public static Value<Double> range = new Value<Double>("Aimbot_Reach", 10.5D, 3.0D, 65.0D,0.1D);
 
     public Value<Double> fov = new Value<Double>("Aimbot_Fov", 10.0, 1.0, 180.0, 1.0);
     public Value<Boolean> throughwall = new Value<Boolean>("Aimbot_ThroughWall", false);
@@ -100,8 +100,8 @@ public class Aimbot extends Module {
 	                    16777215); // 测试模式画Entity信息
 
 	            mc.fontRenderer.drawStringWithShadow(
-	                    "SPD: " + targetspeed,
-	                    res.getScaledWidth() / 2 - 10 - mc.fontRenderer.getStringWidth("SPD: " + targetspeed),
+	                    "SPD: " + roundToPlace(targetspeed,2),
+	                    res.getScaledWidth() / 2 - 10 - mc.fontRenderer.getStringWidth("SPD: " + roundToPlace(targetspeed,2)),
 	                    res.getScaledHeight() / 2,
 	                    16777215); // 测试模式画Entity信息
 
@@ -117,11 +117,6 @@ public class Aimbot extends Module {
 	                    res.getScaledHeight() / 2 - 10,
 	                    16777215); // 测试模式画Entity信息
 
-//	            mc.fontRenderer.drawStringWithShadow(
-//	                    "aabbx : " + target.boundingBox.minY + " | " + target.boundingBox.maxY + " | different: " + (roundToPlace(target.boundingBox.maxY - target.boundingBox.minY, 2)) + " eye: " + target.getEyeHeight(),
-//	                    0,
-//	                    res.getScaledHeight() / 2 - 20,
-//	                    16777215); // 测试模式画Entity信息
 			}
         }
         if (circle.getValueState()) {
@@ -204,18 +199,14 @@ public class Aimbot extends Module {
             double targetWeight = Double.NEGATIVE_INFINITY;
             for (EntityLivingBase livingBase : getTarget()) {
                 if (target == null) {
-                	if(canTarget(livingBase)) {
-                        target = livingBase;
-                        targetWeight = this.getTargetWeight(livingBase);
-                	}
+                     target = livingBase;
+                     targetWeight = this.getTargetWeight(livingBase);
                 } else {
-                	if(canTarget(livingBase)) {
-                        if (this.getTargetWeight(livingBase) <= targetWeight) {
-                            continue;
-                        }
-                        target = livingBase;
-                        targetWeight = this.getTargetWeight(livingBase);
-                	}
+                     if (this.getTargetWeight(livingBase) <= targetWeight) {
+                        continue;
+                     }
+                    target = livingBase;
+                    targetWeight = this.getTargetWeight(livingBase);
                 }
             }
             addTarget();
@@ -334,12 +325,11 @@ public class Aimbot extends Module {
 //    }
 
 
-    private boolean canTarget(Entity entity) {
+    private boolean canTarget(EntityLivingBase entity) {
         if(!RotationUtil.canEntityBeSeen(entity) && !throughwall.getValueState()) {
             return false;
         }
-
-		if(!RotationUtil.isVisibleFOV((EntityLivingBase) entity, fov.getValueState().floatValue())){
+		if(!RotationUtil.isVisibleFOV(entity, fov.getValueState().floatValue())){
 			return false;
 		}
         if (entity instanceof EntityPlayer && !players.getValueState()) {
@@ -418,9 +408,24 @@ public class Aimbot extends Module {
 
     private List<EntityLivingBase> getTarget() {
         List<EntityLivingBase> loaded = new ArrayList<EntityLivingBase>();
-        mc.theWorld.loadedEntityList.stream().filter(f -> f instanceof EntityLivingBase).filter(f -> !(f instanceof EntityPlayerSP)).forEach(ent -> {
+        mc.theWorld.loadedEntityList.stream()
+                .filter(f -> f instanceof EntityLivingBase)
+                .filter(f -> !(f instanceof EntityPlayerSP))
+                .filter(f -> canTarget((EntityLivingBase) f))
+                .filter(f -> mc.thePlayer.getDistanceToEntity((Entity) f) <= range.getValueState())
+                .forEach(ent -> {
         	loaded.add((EntityLivingBase)ent);
         });
+        if (sortingMode.isCurrentMode("Distance")) {
+            loaded.sort((o1, o2) ->
+                    (int) (o1.getDistanceToEntity(mc.thePlayer) - o2.getDistanceToEntity(mc.thePlayer))
+            );
+        }
+        if (sortingMode.isCurrentMode("Health")){
+            loaded.sort((o1, o2) ->
+                    (int) (o1.getHealth() - o2.getHealth())
+            );
+        }
         return loaded;
     }
 

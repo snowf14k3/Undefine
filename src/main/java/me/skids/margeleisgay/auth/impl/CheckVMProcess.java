@@ -1,11 +1,11 @@
 package me.skids.margeleisgay.auth.impl;
 
+import me.skids.margeleisgay.auth.AuthModule;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-
-import me.skids.margeleisgay.auth.AuthModule;
 
 public class CheckVMProcess implements AuthModule {
 	private ArrayList<String> targetProcess;
@@ -31,7 +31,7 @@ public class CheckVMProcess implements AuthModule {
 	public boolean run() {
 		try {
 		BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
-		String line = new String();
+		String line;
 			while ((line = input.readLine()) != null) {
 				for (String target : targetProcess) {
 					if(line.contains(target)) {

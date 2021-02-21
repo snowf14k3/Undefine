@@ -2,10 +2,7 @@ package cn.snowflake.rose.utils.auth;
 
 
 import cn.snowflake.rose.Client;
-import cn.snowflake.rose.Season;
 import cpw.mods.fml.common.FMLCommonHandler;
-import maki.screen.LoginScreen;
-import maki.utils.LoginUtil;
 import org.apache.logging.log4j.LogManager;
 
 import javax.swing.*;
@@ -14,6 +11,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+//import maki.screen.LoginScreen;
+//import maki.utils.LoginUtil;
 
 /**
  *
@@ -31,9 +31,9 @@ public class AntiReflex {
             String[] msg = message.split("!")[1].split("::");
             if(msg.length != 4) {
                 JOptionPane.showMessageDialog(null,"Server Error");
-                LoginScreen.user.setEnabled(true);
-                LoginScreen.pass.setEnabled(true);
-                LoginScreen.btn_login.setEnabled(true);
+//                LoginScreen.user.setEnabled(true);
+//                LoginScreen.pass.setEnabled(true);
+//                LoginScreen.btn_login.setEnabled(true);
                 return;
             }
             String user = msg[0];
@@ -67,15 +67,15 @@ public class AntiReflex {
 
                 return;
             }
-            if((user + ":" + password + ":" + hwid+":").equalsIgnoreCase(Season.username + ":" + Season.password + ":" + HWIDUtils.hwid) &&
-                    (user + ":" + password + ":" + hwid+":").equalsIgnoreCase(LoginScreen.user.getText() + ":" + Season.password + ":" + HWIDUtils.hwid)
-
-            ) {
-                HWIDUtils.https = message;
-                HWIDUtils.test = LoginScreen.user.getText();
-                LoginScreen.frame.setVisible(false);
-                LoginScreen.kkkkkk = true;
-            }
+//            if((user + ":" + password + ":" + hwid+":").equalsIgnoreCase(Season.username + ":" + Season.password + ":" + HWIDUtils.hwid) &&
+//                    (user + ":" + password + ":" + hwid+":").equalsIgnoreCase(LoginScreen.user.getText() + ":" + Season.password + ":" + HWIDUtils.hwid)
+//
+//            ) {
+//                HWIDUtils.https = message;
+//                HWIDUtils.test = LoginScreen.user.getText();
+//                LoginScreen.frame.setVisible(false);
+//                LoginScreen.kkkkkk = true;
+//            }
 
 
         }
@@ -87,9 +87,9 @@ public class AntiReflex {
             String[] msg = message.split("!")[1].split("::");
             if(msg.length != 4) {
                 JOptionPane.showMessageDialog(null,"Server Error");
-                LoginScreen.user.setEnabled(true);
-                LoginScreen.pass.setEnabled(true);
-                LoginScreen.btn_login.setEnabled(true);
+//                LoginScreen.user.setEnabled(true);
+//                LoginScreen.pass.setEnabled(true);
+//                LoginScreen.btn_login.setEnabled(true);
                 return;
             }
             String user = msg[0];
@@ -118,12 +118,12 @@ public class AntiReflex {
                 }
             }
 
-            if((user + ":" + password + ":" + hwid).equalsIgnoreCase(LoginScreen.user.getText() + ":" + Season.password + ":" + HWIDUtils.hwid)) {
-                JOptionPane.showMessageDialog(null,"\u767b\u5f55\u5931\u8d25\u002c\u7528\u6237\u540d\u6216\u8005\u5bc6\u7801\u9519\u8bef");
-                LoginScreen.user.setEnabled(true);
-                LoginScreen.pass.setEnabled(true);
-                LoginScreen.btn_login.setEnabled(true);
-            }
+//            if((user + ":" + password + ":" + hwid).equalsIgnoreCase(LoginScreen.user.getText() + ":" + Season.password + ":" + HWIDUtils.hwid)) {
+//                JOptionPane.showMessageDialog(null,"\u767b\u5f55\u5931\u8d25\u002c\u7528\u6237\u540d\u6216\u8005\u5bc6\u7801\u9519\u8bef");
+//                LoginScreen.user.setEnabled(true);
+//                LoginScreen.pass.setEnabled(true);
+//                LoginScreen.btn_login.setEnabled(true);
+//            }
         }
 
 //        if (msg1 != null) {
@@ -229,7 +229,7 @@ public class AntiReflex {
         HttpUtils.nmsl = kkkk();
     }
     public static boolean kkkk(){
-        return LoginScreen.kkkkkk;
+        return false;
     }
 
     public static void checkUser(String message) {
@@ -239,9 +239,9 @@ public class AntiReflex {
 
             if(msg.length != 4) {
                 JOptionPane.showMessageDialog(null,"Server Error");
-                LoginScreen.user.setEnabled(true);
-                LoginScreen.pass.setEnabled(true);
-                LoginScreen.btn_login.setEnabled(true);
+//                LoginScreen.user.setEnabled(true);
+//                LoginScreen.pass.setEnabled(true);
+//                LoginScreen.btn_login.setEnabled(true);
                 return;
             }
             String user = msg[0];
@@ -271,14 +271,14 @@ public class AntiReflex {
                 }
                 return;
             }
-            if((user + ":" + password + ":" + hwid).equalsIgnoreCase(Season.username + ":" + Season.password + ":" + HWIDUtils.getHWID()) &&
-               (user + ":" + password + ":" + hwid).equalsIgnoreCase(LoginScreen.user.getText() + ":" + Season.password + ":" + HWIDUtils.getHWID())
-            ) {
-                HWIDUtils.https = message;
-                HWIDUtils.test = LoginScreen.user.getText();
-                LoginScreen.frame.setVisible(false);
-                LoginScreen.kkkkkk = true;
-            }
+//            if((user + ":" + password + ":" + hwid).equalsIgnoreCase(Season.username + ":" + Season.password + ":" + HWIDUtils.getHWID()) &&
+//               (user + ":" + password + ":" + hwid).equalsIgnoreCase(LoginScreen.user.getText() + ":" + Season.password + ":" + HWIDUtils.getHWID())
+//            ) {
+//                HWIDUtils.https = message;
+//                HWIDUtils.test = LoginScreen.user.getText();
+//                LoginScreen.frame.setVisible(false);
+//                LoginScreen.kkkkkk = true;
+//            }
         }
         if(message.startsWith("##CHECKUSER!") && message.split("!").length == 2){
             String[] msg = message.split("!")[1].split("::");
@@ -310,22 +310,22 @@ public class AntiReflex {
                     e.printStackTrace();
                 }
             }
-            if((user + ":" + password + ":" + hwid).equalsIgnoreCase(LoginScreen.user.getText() + ":" + Season.password + ":" + HWIDUtils.hwid)) {
-                if (user.equalsIgnoreCase(LoginScreen.user.getText()) && LoginUtil.send){
-                    do {
-                        if (password.equalsIgnoreCase(Season.password)){
-                            if (!hwid.equalsIgnoreCase(HWIDUtils.getHWID())) {
-                                FMLCommonHandler.instance().exitJava(0, true);
-                            }
-                        }else {
-                            FMLCommonHandler.instance().exitJava(0,true);
-                        }
-                        LoginUtil.send = false;
-                    }while (true);
-                }else{
-                    FMLCommonHandler.instance().exitJava(0,true);
-                }
-            }
+//            if((user + ":" + password + ":" + hwid).equalsIgnoreCase(LoginScreen.user.getText() + ":" + Season.password + ":" + HWIDUtils.hwid)) {
+//                if (user.equalsIgnoreCase(LoginScreen.user.getText()) && LoginUtil.send){
+//                    do {
+//                        if (password.equalsIgnoreCase(Season.password)){
+//                            if (!hwid.equalsIgnoreCase(HWIDUtils.getHWID())) {
+//                                FMLCommonHandler.instance().exitJava(0, true);
+//                            }
+//                        }else {
+//                            FMLCommonHandler.instance().exitJava(0,true);
+//                        }
+//                        LoginUtil.send = false;
+//                    }while (true);
+//                }else{
+//                    FMLCommonHandler.instance().exitJava(0,true);
+//                }
+//            }
 
 
 
@@ -335,13 +335,13 @@ public class AntiReflex {
         if(message.startsWith("##LOGINFAILED!") && message.split("!").length == 2){
 
             String[] msg = message.split("!")[1].split("::");
-            if(msg.length != 4) {
-                JOptionPane.showMessageDialog(null,"Server Error");
-                LoginScreen.user.setEnabled(true);
-                LoginScreen.pass.setEnabled(true);
-                LoginScreen.btn_login.setEnabled(true);
-                return;
-            }
+//            if(msg.length != 4) {
+//                JOptionPane.showMessageDialog(null,"Server Error");
+//                LoginScreen.user.setEnabled(true);
+//                LoginScreen.pass.setEnabled(true);
+//                LoginScreen.btn_login.setEnabled(true);
+//                return;
+//            }
             String user = msg[0];
             String password = msg[1];
             String hwid = msg[2];
@@ -367,12 +367,12 @@ public class AntiReflex {
                     e.printStackTrace();
                 }
             }
-            if((user + ":" + password + ":" + hwid).equalsIgnoreCase(LoginScreen.user.getText() + ":" + Season.password + ":" + HWIDUtils.getHWID())) {
-                JOptionPane.showMessageDialog(null,"\u767b\u5f55\u5931\u8d25\u002c\u7528\u6237\u540d\u6216\u8005\u5bc6\u7801\u9519\u8bef");
-                LoginScreen.user.setEnabled(true);
-                LoginScreen.pass.setEnabled(true);
-                LoginScreen.btn_login.setEnabled(true);
-            }
+//            if((user + ":" + password + ":" + hwid).equalsIgnoreCase(LoginScreen.user.getText() + ":" + Season.password + ":" + HWIDUtils.getHWID())) {
+//                JOptionPane.showMessageDialog(null,"\u767b\u5f55\u5931\u8d25\u002c\u7528\u6237\u540d\u6216\u8005\u5bc6\u7801\u9519\u8bef");
+//                LoginScreen.user.setEnabled(true);
+//                LoginScreen.pass.setEnabled(true);
+//                LoginScreen.btn_login.setEnabled(true);
+//            }
         }
 
 //        if (msg1 != null) {

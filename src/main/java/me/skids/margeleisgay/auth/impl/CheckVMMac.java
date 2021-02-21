@@ -1,13 +1,13 @@
 package me.skids.margeleisgay.auth.impl;
 
+import me.skids.margeleisgay.auth.AuthModule;
+
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import me.skids.margeleisgay.auth.AuthModule;
 
 public class CheckVMMac implements AuthModule {
 	private ArrayList<String> targetMac;
@@ -41,7 +41,16 @@ public class CheckVMMac implements AuthModule {
 		}
 		return true;
 	}
-	
+
+
+    /**
+     *
+     * old name  getMacList
+     * new name
+     *
+     * @return
+     * @throws Exception
+     */
     public static List<String> getMacList() throws Exception {
         java.util.Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces();
         StringBuilder sb = new StringBuilder();

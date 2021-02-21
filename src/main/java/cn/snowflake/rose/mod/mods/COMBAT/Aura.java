@@ -64,6 +64,7 @@ public class Aura extends Module {
     public Value<Double> cps = new Value<Double>("Aura_CPS", 12.0D, 1.0D, 20.0D, 1.0D);
     public Value<String> mode = new Value<String>("Aura","Mode", 0);
     public Value<Boolean> wall = new Value<Boolean>("Aura_ThroughWall", true);
+    public Value<String> sortingMode = new Value<String>("Aura","SortingMode", 0);
 
     public Value<Boolean> customnpcs = new Value("Aura_CustomNPCs", false);
     public Value<Boolean> customnpcsteam = new Value("Aura_CustomNPCTeam", false);
@@ -72,6 +73,8 @@ public class Aura extends Module {
         super("Aura","Aura", Category.COMBAT);
         this.mode.addValue("Single");
         this.mode.addValue("Switch");
+        this.sortingMode.addValue("Health");
+        this.sortingMode.addValue("Distance");
     }
 
     @SubscribeEvent
@@ -192,11 +195,21 @@ public class Aura extends Module {
                     targets.add((EntityLivingBase) entity);
                 }
             }
-            targets.sort((o1, o2) -> {
-                float[] rot1 = RotationUtil.getRotations(o1);
-                float[] rot2 = RotationUtil.getRotations(o2);
-                return (int)(mc.thePlayer.rotationYaw - rot1[0] - (mc.thePlayer.rotationYaw - rot2[0]));
-            });
+
+            if (sortingMode.isCurrentMode("Distance")) {
+                targets.sort((o1, o2) -> (int) (o1.getDistanceToEntity(mc.thePlayer) - o2.getDistanceToEntity(mc.thePlayer))
+                );
+            }else if (sortingMode.isCurrentMode("Health")){
+                targets.sort((o1, o2) ->
+                        (int) (o1.getHealth() - o2.getHealth())
+                );
+            }else {
+                targets.sort((o1, o2) -> {
+                    float[] rot1 = RotationUtil.getRotations(o1);
+                    float[] rot2 = RotationUtil.getRotations(o2);
+                    return (int)(mc.thePlayer.rotationYaw - rot1[0] - (mc.thePlayer.rotationYaw - rot2[0]));
+                });
+            }
             return targets;
         } catch (Exception e) {
             return null;
@@ -303,7 +316,7 @@ public class Aura extends Module {
         }
     }
 
-    private EntityLivingBase getTarget(double range) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    private EntityLivingBase getTarget(double range) {
         double dist = range;
         EntityLivingBase target = null;
         for (Object object : mc.theWorld.loadedEntityList) {

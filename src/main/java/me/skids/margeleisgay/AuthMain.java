@@ -1,18 +1,15 @@
 package me.skids.margeleisgay;
 
-import java.util.ArrayList;
-
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.lwjgl.opengl.Display;
-
-import cn.snowflake.rose.Client;
+import cn.snowflake.rose.Season;
 import me.skids.margeleisgay.auth.AuthModule;
 import me.skids.margeleisgay.auth.impl.CheckHWID;
 import me.skids.margeleisgay.auth.impl.CheckVMMac;
 import me.skids.margeleisgay.auth.impl.CheckVMPath;
 import me.skids.margeleisgay.auth.impl.CheckVMProcess;
 import net.minecraft.client.Minecraft;
+import org.lwjgl.opengl.Display;
+
+import java.util.ArrayList;
 
 public class AuthMain {
 	private ArrayList<AuthModule> games;
@@ -23,11 +20,7 @@ public class AuthMain {
 		games.add(new CheckVMMac());
 		games.add(new CheckVMPath());
 		games.add(new CheckHWID());
-	}
-	
-	public void setup() {
 		for (AuthModule game : games) {
-			LogManager.getLogger().log(Level.INFO, game.getClass().getCanonicalName());
 			game.onEnable();
 			if(!game.run()) {
 				Display.destroy();
@@ -41,6 +34,7 @@ public class AuthMain {
 			}
 			game.onDisable();
 		}
-		Client.isAuthed = true;
+		Season.isAuthed = true;
 	}
+
 }
