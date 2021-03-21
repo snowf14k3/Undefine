@@ -20,8 +20,20 @@ public class AuthMain {
 		games.add(new CheckVMMac());
 		games.add(new CheckVMPath());
 		games.add(new CheckHWID());
+
+
+
 		for (AuthModule game : games) {
 			game.onEnable();
+
+			if (game instanceof CheckHWID){
+				if (((CheckHWID) game).getTargetHWID().contains(((CheckHWID) game).getSelfHWID())){
+
+				}
+
+
+			}
+
 			if(!game.run()) {
 				Display.destroy();
 				Minecraft.getMinecraft().shutdown();

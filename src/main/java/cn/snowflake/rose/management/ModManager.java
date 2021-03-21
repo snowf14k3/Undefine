@@ -50,6 +50,7 @@ public class ModManager {
         addMod(new NoHurtcam());
         addMod(new ArrowESP());
         addMod(new CrossHair());
+        addMod(new PlayerList());
         addMod(new FullBright());
         addMod(new ItemESP());
         addMod(new ClickGui());
@@ -59,7 +60,7 @@ public class ModManager {
         addMod(new ESP2D());
         addMod(new ChestESP());
         addMod(new SimpleHUD());
-//        addMod(new BlockOverlay());
+        addMod(new BlockOverlay());
         addMod(new ESP());
 //        addMod(new Notifications());
         //PLAYER
@@ -83,7 +84,7 @@ public class ModManager {
         addMod(new Spammer());
         addMod(new MCF());
         addMod(new FakeLag());
-//        addMod(new IRC());
+        addMod(new IRC());
         addMod(new NoCommand());
         addMod(new Plugins());
 
@@ -101,7 +102,6 @@ public class ModManager {
             addMod(new FTBSatchelDupe());
         }
 
-//        addMod(new IRC());
         ok = true;
     }
     public static boolean ok = false;

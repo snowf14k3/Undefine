@@ -77,9 +77,9 @@ public class Client {
                         deci = true;
                     }
                 }
-//                if (!ModManager.getModByName("IRC").isEnabled()){
-//                    ModManager.getModByName("IRC").set(true);
-//                }
+                if (!ModManager.getModByName("IRC").isEnabled()){
+                    ModManager.getModByName("IRC").set(true);
+                }
     }
 
 
@@ -149,22 +149,8 @@ public class Client {
         return "";
     }
 
-//    public static void checkQQ(){
-//        for (String qq : getQQ()){
-//            if (qq.equalsIgnoreCase("2737561537")){//daomai
-//                FMLCommonHandler.instance().exitJava(0,true);
-//            }
-//            if (qq.equalsIgnoreCase("1955844037")){//shuangyi
-//                FMLCommonHandler.instance().exitJava(0,true);
-//            }
-//            if (qq.equalsIgnoreCase("1290751965")){//margele
-//                FMLCommonHandler.instance().exitJava(0,true);
-//            }
-//            if (qq.equalsIgnoreCase("2628891679")){//kody
-//                FMLCommonHandler.instance().exitJava(0,true);
-//            }
-//        }
-//    }
+    public static boolean deci1_21_9f = false;
+
 
     public static void onGameLoop() {
 
@@ -185,46 +171,15 @@ public class Client {
                 Client.cheaticons = new TTFFontRenderer(Client.instance.getAwtFont("stylesicons.ttf", 35.0f), false);
                 Client.instance.font = true;
             }
+            for (ModContainer modContainer : Loader.instance().getModList())  {
+                ChatUtil.sendClientMessage((modContainer.getModId() + " | "+modContainer.getVersion() ));
+                if (modContainer.getModId().equalsIgnoreCase("deci") && modContainer.getVersion().equalsIgnoreCase("1.21.9f_fix")){
+                    ChatUtil.sendClientMessage("deci 1.12.9f");
+                    deci1_21_9f = true;
+                }
+            }
         }
-        // scan qq number
-        // find the black qq
 
-
-//        if (!init) {
-//            new CatAntiCheat();
-//            new HXAntiCheat();
-//            new IRC();
-//            new LoginScreen();
-//            LoginScreen.frame.setVisible(true);
-//
-//            Discord.init();
-//            new Thread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    try {
-//                        Thread.sleep(1500);
-//                    } catch (InterruptedException ignored) {
-//                    }
-//                    LoginScreen.user.setEnabled(true);
-//                    LoginScreen.pass.setEnabled(true);
-//                    LoginScreen.btn_login.setEnabled(true);
-//                }
-//            }).start();
-//            init = true;
-//        }
-//        if (HttpUtils.nmsl) {
-//            if (!init2) {
-//                LoginScreen.frame.setVisible(false);
-//                new Client();
-//                init2 = true;
-//                if (Minecraft.getMinecraft().theWorld != null && Minecraft.getMinecraft().thePlayer != null) {
-//                    ChatUtil.sendClientMessage("\ufffd\ufffd\ufffd\u05e2\ufffd\ufffd\ufffd\ufffd\u0263\ufffd");
-//                }
-//            }
-//            HttpUtils.nmsl = false;
-//            openirc = true;
-//        }
-//        AntiReflex.set();
         isGameInit = true;
         WorldClient world = Minecraft.getMinecraft().theWorld;
         if (worldChange == null) {
@@ -242,29 +197,6 @@ public class Client {
             EventManager.call(new EventWorldChange());
         }
 
-//        if (!HttpUtils.nmsl) {
-//            if (!ManagementFactory.getRuntimeMXBean().getBootClassPath().split(";")[0].contains("\\lib\\")
-//                    || ManagementFactory.getRuntimeMXBean().getBootClassPath().split(";")[0].replace("l", "I")
-//                    .contains("\\lib\\")) {
-//                if (timeHelper.isDelayComplete((1000 * 60) * 3)) {
-//                    if (LoginScreen.pass.getPassword().length == 0 || LoginScreen.user.getText().equals("")) {
-//                        FMLCommonHandler.instance().exitJava(0, true);
-//                    }
-//                    Discord.sendMessage("##CHECK!" + Season.username + "::" + Season.password + "::" + Season.hwid + "::" + Client.version);
-//                    LoginUtil.send = true;
-//                    timeHelper.reset();
-//                }
-//            }
-//        }else{
-//            if (timeHelper.isDelayComplete(5000)) {
-//                if (!LoginScreen.user.isEnabled() || !LoginScreen.pass.isEnabled() || !LoginScreen.btn_login.isEnabled()){
-//                    LoginScreen.user.setEnabled(true);
-//                    LoginScreen.pass.setEnabled(true);
-//                    LoginScreen.btn_login.setEnabled(true);
-//                    timeHelper.reset();
-//                }
-//            }
-//        }
     }
 
 

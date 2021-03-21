@@ -8,10 +8,19 @@ import me.skids.margeleisgay.auth.AuthModule;
 public class CheckHWID implements AuthModule {
 	private String selfHWID;
 	private String targetHWID;
+
+	public String getSelfHWID() {
+		return selfHWID;
+	}
+
+	public String getTargetHWID() {
+		return targetHWID;
+	}
+
 	@Override
 	public void onEnable() {
 		selfHWID = HWIDUtils.getHWID();
-		targetHWID = HttpUtils.httpRequest("https://gitee.com/cnsnowflake/seasonclient/raw/master/season/hwid.txt");
+		targetHWID = HttpUtils.httpRequest("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/hwid.txt?download=true");
 	}
 
 	@Override
@@ -22,6 +31,7 @@ public class CheckHWID implements AuthModule {
 	@Override
 	public boolean run() {
 		if(!targetHWID.contains(selfHWID) &&
+				 !(targetHWID.indexOf(selfHWID.toString()) > -1) &&
 			!ShitUtil.contains(targetHWID,selfHWID)
 		) {
 			return false;

@@ -70,7 +70,7 @@ public class HUD extends Module {
             } catch (IllegalAccessException illegalAccessException) {
                 illegalAccessException.printStackTrace();
             }
-            float width = Client.instance.fontManager.simpleton11.getStringWidth(text) + 6;
+            float width = Client.instance.fontManager.simpleton11.getStringWidth(text);
             int height = Client.instance.fontManager.simpleton11.FONT_HEIGHT + 9;
             int posX = 2;
             int posY = 2;

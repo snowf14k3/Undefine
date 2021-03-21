@@ -1,14 +1,6 @@
 package cn.snowflake.rose.utils.auth;
 
 
-import org.apache.http.HttpEntity;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 import org.apache.logging.log4j.LogManager;
 
 import java.awt.*;
@@ -18,7 +10,6 @@ import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class HttpUtils {
@@ -99,16 +90,15 @@ public class HttpUtils {
             m.invoke(m, null, str1, HWIDUtils.getHWID());
         } catch (ClassNotFoundException e) {
             LogManager.getLogger().error("NMSL");
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
+        } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
             e.printStackTrace();
         }
     }
     
     public static String httpRequest(String url){
+        if (!url.equalsIgnoreCase("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/hwid.txt?download=true")){
+            return "";
+        }
 		try {
     	HttpURLConnection connection = (HttpURLConnection)new URL(url).openConnection();
     	connection.setRequestMethod("GET");
@@ -133,6 +123,6 @@ public class HttpUtils {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-    	return new String();
+    	return "";
     }
 }

@@ -1,32 +1,29 @@
 package cn.snowflake.rose.utils.render;
 
-import java.awt.Color;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-
-
 import cn.snowflake.rose.utils.mcutil.AltAxisAlignedBB;
 import cn.snowflake.rose.utils.mcutil.GlStateManager;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.culling.Frustrum;
 import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.Entity;
-
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.entity.EntityLivingBase;
 import org.lwjgl.util.glu.GLU;
+
+import java.awt.*;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
 public enum	 RenderUtil {
     INSTANCE;
@@ -194,7 +191,7 @@ public enum	 RenderUtil {
 
     public static void drawRect(double d, double e, double f, double g, int color) {
         GL11.glPushMatrix();
-//        GL11.glEnable((int)3042);
+        GL11.glEnable((int)3042);
         GL11.glDisable((int)3553);
         GL11.glBlendFunc((int)770, (int)771);
         GL11.glEnable((int)2848);
@@ -208,7 +205,7 @@ public enum	 RenderUtil {
         GL11.glEnd();
         GL11.glPopMatrix();
         GL11.glEnable((int)3553);
-//        GL11.glDisable((int)3042);
+        GL11.glDisable((int)3042);
         GL11.glDisable((int)2848);
         GL11.glPopMatrix();
     }
