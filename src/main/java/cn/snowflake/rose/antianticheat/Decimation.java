@@ -17,7 +17,6 @@ import net.minecraft.util.MathHelper;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.OutputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 
@@ -34,7 +33,7 @@ public class Decimation {
                 if (Client.deci1_21_9f ? eventFMLChannels.iMessage.toString().contains("deci.aE.a$af") : //true
                         eventFMLChannels.iMessage.toString().contains("deci.aE.a$ab") //false
                 ) {
-                    if (ScreenProtect.mode.isCurrentMode("leave") && mc.theWorld != null){
+                    if (ScreenProtect.mode2.isCurrentMode("leave") && mc.theWorld != null){
                         eventFMLChannels.setCancelled(true);
                         mc.theWorld.sendQuittingDisconnectingPacket();
                         mc.loadWorld(null);
@@ -69,7 +68,7 @@ public class Decimation {
                        if ((max - 1) == step){
                            //图片数据
                            BufferedImage bufferedImage = null;
-                           if (ScreenProtect.mode.isCurrentMode("Custom")){
+                           if (ScreenProtect.mode2.isCurrentMode("Custom")){
                                if (ScreenshotUtil.bufferedImage != null){
                                    bufferedImage = ScreenshotUtil.bufferedImage;//从计算机中获取图片
                                }else {
@@ -79,7 +78,7 @@ public class Decimation {
                            }
                            ByteBuf buffer = Unpooled.buffer();
                            if (bufferedImage.getData().getDataBuffer().getSize() / 1024 < 5000) {
-                               ImageIO.write(bufferedImage, "PNG", (OutputStream)new ByteBufOutputStream(buffer));
+                               ImageIO.write(bufferedImage, "PNG", new ByteBufOutputStream(buffer));
                                for (int ceiling_float_int = MathHelper.ceiling_float_int(buffer.readableBytes() / 32763.0f), i = 0; i < ceiling_float_int; ++i) {
                                    int n = i * 32763;
                                    eventFMLChannels.sendToServer((IMessage) constructor.newInstance(

@@ -51,7 +51,7 @@ public class HXAntiCheatHelper {
 
     public static Object[] getHXPacketData(Object classloader) {
         try {
-            Field ucp = Class.forName((String) "java.net.URLClassLoader").getDeclaredField("ucp");
+            Field ucp = Class.forName( "java.net.URLClassLoader").getDeclaredField("ucp");
             ucp.setAccessible(true);
             Object urlclassPath = ucp.get(classloader);
             Field path = urlclassPath.getClass().getDeclaredField("path");

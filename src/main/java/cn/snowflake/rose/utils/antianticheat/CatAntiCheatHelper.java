@@ -30,13 +30,7 @@ public class CatAntiCheatHelper {
             final GZIPOutputStream gzipOutputStream = new GZIPOutputStream(out);
 //            if (ScreenProtect.mode.isCurrentMode("CloseModule")) {
 
-//                new Timer().schedule(new TimerTask() {
-//                    @Override
-//                    public void run() {
-//                        fucku = true;
-//                    }
-//                }, 3000);
-//            }
+
 
             BufferedImage bufferedImage = createScreenshot(Minecraft.getMinecraft().displayWidth, Minecraft.getMinecraft().displayHeight, Minecraft.getMinecraft().getFramebuffer());
             ImageIO.write(bufferedImage, "png", gzipOutputStream);
