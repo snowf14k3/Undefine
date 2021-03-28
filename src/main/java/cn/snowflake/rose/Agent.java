@@ -14,9 +14,11 @@ import java.net.URL;
 
 public class Agent {
 	public static Instrumentation instrumentation;
+	public static String args;
 
 	public static void agentmain(String args, Instrumentation instrumentation) {
 		try {
+			Agent.args = args;
 			Agent.instrumentation = instrumentation;
 			Agent.loadThisJar();
 			Agent.forceloadclass();

@@ -1,5 +1,6 @@
 package cn.snowflake.rose.mod.mods.WORLD;
 
+import cn.snowflake.rose.Client;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.auth.HWIDUtils;
@@ -18,7 +19,7 @@ public class IRC extends Module {
     static PrintWriter pw;
     BufferedReader br;
     Socket socket;
-    private TimeHelper timer = new TimeHelper();
+    private final TimeHelper timer = new TimeHelper();
     private boolean messageThread;
 
     public IRC() {
@@ -28,33 +29,31 @@ public class IRC extends Module {
 
     public void processMessage(String msg1) {
         msg1 = msg1.replace("\ufffd", "");//删除傻逼异常字符
-        if (msg1 != null) {
-            if (msg1.contains(HWIDUtils.getHWID())) {
-                System.out.println(msg1);
-                setDisplayName("connected");
-                return;
-            }
-            if (msg1.contains("GETHELP")) {
-                ChatUtil.sendMessageWithoutPrefix("\u00a77\u00a7m\u00a7l----------------------------------");
-                ChatUtil.sendMessageWithoutPrefix("\u00a7b\u00a7lSeason IRC Help");
-                ChatUtil.sendMessageWithoutPrefix("\u00a77\u00a7m\u00a7l----------------------------------");
-                ChatUtil.sendMessageWithoutPrefix("\u00a7b\u00a7lUser Type");
-                ChatUtil.sendMessageWithoutPrefix("\u00a7b[LIST] >\u00a77 Use -IRC \u00a7bLIST \u00a77To List All User");
-                ChatUtil.sendMessageWithoutPrefix("\u00a77\u00a7m\u00a7l----------------------------------");
-                return;
-            }
-            if (msg1.contains("LIST")) {
-                ChatUtil.sendMessageWithoutPrefix("");
-                ChatUtil.sendMessageWithoutPrefix("\u00a77[\u00a76IRC\u00a77]Getting List.Pls Wait A Minute.");
-                sendIRCMessage("\247aName: \2477" + this.mc.thePlayer.getCommandSenderName() + " \247f| \247bUser: \2477 SnowFlake"  , true);
-                return;
-            }
-            if (msg1.contains("COUNTER//")) {
-                ChatUtil.sendMessageWithoutPrefix("\u00a77[\u00a7bIRC\u00a77]" + msg1.split("//")[1]);
-                return;
-            }
-            Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new ChatComponentText(msg1));
+        if (msg1.contains(HWIDUtils.getHWID())) {
+            System.out.println(msg1);
+            setDisplayName("connected");
+            return;
         }
+        if (msg1.contains("GETHELP")) {
+            ChatUtil.sendMessageWithoutPrefix("\u00a77\u00a7m\u00a7l----------------------------------");
+            ChatUtil.sendMessageWithoutPrefix("\u00a7b\u00a7lSeason IRC Help");
+            ChatUtil.sendMessageWithoutPrefix("\u00a77\u00a7m\u00a7l----------------------------------");
+            ChatUtil.sendMessageWithoutPrefix("\u00a7b\u00a7lUser Type");
+            ChatUtil.sendMessageWithoutPrefix("\u00a7b[LIST] >\u00a77 Use -IRC \u00a7bLIST \u00a77To List All User");
+            ChatUtil.sendMessageWithoutPrefix("\u00a77\u00a7m\u00a7l----------------------------------");
+            return;
+        }
+        if (msg1.contains("LIST")) {
+            ChatUtil.sendMessageWithoutPrefix("");
+            ChatUtil.sendMessageWithoutPrefix("\u00a77[\u00a7bIRC\u00a77] Getting List.Pls Wait A Minute.");
+            sendIRCMessage("\247aName: \2477" + this.mc.thePlayer.getCommandSenderName() + " \247f| \247bUser: \2477 "+ Client.shitname  , true);
+            return;
+        }
+        if (msg1.contains("COUNTER//")) {
+            ChatUtil.sendMessageWithoutPrefix("\u00a77[\u00a7bIRC\u00a77]" + msg1.split("//")[1]);
+            return;
+        }
+        Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(new ChatComponentText(msg1));
     }
 
 
@@ -63,9 +62,8 @@ public class IRC extends Module {
         try {
             if(prefix) {
                 //TODO 发送信息
-                pw.println("#IRC#Msg::SnowFlake" +" : " + message);
+                pw.println("#IRC#Msg::"+ Client.shitname +" : " + message);
 
-//                pw.println("#IRC#Msg::"+Client.username +" : " + message);
             } else {
                 pw.println(message);
             }
@@ -107,7 +105,7 @@ public class IRC extends Module {
                     processMessage(msg1);
                 }
             }catch (IOException e) {
-                setDisplayName("connectionreset");
+                setDisplayName("connectionless");
             }
         }
     }
@@ -131,17 +129,12 @@ public class IRC extends Module {
                     if (!timer.isDelayComplete(8000L)) continue;
                     timer.reset();
                     new connect().start();
-                    continue;
                 }
-                catch (NullPointerException e2) {
-                    continue;
-                } catch (InterruptedException e) {
-                    continue;
+                catch (NullPointerException | InterruptedException ignored) {
                 }
             } while (true);
         }
     }
-    //
     public void onEnable() {
     }
 

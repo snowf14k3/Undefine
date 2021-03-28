@@ -16,7 +16,7 @@ public class FileManager {
     private String fileDir;
 
     public FileManager() {
-        this.fileDir = String.valueOf((Object)this.mc.mcDataDir.getAbsolutePath()) + "/Season";
+        this.fileDir = this.mc.mcDataDir.getAbsolutePath() + "/Season";
         File fileFolder = new File(this.fileDir);
         if (!fileFolder.exists()) {
             fileFolder.mkdirs();

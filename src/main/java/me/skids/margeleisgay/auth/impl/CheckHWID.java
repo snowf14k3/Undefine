@@ -20,7 +20,7 @@ public class CheckHWID implements AuthModule {
 	@Override
 	public void onEnable() {
 		selfHWID = HWIDUtils.getHWID();
-		targetHWID = HttpUtils.httpRequest("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/hwid.txt?download=true");
+		targetHWID = HttpUtils.httpRequest("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/hardwareid.txt?download=true");
 	}
 
 	@Override

@@ -65,7 +65,7 @@ public class HUD extends Module {
             String text = null;
             String text2 = null;
             try {
-                text2 = JReflectUtility.getField(mc.getClass(), ClientLoader.runtimeDeobfuscationEnabled ? "field_71470_ab": "debugFPS",true).getInt(mc) + " fps | " +result +" | " + server;
+                text2 = JReflectUtility.getField(mc.getClass(), ClientLoader.runtimeDeobfuscationEnabled ? "field_71470_ab": "debugFPS",true).getInt(mc) + " fps | "+" username : "+Client.username +" | " +result +" | " + server;
                 text = this.text.getText()+"\2472sense\247f | " +text2;
             } catch (IllegalAccessException illegalAccessException) {
                 illegalAccessException.printStackTrace();

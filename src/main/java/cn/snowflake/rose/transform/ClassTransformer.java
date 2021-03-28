@@ -27,7 +27,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 		ClassReader classReader = new ClassReader(bytes);
 		ClassNode classNode = new ClassNode();
 		classReader.accept(classNode, 0);
-		LogManager.getLogger().info("transform -> "+classNode.name);
+//		LogManager.getLogger().info("transform -> "+classNode.name);
 		classNode.methods.forEach(m ->
 				transformer.accept(classNode, m)
 		);

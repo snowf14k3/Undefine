@@ -47,39 +47,32 @@ public class Client {
     public Client(){
         EventManager.register(this);
         DEBUG = true;//Debug
-        this.init = true;
+        init = true;
         instance = this;
-                    this.fontManager = new FontManager();
 
+        if (username!=null){
+            this.fontManager = new FontManager();
+        }
+        if (shitname != null){
+            this.modManager = new ModManager();
+        }
 
-               this.modManager = new ModManager();
+        this.commandMgr = new CommandManager();//Command
 
-               this.commandMgr = new CommandManager();//Command
+        this.fileMgr = new FileManager();
 
-               this.fileMgr = new FileManager();
+        if (Xray.block.size() == 0) {
+            for (Integer id : Xray.blocks) {
+                Block block = Block.getBlockById(id);
+                Xray.block.add(block);
+            }
+        }
 
-                if (Xray.block.size() == 0) {
-                    for (Integer id : Xray.blocks) {
-                        Block block = Block.getBlockById(id);
-                        Xray.block.add(block);
-                    }
-                }
-                clickGui = new SkeetClickGui();
+        clickGui = new SkeetClickGui();
 
-                for (ModContainer modContainer : Loader.instance().getModList())  {
-                    if (modContainer.getModId().equalsIgnoreCase("customnpcs")){
-                        customnpcs = true;
-                    }
-                    if (modContainer.getModId().equalsIgnoreCase("nshowmod")){
-                        nshowmod = true;
-                    }
-                    if (modContainer.getModId().equalsIgnoreCase("deci")){
-                        deci = true;
-                    }
-                }
-                if (!ModManager.getModByName("IRC").isEnabled()){
-                    ModManager.getModByName("IRC").set(true);
-                }
+        if (!ModManager.getModByName("IRC").isEnabled()){
+            ModManager.getModByName("IRC").set(true);
+        }
     }
 
 
@@ -115,11 +108,8 @@ public class Client {
         return str.chars().allMatch(Character::isDigit);
     }
 
-
-
     public static boolean scan1 = false;
     public static boolean scan = false;
-
 
     /**
      *
@@ -172,9 +162,16 @@ public class Client {
                 Client.instance.font = true;
             }
             for (ModContainer modContainer : Loader.instance().getModList())  {
-                ChatUtil.sendClientMessage((modContainer.getModId() + " | "+modContainer.getVersion() ));
+                if (modContainer.getModId().equalsIgnoreCase("customnpcs")){
+                    customnpcs = true;
+                }
+                if (modContainer.getModId().equalsIgnoreCase("nshowmod")){
+                    nshowmod = true;
+                }
+                if (modContainer.getModId().equalsIgnoreCase("deci")){
+                    deci = true;
+                }
                 if (modContainer.getModId().equalsIgnoreCase("deci") && modContainer.getVersion().equalsIgnoreCase("1.21.9f_fix")){
-                    ChatUtil.sendClientMessage("deci 1.12.9f");
                     deci1_21_9f = true;
                 }
             }

@@ -31,7 +31,7 @@ public class CatAntiCheat {
         //catanticheat
         if (eventFMLChannels.iMessage.getClass().toString().contains("1710") || eventFMLChannels.iMessage.getClass().toString().contains("luohuayu.anticheat.message")) {
             try {//filehash and classfound check
-                Constructor<? extends IMessage> fwithc = eventFMLChannels.iMessage.getClass().getDeclaredConstructor(List.class, byte.class);
+                Constructor<? extends IMessage> fwithc = eventFMLChannels.iMessage.getClass().getConstructor(List.class, byte.class);
                 if (fwithc != null) {
                         Field[] fields = eventFMLChannels.iMessage.getClass().getDeclaredFields();
 
@@ -41,6 +41,9 @@ public class CatAntiCheat {
                         Field field1 = fields[0];
                         Field field2 = fields[1];
 
+                        field1.setAccessible(true);
+                        field2.setAccessible(true);
+
                         try{
                             field1.getByte(eventFMLChannels.iMessage);
                             salt = field1;
@@ -49,41 +52,45 @@ public class CatAntiCheat {
                             salt = field2;
                             fieldlist = field1;
                         }
+                        if (fieldlist != null && salt != null){
+                            fieldlist.setAccessible(true);
+                            salt.setAccessible(true);
 
-                        try {
-                            List<String> list = ((List<String>) fieldlist.get(eventFMLChannels.iMessage));
-                            System.out.println("list"+list);
-                            if (list.size() > 30) {
-                                eventFMLChannels.setCancelled(true);
+                            try {
+                                List<String> list = ((List<String>) fieldlist.get(eventFMLChannels.iMessage));
+                                if (list.size() > 30) {
+                                    eventFMLChannels.setCancelled(true);
 
-                                list.removeIf(inject ->
-                                        inject.toString().endsWith(".tmp")
-                                );
-                                list.removeIf(mod ->
-                                        mod.toString().toLowerCase().endsWith("-skipverify.jar")
-                                );
+                                    list.removeIf(inject ->
+                                            inject.toString().endsWith(".tmp")
+                                    );
+                                    list.removeIf(mod ->
+                                            mod.toString().toLowerCase().endsWith("-skipverify.jar")
+                                    );
 
-                                eventFMLChannels.sendToServer(
-                                        fwithc.newInstance(new ArrayList<>(list),
-                                        salt.getByte(eventFMLChannels.iMessage))
-                                );
+                                    eventFMLChannels.sendToServer(
+                                            fwithc.newInstance(new ArrayList<>(list),
+                                                    salt.getByte(eventFMLChannels.iMessage))
+                                    );
 
-                            }else{
-                                eventFMLChannels.setCancelled(true);
-                                List<String> classifieds = new ArrayList<>();
-                                eventFMLChannels.sendToServer(
-                                        fwithc.newInstance(classifieds,
-                                        salt.getByte(eventFMLChannels.iMessage))
-                                );
+                                }else{
+                                    eventFMLChannels.setCancelled(true);
+                                    List<String> classifieds = new ArrayList<>();
+                                    eventFMLChannels.sendToServer(
+                                            fwithc.newInstance(classifieds,
+                                                    salt.getByte(eventFMLChannels.iMessage))
+                                    );
+                                }
+                            } catch (Exception e1) {
+                                e1.printStackTrace();
                             }
-
-                        } catch (Exception e1) {
                         }
+
                     }
             } catch (NoSuchMethodException eee) {
                 List<String> list = new ArrayList<String>();
                 try {//injectdetect check
-                    Constructor<? extends IMessage> injectdetect = eventFMLChannels.iMessage.getClass().getDeclaredConstructor(List.class);
+                    Constructor<? extends IMessage> injectdetect = eventFMLChannels.iMessage.getClass().getConstructor(List.class);
                     try {
                         eventFMLChannels.setCancelled(true);
                         eventFMLChannels.sendToServer(injectdetect.newInstance(list));
@@ -91,7 +98,7 @@ public class CatAntiCheat {
                     }
                 } catch (NoSuchMethodException e) {
                     try {// screenhost check
-                        Constructor<? extends IMessage> screenhost = eventFMLChannels.iMessage.getClass().getDeclaredConstructor(boolean.class, byte[].class);
+                        Constructor<? extends IMessage> screenhost = eventFMLChannels.iMessage.getClass().getConstructor(boolean.class, byte[].class);
                         if (screenhost != null) {
 
                             eventFMLChannels.setCancelled(true);
@@ -133,7 +140,7 @@ public class CatAntiCheat {
                     } catch (NoSuchMethodException noSuchMethodException) {
 
                         try {    //lighting and transparentTexture check
-                            Constructor<? extends IMessage> datacheck = eventFMLChannels.iMessage.getClass().getDeclaredConstructor(boolean.class, boolean.class);
+                            Constructor<? extends IMessage> datacheck = eventFMLChannels.iMessage.getClass().getConstructor(boolean.class, boolean.class);
                             if (datacheck != null) {
                                 eventFMLChannels.setCancelled(true);
                                 try {

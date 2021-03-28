@@ -96,9 +96,7 @@ public class HttpUtils {
     }
     
     public static String httpRequest(String url){
-        if (!url.equalsIgnoreCase("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/hwid.txt?download=true")){
-            return "";
-        }
+
 		try {
     	HttpURLConnection connection = (HttpURLConnection)new URL(url).openConnection();
     	connection.setRequestMethod("GET");
