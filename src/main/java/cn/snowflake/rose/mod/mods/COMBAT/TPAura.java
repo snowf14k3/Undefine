@@ -1,7 +1,7 @@
 package cn.snowflake.rose.mod.mods.COMBAT;
 
+import cn.snowflake.rose.Client;
 import cn.snowflake.rose.events.impl.EventMotion;
-import cn.snowflake.rose.events.impl.EventPacket;
 import cn.snowflake.rose.events.impl.EventRender3D;
 import cn.snowflake.rose.management.FriendManager;
 import cn.snowflake.rose.management.ModManager;
@@ -12,6 +12,7 @@ import cn.snowflake.rose.utils.client.ChatUtil;
 import cn.snowflake.rose.utils.client.RotationUtil;
 import cn.snowflake.rose.utils.math.Vec3Util;
 import cn.snowflake.rose.utils.mcutil.BlockPos;
+import cn.snowflake.rose.utils.other.JReflectUtility;
 import cn.snowflake.rose.utils.path.AStarCustomPathFinder;
 import cn.snowflake.rose.utils.render.ColorUtil;
 import cn.snowflake.rose.utils.render.RenderUtil;
@@ -27,17 +28,18 @@ import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemSword;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C03PacketPlayer;
-import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -54,6 +56,7 @@ public class TPAura extends Module
     public Value<Boolean> ANIMALS;
     public Value<Boolean> INVISIBLES;
     public Value<Boolean> MOB;
+    public Value<Boolean> customnpcs;
 
     private Value<Double> MAXT;
     private Value<Double> RANGE;
@@ -89,33 +92,19 @@ public class TPAura extends Module
         this.TIMER = new Value<Double>("Tpaura_Timer", 2.5, 0.1, 3.0, 0.1);
         this.NOSWING = new Value<Boolean>("TPAura_NoSwing", false);
         this.otherentity = new Value<Boolean>("TPAura_OtherEntity", true);
-//        this.customnpc = new Value<Boolean>("TPAura_Customnpc", true);
+        this.customnpcs = new Value<Boolean>("TPAura_CustomNPC", true);
         this.path = new ArrayList<Vec3Util>();
         this.test = (List<Vec3Util>[])new ArrayList[50];
         this.targets = new CopyOnWriteArrayList<EntityLivingBase>();
         this.cps = new TimeHelper();
+        timer = new TimeHelper();
         this.Mode.mode.add("Vanilla");
-        this.Mode.mode.add("Hypixel");
     }
 
     @Override
     public void onEnable() {
         TPAura.timer.reset();
-//        this.targets.clear();
-        if (this.Mode.isCurrentMode("Hypixel")) {
-            if (this.mc.thePlayer.onGround && this.mc.thePlayer.isCollidedVertically) {
-                double x = this.mc.thePlayer.posX;
-                double y = this.mc.thePlayer.posY;
-                double z = this.mc.thePlayer.posZ;
-                this.mc.thePlayer.sendQueue.addToSendQueue((Packet)new C03PacketPlayer.C04PacketPlayerPosition(x, this.mc.thePlayer.boundingBox.minY, y + 0.16, z, true));
-                this.mc.thePlayer.sendQueue.addToSendQueue((Packet)new C03PacketPlayer.C04PacketPlayerPosition(x, this.mc.thePlayer.boundingBox.minY, y + 0.07, z, true));
-                TPAura.canReach = false;
-            }
-            else {
-                ChatUtil.sendClientMessage("Failed Tpaura.");
-                this.set(false);
-            }
-        }
+
     }
 
     @EventTarget
@@ -126,22 +115,7 @@ public class TPAura extends Module
 
         int maxtTargets = this.MAXT.getValueState().intValue();
         int delayValue = 20 / this.CPS.getValueState().intValue() * 50;
-        double hypixelTimer = this.TIMER.getValueState().doubleValue() * 1000.0;
 
-        if (this.Mode.isCurrentMode("Hypixel")) {
-            this.setDisplayName("Hypixel");
-            if (!TPAura.canReach) {
-                mc.thePlayer.motionX *= 0;
-                mc.thePlayer.motionZ *= 0;
-                mc.thePlayer.motionY *= 0;
-                mc.thePlayer.onGround = false;
-                mc.thePlayer.jumpMovementFactor = 0;
-                return;
-            }
-            if (TPAura.timer.check((long)hypixelTimer)) {
-                this.set(false);
-            }
-        }
         this.targets = this.getTargets();
         if (targets !=null) {
             if (block.getValueState() && !mc.thePlayer.isBlocking() && mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.inventory.getCurrentItem().getItem() instanceof ItemSword) {
@@ -259,29 +233,6 @@ public class TPAura extends Module
         }
     }
 
-    @EventTarget
-    public void onpack(EventPacket ep) {
-        Packet p = ep.getPacket();
-        if (this.Mode.isCurrentMode("Hypixel")) {
-            if (p instanceof S08PacketPlayerPosLook && !TPAura.canReach) {
-                TPAura.canReach = true;
-                TPAura.timer.reset();
-                S08PacketPlayerPosLook s08PacketPlayerPosLook = (S08PacketPlayerPosLook)ep.getPacket();
-            }
-            if (p instanceof C03PacketPlayer && !TPAura.canReach) {
-                ep.setCancelled(true);
-            }
-            if (p instanceof S08PacketPlayerPosLook) {
-                if (TPAura.timer.getTime() < 10L || !TPAura.canReach) {
-                    return;
-                }
-                ChatUtil.sendClientMessage("Tpaira-Disabled due to a lagback.");
-                this.set(false);
-                S08PacketPlayerPosLook s08PacketPlayerPosLook2 = (S08PacketPlayerPosLook)p;
-            }
-        }
-    }
-
     private ArrayList<Vec3Util> computePath(Vec3Util topFrom, Vec3Util to) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         if (!this.canPassThrow(new BlockPos(topFrom.toVec3()))) {
             topFrom = topFrom.addVector(0.0, 1.0, 0.0);
@@ -306,8 +257,7 @@ public class TPAura extends Module
                 Label_0356: {
                     if (pathElm.squareDistanceTo(lastDashLoc) > this.dashDistance * this.dashDistance) {
                         canContinue = false;
-                    }
-                    else {
+                    }else {
                         double smallX = Math.min(lastDashLoc.getX(), pathElm.getX());
                         double smallY = Math.min(lastDashLoc.getY(), pathElm.getY());
                         double smallZ = Math.min(lastDashLoc.getZ(), pathElm.getZ());
@@ -348,6 +298,22 @@ public class TPAura extends Module
                 && !otherentity.getValueState()) {
             return false;
         }
+        if (entity instanceof EntityBat){
+            return false;
+        }
+        if (Client.customnpcs) {
+            if (Objects.requireNonNull(JReflectUtility.getNPCEntity()).isInstance(entity) ){
+                if (!customnpcs.getValueState()){
+                    return false;
+                }
+            }
+        }else{
+            if (customnpcs.getValueState()){
+                customnpcs.setValueState(false);
+                ChatUtil.sendClientMessage("You have no install the customeNPCs");
+            }
+        }
+
         if (entity instanceof EntityPlayer && !PLAYERS.getValueState()) {
             return false;
         }
@@ -387,7 +353,4 @@ public class TPAura extends Module
         }
     }
 
-    static {
-        TPAura.timer = new TimeHelper();
-    }
 }

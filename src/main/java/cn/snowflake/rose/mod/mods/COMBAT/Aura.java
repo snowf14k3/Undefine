@@ -26,6 +26,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemSword;
@@ -66,8 +67,7 @@ public class Aura extends Module {
     public Value<Boolean> wall = new Value<Boolean>("Aura_ThroughWall", true);
     public Value<String> sortingMode = new Value<String>("Aura","SortingMode", 0);
 
-    public Value<Boolean> customnpcs = new Value("Aura_CustomNPCs", false);
-    public Value<Boolean> customnpcsteam = new Value("Aura_CustomNPCTeam", false);
+    public Value<Boolean> customnpcs = new Value<Boolean>("Aura_CustomNPCs", false);
 
     public Aura() {
         super("Aura","Aura", Category.COMBAT);
@@ -83,7 +83,6 @@ public class Aura extends Module {
             ScaledResolution sr = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
             int height = sr.getScaledHeight() / 2 - 20;
             int width = sr.getScaledWidth() / 2 + 15;
-//		    RenderUtil.drawRect(width - 2, height, sr.getScaledWidth() / 2 + 80, height + mc.fontRenderer.FONT_HEIGHT + 2, ClientUtil.reAlpha(Colors.BLACK.c, 0.4f));
             mc.fontRenderer.drawStringWithShadow(target.getCommandSenderName() + " \2474\u2764\247f" + Math.round(target.getHealth()), width,  height + 2, -1);
             RenderUtil.drawEntityOnScreen(width - 10, height + 20, 20, target.rotationYaw,9, target);
         }
@@ -149,31 +148,8 @@ public class Aura extends Module {
         target = null;
         super.onDisable();
     }
-//    private void startAutoBlock() {
-//        mc.getNetHandler().addToSendQueue(
-//                new C08PacketPlayerBlockPlacement(
-//                        -1,
-//                        -1,
-//                        -1,
-//                        255,
-//                        mc.thePlayer.getCurrentEquippedItem(),
-//                        0,
-//                        0,
-//                        0));
-//    }
-//    private void stopAutoBlock() {
-//        mc.getNetHandler().addToSendQueue((
-//                new C07PacketPlayerDigging(
-//                        5,
-//                        -1,
-//                        -1,
-//                        -1,
-//                        0)));
-////        this.mc.thePlayer.sendQueue.addToSendQueue((Packet) new C07PacketPlayerDigging(5, 0,0,0, 0));
-////        if (target == null){
-////            mc.thePlayer.setItemInUse(mc.thePlayer.getCurrentEquippedItem(), 0);
-////        }
-//    }
+
+
     private void startAutoBlock() {
         KeyBinding.setKeyBindState(mc.gameSettings.keyBindUseItem.getKeyCode(),true);
         this.mc.playerController.sendUseItem(this.mc.thePlayer, this.mc.theWorld, this.mc.thePlayer.inventory.getCurrentItem());
@@ -291,9 +267,9 @@ public class Aura extends Module {
         GL11.glPopMatrix();
     }
     private void DoAttack() {
-        int aps = ((Double)this.cps.getValueState()).intValue();
-        int DelayValue = 1000 / aps + this.RANDOM.nextInt(50) - 30;
-        if ((double) mc.thePlayer.getDistanceToEntity(target) <= this.range.getValueState().floatValue() && this.timer2.isDelayComplete((DelayValue - 20 + this.RANDOM.nextInt(50)))) {
+        int aps = (this.cps.getValueState()).intValue();
+        int DelayValue = 1000 / aps + this.random.nextInt(50) - 30;
+        if ((double) mc.thePlayer.getDistanceToEntity(target) <= this.range.getValueState().floatValue() && this.timer2.isDelayComplete((DelayValue - 20 + this.random.nextInt(50)))) {
             this.atttack();
         }
     }
@@ -346,21 +322,20 @@ public class Aura extends Module {
                 if (!customnpcs.getValueState()){
                     return false;
                 }
-                if (!customnpcsteam.getValueState() && mc.thePlayer.isOnSameTeam((EntityLivingBase) entity)){
-                    return false;
-                }
             }
         }else{
-            if (customnpcs.getValueState() || customnpcsteam.getValueState()){
+            if (customnpcs.getValueState()){
                 customnpcs.setValueState(false);
-                customnpcsteam.setValueState(false);
                 ChatUtil.sendClientMessage("You have no install the customeNPCs");
             }
         }
         if (!Objects.requireNonNull(ModManager.getModByName("NoFriend")).isEnabled() && FriendManager.isFriend(entity.getCommandSenderName())){
             return false;
         }
-        if(!mc.thePlayer.canEntityBeSeen(entity) && !wall.getValueState().booleanValue()) {
+        if (entity instanceof EntityBat){
+            return false;
+        }
+        if(!mc.thePlayer.canEntityBeSeen(entity) && !wall.getValueState()) {
             return false;
         }
         if (entity instanceof EntityPlayer && !players.getValueState()) {
@@ -382,10 +357,10 @@ public class Aura extends Module {
         return entity != mc.thePlayer && entity.isEntityAlive() && mc.thePlayer.getDistanceToEntity(entity) <= range.getValueState();
     }
 
-    private final Random RANDOM = new Random();
+    private final Random random = new Random();
 
     public int random(double min, double max) {
-        return (int) (RANDOM.nextInt((int) (max - min)) + min);
+        return (int) (random.nextInt((int) (max - min)) + min);
     }
 
 }

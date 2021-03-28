@@ -411,7 +411,6 @@ public class JReflectUtility {
         }
         field.setAccessible(true);
         try {
-//            System.out.println(field.getFloat(mc.playerController));
             return field.getFloat(mc.playerController);
         } catch (IllegalAccessException e) {
         }
@@ -419,7 +418,7 @@ public class JReflectUtility {
     }
 
 
-    public static Class getCPacketInjectDetect(){
+    public static Class<?> getCPacketInjectDetect(){
         try {
             return Class.forName("luohuayu.anticheat.message.CPacketInjectDetect");
         } catch (ClassNotFoundException e) {
@@ -429,7 +428,7 @@ public class JReflectUtility {
     }
 
 
-    public static Class getDeciEntity(){
+    public static Class<?> getDeciEntity(){
         try {
             return Class.forName("deci.ag.d");
         } catch (ClassNotFoundException e) {
@@ -439,7 +438,7 @@ public class JReflectUtility {
     }
 
     //枪械物品的父类
-    public static Class getGunItem(){
+    public static Class<?> getGunItem(){
         try {
             return Class.forName("deci.ao.b");
         } catch (ClassNotFoundException e) {
@@ -447,7 +446,7 @@ public class JReflectUtility {
         }
         return null;
     }
-    public static Class getCorpse(){
+    public static Class<?> getCorpse(){
         try {
             return Class.forName("deci.af.a");
         } catch (ClassNotFoundException e) {
@@ -455,7 +454,7 @@ public class JReflectUtility {
         }
         return null;
     }
-    public static Class getEntityNumber(){
+    public static Class<?> getEntityNumber(){
         try {
             return Class.forName("nianshow.nshowmod.entity.EntityNumber");
         } catch (ClassNotFoundException e) {
@@ -464,7 +463,7 @@ public class JReflectUtility {
         return null;
     }
 
-    public static Class getNPCEntity(){
+    public static Class<?> getNPCEntity(){
         try {
             return Class.forName("noppes.npcs.entity.EntityNPCInterface");
         } catch (ClassNotFoundException e) {

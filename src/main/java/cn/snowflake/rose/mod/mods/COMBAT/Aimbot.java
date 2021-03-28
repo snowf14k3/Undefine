@@ -169,12 +169,12 @@ public class Aimbot extends Module {
 	}
 
     @EventTarget(Priority.HIGH)
-    public void ontick(EventUpdate e){
+    public void onTick(EventUpdate e){
         if (mc.thePlayer != null) {
-            if (ModManager.getModByName("NoRecoil").isEnabled() && NoRecoil.horizontal.getValueState()) {
+            if (Objects.requireNonNull(ModManager.getModByName("NoRecoil")).isEnabled() && NoRecoil.horizontal.getValueState()) {
                 mc.thePlayer.rotationPitch = mc.thePlayer.prevRotationPitch;
             }
-            if (ModManager.getModByName("NoRecoil").isEnabled() && NoRecoil.vertical.getValueState()){
+            if (Objects.requireNonNull(ModManager.getModByName("NoRecoil")).isEnabled() && NoRecoil.vertical.getValueState()){
                 mc.thePlayer.rotationYaw = mc.thePlayer.prevRotationYaw;
             }
         }
@@ -335,7 +335,7 @@ public class Aimbot extends Module {
         if (entity instanceof EntityPlayer && !players.getValueState()) {
             return false;
         }
-        if (!ModManager.getModByName("NoFriend").isEnabled() && FriendManager.isFriend(entity.getCommandSenderName())){
+        if (!Objects.requireNonNull(ModManager.getModByName("NoFriend")).isEnabled() && FriendManager.isFriend(entity.getCommandSenderName())){
             return false;
         }
         if (entity instanceof EntityAnimal && !animal.getValueState()) {
