@@ -6,6 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.util.vector.Vector3f;
 
+
 import java.util.ArrayList;
 
 public class PlayerUtil {
@@ -16,6 +17,16 @@ public class PlayerUtil {
         }
         return false;
     }
+	 public static boolean Moving() {
+	        if (PlayerUtil.mc.gameSettings.keyBindForward.getIsKeyPressed()) return true;
+	        if (PlayerUtil.mc.gameSettings.keyBindBack.getIsKeyPressed()) return true;
+	        if (PlayerUtil.mc.gameSettings.keyBindLeft.getIsKeyPressed()) return true;
+	        if (PlayerUtil.mc.gameSettings.keyBindRight.getIsKeyPressed()) return true;
+	        if (PlayerUtil.mc.thePlayer.movementInput.moveForward != 0.0f) return true;
+	        if (PlayerUtil.mc.thePlayer.movementInput.moveStrafe != 0.0f) return true;
+	        return false;
+	    }
+    
     public static boolean MovementInput() {
         return PlayerUtil.mc.gameSettings.keyBindForward.getIsKeyPressed() || PlayerUtil.mc.gameSettings.keyBindLeft.getIsKeyPressed() || PlayerUtil.mc.gameSettings.keyBindRight.getIsKeyPressed() || PlayerUtil.mc.gameSettings.keyBindBack.getIsKeyPressed();
     }

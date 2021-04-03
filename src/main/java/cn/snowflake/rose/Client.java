@@ -1,9 +1,18 @@
 package cn.snowflake.rose;
 
+import java.awt.Font;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Objects;
+
+import com.darkmagician6.eventapi.EventManager;
+import com.darkmagician6.eventapi.EventTarget;
+
 import cn.snowflake.rose.antianticheat.CatAntiCheat;
 import cn.snowflake.rose.antianticheat.Decimation;
 import cn.snowflake.rose.antianticheat.HXAntiCheat;
 import cn.snowflake.rose.events.impl.EventWorldChange;
+import cn.snowflake.rose.events.impl.Events;
 import cn.snowflake.rose.management.CommandManager;
 import cn.snowflake.rose.management.FileManager;
 import cn.snowflake.rose.management.FontManager;
@@ -13,18 +22,12 @@ import cn.snowflake.rose.ui.skeet.SkeetClickGui;
 import cn.snowflake.rose.ui.skeet.TTFFontRenderer;
 import cn.snowflake.rose.utils.client.ChatUtil;
 import cn.snowflake.rose.utils.time.TimeHelper;
-import com.darkmagician6.eventapi.EventManager;
-import com.darkmagician6.eventapi.EventTarget;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
-
-import java.awt.*;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Objects;
+import net.minecraftforge.common.MinecraftForge;
 
 public class Client {
     public static String shitname =null;
@@ -46,6 +49,7 @@ public class Client {
 
     public Client(){
         EventManager.register(this);
+        MinecraftForge.EVENT_BUS.register(new Events());
         DEBUG = true;//Debug
         init = true;
         instance = this;
@@ -70,9 +74,11 @@ public class Client {
 
         clickGui = new SkeetClickGui();
 
-        if (!ModManager.getModByName("IRC").isEnabled()){
-            ModManager.getModByName("IRC").set(true);
-        }
+
+        
+//        if (!ModManager.getModByName("IRC").isEnabled()){
+//            ModManager.getModByName("IRC").set(true);
+//        }
     }
 
 

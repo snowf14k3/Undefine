@@ -38,6 +38,7 @@ import org.lwjgl.util.glu.Cylinder;
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -52,28 +53,32 @@ public class Aura extends Module {
     public TimeHelper timer2 = new TimeHelper();
     private TimeHelper switchtime = new TimeHelper();
     public static EntityLivingBase target;
-    public Value<Boolean> players = new Value("Aura_Player", true);
+
     private static int switchIndex;
+    public Value<String> mode = new Value<String>("Aura","Mode", 0);
+    public Value<String> sortingMode = new Value<String>("Aura","SortingMode", 0);
+    public Value<Double> range= new Value<Double>("Aura_Reach", 4.5D, 1.0D, 7.0D,0.1D);
+    public Value<Double> cps = new Value<Double>("Aura_CPS", 12.0D, 1.0D, 20.0D, 1.0D);
+    public Value<Double> switchdelay= new Value<Double>("Aura_SwitchDelay", 200.0D, 1.0D, 1000.0D,10.0D);
+    public Value<Double> maxtTargets = new Value<Double>("Aura_MultiMaxTarget", 20.0D, 1.0D, 50.0D, 1.0D);
+    public Value<Boolean> Esp = new Value("Aura_Esp", true);
+    public Value<Boolean> players = new Value("Aura_Player", true);
     public Value<Boolean> otherentity = new Value("Aura_Otherentity", true);
     public Value<Boolean> animal = new Value("Aura_Animal", false);
     public Value<Boolean> moster = new Value("Aura_Mob", false);
     public Value<Boolean> village = new Value("Aura_village", false);
     public Value<Boolean> invisible = new Value("Aura_Invisible", false);
     public Value<Boolean> block = new Value("Aura_AutoBlock", true);
-    public Value<Double> switchdelay= new Value<Double>("Aura_SwitchDelay", 200.0D, 1.0D, 1000.0D,10.0D);
-    public static Value<Double> range= new Value<Double>("Aura_Reach", 4.5D, 1.0D, 7.0D,0.1D);
-    public Value<Double> cps = new Value<Double>("Aura_CPS", 12.0D, 1.0D, 20.0D, 1.0D);
-    public Value<String> mode = new Value<String>("Aura","Mode", 0);
     public Value<Boolean> wall = new Value<Boolean>("Aura_ThroughWall", true);
-    public Value<String> sortingMode = new Value<String>("Aura","SortingMode", 0);
-
     public Value<Boolean> customnpcs = new Value<Boolean>("Aura_CustomNPCs", false);
 
     public Aura() {
         super("Aura","Aura", Category.COMBAT);
         this.mode.addValue("Single");
         this.mode.addValue("Switch");
+        this.mode.addValue("Multi");
         this.sortingMode.addValue("Health");
+        this.sortingMode.addValue("MaxHealth");
         this.sortingMode.addValue("Distance");
     }
 
@@ -111,7 +116,7 @@ public class Aura extends Module {
                 float[] rotations = RotationUtil.getRotations(target);
                 e.setYaw(rotations[0]);
                 e.setPitch(rotations[1]);
-                e.setRPITCH(rotations[1]);//animotion
+//                e.setRPITCH(rotations[1]);//animotion
                 mc.thePlayer.rotationYawHead = rotations[0];
                 mc.thePlayer.renderYawOffset = rotations[0];
             }
@@ -135,10 +140,24 @@ public class Aura extends Module {
                 mc.thePlayer.rotationYawHead = rotations[0];
                 mc.thePlayer.renderYawOffset = rotations[0];
             }
-        }else if (e.getEventType() == EventType.POST){
-            if(target != null) {
-                DoAttack();
+            if (mode.getModeName().equalsIgnoreCase("Multi")) {
+            	 setDisplayName("Multi");
+                if (this.getTargets().size() <= 0) {
+                    target = null;
+                    return;
+                }
+            	 target = (EntityLivingBase) this.getTargets().get(0);
             }
+        }else if (e.getEventType() == EventType.POST){
+			if (mode.getModeName().equalsIgnoreCase("Multi")) {
+				if (target != null) {
+					DoMultiAttack();
+				}
+			} else {
+				if (target != null) {
+					DoAttack();
+				}
+			}
         }
     }
 
@@ -179,6 +198,11 @@ public class Aura extends Module {
                 targets.sort((o1, o2) ->
                         (int) (o1.getHealth() - o2.getHealth())
                 );
+            }else if (sortingMode.isCurrentMode("MaxHealth")){
+                targets.sort((o1, o2) ->
+                        (int) (o1.getHealth() - o2.getHealth())
+                );
+                Collections.reverse(targets);
             }else {
                 targets.sort((o1, o2) -> {
                     float[] rot1 = RotationUtil.getRotations(o1);
@@ -192,12 +216,20 @@ public class Aura extends Module {
         }
     }
 
-    @EventTarget
-    public void onRender(EventRender3D render) {
-        if (target!=null){
-            drawESP();
-        }
-    }
+	@EventTarget
+	public void onRender(EventRender3D render) {
+		if (Esp.getValueState().booleanValue()) {
+			if (mode.getModeName().equalsIgnoreCase("Multi")) {
+				if (target != null) {
+					drawMultiESP();
+				}
+			} else {
+				if (target != null) {
+					drawESP();
+				}
+			}
+		}
+	}
 
     private void drawESP() {
         double x = target.lastTickPosX
@@ -210,6 +242,27 @@ public class Aura extends Module {
                 + (target.posZ - target.lastTickPosZ) * JReflectUtility.getRenderPartialTicks()
                 - RenderManager.renderPosZ;
         drawCylinderESP(target,x, y + target.getEyeHeight() + 0.5d, z);
+    }
+    private void drawMultiESP() {
+ 
+        if (!this.getTargets().isEmpty() ) {
+	           if (this.getTargets().size() > 0) {
+	               for (int i = 0; i < (this.getTargets().size() > maxtTargets.getValueState() ? maxtTargets.getValueState() : this.getTargets().size()); i++) {
+	            	   EntityLivingBase target = (EntityLivingBase) this.getTargets().get(i);
+	            	   double x = target.lastTickPosX
+	                           + (target.posX - target.lastTickPosX) * JReflectUtility.getRenderPartialTicks()
+	                           - RenderManager.renderPosX;
+	                   double y = target.lastTickPosY
+	                           + (target.posY - target.lastTickPosY) * JReflectUtility.getRenderPartialTicks()
+	                           - RenderManager.renderPosY;
+	                   double z = target.lastTickPosZ
+	                           + (target.posZ - target.lastTickPosZ) * JReflectUtility.getRenderPartialTicks()
+	                           - RenderManager.renderPosZ;
+	            	   drawCylinderESP(target,x, y + target.getEyeHeight() + 0.5d, z);
+	            
+	               }
+	           }
+        }
     }
 
     public static void disableSmoothLine() {
@@ -239,20 +292,19 @@ public class Aura extends Module {
     }
 
     public void drawCylinderESP(EntityLivingBase entity, double x, double y, double z) {
-        GL11.glPushMatrix();
+    	Cylinder c = new Cylinder();
+    	RenderUtil.pre3D();
         GlStateManager.disableLighting();
         GL11.glTranslated((double) x, (double) y, (double) z);
         GL11.glRotatef((float) (-entity.width), (float) 0.0f, (float) 1.0f, (float) 0.0f);
         RenderUtil.glColor(new Color(1, 89, 1, 150).getRGB());// color4f
         enableSmoothLine(0.1f);//
-        Cylinder c = new Cylinder();
         GL11.glRotatef((float) -90.0f, (float) 1.0f, (float) 0.0f, (float) 0.0f);
         c.setDrawStyle(100011);
         c.draw(0.0f, 0.2f, 0.5f, 5, 300);
         disableSmoothLine();
-        GlStateManager.enableLighting();
-        GL11.glPopMatrix();
-
+        RenderUtil.post3D();
+        RenderUtil.pre3D();
         GL11.glPushMatrix();
         GlStateManager.disableLighting();
         GL11.glTranslated((double) x, (double) y + 0.5f, (double) z);
@@ -263,9 +315,53 @@ public class Aura extends Module {
         c.setDrawStyle(100011);
         c.draw(0.2f, 0.0f, 0.5f, 5, 300);
         disableSmoothLine();
-        GlStateManager.enableLighting();
+//        GlStateManager.enableLighting();
         GL11.glPopMatrix();
+        RenderUtil.post3D();
+      
     }
+    
+	
+    private void DoMultiAttack() {
+        int aps = (this.cps.getValueState()).intValue();
+        int DelayValue = 1000 / aps + this.random.nextInt(50) - 30;
+        if ((double) mc.thePlayer.getDistanceToEntity(target) <= this.range.getValueState().floatValue() && this.timer2.isDelayComplete((DelayValue - 20 + this.random.nextInt(50)))) {
+            this.Multiatttack();
+        }
+    }
+    private void Multiatttack() {
+        if (block.getValueState() && mc.thePlayer.isBlocking()&& mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.inventory.getCurrentItem().getItem() instanceof ItemSword) {
+            stopAutoBlock();
+        }
+        EventAura ea = new EventAura(target);
+        EventManager.call(ea);
+
+        if (!mc.thePlayer.isBlocking() && block.getValueState()) {
+        	mc.thePlayer.swingItem();
+        	 if (!this.getTargets().isEmpty() ) {
+  	           if (this.getTargets().size() > 0) {
+  	               for (int i = 0; i < (this.getTargets().size() > maxtTargets.getValueState() ? maxtTargets.getValueState() : this.getTargets().size()); i++) {
+//  	            	 mc.thePlayer.swingItem();
+  	            	 mc.thePlayer.sendQueue.addToSendQueue(new C02PacketUseEntity((EntityLivingBase) this.getTargets().get(i), C02PacketUseEntity.Action.ATTACK));
+  	               }
+  	           }
+  		  }
+        }else if (!block.getValueState()) {
+        	mc.thePlayer.swingItem();
+       	 if (!this.getTargets().isEmpty() ) {
+	           if (this.getTargets().size() > 0) {
+	               for (int i = 0; i < (this.getTargets().size() > maxtTargets.getValueState() ? maxtTargets.getValueState() : this.getTargets().size()); i++) {
+//	            	 mc.thePlayer.swingItem();
+	            	 mc.thePlayer.sendQueue.addToSendQueue(new C02PacketUseEntity((EntityLivingBase) this.getTargets().get(i), C02PacketUseEntity.Action.ATTACK));
+	               }
+	           }
+		  }
+        }
+        if (block.getValueState() && !mc.thePlayer.isBlocking() && mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.inventory.getCurrentItem().getItem() instanceof ItemSword) {
+            startAutoBlock();
+        }
+    }
+    
     private void DoAttack() {
         int aps = (this.cps.getValueState()).intValue();
         int DelayValue = 1000 / aps + this.random.nextInt(50) - 30;

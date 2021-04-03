@@ -12,7 +12,7 @@ public class Module {
     private String displayName;
     private Category category;
     private int key;
-    public Minecraft mc = Minecraft.getMinecraft();
+    public static Minecraft mc = Minecraft.getMinecraft();
     private boolean isEnabled;
     public boolean openValues;
     private String rendername;

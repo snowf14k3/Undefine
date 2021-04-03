@@ -294,7 +294,17 @@ public class JReflectUtility {
     }
     }
 
-
+    public static void setjumpticks(int i) {
+        try{
+          Field jumpTicks =
+                  mc.getClass().getDeclaredField(ClientLoader.runtimeDeobfuscationEnabled
+                          ? "field_70773_bE" : "jumpTicks");//field_70773_bE
+          jumpTicks.setAccessible(true);
+          jumpTicks.setInt(mc, i);
+      }catch(ReflectiveOperationException e){
+          throw new RuntimeException(e);
+      }
+      }
     public static AxisAlignedBB newAxisAlignedBBInstance(double x1, double y1, double z1, double x2, double y2, double z2){
         Class<?> clazz = null;
         try {

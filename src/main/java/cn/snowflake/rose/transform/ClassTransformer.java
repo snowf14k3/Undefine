@@ -1,8 +1,13 @@
 package cn.snowflake.rose.transform;
 
-import cn.snowflake.rose.transform.transforms.*;
-import net.minecraft.injection.ClientLoader;
-import net.minecraft.launchwrapper.IClassTransformer;
+import java.lang.instrument.ClassFileTransformer;
+import java.lang.instrument.IllegalClassFormatException;
+import java.security.ProtectionDomain;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.BiConsumer;
+
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -12,14 +17,24 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 
-import java.lang.instrument.ClassFileTransformer;
-import java.lang.instrument.IllegalClassFormatException;
-import java.security.ProtectionDomain;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.function.BiConsumer;
-
+import cn.snowflake.rose.transform.transforms.TransformBlock;
+import cn.snowflake.rose.transform.transforms.TransformEntity;
+import cn.snowflake.rose.transform.transforms.TransformEntityClientPlayerMP;
+import cn.snowflake.rose.transform.transforms.TransformEntityLivingBase;
+import cn.snowflake.rose.transform.transforms.TransformEntityPlayer;
+import cn.snowflake.rose.transform.transforms.TransformEntityPlayerSP;
+import cn.snowflake.rose.transform.transforms.TransformEntityRenderer;
+import cn.snowflake.rose.transform.transforms.TransformFMLEventChannel;
+import cn.snowflake.rose.transform.transforms.TransformMinecraft;
+import cn.snowflake.rose.transform.transforms.TransformMovementInputFromOptions;
+import cn.snowflake.rose.transform.transforms.TransformNetHandlerPlayServer;
+import cn.snowflake.rose.transform.transforms.TransformNetworkManager;
+import cn.snowflake.rose.transform.transforms.TransformProfiler;
+import cn.snowflake.rose.transform.transforms.TransformRenderPlayer;
+import cn.snowflake.rose.transform.transforms.TransformSimpleNetworkWrapper;
+import cpw.mods.fml.relauncher.IFMLLoadingPlugin.SortingIndex;
+import net.minecraft.injection.ClientLoader;
+import net.minecraft.launchwrapper.IClassTransformer;
 
 public class ClassTransformer implements IClassTransformer, ClassFileTransformer,Opcodes{
 
@@ -68,15 +83,18 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 	public static boolean needTransform(String name) {
 		return classNameSet.contains(name);
 	}
-
+	@Override
+	public byte[] transform(String name, String transformedName, byte[] classByte) {
+		return transform(transformedName, classByte);
+	}
 
 	public byte[] transform(String name, byte[] classByte) {
 		try {
-			if (name.equals("net.minecraft.client.entity.EntityClientPlayerMP")) {
-				return transformMethods(classByte,TransformEntityClientPlayerMP::transformEntityClientPlayerMP);
-			}
-			else if (name.equals("net.minecraft.client.Minecraft")) {
+			if (name.equals("net.minecraft.client.Minecraft")) {
 				return transformMethods(classByte, TransformMinecraft::transformMinecraft);
+			}
+			else if (name.equals("net.minecraft.client.entity.EntityClientPlayerMP")) {
+				return transformMethods(classByte,TransformEntityClientPlayerMP::transformEntityClientPlayerMP);
 			}
 			else if (name.equalsIgnoreCase("net.minecraft.client.renderer.EntityRenderer")){//3d
 				return transformMethods(classByte, TransformEntityRenderer::transformRenderEntityRenderer);
@@ -138,11 +156,6 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			throws IllegalClassFormatException {
 		ClientLoader.runtimeDeobfuscationEnabled = true;
 		return transform(clazz.getName(), classByte);
-	}
-
-	@Override
-	public byte[] transform(String name, String transformedName, byte[] classByte) {
-		return transform(transformedName, classByte);
 	}
 
 }

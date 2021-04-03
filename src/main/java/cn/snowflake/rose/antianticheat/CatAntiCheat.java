@@ -6,7 +6,7 @@ import cn.snowflake.rose.utils.antianticheat.ScreenshotUtil;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.Minecraft;	
 import net.minecraft.client.gui.GuiMainMenu;
 
 import java.io.ByteArrayInputStream;
@@ -29,57 +29,63 @@ public class CatAntiCheat {
     @EventTarget
     public void onFml(EventFMLChannels eventFMLChannels){
         //catanticheat
+    	
         if (eventFMLChannels.iMessage.getClass().toString().contains("1710") || eventFMLChannels.iMessage.getClass().toString().contains("luohuayu.anticheat.message")) {
             try {//filehash and classfound check
-                Constructor<? extends IMessage> fwithc = eventFMLChannels.iMessage.getClass().getConstructor(List.class, byte.class);
+            	 List<String> list2 = new ArrayList<String>();
+            	 Constructor<? extends IMessage> fwithc = eventFMLChannels.iMessage.getClass().getConstructor(List.class, byte.class);
+             	 System.err.println(fwithc);
                 if (fwithc != null) {
                         Field[] fields = eventFMLChannels.iMessage.getClass().getDeclaredFields();
+                        
+                        Field fieldlist = fields[0];
+                        Field salt = fields[1];
+						
+//                        Field field1 = fields[0];
+//                        Field field2 = fields[1];
+//
+//                        field1.setAccessible(true);
+//                        field2.setAccessible(true);
+                        
+//                        try{
+//						fields[0].getByte(eventFMLChannels.iMessage);
+//						salt = fields[0];
+//						fieldlist = fields[1];
+//                        }catch(IllegalAccessException e){
 
-                        Field fieldlist = null;
-                        Field salt = null;
-
-                        Field field1 = fields[0];
-                        Field field2 = fields[1];
-
-                        field1.setAccessible(true);
-                        field2.setAccessible(true);
-
-                        try{
-                            field1.getByte(eventFMLChannels.iMessage);
-                            salt = field1;
-                            fieldlist = field2;
-                        }catch(IllegalAccessException e){
-                            salt = field2;
-                            fieldlist = field1;
-                        }
+//						e.printStackTrace();
+//                        }
+               
                         if (fieldlist != null && salt != null){
                             fieldlist.setAccessible(true);
                             salt.setAccessible(true);
 
                             try {
                                 List<String> list = ((List<String>) fieldlist.get(eventFMLChannels.iMessage));
+                                System.err.println(list);
+                                System.err.println(salt.get(eventFMLChannels.iMessage));
                                 if (list.size() > 30) {
                                     eventFMLChannels.setCancelled(true);
-
                                     list.removeIf(inject ->
                                             inject.toString().endsWith(".tmp")
                                     );
                                     list.removeIf(mod ->
                                             mod.toString().toLowerCase().endsWith("-skipverify.jar")
                                     );
-
+                                    System.err.println("绕过mod检测");
                                     eventFMLChannels.sendToServer(
                                             fwithc.newInstance(new ArrayList<>(list),
                                                     salt.getByte(eventFMLChannels.iMessage))
                                     );
 
                                 }else{
-                                    eventFMLChannels.setCancelled(true);
-                                    List<String> classifieds = new ArrayList<>();
-                                    eventFMLChannels.sendToServer(
-                                            fwithc.newInstance(classifieds,
-                                                    salt.getByte(eventFMLChannels.iMessage))
-                                    );
+                                	 System.err.println("发送原来的包");
+//                                    eventFMLChannels.setCancelled(true);
+//                                    List<String> classifieds = new ArrayList<>();
+//                                    eventFMLChannels.sendToServer(
+//                                            fwithc.newInstance(classifieds,
+//                                                    salt.getByte(eventFMLChannels.iMessage))
+//                                    );
                                 }
                             } catch (Exception e1) {
                                 e1.printStackTrace();
@@ -91,7 +97,10 @@ public class CatAntiCheat {
                 List<String> list = new ArrayList<String>();
                 try {//injectdetect check
                     Constructor<? extends IMessage> injectdetect = eventFMLChannels.iMessage.getClass().getConstructor(List.class);
+                   
                     try {
+                    	 System.err.println("绕过 injectdetect check");
+                    	 
                         eventFMLChannels.setCancelled(true);
                         eventFMLChannels.sendToServer(injectdetect.newInstance(list));
                     } catch (InstantiationException | InvocationTargetException | IllegalAccessException ignored) {
@@ -100,7 +109,7 @@ public class CatAntiCheat {
                     try {// screenhost check
                         Constructor<? extends IMessage> screenhost = eventFMLChannels.iMessage.getClass().getConstructor(boolean.class, byte[].class);
                         if (screenhost != null) {
-
+                        	System.err.println("绕过 screenhost check");
                             eventFMLChannels.setCancelled(true);
                             ByteArrayInputStream in = null;
                             if (ScreenProtect.mode.isCurrentMode("leave") && mc.theWorld != null){

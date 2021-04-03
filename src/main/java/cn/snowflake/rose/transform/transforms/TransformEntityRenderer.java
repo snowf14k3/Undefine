@@ -2,6 +2,7 @@ package cn.snowflake.rose.transform.transforms;
 
 import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.mods.RENDER.NoHurtcam;
+import cn.snowflake.rose.mod.mods.RENDER.ViewClip;
 import cn.snowflake.rose.utils.asm.ASMUtil;
 import net.minecraft.injection.ClientLoader;
 import org.objectweb.asm.Opcodes;
@@ -13,11 +14,11 @@ import java.util.Objects;
 public class TransformEntityRenderer implements Opcodes {
 
     public static boolean isNohurtcamEnable(){
-        return NoHurtcam.no;
+        return Objects.requireNonNull(ModManager.getModByClass(NoHurtcam.class)).isEnabled();
     }
 
     public static boolean isViewClipEnabled() {
-        return Objects.requireNonNull(ModManager.getModByName("ViewClip")).isEnabled();
+        return Objects.requireNonNull(ModManager.getModByClass(ViewClip.class)).isEnabled();
     }
 
     public static void transformRenderEntityRenderer(ClassNode classNode, MethodNode method) {

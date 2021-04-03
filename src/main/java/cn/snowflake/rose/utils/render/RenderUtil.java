@@ -493,31 +493,28 @@ public enum	 RenderUtil {
         EXTFramebufferObject.glFramebufferRenderbufferEXT(36160, 36096, 36161, stencil_depth_buffer_ID);
     }
 
-    public static void post3D() {
-        GL11.glDepthMask((boolean)true);
-        GL11.glEnable((int)2929);
-        GL11.glDisable((int)2848);
-        GL11.glEnable((int)3553);
-        GL11.glDisable((int)3042);
-        GL11.glPopMatrix();
-        GL11.glColor4f((float)1.0f, (float)1.0f, (float)1.0f, (float)1.0f);
-        if (!GL11.glIsEnabled((int)2896)) {
-            GL11.glEnable((int)2896);
-        }
-    }
-
     public static void pre3D() {
-        GL11.glPushMatrix();
-        GL11.glEnable((int)3042);
-        GL11.glBlendFunc((int)770, (int)771);
-        GL11.glShadeModel((int)7425);
-        GL11.glDisable((int)3553);
-        GL11.glEnable((int)2848);
-        GL11.glDisable((int)2929);
-        GL11.glDisable((int)2896);
-        GL11.glDepthMask((boolean)false);
-        GL11.glHint((int)3154, (int)4354);
-    }
+		GL11.glPushMatrix();
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GL11.glShadeModel(GL11.GL_SMOOTH);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glEnable(GL11.GL_LINE_SMOOTH);
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
+		GL11.glDisable(GL11.GL_LIGHTING);
+		GL11.glDepthMask(false);
+		GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
+	}
+
+	public static void post3D() {
+		GL11.glDepthMask(true);
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
+		GL11.glDisable(GL11.GL_LINE_SMOOTH);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glPopMatrix();
+		GL11.glColor4f(1, 1, 1, 1);
+	}
 
     public static void rectangle(double left, double top, double right, double bottom, int color)
     {

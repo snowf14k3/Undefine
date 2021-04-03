@@ -35,7 +35,7 @@ public class TransformBlock implements Opcodes {
         }
 //		if (methodNode.name.equalsIgnoreCase("getRenderBlockPass") || methodNode.name.equalsIgnoreCase("func_149701_w")){
 //			final InsnList insnList = new InsnList();
-//			insnList.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(TransformBlock.class), "isXrayEnabled", "()Z", false));
+//			insnList.add(new Mhttp://marketplace.eclipse.org/marketplace-client-intro?mpc_install=124ethodInsnNode(INVOKESTATIC, Type.getInternalName(TransformBlock.class), "isXrayEnabled", "()Z", false));
 //			LabelNode jmp1 = new LabelNode();
 //			insnList.add(new JumpInsnNode(IFNE,jmp1));
 //			LabelNode jmp2 = new LabelNode();

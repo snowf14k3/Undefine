@@ -1,5 +1,9 @@
 package cn.snowflake.rose.mod.mods.MOVEMENT;
 
+import java.util.List;
+
+import com.darkmagician6.eventapi.EventTarget;
+
 import cn.snowflake.rose.events.impl.EventMotion;
 import cn.snowflake.rose.events.impl.EventMove;
 import cn.snowflake.rose.events.impl.EventUpdate;
@@ -8,8 +12,8 @@ import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.Value;
 import cn.snowflake.rose.utils.client.PlayerUtil;
 import cn.snowflake.rose.utils.time.TimeHelper;
-import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 
 public class Speed extends Module {
@@ -22,12 +26,14 @@ public class Speed extends Module {
     double less;
     double stair;
     public double speed;
+	private double distance;
     TimeHelper timer = new TimeHelper();
     TimeHelper lastCheck = new TimeHelper();
     public int time = 0;
 
     public Speed() {
         super("Speed","Speed",  Category.MOVEMENT);
+        mode.mode.add("Vanilla");
         mode.mode.add("Bhop");
         mode.addValue("Bhop1");
         mode.addValue("Bhop2");
@@ -50,6 +56,9 @@ public class Speed extends Module {
     @EventTarget
     public void motion(EventMotion eventMotion){
         if (eventMotion.isPre()){
+    		double xDist = this.mc.thePlayer.posX - this.mc.thePlayer.prevPosX;
+			double zDist = this.mc.thePlayer.posZ - this.mc.thePlayer.prevPosZ;
+			this.distance = Math.sqrt(xDist * xDist + zDist * zDist);
             if (mode.isCurrentMode("YportNCP")){
                 if(mc.thePlayer.isOnLadder() || mc.thePlayer.isInWater() ||!PlayerUtil.isMoving() || mc.thePlayer.isInWater()){
                     return;
@@ -81,6 +90,44 @@ public class Speed extends Module {
 
         this.setDisplayName(mode.getModeName());
 
+        switch (mode.getModeName()) {
+		case "Vanilla": {
+		if (PlayerUtil.Moving()) {
+			switch (this.stage) {
+			case 2:
+				if (mc.thePlayer.onGround&& mc.thePlayer.isCollidedVertically) {
+					e.setY(mc.thePlayer.motionY = getJumpBoostModifier(0.4199999));
+					double d = boost.getValueState().doubleValue() + 0.149;
+					this.speed = this.defaultSpeed() * d;
+				}
+				break;
+			case 3:
+				this.speed = this.distance - 0.022 * (this.distance - this.defaultSpeed());
+				break;
+			default:
+				 List collidingList = this.mc.theWorld.getCollidingBoundingBoxes(this.mc.thePlayer, this.mc.thePlayer.boundingBox.getOffsetBoundingBox(0.0, this.mc.thePlayer.motionY, 0.0));
+                 collidingList = mc.theWorld.getCollidingBoundingBoxes(mc.thePlayer, mc.thePlayer.boundingBox.getOffsetBoundingBox(0.0D, mc.thePlayer.motionY, 0.0D));
+                 if ((collidingList.size() > 0 || mc.thePlayer.isCollidedVertically) && stage > 0) {
+                    stage = mc.thePlayer.movementInput.moveForward == 0.0F && mc.thePlayer.movementInput.moveStrafe == 0.0F ? 0 : 1;
+                 }
+//				if ((mc.thePlayer.isCollidedVertically && mc.thePlayer.onGround)) {
+//					this.stage = 1;
+//				}
+				this.speed = this.distance - this.distance / 159.0D;
+			}
+			
+			this.speed = Math.max(this.speed, this.defaultSpeed());
+			
+			if ((mc.thePlayer.moveForward != 0.0f || mc.thePlayer.moveStrafing != 0.0f)) {
+				setMotion(e, speed);
+				
+			}
+			++this.stage;
+			break;
+				}
+			}
+		}
+        
         if (this.mode.isCurrentMode("Bhop1")) {
             if (mc.thePlayer.isCollidedHorizontally) {
                 this.collided = true;
@@ -182,6 +229,7 @@ public class Speed extends Module {
                 ++this.stage;
             }
         }
+        
     }
 
 
@@ -222,17 +270,30 @@ public class Speed extends Module {
         return mc.thePlayer.moveForward != 0.0f || mc.thePlayer.moveStrafing != 0.0f;
     }
 
-
+	   
     @Override
     public void onEnable() {
+    	stage= 0;
+    	distance = 0;
+		speed = defaultSpeed();
         super.onEnable();
     }
 
     @Override
     public void onDisable() {
+    	this.mc.thePlayer.motionX *= 1.0;
+		this.mc.thePlayer.motionZ *= 1.0;
         super.onDisable();
     }
 
+	public double getJumpBoostModifier(double baseJumpHeight) {
+		if (mc.thePlayer.isPotionActive(Potion.jump)) {
+			int amplifier = mc.thePlayer.getActivePotionEffect(Potion.jump).getAmplifier();
+			baseJumpHeight += ((amplifier + 1) * 0.1F);
+		}
+		return baseJumpHeight;
+	}
+	
     public int getJumpEffect() {
         if (mc.thePlayer.isPotionActive(Potion.jump)) {
             return mc.thePlayer.getActivePotionEffect(Potion.jump).getAmplifier() + 1;
