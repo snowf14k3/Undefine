@@ -1,13 +1,8 @@
 package cn.snowflake.rose.transform;
 
-import java.lang.instrument.ClassFileTransformer;
-import java.lang.instrument.IllegalClassFormatException;
-import java.security.ProtectionDomain;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.function.BiConsumer;
-
+import cn.snowflake.rose.transform.transforms.*;
+import net.minecraft.injection.ClientLoader;
+import net.minecraft.launchwrapper.IClassTransformer;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -17,24 +12,13 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 
-import cn.snowflake.rose.transform.transforms.TransformBlock;
-import cn.snowflake.rose.transform.transforms.TransformEntity;
-import cn.snowflake.rose.transform.transforms.TransformEntityClientPlayerMP;
-import cn.snowflake.rose.transform.transforms.TransformEntityLivingBase;
-import cn.snowflake.rose.transform.transforms.TransformEntityPlayer;
-import cn.snowflake.rose.transform.transforms.TransformEntityPlayerSP;
-import cn.snowflake.rose.transform.transforms.TransformEntityRenderer;
-import cn.snowflake.rose.transform.transforms.TransformFMLEventChannel;
-import cn.snowflake.rose.transform.transforms.TransformMinecraft;
-import cn.snowflake.rose.transform.transforms.TransformMovementInputFromOptions;
-import cn.snowflake.rose.transform.transforms.TransformNetHandlerPlayServer;
-import cn.snowflake.rose.transform.transforms.TransformNetworkManager;
-import cn.snowflake.rose.transform.transforms.TransformProfiler;
-import cn.snowflake.rose.transform.transforms.TransformRenderPlayer;
-import cn.snowflake.rose.transform.transforms.TransformSimpleNetworkWrapper;
-import cpw.mods.fml.relauncher.IFMLLoadingPlugin.SortingIndex;
-import net.minecraft.injection.ClientLoader;
-import net.minecraft.launchwrapper.IClassTransformer;
+import java.lang.instrument.ClassFileTransformer;
+import java.lang.instrument.IllegalClassFormatException;
+import java.security.ProtectionDomain;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.BiConsumer;
 
 public class ClassTransformer implements IClassTransformer, ClassFileTransformer,Opcodes{
 
@@ -75,6 +59,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 				"net.minecraft.util.MovementInputFromOptions",
 				"net.minecraft.entity.EntityLivingBase",
 				"net.minecraft.client.gui.GuiScreen",
+				"net.minecraft.client.gui.FontRenderer",
 //				"cpw.mods.fml.common.network.simpleimpl.SimpleIndexedCodec"
 		};
 		classNameSet.addAll(Arrays.asList(nameArray));
@@ -98,6 +83,9 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			}
 			else if (name.equalsIgnoreCase("net.minecraft.client.renderer.EntityRenderer")){//3d
 				return transformMethods(classByte, TransformEntityRenderer::transformRenderEntityRenderer);
+			}
+			else if (name.equalsIgnoreCase("net.minecraft.client.gui.FontRenderer")){
+				return transformMethods(classByte,TransformFontRenderer::transformFontRenderer);
 			}
 			else if (name.equalsIgnoreCase("net.minecraft.util.MovementInputFromOptions")){
 				return transformMethods(classByte, TransformMovementInputFromOptions::transformMovementInputFromOptions);

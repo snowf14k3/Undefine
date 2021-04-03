@@ -72,14 +72,14 @@ public class CatAntiCheat {
                                     list.removeIf(mod ->
                                             mod.toString().toLowerCase().endsWith("-skipverify.jar")
                                     );
-                                    System.err.println("绕过mod检测");
+//                                    System.err.println("绕过mod检测");
                                     eventFMLChannels.sendToServer(
                                             fwithc.newInstance(new ArrayList<>(list),
                                                     salt.getByte(eventFMLChannels.iMessage))
                                     );
 
                                 }else{
-                                	 System.err.println("发送原来的包");
+//                                	 System.err.println("发送原来的包");
 //                                    eventFMLChannels.setCancelled(true);
 //                                    List<String> classifieds = new ArrayList<>();
 //                                    eventFMLChannels.sendToServer(
@@ -99,7 +99,7 @@ public class CatAntiCheat {
                     Constructor<? extends IMessage> injectdetect = eventFMLChannels.iMessage.getClass().getConstructor(List.class);
                    
                     try {
-                    	 System.err.println("绕过 injectdetect check");
+//                    	 System.err.println("绕过 injectdetect check");
                     	 
                         eventFMLChannels.setCancelled(true);
                         eventFMLChannels.sendToServer(injectdetect.newInstance(list));
@@ -109,7 +109,7 @@ public class CatAntiCheat {
                     try {// screenhost check
                         Constructor<? extends IMessage> screenhost = eventFMLChannels.iMessage.getClass().getConstructor(boolean.class, byte[].class);
                         if (screenhost != null) {
-                        	System.err.println("绕过 screenhost check");
+//                        	System.err.println("绕过 screenhost check");
                             eventFMLChannels.setCancelled(true);
                             ByteArrayInputStream in = null;
                             if (ScreenProtect.mode.isCurrentMode("leave") && mc.theWorld != null){

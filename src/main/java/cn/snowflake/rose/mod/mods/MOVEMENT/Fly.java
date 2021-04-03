@@ -57,13 +57,6 @@ public class Fly extends Module {
 
         if (antikick.getValueState() ) {
             mc.thePlayer.posY -= 0.05d;
-//                updateFlyHeight();
-//                mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer(true));
-//                if (((this.flyHeight <= 290.0D) && (this.kickTimer.delay(500.0F))) || ((this.flyHeight > 290.0D) &&
-//                        (this.kickTimer.delay(100.0F)))){
-//                    goToGround();
-//                    this.kickTimer.reset();
-//            }
         }
 
     }

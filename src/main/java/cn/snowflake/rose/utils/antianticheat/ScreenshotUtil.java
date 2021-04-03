@@ -65,9 +65,12 @@ public class ScreenshotUtil {
                 try {
                     bufferedImage = ImageIO.read(new FileInputStream(file));
                 } catch (IOException ioException) {
+                    ioException.printStackTrace();
                 }
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+            ignored.printStackTrace();
+        }
         return bufferedImage;
     }
 
@@ -92,11 +95,14 @@ public class ScreenshotUtil {
                     BufferedImage bufferedImage = ImageIO.read(new FileInputStream(file));
                     ImageIO.write(bufferedImage, "png", gzipOutputStream);
                 } catch (IOException ioException) {
+                    ioException.printStackTrace();
                 }
             }
             gzipOutputStream.flush();
             gzipOutputStream.close();
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+            ignored.printStackTrace();
+        }
 
         return out.toByteArray();
     }

@@ -32,7 +32,6 @@ import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemSword;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C03PacketPlayer;
 
 import java.lang.reflect.InvocationTargetException;
@@ -126,31 +125,31 @@ public class TPAura extends Module
                 stopAutoBlock();
             }
         }
-        if (this.cps.isDelayComplete(delayValue) && this.targets.size() > 0 && (onground.getValueState().booleanValue() ? mc.thePlayer.onGround : true)) {
+        if (this.cps.isDelayComplete(delayValue) && this.targets.size() > 0 && (!onground.getValueState() || mc.thePlayer.onGround)) {
             this.test = (List<Vec3Util>[])new ArrayList[50];
-            for (int i = 0; i < ((this.targets.size() > maxtTargets) ? maxtTargets : this.targets.size()); ++i) {
+            for (int i = 0; i < (Math.min(this.targets.size(), maxtTargets)); ++i) {
                 EntityLivingBase T = this.targets.get(i);
-                Vec3Util topFrom = new Vec3Util(this.mc.thePlayer.posX, this.mc.thePlayer.posY, this.mc.thePlayer.posZ);
-                Vec3Util to = new Vec3Util(T.posX, T.posY, T.posZ);
+                Vec3Util topFrom = new Vec3Util(mc.thePlayer.posX, mc.thePlayer.posY - 2.5, mc.thePlayer.posZ);
+                Vec3Util to = new Vec3Util(T.posX, T.posY - 2.5, T.posZ);
                 this.path = this.computePath(topFrom, to);
 
                 this.test[i] = this.path;
                 for (Vec3Util pathElm : this.path) {
-                    this.mc.thePlayer.sendQueue.addToSendQueue((Packet)new C03PacketPlayer.C04PacketPlayerPosition(pathElm.getX(), this.mc.thePlayer.boundingBox.minY, pathElm.getY(), pathElm.getZ(), true));
+                    mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(pathElm.getX(), mc.thePlayer.boundingBox.minY, pathElm.getY(), pathElm.getZ(), true));
                 }
                 if (block.getValueState() && mc.thePlayer.isBlocking()&& mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.inventory.getCurrentItem().getItem() instanceof ItemSword) {
                     stopAutoBlock();
                 }
                 if(!NOSWING.getValueState()) {
-                    this.mc.thePlayer.swingItem();
+                    mc.thePlayer.swingItem();
                 }
-                this.mc.playerController.attackEntity((EntityPlayer)this.mc.thePlayer, (Entity)T);
+                mc.playerController.attackEntity((EntityPlayer)mc.thePlayer, (Entity)T);
                 if (block.getValueState() && !mc.thePlayer.isBlocking() && mc.thePlayer.getCurrentEquippedItem() != null && mc.thePlayer.inventory.getCurrentItem().getItem() instanceof ItemSword) {
                     startAutoBlock();
                 }
                 Collections.reverse(this.path);
                 for (Vec3Util pathElm : this.path) {
-                    this.mc.thePlayer.sendQueue.addToSendQueue((Packet)new C03PacketPlayer.C04PacketPlayerPosition(pathElm.getX(), this.mc.thePlayer.boundingBox.minY, pathElm.getY(), pathElm.getZ(), true));
+                    mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(pathElm.getX(), mc.thePlayer.boundingBox.minY, pathElm.getY(), pathElm.getZ(), true));
                 }
 
             }
@@ -166,12 +165,12 @@ public class TPAura extends Module
     private void startAutoBlock() {
         KeyBinding.setKeyBindState(mc.gameSettings.keyBindUseItem.getKeyCode(),true);
 
-        this.mc.playerController.sendUseItem(this.mc.thePlayer, this.mc.theWorld, this.mc.thePlayer.inventory.getCurrentItem());
+        mc.playerController.sendUseItem(mc.thePlayer, mc.theWorld, mc.thePlayer.inventory.getCurrentItem());
     }
     private void stopAutoBlock() {
         KeyBinding.setKeyBindState(mc.gameSettings.keyBindUseItem.getKeyCode(),false);
 
-        this.mc.playerController.onStoppedUsingItem(this.mc.thePlayer);
+        mc.playerController.onStoppedUsingItem(mc.thePlayer);
 
     }
     @EventTarget
@@ -191,13 +190,7 @@ public class TPAura extends Module
                 try {
                     if (test != null)
 
-                        for (Vec3Util pos : test[i]) {
-                            double n = pos.getX() - RenderManager.renderPosX;
-                            double n2 = pos.getY() - RenderManager.renderPosY;
-                            if (pos != null );
-                        }
-
-                    if (test != null && Tracers.getValueState().booleanValue()) {
+                    if (Tracers.getValueState()) {
                         glPushMatrix();
                         glDisable(GL_TEXTURE_2D);
                         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -326,7 +319,7 @@ public class TPAura extends Module
         if (!ModManager.getModByName("NoFriend").isEnabled() && FriendManager.isFriend(entity.getCommandSenderName())){
             return false;
         }
-        if(!mc.thePlayer.canEntityBeSeen(entity) && !wall.getValueState().booleanValue()) {
+        if(!mc.thePlayer.canEntityBeSeen(entity) && !wall.getValueState()) {
             return false;
         }
         if (entity.isInvisible() && !INVISIBLES.getValueState()) {

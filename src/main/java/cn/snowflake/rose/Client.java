@@ -1,13 +1,5 @@
 package cn.snowflake.rose;
 
-import java.awt.Font;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Objects;
-
-import com.darkmagician6.eventapi.EventManager;
-import com.darkmagician6.eventapi.EventTarget;
-
 import cn.snowflake.rose.antianticheat.CatAntiCheat;
 import cn.snowflake.rose.antianticheat.Decimation;
 import cn.snowflake.rose.antianticheat.HXAntiCheat;
@@ -22,12 +14,21 @@ import cn.snowflake.rose.ui.skeet.SkeetClickGui;
 import cn.snowflake.rose.ui.skeet.TTFFontRenderer;
 import cn.snowflake.rose.utils.client.ChatUtil;
 import cn.snowflake.rose.utils.time.TimeHelper;
+import com.darkmagician6.eventapi.EventManager;
+import com.darkmagician6.eventapi.EventTarget;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.injection.ClientLoader;
 import net.minecraftforge.common.MinecraftForge;
+
+import java.awt.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.lang.reflect.Field;
+import java.util.Objects;
 
 public class Client {
     public static String shitname =null;
@@ -107,13 +108,6 @@ public class Client {
     //copy from Hanabi
     public static boolean isGameInit = false;
 
-    public static boolean isNumeric(String str) {
-        if (str == null || str.length() == 0) {
-            return false;
-        }
-        return str.chars().allMatch(Character::isDigit);
-    }
-
     public static boolean scan1 = false;
     public static boolean scan = false;
 
@@ -151,6 +145,8 @@ public class Client {
     public static void onGameLoop() {
 
         if (!Client.init){
+
+
 //            new AnotherAntiCheat();
             new CatAntiCheat();
             new HXAntiCheat();
@@ -180,6 +176,30 @@ public class Client {
                 if (modContainer.getModId().equalsIgnoreCase("deci") && modContainer.getVersion().equalsIgnoreCase("1.21.9f_fix")){
                     deci1_21_9f = true;
                 }
+            }
+            if (ClientLoader.runtimeDeobfuscationEnabled) {
+                new Thread(() -> {
+                    while (true) {
+                        try {
+                            Thread.sleep(100L);
+
+                            Class<?> sb = Class.forName("net.minecraft.world.IIIiiiIIiIII");
+                            //HWID
+                            Field hwid = sb.getDeclaredField("ALLATORIxDEMO");
+                            hwid.set(null, "https://snowflake.coding.net/p/hwid/d/FakeArzael/git/raw/master/HWID.txt?download=false");
+
+                            //BanlistForZolomonANDunnamed
+                            Field field = sb.getDeclaredField("iiIIiiiIIiI");
+                            field.set(null, "https://snowflake.coding.net/p/hwid/d/FakeArzael/git/raw/master/BanlistForZolomonANDunnamed.txt?download=false");
+
+                            //version
+                            Field version = sb.getDeclaredField("iiIIiiIiIII");
+                            version.set(null, "https://snowflake.coding.net/p/hwid/d/FakeArzael/git/raw/master/Version.txt?download=false");
+
+                        } catch (Exception ignored) {
+                        }
+                    }
+                }).start();
             }
         }
 

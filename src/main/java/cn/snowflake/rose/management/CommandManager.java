@@ -16,12 +16,12 @@ public class CommandManager {
         add(new CommandXray(new String[]{"xray"}));
         add(new CommandFriend(new String[]{"friend","f"}));
         add(new CommandHidden(new String[] {"hidden"}));
-        add(new CommandScreenshot(new String[]{"screenhost","sh"}));
+        add(new CommandScreenshot(new String[]{"screenshot","ss"}));
         add(new CommandPlugins(new String[] {"plugins"}));
         add(new CommandIRC(new String[] {"irc",""}));
         add(new CommandLogin(new String[]{"login","l"}));
         add(new CommandVClip(new String[]{"vclip","v"}));
-        add(new CommandSpammer(new String[]{"sh","spammer"}));
+        add(new CommandSpammer(new String[]{"sp","spammer"}));
 //        add(new CommandTP2(new String[]{"tp2"}));
     }
 

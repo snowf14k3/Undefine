@@ -9,10 +9,10 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.opengl.GL11;
 
-public class Tracer extends Module {
+public class Tracers extends Module {
 
-    public Tracer() {
-        super("Tracer","Tracer", Category.RENDER);
+    public Tracers() {
+        super("Tracers","Tracers", Category.RENDER);
     }
 
     @EventTarget

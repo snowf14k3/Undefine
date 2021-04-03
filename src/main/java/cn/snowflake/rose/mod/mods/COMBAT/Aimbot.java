@@ -91,31 +91,31 @@ public class Aimbot extends Module {
     public void on2D(EventRender2D eventRender2D){
 		ScaledResolution res = new ScaledResolution(this.mc,this.mc.displayWidth,this.mc.displayHeight);
 
-		if (target != null  && target.getHealth() != 0.0) {
+		if (canTarget(target)) {
 			if(targetinfo.getValueState()) {
 				mc.fontRenderer.drawStringWithShadow(
 	                    "HP: " + target.getHealth(),
 	                    res.getScaledWidth() / 2 - 10 - mc.fontRenderer.getStringWidth("HP: " + target.getHealth()),
 	                    res.getScaledHeight() / 2 - 10,
-	                    16777215); // 测试模式画Entity信息
+	                    16777215);
 
 	            mc.fontRenderer.drawStringWithShadow(
 	                    "SPD: " + roundToPlace(targetspeed,2),
 	                    res.getScaledWidth() / 2 - 10 - mc.fontRenderer.getStringWidth("SPD: " + roundToPlace(targetspeed,2)),
 	                    res.getScaledHeight() / 2,
-	                    16777215); // 测试模式画Entity信息
+	                    16777215);
 
 	            mc.fontRenderer.drawStringWithShadow(
 	                    "name: " + target.getCommandSenderName(),
 	                    res.getScaledWidth() / 2 + 10,
 	                    res.getScaledHeight() / 2,
-	                    16777215); // 测试模式画Entity信息
+	                    16777215);
 
 	            mc.fontRenderer.drawStringWithShadow(
 	                    "hurt : " + (target.hurtTime > 0),
 	                    res.getScaledWidth() / 2 + 10,
 	                    res.getScaledHeight() / 2 - 10,
-	                    16777215); // 测试模式画Entity信息
+	                    16777215);
 
 			}
         }
@@ -196,20 +196,11 @@ public class Aimbot extends Module {
     @EventTarget
     public void onTick(EventMotion eventMotion){
         if (eventMotion.isPre()) {
-            double targetWeight = Double.NEGATIVE_INFINITY;
-            for (EntityLivingBase livingBase : getTarget()) {
-                if (target == null) {
-                     target = livingBase;
-                     targetWeight = this.getTargetWeight(livingBase);
-                } else {
-                     if (this.getTargetWeight(livingBase) <= targetWeight) {
-                        continue;
-                     }
-                    target = livingBase;
-                    targetWeight = this.getTargetWeight(livingBase);
-                }
-            }
+
+
+           target = getTarget().get(0);
             addTarget();
+
             if (target != null) {
                 Entity ey = null;
                 if (target instanceof EntityPlayer) {
@@ -224,7 +215,7 @@ public class Aimbot extends Module {
                     } else if (roundToPlace(ey.boundingBox.maxY - ey.boundingBox.minY, 2) == 1.3) {//squatting
                         rotY = ey.boundingBox.minY + 0.65 + index.getValueState();
                     } else if (roundToPlace(ey.boundingBox.maxY - ey.boundingBox.minY, 2) == 1.8) {//standing
-                        rotY = ey.boundingBox.minY + 0.45 + index.getValueState();
+                        rotY = ey.boundingBox.minY + 0.85 + index.getValueState();
                     }
                 } else {
                     rotY = ey.posY + ey.getEyeHeight() - index.getValueState();
@@ -233,7 +224,7 @@ public class Aimbot extends Module {
                 double Z = Math.abs(target.motionZ);
                 targetspeed = X + Z;
                 float[] rotations = this.getPlayerRotations(mc.thePlayer, ey.posX, rotY, ey.posZ);
-                if (shouldAim() && target.getHealth() != 0.0) {
+                if (shouldAim() && canTarget(target)) {
                     if (!silent.getValueState()){
                         Minecraft.getMinecraft().thePlayer.rotationYaw = rotations[0];
                         Minecraft.getMinecraft().thePlayer.rotationPitch = rotations[1];

@@ -13,13 +13,7 @@ import net.minecraftforge.client.event.GuiOpenEvent;
 public class Events {
 
 	 
-    @SubscribeEvent
-    public void drawPost(GuiOpenEvent event) {
-        final Minecraft mc = Minecraft.getMinecraft();
-        if (event.gui instanceof GuiMultiplayer) {
-            event.gui = (GuiScreen)new GuiMultiplayerLogin(null);
-        }
-    }
+  
 
 
 	

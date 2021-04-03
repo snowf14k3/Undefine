@@ -52,8 +52,9 @@ public class ModManager {
         addMod(new PlayerList());
         addMod(new FullBright());
         addMod(new ItemESP());
+        addMod(new NameProtect());
         addMod(new ClickGui());
-        addMod(new Tracer());
+        addMod(new Tracers());
         addMod(new Chams());
         addMod(new ViewClip());
         addMod(new ESP2D());
