@@ -129,6 +129,16 @@ public class UnicodeFontRenderer extends FontRenderer {
         return this.getStringWidth(Character.toString(c));
     }
 
+    public int getStringWidthnew(String string) {
+        if (widthMap.containsKey(string)) {
+            return widthMap.get(string).intValue();
+        } else {
+            float width = (float) (this.font.getWidth(string) / 2);
+            widthMap.put(string, width);
+            return (int) width;
+        }
+    }
+
     public int getStringWidth(String string) {
         String[] array;
         float len = -1.0f;
@@ -140,8 +150,6 @@ public class UnicodeFontRenderer extends FontRenderer {
         }
         return (int)len;
     }
-
-
     public void drawBoldString(String text, float x, float y, int color) {
         this.drawString(text, x, y, color);
     }

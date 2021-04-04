@@ -12,6 +12,7 @@ import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.injection.ClientLoader;
+import net.minecraft.util.EnumChatFormatting;
 import org.apache.logging.log4j.LogManager;
 
 
@@ -19,6 +20,7 @@ import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HUD extends Module {
     public Value<String> text = new Value<>("HUD_Text","","Season");
@@ -128,31 +130,26 @@ public class HUD extends Module {
         return new Color((float)c.getRed() / 255.0F * fade, (float)c.getGreen() / 255.0F * fade, (float)c.getBlue() / 255.0F * fade, (float)c.getAlpha() / 255.0F);
     }
 
-    private List<Module> getSortedModules() {
-        UnicodeFontRenderer fr = Client.chinese ? Client.instance.fontManager.wqy19 :Client.instance.fontManager.robotoregular19;
-        ArrayList<Module> mods = new ArrayList(Client.instance.modManager.getModHidden());
-
-        mods.sort((m, m1) -> {
-            String mName = m.getdisplayName().isEmpty() ? m.getName() : m.getName()+ m.getdisplayName();
-            String m1Name = m1.getdisplayName().isEmpty() ? m1.getName() : m1.getName()+ m1.getdisplayName();
-            return Integer.compare(fr.getStringWidth(m1Name), fr.getStringWidth(mName));
-        });
-
-        return mods;
-    }
-
     private void RenderArraylist() {
         ScaledResolution sr = new ScaledResolution(mc,mc.displayWidth,mc.displayHeight);
         UnicodeFontRenderer arraylistfont = Client.chinese ? Client.instance.fontManager.wqy19 :Client.instance.fontManager.robotoregular19;
-        try {
-            List<Module> mods = getSortedModules();
-        }catch(Exception e) {
-            e.printStackTrace();
-        }
+        ArrayList<Module> mods = new ArrayList<>(Client.instance.modManager.getModList());
 
-        List<Module> mods = getSortedModules();
 
-//        mods.sort(Comparator.comparingDouble(m1 -> - arraylistfont.getStringWidth(m1.getRenderName() + (m1.getdisplayName() == null ? "" : m1.getdisplayName()))));
+//        mods.sort(new Comparator<Module>() {
+//            @Override
+//            public int compare(Module m1, Module m2) {
+//
+//                String mName = m1.getdisplayName() == null ? m1.getRenderName() :  m1.getRenderName()+ " "+ EnumChatFormatting.GRAY +m1.getdisplayName();
+//                String m1Name = m2.getdisplayName() == null ? m2.getRenderName() :  m2.getRenderName()+ " "+ EnumChatFormatting.GRAY +m2.getdisplayName();
+//
+//                return font.getStringWidth(String.valueOf(mName)) - font.getStringWidth(String.valueOf(m1Name));
+//            }});
+
+
+          mods.sort(Comparator.comparingDouble(m1 -> - arraylistfont.getStringWidthnew(m1.getRenderName() + (m1.getdisplayName() == null ? "" : " " + m1.getdisplayName()))));
+
+
 
         int countMod = 0;
         int color = -1;
@@ -162,7 +159,6 @@ public class HUD extends Module {
             ++countMod;
             Color col2 = new Color(rainbow(System.nanoTime(), (float) countMod, 1).getRGB());
             if(m2.isEnabled()) {
-                String disname = m2.getdisplayName() == null ? "" : "" + m2.getdisplayName();
                 switch (rainbow.getModeName()){
                     case "Rainbow" :
                         int rainbowCol = rainbow1(System.nanoTime() + 4400l, (float) yAxis * +5, 1.1F).getRGB();
@@ -177,8 +173,11 @@ public class HUD extends Module {
                         color = new Color(44, 255, 0).getRGB();
                         break;
                 }
-                arraylistfont.drawStringWithShadow(m2.getRenderName(), sr.getScaledWidth() - arraylistfont.getStringWidth(m2.getRenderName() + disname) -3, yAxis ,color);
-                arraylistfont.drawStringWithShadow(disname, sr.getScaledWidth() - arraylistfont.getStringWidth(disname) - 1, yAxis,new Color(166,168,168).getRGB());
+
+                String disname = m2.getdisplayName() == null ? "" : " " + m2.getdisplayName();
+                arraylistfont.drawStringWithShadow(m2.getRenderName(), sr.getScaledWidth() - arraylistfont.getStringWidthnew(m2.getRenderName() + disname) -3, yAxis ,color);
+                arraylistfont.drawStringWithShadow(disname, sr.getScaledWidth() - arraylistfont.getStringWidthnew(disname) - 3, yAxis,new Color(166,168,168).getRGB());
+
                 yAxis += 12F;
             }
 
