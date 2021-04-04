@@ -162,7 +162,6 @@ public class UnicodeFontRenderer extends FontRenderer {
             return height;
         }
     }
-
     public int drawStringWithColor(String text, float x, float y, int color, int alpha) {
 
         text = "\247r" + text;

@@ -180,9 +180,7 @@ public class HUD extends Module {
 
                 yAxis += 12F;
             }
-
         }
     }
-
 
 }
