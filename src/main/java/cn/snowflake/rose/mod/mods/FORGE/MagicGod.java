@@ -14,21 +14,18 @@ import net.minecraft.network.play.client.C17PacketCustomPayload;
 public class MagicGod extends Module {
     public MagicGod() {
         super("MagicGod", "Magic God", Category.FORGE);
+        try {
+            Class.forName("thaumcraft.api.aspects.Aspect");
+            Class.forName("thaumcraft.common.Thaumcraft");
+        } catch (Exception var2) {
+         this.Working = false;
+        }
     }
     
     
     @Override
      public void onEnable() {
-		try {
-			Class.forName("thaumcraft.api.aspects.Aspect");
-			Class.forName("thaumcraft.common.Thaumcraft");
-		} catch (Exception var2) {
-			 ChatUtil.sendClientMessage("No mod was found!");
-			this.set(false);
-			return;
-		}
 
-    	  
         try {
            ArrayList aspects = (ArrayList)Class.forName("thaumcraft.api.aspects.Aspect").getMethod("getCompoundAspects").invoke((Object)null);
            Iterator var2 = aspects.iterator();

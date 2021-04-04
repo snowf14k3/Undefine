@@ -124,6 +124,7 @@ public class CSGOGUI extends GuiScreen {
                 this.bmod.setKey(keyCode);
             }
             binding = false;
+            bmod = null;
             Client.instance.fileMgr.saveKeys();
         }
         super.keyTyped(typedChar, keyCode);
@@ -314,7 +315,7 @@ public class CSGOGUI extends GuiScreen {
                             :
                             new Color(125, 125, 125).getRGB());
             //mod name
-            font2.drawCenteredString(bmod == mod ? binding ? "....." : mod.getName()  : mod.getName() , x + 40, y + 2 + modscrollY, -1);
+            font2.drawCenteredStringWithColor(bmod == mod ? "......"  : mod.getName() , x + 40, y + 2 + modscrollY, -1);
             // has value
             font2.drawCenteredString(mod.hasValues() ? mod.openValues ? "-" : "+" : "", x + 76 , y + 2 + modscrollY, -1);
 
@@ -329,7 +330,7 @@ public class CSGOGUI extends GuiScreen {
             }
 
             //mod open
-            if(isHovered(startX + 60, startY + 5, startX + 150, startY  + 185, mouseX, mouseY) && isHovered(x, y - 2 + modscrollY, x + 82, y+12 + modscrollY, mouseX, mouseY) && handler.canExcecute()) {
+            if(isHovered(startX + 60, startY + 5, startX + 150, startY  + 185, mouseX, mouseY) && isHovered(x, y - 2 + modscrollY, x + 82, y+12 + modscrollY, mouseX, mouseY) && handler.canExcecute()&&mod.Working) {
                 mod.set(!mod.isEnabled());
                 Client.instance.fileMgr.saveMods();
             }

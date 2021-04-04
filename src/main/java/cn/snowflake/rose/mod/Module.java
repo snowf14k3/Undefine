@@ -17,6 +17,8 @@ public class Module {
     public boolean openValues;
     private String rendername;
 
+    public boolean Working = true;
+
     public Module(String name,Category category) {
         this.name = name;
         this.category = category;
@@ -42,7 +44,7 @@ public class Module {
         this.hidden = hidden;
     }
     public String getName() {
-        return name;
+        return Working ? name : "\247c"+name;
     }
 
     public void setDisplayName(String displayName) {

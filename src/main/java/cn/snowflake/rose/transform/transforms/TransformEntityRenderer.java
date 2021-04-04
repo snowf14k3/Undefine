@@ -14,7 +14,7 @@ import java.util.Objects;
 public class TransformEntityRenderer implements Opcodes {
 
     public static boolean isNohurtcamEnable(){
-        return Objects.requireNonNull(ModManager.getModByClass(NoHurtcam.class)).isEnabled();
+        return NoHurtcam.no;
     }
 
     public static boolean isViewClipEnabled() {

@@ -25,22 +25,21 @@ public class ResearchGod extends Module {
     public ResearchGod() {
         super("ResearchGod", "Research God", Category.FORGE);
         this.tickId = -1;
+        try {
+            Class.forName("thaumcraft.api.research.ResearchCategories");
+            Class.forName("thaumcraft.api.research.ResearchCategoryList");
+            Class.forName("thaumcraft.api.research.ResearchItem");
+            Class.forName("thaumcraft.common.lib.research.ResearchManager");
+            Class.forName("thaumcraft.api.aspects.AspectList");
+        } catch (Exception var2) {
+            this.Working = false;
+        }
     }
     
     
     @Override
      public void onEnable() {
-		try {
-			Class.forName("thaumcraft.api.research.ResearchCategories");
-            Class.forName("thaumcraft.api.research.ResearchCategoryList");
-            Class.forName("thaumcraft.api.research.ResearchItem");
-            Class.forName("thaumcraft.common.lib.research.ResearchManager");
-            Class.forName("thaumcraft.api.aspects.AspectList");
-		} catch (Exception var2) {
-			 ChatUtil.sendClientMessage("No mod was found!");
-			this.set(false);
-			return;
-		}
+
 
      }
 

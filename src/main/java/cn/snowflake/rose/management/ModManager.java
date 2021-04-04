@@ -93,6 +93,7 @@ public class ModManager {
         addMod(new SecretClose());
         addMod(new MagicGod());
         addMod(new ResearchGod());
+        addMod(new NBTRevise());
 
         if (Loader.isModLoaded("EnderIO")) {
             addMod(new EIOXpGrab());

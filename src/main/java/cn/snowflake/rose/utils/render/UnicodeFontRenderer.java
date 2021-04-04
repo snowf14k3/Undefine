@@ -133,13 +133,15 @@ public class UnicodeFontRenderer extends FontRenderer {
     }
 
     public int getStringWidth(String string) {
-        if (widthMap.containsKey(string)) {
-            return widthMap.get(string).intValue();
-        } else {
-            float width = (float) (this.font.getWidth(string) / 2);
-            widthMap.put(string, width);
-            return (int) width;
+        String[] array;
+        float len = -1.0f;
+        string = "\247r" + string;
+        for (String str : array = string.split("\247")) {
+            if (str.length() < 1) continue;
+            str = str.substring(1, str.length());
+            len += (float)(this.font.getWidth(str) / 2 + 1);
         }
+        return (int)len;
     }
     public void drawBoldString(String text, float x, float y, int color) {
         this.drawString(text, x, y, color);
@@ -299,6 +301,76 @@ public class UnicodeFontRenderer extends FontRenderer {
         return (int) len;
     }
 
+    public int drawStringColor(String text, float x, float y, int color) {
+
+        text = "\247r" + text;
+
+        float len = -1;
+        String[] array = text.split("\247");
+        for (String str : array) {
+            if (str.length() < 1)
+                continue;
+            switch (str.charAt(0)) {
+                case '0':
+                    color = new Color(0, 0, 0).getRGB();
+                    break;
+                case '1':
+                    color = new Color(0, 0, 170).getRGB();
+                    break;
+                case '2':
+                    color = new Color(0, 170, 0).getRGB();
+                    break;
+                case '3':
+                    color = new Color(0, 170, 170).getRGB();
+                    break;
+                case '4':
+                    color = new Color(170, 0, 0).getRGB();
+                    break;
+                case '5':
+                    color = new Color(170, 0, 170).getRGB();
+                    break;
+                case '6':
+                    color = new Color(255, 170, 0).getRGB();
+                    break;
+                case '7':
+                    color = new Color(170, 170, 170).getRGB();
+                    break;
+                case '8':
+                    color = new Color(85, 85, 85).getRGB();
+                    break;
+                case '9':
+                    color = new Color(85, 85, 255).getRGB();
+                    break;
+                case 'a':
+                    color = new Color(85, 255, 85).getRGB();
+                    break;
+                case 'b':
+                    color = new Color(85, 255, 255).getRGB();
+                    break;
+                case 'c':
+                    color = new Color(255, 85, 85).getRGB();
+                    break;
+                case 'd':
+                    color = new Color(255, 85, 255).getRGB();
+                    break;
+                case 'e':
+                    color = new Color(255, 255, 85).getRGB();
+                    break;
+                case 'f':
+                    color = new Color(255, 255, 255).getRGB();
+                    break;
+                case 'r':
+                    color = new Color(255, 255, 255).getRGB();
+                    break;
+            }
+
+
+            str = str.substring(1);
+            this.drawString(str, x + len, y, color);
+            len += this.getStringWidth(str) + 1;
+        }
+        return (int) len;
+    }
     public int getColor(int brightness, int alpha) {
         return getColor(brightness, brightness, brightness, alpha);
     }
@@ -315,7 +387,9 @@ public class UnicodeFontRenderer extends FontRenderer {
     public void drawCenteredString(String text, float x, float y, int color) {
         this.drawString(text, x - (float) (this.getStringWidth(text) / 2), y, color);
     }
-
+    public void drawCenteredStringWithColor(String text, float x, float y, int color) {
+        this.drawStringColor(text, x - (float) (this.getStringWidth(text) / 2), y, color);
+    }
     public void drawOutlinedString(String text, float x, float y, int borderColor, int color) {
         this.drawString(text, x - 0.5f, y, borderColor);
         this.drawString(text, x + 0.5f, y, borderColor);
