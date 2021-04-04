@@ -6,6 +6,7 @@ import cn.snowflake.rose.mod.Module;
 public class NoHurtcam extends Module {
     public NoHurtcam() {
         super("NoHurtcam","No Hurt cam", Category.RENDER);
+        setChinesename("\u65e0\u4f24\u5bb3\u663e\u793a");
     }
 
     public static boolean no;

@@ -15,6 +15,7 @@ public class FastUse extends Module {
     TimeHelper timeHelper = new TimeHelper();
     public FastUse() {
         super("FastUse","Fast Use", Category.PLAYER);
+        setChinesename("\u5feb\u901f\u4f7f\u7528");
     }
 
     @EventTarget

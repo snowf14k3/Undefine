@@ -25,6 +25,7 @@ public class ArrowESP
 
     public ArrowESP() {
         super("ArrowESP", "Arrow ESP", Category.RENDER);
+        setChinesename("\u7bad\u5934\u663e\u793a");
     }
 
     @EventTarget

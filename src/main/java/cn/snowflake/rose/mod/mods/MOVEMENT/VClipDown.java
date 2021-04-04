@@ -11,6 +11,7 @@ public class VClipDown extends Module {
 
     public VClipDown() {
         super("VClipDown", "VClip Down", Category.MOVEMENT);
+        setChinesename("\u5411\u4e0b\u7a7f\u5899");
     }
 
     @Override

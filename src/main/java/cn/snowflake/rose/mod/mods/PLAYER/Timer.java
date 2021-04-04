@@ -13,6 +13,7 @@ public class Timer extends Module {
 	
     public Timer() {
 		super("Timer", Category.PLAYER);
+		setChinesename("\u53d8\u901f\u9f7f\u8f6e");
 	}
     
     @Override

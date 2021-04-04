@@ -1,13 +1,10 @@
 package cn.snowflake.rose.mod.mods.MOVEMENT;
 
 import cn.snowflake.rose.events.impl.EventMotion;
-import cn.snowflake.rose.events.impl.EventMove;
-import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.Value;
 import com.darkmagician6.eventapi.EventTarget;
-import net.minecraft.network.play.client.C03PacketPlayer;
 
 
 public class NoFall extends Module {
@@ -17,6 +14,7 @@ public class NoFall extends Module {
     public NoFall() {
         super("NoFall","No Fall",  Category.MOVEMENT);
         this.mode.mode.add("onGround");
+        setChinesename("\u65e0\u6389\u843d\u4f24\u5bb3");
     }
 
     @EventTarget

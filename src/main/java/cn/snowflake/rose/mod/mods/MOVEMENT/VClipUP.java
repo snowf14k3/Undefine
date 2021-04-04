@@ -11,6 +11,7 @@ public class VClipUP extends Module {
 
     public VClipUP() {
         super("VClipUP", "VClipUP Down", Category.MOVEMENT);
+        setChinesename("\u5411\u4e0a\u7a7f\u5899");
     }
 
     @Override

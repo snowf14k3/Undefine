@@ -38,6 +38,7 @@ public class ESP extends Module {
 //        this.mode.addValue("2DBox");
         this.mode.addValue("2DBox");
         this.mode.addValue("Box");
+        setChinesename("\u0033\u0044\u900f\u89c6");
     }
 
     public void renderBox(Entity entity,double r,double g, double b) {

@@ -1,21 +1,19 @@
 package cn.snowflake.rose.mod.mods.FORGE;
 
-import java.lang.reflect.Field;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import com.darkmagician6.eventapi.EventTarget;
-
 import cn.snowflake.rose.events.impl.EventTick;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.client.ChatUtil;
+import com.darkmagician6.eventapi.EventTarget;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.minecraft.network.play.client.C17PacketCustomPayload;
+
+import java.lang.reflect.Field;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 
 public class ResearchGod extends Module {
@@ -32,7 +30,7 @@ public class ResearchGod extends Module {
             Class.forName("thaumcraft.common.lib.research.ResearchManager");
             Class.forName("thaumcraft.api.aspects.AspectList");
         } catch (Exception var2) {
-            this.Working = false;
+            this.working = false;
         }
     }
     

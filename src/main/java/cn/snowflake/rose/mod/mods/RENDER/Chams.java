@@ -9,6 +9,7 @@ import com.darkmagician6.eventapi.EventTarget;
 public class Chams extends Module {
     public Chams() {
         super("Chams","Chams", Category.RENDER);
+        setChinesename("\u900f\u89c6");
     }
 
     public static boolean chams;

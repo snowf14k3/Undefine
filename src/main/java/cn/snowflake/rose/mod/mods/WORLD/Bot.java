@@ -37,6 +37,8 @@ public class Bot extends Module {
     public static AStarUtil astarUtil = new AStarUtil();
     public Bot() {
         super("Bot","Bot", Category.WORLD);
+        setChinesename("\u673a\u5668\u4eba");
+        working = false;
     }
 
     @SubscribeEvent

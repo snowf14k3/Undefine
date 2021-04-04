@@ -26,6 +26,7 @@ public class Regen extends Module {
 
     public Regen() {
         super("Regen","Regen", Category.COMBAT);
+        setChinesename("\u5feb\u901f\u56de\u8840");
     }
     @EventTarget
     public void onMotion(EventMotion event) {

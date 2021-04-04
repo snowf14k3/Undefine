@@ -25,6 +25,7 @@ public class BlockOverlay extends Module {
 
     public BlockOverlay() {
         super("BlockOverlay","Block Overlay",  Category.RENDER);
+        setChinesename("\u65b9\u5757\u0049\u0044\u663e\u793a");
     }
 
     @EventTarget

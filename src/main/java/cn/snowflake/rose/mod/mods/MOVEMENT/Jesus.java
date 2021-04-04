@@ -16,6 +16,7 @@ public class Jesus extends Module {
     
     public Jesus() {
         super("Jesus","Jesus",  Category.MOVEMENT);
+        setChinesename("\u6c34\u4e0a\u884c\u8d70");
     }
 
     public static boolean jesus;

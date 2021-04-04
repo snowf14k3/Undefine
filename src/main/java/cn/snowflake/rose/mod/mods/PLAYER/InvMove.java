@@ -1,18 +1,16 @@
 package cn.snowflake.rose.mod.mods.PLAYER;
 
 
-import java.util.Objects;
-
-import org.lwjgl.input.Keyboard;
-
-import com.darkmagician6.eventapi.EventTarget;
-
 import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.Value;
+import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.settings.KeyBinding;
+import org.lwjgl.input.Keyboard;
+
+import java.util.Objects;
 
 public class InvMove extends Module {
 
@@ -20,6 +18,7 @@ public class InvMove extends Module {
 	 
     public InvMove() {
         super("InvMove","Inv Move", Category.PLAYER);
+        setChinesename("\u80cc\u5305\u884c\u8d70");
     }
 
     

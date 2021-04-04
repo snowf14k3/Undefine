@@ -47,10 +47,12 @@ public class Client {
     public FontManager fontManager;
     public static String username = null;
     private static SkeetClickGui clickGui;
+    public static boolean chinese ;
 
     public Client(){
         EventManager.register(this);
         MinecraftForge.EVENT_BUS.register(new Events());
+        new Season();
         DEBUG = true;//Debug
         init = true;
         instance = this;

@@ -13,6 +13,7 @@ public class Tracers extends Module {
 
     public Tracers() {
         super("Tracers","Tracers", Category.RENDER);
+        setChinesename("\u73a9\u5bb6\u7ebf\u6761");
     }
 
     @EventTarget

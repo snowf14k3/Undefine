@@ -13,7 +13,7 @@ public class NBTRevise extends Module {
         try {
             Class.forName("com.mcf.davidee.nbtedit.NBTEdit");
         } catch (Exception var2) {
-            this.Working = false;
+            this.working = false;
         }
     }
 

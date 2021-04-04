@@ -13,6 +13,7 @@ public class Velocity extends Module {
 
     public Velocity() {
         super("Velocity", "Velocity",Category.COMBAT);
+        setChinesename("\u65e0\u51fb\u9000");
     }
 
     @EventTarget

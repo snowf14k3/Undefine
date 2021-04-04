@@ -1,14 +1,13 @@
 package cn.snowflake.rose.mod.mods.WORLD;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
-
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.Value;
 import net.minecraft.block.Block;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Xray extends Module {
     public static ArrayList<Block> block = new ArrayList();
@@ -25,7 +24,7 @@ public class Xray extends Module {
         blocks.add(15);
         blocks.add(129);//Emerald Ore
         blocks.add(73);
-
+        setChinesename("\u65b9\u5757\u900f\u89c6");
     }
 
     @Override

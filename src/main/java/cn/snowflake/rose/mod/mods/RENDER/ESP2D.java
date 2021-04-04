@@ -49,7 +49,7 @@ public class ESP2D extends Module {
         this.MODE.mode.add("Split");
         this.MODE.mode.add("Corner A");
         this.MODE.mode.add("Corner B");
-
+        setChinesename("\u0032\u0044\u900f\u89c6");
     }
 
     @EventTarget

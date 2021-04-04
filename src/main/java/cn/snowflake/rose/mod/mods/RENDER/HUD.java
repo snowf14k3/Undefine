@@ -13,7 +13,6 @@ import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.injection.ClientLoader;
 import org.apache.logging.log4j.LogManager;
-import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
 import java.text.SimpleDateFormat;
@@ -34,7 +33,7 @@ public class HUD extends Module {
         this.rainbow.addValue("Gray");
         this.rainbow.addValue("Rainbow");
         this.rainbow.addValue("Green");
-        this.setKey(Keyboard.KEY_K);
+        setChinesename("\u529f\u80fd\u663e\u793a");
     }
     
     @EventTarget
@@ -132,7 +131,7 @@ public class HUD extends Module {
 
     private void RenderArraylist() {
         ScaledResolution sr = new ScaledResolution(mc,mc.displayWidth,mc.displayHeight);
-        UnicodeFontRenderer arraylistfont = Client.instance.fontManager.robotoregular19;
+        UnicodeFontRenderer arraylistfont = Client.chinese ? Client.instance.fontManager.wqy19 :Client.instance.fontManager.robotoregular19;
         ArrayList<Module> mods = new ArrayList<>(Client.instance.modManager.getModList());
         mods.sort(Comparator.comparingDouble(m1 -> - arraylistfont.getStringWidth(m1.getRenderName() + (m1.getdisplayName() == null ? "" : m1.getdisplayName()))));
         int countMod = 0;

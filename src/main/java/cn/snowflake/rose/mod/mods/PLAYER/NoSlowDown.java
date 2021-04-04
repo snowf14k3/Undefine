@@ -20,6 +20,7 @@ public class NoSlowDown extends Module {
         this.mode.addValue("Normal");
         this.mode.addValue("NCP");
         this.mode.addValue("AAC");
+        setChinesename("\u4f7f\u7528\u7269\u54c1\u65e0\u51cf\u901f");
     }
 
     public static boolean no = false;

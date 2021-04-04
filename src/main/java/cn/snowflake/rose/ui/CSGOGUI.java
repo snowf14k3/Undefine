@@ -33,7 +33,7 @@ public class CSGOGUI extends GuiScreen {
     private MouseInputHandler handlerMid = new MouseInputHandler(2);
     private MouseInputHandler handlerRight = new MouseInputHandler(1);
     private MouseInputHandler handler = new MouseInputHandler(0);
-    UnicodeFontRenderer font2 = Client.instance.fontManager.simpleton13;
+    UnicodeFontRenderer font2 = Client.chinese ? Client.instance.fontManager.wqy13 : Client.instance.fontManager.simpleton13;
 
     public int moveX = 0;
     public int moveY = 0;
@@ -315,7 +315,7 @@ public class CSGOGUI extends GuiScreen {
                             :
                             new Color(125, 125, 125).getRGB());
             //mod name
-            font2.drawCenteredStringWithColor(bmod == mod ? "......"  : mod.getName() , x + 40, y + 2 + modscrollY, -1);
+            font2.drawCenteredStringWithColor(bmod == mod ? "......"  : Client.chinese ? mod.getChinesename() : mod.getName() , mod.working ? x + 40 : x + 44, y + 2 + modscrollY, -1);
             // has value
             font2.drawCenteredString(mod.hasValues() ? mod.openValues ? "-" : "+" : "", x + 76 , y + 2 + modscrollY, -1);
 
@@ -330,7 +330,7 @@ public class CSGOGUI extends GuiScreen {
             }
 
             //mod open
-            if(isHovered(startX + 60, startY + 5, startX + 150, startY  + 185, mouseX, mouseY) && isHovered(x, y - 2 + modscrollY, x + 82, y+12 + modscrollY, mouseX, mouseY) && handler.canExcecute()&&mod.Working) {
+            if(isHovered(startX + 60, startY + 5, startX + 150, startY  + 185, mouseX, mouseY) && isHovered(x, y - 2 + modscrollY, x + 82, y+12 + modscrollY, mouseX, mouseY) && handler.canExcecute() && mod.working) {
                 mod.set(!mod.isEnabled());
                 Client.instance.fileMgr.saveMods();
             }

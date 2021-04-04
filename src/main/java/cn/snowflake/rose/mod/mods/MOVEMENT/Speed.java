@@ -1,9 +1,5 @@
 package cn.snowflake.rose.mod.mods.MOVEMENT;
 
-import java.util.List;
-
-import com.darkmagician6.eventapi.EventTarget;
-
 import cn.snowflake.rose.events.impl.EventMotion;
 import cn.snowflake.rose.events.impl.EventMove;
 import cn.snowflake.rose.events.impl.EventUpdate;
@@ -12,9 +8,11 @@ import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.Value;
 import cn.snowflake.rose.utils.client.PlayerUtil;
 import cn.snowflake.rose.utils.time.TimeHelper;
+import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
+
+import java.util.List;
 
 public class Speed extends Module {
     public static Value<String> mode = new Value("Speed", "Mode", 0);
@@ -38,6 +36,7 @@ public class Speed extends Module {
         mode.addValue("Bhop1");
         mode.addValue("Bhop2");
         mode.addValue("YportNCP");
+        setChinesename("\u53d8\u901f");
     }
     private int jumps;
 

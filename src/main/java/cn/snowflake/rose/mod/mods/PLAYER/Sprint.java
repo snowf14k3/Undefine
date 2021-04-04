@@ -14,6 +14,7 @@ public class Sprint extends Module {
         super("Sprint","Sprint", Category.MOVEMENT);
         this.mode.addValue("Single");
         this.mode.addValue("AllDirection");
+        setChinesename("\u5f3a\u5236\u75be\u8dd1");
     }
 
     @EventTarget

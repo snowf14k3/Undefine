@@ -13,7 +13,7 @@ import org.lwjgl.input.Keyboard;
 public class CommandBind extends Command {
     public CommandBind(String[] command) {
         super(command);
-        this.setArgs("-bind <mod> <key>");
+        this.setArgs(Client.chinese ?  "-bind <\u529f\u80fd\u540d\u5b57> <\u6309\u952e\u540d\u5b57> (\u7ed1\u5b9a\u529f\u80fd\u6309\u952e)" :"-bind <mod> <key>");
     }
 
     @Override
@@ -26,11 +26,11 @@ public class CommandBind extends Command {
             for (Module m : ModManager.modList) {
                 if (!m.getName().equalsIgnoreCase(mod)) continue;
                 m.setKey(key);
-                ChatUtil.sendClientMessage(String.valueOf(m.getName()) + " was bound to " + Keyboard.getKeyName((int)key));
+                ChatUtil.sendClientMessage(String.valueOf(m.getName()) + (Client.chinese ? "\u88ab\u7ed1\u5b9a\u5230\u6309\u952e" : " was bound to ") + Keyboard.getKeyName((int)key));
                 Client.instance.fileMgr.saveKeys();
                 return;
             }
-            ChatUtil.sendClientMessage("Cannot find Module : " + mod);
+            ChatUtil.sendClientMessage(Client.chinese ? "\u65e0\u6cd5\u627e\u5230\u529f\u80fd" : "Cannot find Module : " + mod);
         }
     }
 }

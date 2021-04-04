@@ -12,6 +12,7 @@ public class Step extends Module {
 
     public Step() {
         super("Step","Step", Category.MOVEMENT);
+        setChinesename("\u81ea\u52a8\u4e0a\u65b9\u5757");
     }
 
     @EventTarget

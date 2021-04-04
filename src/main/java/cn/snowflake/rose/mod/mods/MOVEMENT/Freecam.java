@@ -24,6 +24,7 @@ public class Freecam extends Module {
 
     public Freecam() {
         super("Freecam","Freecam", Category.PLAYER);
+        setChinesename("\u7075\u9b42\u51fa\u7a8d");
     }
 
     public EntityOtherPlayerMP oldentity;

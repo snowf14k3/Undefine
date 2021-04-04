@@ -19,6 +19,7 @@ public class ServerCrasher extends Module {
     public ServerCrasher() {
         super("ServerCrasher","Server Crasher", Category.WORLD);
         this.mode.addValue("C14TabComplete");
+        setChinesename("\u70b8\u670d");
     }
 
 

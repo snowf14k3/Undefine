@@ -12,6 +12,7 @@ import net.minecraft.network.play.client.C07PacketPlayerDigging;
 public  class FastBow extends Module {
     public FastBow() {
         super("FastBow","Fast Bow",  Category.COMBAT);
+        setChinesename("\u5feb\u901f\u62c9\u5f13");
     }
 
 

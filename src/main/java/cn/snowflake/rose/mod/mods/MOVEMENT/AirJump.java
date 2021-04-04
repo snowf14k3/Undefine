@@ -11,6 +11,7 @@ public class AirJump
         extends Module {
     public AirJump() {
         super("AirJump","Air Jump", Category.MOVEMENT);
+        setChinesename("\u8e0f\u7a7a\u8df3");
     }
 
     @Override

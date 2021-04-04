@@ -73,6 +73,7 @@ public class Aimbot extends Module {
 
         this.playerPositions = new HashMap<>();
         this.buffer = 10;
+        setChinesename("\u81ea\u7784");
     }
 
 

@@ -10,6 +10,7 @@ import net.minecraft.network.play.client.C0DPacketCloseWindow;
 public class SecretClose extends Module {
     public SecretClose() {
         super("SecretClose", "Secret Close", Category.FORGE);
+        setChinesename("\u79d8\u5bc6\u5173\u95ed");
     }
 
 

@@ -43,6 +43,7 @@ public class AntiAim extends Module {
         this.pitch.addValue("Up");
         this.pitch.addValue("Stutter");
         this.pitch.addValue("Reverse");
+        setChinesename("\u6447\u5934");
     }
 
     @Override

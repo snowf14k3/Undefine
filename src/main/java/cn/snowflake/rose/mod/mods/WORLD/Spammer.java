@@ -21,13 +21,14 @@ public class Spammer extends Module {
     private Value<String> text = new Value<String>("Spammer_Text","","Season Code by CNSnowFlake.");
     private int num;
 
-    public static String customtext = "Ë§¸çÄãºÃ!";
+    public static String customtext = "\u5e05\u54e5\u4f60\u597d\u0021";
 
     public Spammer() {
         super("Spammer","Spammer", Category.PLAYER);
         this.mode.addValue("Custome1");
         this.mode.addValue("Custome2");
         this.mode.addValue("Abuse");
+        setChinesename("\u81ea\u52a8\u804a\u5929");
     }
 
     public void onDisable() {

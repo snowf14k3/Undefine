@@ -27,6 +27,7 @@ public class Teleport extends Module {
     public Teleport(){
         super("Teleport","Teleport", Category.MOVEMENT);
         modes.addValue("God");
+        working = false;
     }
     @Override
     public void onEnable() {

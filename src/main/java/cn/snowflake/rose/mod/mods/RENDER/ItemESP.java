@@ -23,6 +23,7 @@ import java.awt.*;
 public class ItemESP extends Module {
     public ItemESP() {
         super("ItemESP","Item ESP",Category.RENDER);
+        setChinesename("\u7269\u54c1\u900f\u89c6");
     }
     public Value<Boolean> nametag = new Value<Boolean>("ItemESP_NameRender", false);
     public static Value<Double> r = new Value<Double>("ItemESP_Red", 255.0D, 0.0D,255.0D, 5.0D);

@@ -7,7 +7,6 @@ import cn.snowflake.rose.mod.mods.MOVEMENT.*;
 import cn.snowflake.rose.mod.mods.PLAYER.*;
 import cn.snowflake.rose.mod.mods.RENDER.*;
 import cn.snowflake.rose.mod.mods.WORLD.*;
-import cpw.mods.fml.common.Loader;
 
 import java.util.ArrayList;
 
@@ -95,15 +94,12 @@ public class ModManager {
         addMod(new ResearchGod());
         addMod(new NBTRevise());
 
-        if (Loader.isModLoaded("EnderIO")) {
-            addMod(new EIOXpGrab());
-        }
-        if (Loader.isModLoaded("Railcraft")){
-            addMod(new OneWayTicket());
-        }
-        if (Loader.isModLoaded("ThermalExpansion") && Loader.isModLoaded("FTBL")){
-            addMod(new FTBSatchelDupe());
-        }
+
+        addMod(new EIOXpGrab());
+
+        addMod(new OneWayTicket());
+
+        addMod(new FTBSatchelDupe());
 
         ok = true;
     }

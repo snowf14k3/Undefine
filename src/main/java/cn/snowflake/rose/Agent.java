@@ -6,6 +6,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 
+import javax.swing.*;
 import java.lang.instrument.Instrumentation;
 import java.lang.instrument.UnmodifiableClassException;
 import java.lang.reflect.InvocationTargetException;
@@ -19,12 +20,17 @@ public class Agent {
 	public static void agentmain(String args, Instrumentation instrumentation) {
 		try {
 			Agent.args = args;
+			if (!args.contains("--injection=season")){
+				JOptionPane.showMessageDialog(null,"\u68c0\u6d4b\u5230\u6838\u5fc3\u88ab\u4fee\u6539\u0020\u0021");
+			}
+			if (args.contains("--chinese=true")){
+				Client.chinese = true;
+			}
 			Agent.instrumentation = instrumentation;
 			Agent.loadThisJar();
 			Agent.forceloadclass();
 			Agent.retransform();
-		}
-		catch (Exception e) {
+		}catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

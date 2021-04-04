@@ -8,43 +8,64 @@ import net.minecraft.client.Minecraft;
 import java.util.ArrayList;
 
 public class Module {
-    private String name;
-    private String displayName;
-    private Category category;
-    private int key;
     public static Minecraft mc = Minecraft.getMinecraft();
+    private String rendername;
+    private final String name;
+    private final Category category;
+    private String displayName;
+    public String chinesename;
+    private int key;
+
     private boolean isEnabled;
     public boolean openValues;
-    private String rendername;
-
-    public boolean Working = true;
+    public boolean working = true;
+    public boolean hidden ;
 
     public Module(String name,Category category) {
         this.name = name;
         this.category = category;
         this.key = -1;
     }
+
     public Module(String name,String rendername,Category category) {
         this.name = name;
         this.category = category;
         this.rendername = rendername;
         this.key = -1;
     }
-    public boolean hidden ;
 
     public void onDisable() {
     }
     public boolean isHidden() {
         return hidden;
     }
+
+    public void setChinesename(String chinesename) {
+        this.chinesename = chinesename;
+    }
+
+    public void setWorking(boolean working) {
+        this.working = working;
+    }
+
     public String getRenderName() {
         return rendername;
     }
+
     public void setHidden(boolean hidden) {
         this.hidden = hidden;
     }
+
     public String getName() {
-        return Working ? name : "\247c"+name;
+        return working ? name : "\247c"+name;
+    }
+
+    public String getChinesename() {
+        if (chinesename != null){
+            return  (working ? chinesename : "\2474"+chinesename);
+        }else {
+            return name;
+        }
     }
 
     public void setDisplayName(String displayName) {
@@ -54,12 +75,15 @@ public class Module {
     public String getdisplayName() {
         return displayName;
     }
+
     public void setKey(int key) {
         this.key = key;
     }
+
     public int getKey() {
         return this.key;
     }
+
     public boolean isEnabled() {
         return this.isEnabled;
     }
@@ -67,6 +91,7 @@ public class Module {
     public Category getCategory() {
         return this.category;
     }
+
     public boolean hasValues() {
         for (Value value : Value.list) {
             String name = value.getValueName().split("_")[0];
@@ -77,7 +102,8 @@ public class Module {
     }
     public void onToggle() {
     }
-    public void set(boolean state, boolean safe) {
+
+    public void set(boolean state, boolean save) {
         this.isEnabled = state;
         this.onToggle();
         if (state) {
@@ -91,10 +117,11 @@ public class Module {
             }
             EventManager.unregister(this);
         }
-        if (safe) {
+        if (save) {
             Client.instance.fileMgr.saveMods();
         }
     }
+
     public void onEnable() {
 
     }
@@ -113,4 +140,5 @@ public class Module {
         this.set(state, false);
         Client.instance.fileMgr.saveMods();
     }
+
 }

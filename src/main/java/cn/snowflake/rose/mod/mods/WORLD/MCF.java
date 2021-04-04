@@ -12,9 +12,10 @@ import net.minecraft.entity.player.EntityPlayer;
 public class MCF extends Module {
     public MCF() {
         super("MCF","MCF", Category.WORLD);
+        setChinesename("\u4e2d\u952e\u597d\u53cb");
     }
 
-    private MouseInputHandler handler = new MouseInputHandler(2);
+    private final MouseInputHandler handler = new MouseInputHandler(2);
 
     @EventTarget
     public void onupdate(EventUpdate e){

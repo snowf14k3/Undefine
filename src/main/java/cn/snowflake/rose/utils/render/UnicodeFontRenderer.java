@@ -2,20 +2,17 @@ package cn.snowflake.rose.utils.render;
 
 
 
-import java.awt.Color;
-import java.awt.Font;
-import java.util.HashMap;
-
 import cn.snowflake.rose.utils.mcutil.GlStateManager;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
 
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.util.ResourceLocation;
+import java.awt.*;
+import java.util.HashMap;
 
 public class UnicodeFontRenderer extends FontRenderer {
     private final UnicodeFont font;
@@ -133,15 +130,13 @@ public class UnicodeFontRenderer extends FontRenderer {
     }
 
     public int getStringWidth(String string) {
-        String[] array;
-        float len = -1.0f;
-        string = "\247r" + string;
-        for (String str : array = string.split("\247")) {
-            if (str.length() < 1) continue;
-            str = str.substring(1, str.length());
-            len += (float)(this.font.getWidth(str) / 2 + 1);
+        if (widthMap.containsKey(string)) {
+            return widthMap.get(string).intValue();
+        } else {
+            float width = (float) (this.font.getWidth(string) / 2);
+            widthMap.put(string, width);
+            return (int) width;
         }
-        return (int)len;
     }
     public void drawBoldString(String text, float x, float y, int color) {
         this.drawString(text, x, y, color);

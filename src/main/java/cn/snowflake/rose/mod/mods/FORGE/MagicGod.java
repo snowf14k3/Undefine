@@ -1,15 +1,14 @@
 package cn.snowflake.rose.mod.mods.FORGE;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.utils.client.ChatUtil;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.minecraft.network.play.client.C17PacketCustomPayload;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class MagicGod extends Module {
     public MagicGod() {
@@ -18,7 +17,7 @@ public class MagicGod extends Module {
             Class.forName("thaumcraft.api.aspects.Aspect");
             Class.forName("thaumcraft.common.Thaumcraft");
         } catch (Exception var2) {
-         this.Working = false;
+            this.working = false;
         }
     }
     

@@ -2,6 +2,7 @@ package cn.snowflake.rose.mod.mods.FORGE;
 
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -13,6 +14,9 @@ import java.util.Map;
 public class OneWayTicket extends Module {
     public OneWayTicket() {
         super("OneWayTicket", "One Way Ticket", Category.FORGE);
+        if (!Loader.isModLoaded("Railcraft")){
+            working = false;
+        }
     }
 
     @Override
@@ -28,7 +32,9 @@ public class OneWayTicket extends Module {
                             .getConstructor(EntityPlayer.class, ItemStack.class).newInstance(mc.thePlayer, item(ckeckItem, nbt)));
                 }
             }
-        } catch(Exception e) {}
+        } catch(Exception e) {
+
+        }
         super.onEnable();
     }
     public ItemStack item(ItemStack toItem, NBTTagCompound tag) {

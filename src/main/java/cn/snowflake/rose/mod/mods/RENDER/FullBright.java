@@ -16,6 +16,7 @@ public class FullBright extends Module {
         super("FullBright","Full Bright", Category.RENDER);
         this.mode.addValue("Potion");
         this.mode.addValue("Gamma");
+        setChinesename("\u65e0\u9650\u591c\u89c6");
     }
 
     @EventTarget

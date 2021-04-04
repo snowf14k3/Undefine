@@ -11,6 +11,7 @@ public class FastPlace extends Module {
 
     public FastPlace() {
         super("FastPlace","Fast Place", Category.PLAYER);
+        setChinesename("\u5feb\u901f\u653e\u7f6e");
     }
 
     @EventTarget

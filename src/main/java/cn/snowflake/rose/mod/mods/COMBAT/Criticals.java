@@ -19,6 +19,7 @@ public class Criticals extends Module {
     public Criticals() {
         super("Criticals","Criticals", Category.COMBAT);
         modes.addValue("Packet");
+        setChinesename("\u5200\u7206");
     }
 
     public static  double CodeByLiquidSlowly(){

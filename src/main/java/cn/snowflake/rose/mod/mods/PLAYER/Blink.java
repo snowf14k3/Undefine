@@ -25,6 +25,7 @@ public class Blink extends Module {
 
     public Blink() {
         super("Blink","Blink", Category.PLAYER);
+        setChinesename("\u5206\u8eab\u77ac\u79fb");
     }
 
     public void onEnable() {

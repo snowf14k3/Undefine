@@ -1,14 +1,5 @@
 package cn.snowflake.rose.mod.mods.MOVEMENT;
 
-import java.lang.reflect.Field;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.Color;
-import org.lwjgl.util.glu.Cylinder;
-
-import com.darkmagician6.eventapi.EventTarget;
-import com.darkmagician6.eventapi.types.Priority;
-
 import cn.snowflake.rose.events.impl.EventMove;
 import cn.snowflake.rose.events.impl.EventRender3D;
 import cn.snowflake.rose.management.ModManager;
@@ -21,12 +12,17 @@ import cn.snowflake.rose.utils.mcutil.BlockPos;
 import cn.snowflake.rose.utils.mcutil.GlStateManager;
 import cn.snowflake.rose.utils.other.JReflectUtility;
 import cn.snowflake.rose.utils.render.RenderUtil;
+import com.darkmagician6.eventapi.EventTarget;
+import com.darkmagician6.eventapi.types.Priority;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.Color;
+import org.lwjgl.util.glu.Cylinder;
 
 public class TargetStrafe extends Module {
 
@@ -46,6 +42,7 @@ public class TargetStrafe extends Module {
 	
     public TargetStrafe() {
         super("TargetStrafe", "Target Strafe", Category.MOVEMENT);
+        setChinesename("\u7ed5\u76ee\u6807\u8f6c\u5708");
     }
 
 	@EventTarget

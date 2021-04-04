@@ -6,11 +6,10 @@ import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.Value;
 import cn.snowflake.rose.utils.client.ChatUtil;
 import com.darkmagician6.eventapi.EventTarget;
-
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.PlayerCapabilities;
-import net.minecraft.network.play.client.*;
+import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
+import net.minecraft.network.play.client.C13PacketPlayerAbilities;
 
 public class TP2 extends Module {
     public static Value modes = new Value("TP", "Mode", 0);
@@ -21,6 +20,7 @@ public class TP2 extends Module {
     public TP2() {
         super("TP2", "TP2", Category.MOVEMENT);
         modes.addValue("SB");
+        working = false;
     }
 
     @EventTarget

@@ -10,6 +10,7 @@ import net.minecraft.potion.Potion;
 public class AntiEffect extends Module {
     public AntiEffect() {
         super("AntiEffect", "Anti Effect", Category.PLAYER);
+        setChinesename("\u53cd\u836f\u6c34");
     }
     private final Potion[] badEffects = new Potion[]{Potion.moveSlowdown, Potion.digSlowdown, Potion.harm, Potion.confusion, Potion.blindness, Potion.hunger, Potion.weakness, Potion.poison, Potion.wither};
 

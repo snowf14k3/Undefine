@@ -18,6 +18,7 @@ import java.util.List;
 public class Plugins extends Module {
     public Plugins() {
         super("Plugins", "Plugins", Category.WORLD);
+        setChinesename("\u67e5\u770b\u63d2\u4ef6");
     }
 
     @Override

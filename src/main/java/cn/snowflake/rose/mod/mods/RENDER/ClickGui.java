@@ -20,7 +20,7 @@ public class ClickGui extends Module {
         this.setKey(Keyboard.KEY_RSHIFT);
         this.mode.mode.add("CSGO");
 		this.mode.mode.add("Skeet");
-
+        setChinesename("\u529f\u80fd\u7a97\u53e3");
     }
     @Override
     public void onEnable() {

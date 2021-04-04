@@ -16,6 +16,7 @@ public class AutoTool extends Module {
 
     public AutoTool() {
         super("AutoTool","Auto Tool", Category.PLAYER);
+        setChinesename("\u81ea\u52a8\u5de5\u5177");
     }
 
 

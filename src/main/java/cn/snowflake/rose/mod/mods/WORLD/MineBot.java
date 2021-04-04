@@ -29,6 +29,7 @@ public class MineBot extends Module {
 
     public MineBot() {
         super("MineBot", "Mine Bot", Category.WORLD );
+        setChinesename("\u6316\u77ff\u673a\u5668\u4eba");
     }
     private boolean isInventoryFull() {
         int id = 36;

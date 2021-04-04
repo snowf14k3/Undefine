@@ -80,6 +80,7 @@ public class Aura extends Module {
         this.sortingMode.addValue("Health");
         this.sortingMode.addValue("MaxHealth");
         this.sortingMode.addValue("Distance");
+        setChinesename("\u6740\u622e\u5149\u73af");
     }
 
     @SubscribeEvent

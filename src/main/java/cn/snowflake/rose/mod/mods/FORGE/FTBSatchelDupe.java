@@ -2,12 +2,16 @@ package cn.snowflake.rose.mod.mods.FORGE;
 
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
+import cpw.mods.fml.common.Loader;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 public class FTBSatchelDupe extends Module {
     public FTBSatchelDupe() {
         super("FTBSatchelDupe", "FTB Satchel Dupe", Category.FORGE);
+        if (!Loader.isModLoaded("ThermalExpansion") && !Loader.isModLoaded("FTBL")){
+            this.working = false;
+        }
     }
 
 

@@ -19,6 +19,7 @@ import net.minecraft.network.play.client.C0APacketAnimation;
 public class ArmorBreaker extends Module {
     public ArmorBreaker() {
         super("ArmorBreaker","Armor Breaker", Category.COMBAT);
+        setChinesename("\u7834\u7532");
     }
     TimeHelper time = new TimeHelper();
 

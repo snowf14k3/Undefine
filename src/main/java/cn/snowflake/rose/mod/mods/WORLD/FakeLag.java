@@ -27,6 +27,7 @@ public class FakeLag extends Module
         this.lagValue = new Value<Double>("FakeLag_Delay", 3000.0, 300.0, 5000.0);
         this.packetList = new CopyOnWriteArrayList<C03PacketPlayer>();
         this.lagHelper = new TimeHelper();
+        working = false;
     }
 
     @EventTarget

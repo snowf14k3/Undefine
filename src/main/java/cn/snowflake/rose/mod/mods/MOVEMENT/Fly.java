@@ -26,7 +26,7 @@ public class Fly extends Module {
         this.mode.addValue("Motion");
         this.mode.addValue("Vanilla");
         this.mode.addValue("Creative");
-
+        setChinesename("\u98de\u884c");
     }
 
     @EventTarget

@@ -30,6 +30,7 @@ public class ChestESP extends Module {
     public ChestESP() {
         super("ChestESP", "Chest ESP",Category.RENDER);
         this.mode.addValue("ESP");
+        setChinesename("\u7bb1\u5b50\u900f\u89c6");
     }
 
     @EventTarget

@@ -11,6 +11,7 @@ public class FastClimb extends Module {
 
     public FastClimb() {
         super("FastClimb", "Fast Climb", Category.MOVEMENT);
+        setChinesename("\u5feb\u901f\u722c\u68af");
     }
 
     @EventTarget

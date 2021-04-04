@@ -25,6 +25,8 @@ public class IRC extends Module {
     public IRC() {
         super("IRC","IRC", Category.WORLD);
         new reconnect().start();
+        working = false;
+        setChinesename("\u8de8\u670d\u804a\u5929");
     }
 
     public void processMessage(String msg1) {

@@ -14,6 +14,7 @@ import java.util.Random;
 public class Stealer extends Module {
     public Stealer() {
         super("ChestStealer","Chest Stealer", Category.PLAYER);
+        setChinesename("\u81ea\u52a8\u62ff\u7269\u54c1");
     }
     public Value<Double> delay = new Value("ChestStealer_Delay", 65d, 0d, 200d, 1d);
     public Value<Boolean> cchest = new Value("ChestStealer_CloseChest", true);

@@ -40,6 +40,7 @@ public class Scaffold
 
     public Scaffold() {
         super("Scaffold","Scaffold", Category.MOVEMENT);
+        setChinesename("\u81ea\u52a8\u642d\u8def");
     }
 
     @EventTarget

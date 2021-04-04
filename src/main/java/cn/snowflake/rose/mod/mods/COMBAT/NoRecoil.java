@@ -14,6 +14,7 @@ public class NoRecoil extends Module {
 
     public NoRecoil() {
         super("NoRecoil", "No Recoil", Category.COMBAT);
+        setChinesename("\u65e0\u540e\u5ea7");
     }
 
     @EventTarget(Priority.HIGH)

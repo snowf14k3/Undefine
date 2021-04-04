@@ -19,6 +19,7 @@ import java.util.List;
 public class PlayerList extends Module {
     public PlayerList() {
         super("PlayerList", "Player List", Category.RENDER);
+        setChinesename("\u663e\u793a\u9644\u8fd1\u73a9\u5bb6");
     }
     public static Value<Double> x = new Value<Double>("PlayerList_X", 2.0d, 0.0d, 1920.0d, 10.0d);
     public static Value<Double> y = new Value<Double>("PlayerList_Y", 20.0d, 0.0d, 1080.0d, 10.0d);

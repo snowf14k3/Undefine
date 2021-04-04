@@ -11,5 +11,6 @@ public class NameProtect extends Module {
 
     public NameProtect() {
         super("NameProtect", "Name Protect", Category.RENDER);
+        setChinesename("\u533f\u540d");
     }
 }

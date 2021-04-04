@@ -29,19 +29,19 @@ public class CommandXray extends Command {
                 if (c.equalsIgnoreCase("add")){
                     if (!Xray.block.contains(block)){
                         Xray.block.add(block);
-                        ChatUtil.sendClientMessage("Add " + block.getLocalizedName() + " Successfully !");
+                        ChatUtil.sendClientMessage((Client.chinese ? "\u6dfb\u52a0" : "Add ")+ block.getLocalizedName() + (Client.chinese ?  "\u6210\u529f" : " Successfully !"));
                         Client.instance.fileMgr.saveBlocks();
                     }else{
-                        ChatUtil.sendClientMessage("You are already add this block !");
+                        ChatUtil.sendClientMessage(Client.chinese ? "\u4f60\u5df2\u7ecf\u6dfb\u52a0\u4e86\u8fd9\u4e2a\u65b9\u5757" : "You are already add this block !");
                     }
                 }
                 if (c.equalsIgnoreCase("remove")){
                     if (Xray.block.contains(block)){
                         Xray.block.remove(block);
-                        ChatUtil.sendClientMessage("Remove " + block.getLocalizedName() + " Successfully !");
+                        ChatUtil.sendClientMessage((Client.chinese ?  "\u5220\u9664": "Remove ") + block.getLocalizedName() + (Client.chinese ?  "\u6210\u529f" : " Successfully !"));
                         Client.instance.fileMgr.saveBlocks();
                     }else{
-                        ChatUtil.sendClientMessage("You have no add this block !");
+                        ChatUtil.sendClientMessage(Client.chinese ? "\u4f60\u6ca1\u6dfb\u52a0\u8fd9\u4e2a\u65b9\u5757" : "You have no add this block !");
                     }
                 }
             }else{

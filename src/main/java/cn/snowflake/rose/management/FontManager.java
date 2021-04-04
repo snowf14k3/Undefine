@@ -1,6 +1,7 @@
 package cn.snowflake.rose.management;
 
 
+import cn.snowflake.rose.Client;
 import cn.snowflake.rose.utils.render.UnicodeFontRenderer;
 import net.minecraft.client.Minecraft;
 
@@ -29,6 +30,9 @@ public class FontManager {
     
     public UnicodeFontRenderer notif;
 
+    public UnicodeFontRenderer wqy19;
+    public UnicodeFontRenderer wqy13;
+
     public FontManager() {
         this.simpleton10 = this.getFont("simpleton", 10.0f, true);
         this.simpleton11 = this.getFont("simpleton", 11.0f, true);
@@ -39,6 +43,10 @@ public class FontManager {
         this.simpleton20 = this.getFont("simpleton", 20.0f, true);
         this.simpleton30 = this.getFont("simpleton", 30.0f, true);
         this.notif = this.getFont("stylesicons", 20.0f);
+        if (Client.chinese) {
+            this.wqy13 = this.getChineseFont("wqy", 13);
+            this.wqy19 = this.getChineseFont("wqy", 19);
+        }
     }
 
     public UnicodeFontRenderer getFont(String name, float size, boolean b) {
@@ -60,6 +68,33 @@ public class FontManager {
                 map.putAll(this.fonts.get(name));
             }
             map.put(Float.valueOf(size), unicodeFont);
+            this.fonts.put(name, map);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return unicodeFont;
+    }
+
+    public UnicodeFontRenderer getChineseFont(String name, float size) {
+        UnicodeFontRenderer unicodeFont = null;
+        try {
+            if (this.fonts.containsKey(name) && ((HashMap)this.fonts.get(name)).containsKey(Float.valueOf((float)size))) {
+                return (UnicodeFontRenderer)((HashMap)this.fonts.get(name)).get(Float.valueOf((float)size));
+            }
+            InputStream inputStream = this.getClass().getResourceAsStream("/assets/fonts/" + name + ".ttf");
+
+            Font font = null;
+            font = Font.createFont((int)0, (InputStream)inputStream);
+            unicodeFont = new UnicodeFontRenderer(font.deriveFont(size),true);
+            unicodeFont.setUnicodeFlag(true);
+            unicodeFont.setBidiFlag(Minecraft.getMinecraft().getLanguageManager().isCurrentLanguageBidirectional());
+
+            HashMap map = new HashMap();
+            if (this.fonts.containsKey(name)) {
+                map.putAll((Map)this.fonts.get(name));
+            }
+            map.put(Float.valueOf((float)size), unicodeFont);
             this.fonts.put(name, map);
         }
         catch (Exception e) {

@@ -16,6 +16,7 @@ public class EIOXpGrab extends Module{
 
 	public EIOXpGrab() {
 		super("EIOXpGrab", "EIOXpGrab", Category.FORGE);
+		working = false;
 	}
 
 	@Override

@@ -23,6 +23,7 @@ public class CrossHair extends Module{
 		mode.mode.add("White");
 		mode.mode.add("Yello");
 		mode.mode.add("Green");
+		setChinesename("\u51c6\u5fc3");
 	}
 	
 	@EventTarget

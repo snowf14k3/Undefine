@@ -3,7 +3,6 @@ package cn.snowflake.rose.command.commands;
 
 import cn.snowflake.rose.Client;
 import cn.snowflake.rose.command.Command;
-import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.client.ChatUtil;
 import net.minecraft.client.Minecraft;
@@ -13,7 +12,7 @@ public class CommandHidden extends Command {
 
     public CommandHidden(String[] commands) {
         super(commands);
-        this.setArgs("-hidden <module>");
+        this.setArgs(Client.chinese ? "-hidden <\u529f\u80fd\u540d\u5b57>" : "-hidden <module>");
     }
 
     @Override
@@ -26,7 +25,7 @@ public class CommandHidden extends Command {
                 if(m.getName().equalsIgnoreCase(mod)) {
                     m.setHidden(!m.isHidden());
                     Client.instance.fileMgr.saveHidden();
-                    ChatUtil.sendClientMessage("Module " + m.getName() + " " + (!m.isHidden() ? "display" : "hidden"));
+                    ChatUtil.sendClientMessage((Client.chinese ? "\u529f\u80fd" : "Module ") + m.getName() + " " + (!m.isHidden() ? (Client.chinese ? "\u663e\u793a" : "display") : (Client.chinese ? "\u9690\u85cf" : "hidden")));
                     return;
                 }
             }

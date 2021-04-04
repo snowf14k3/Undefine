@@ -10,7 +10,7 @@ public class CommandSpammer extends Command {
 
     public CommandSpammer(String[] commands) {
         super(commands);
-        this.setArgs("-sp <text>");
+        this.setArgs(Client.chinese ? "-sp\u6216\u8005-spammer <\u4fe1\u606f>/<load> (\u81ea\u5b9a\u4e49\u81ea\u52a8\u804a\u5929\u4fe1\u606f)" : "-sp\u6216\u8005-spammer <text>/<load> ");
     }
 
     public void onCmd(String[] args) {
@@ -24,7 +24,7 @@ public class CommandSpammer extends Command {
             }
             Spammer.customtext = args[1];
             Client.instance.fileMgr.saveSpammerText();
-            ChatUtil.sendClientMessage("Spammer customText Changed to " + args[1]);
+            ChatUtil.sendClientMessage( (Client.chinese ? "\u81ea\u52a8\u804a\u5929\u5185\u5bb9\u4fee\u6539\u4e3a\u0020\uff1a\u0020" : "Spammer customText Changed to ") + args[1]);
             super.onCmd(args);
         }
     }

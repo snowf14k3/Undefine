@@ -98,6 +98,7 @@ public class TPAura extends Module
         this.cps = new TimeHelper();
         timer = new TimeHelper();
         this.Mode.mode.add("Vanilla");
+        setChinesename("\u767e\u7c73\u957f\u5200");
     }
 
     @Override

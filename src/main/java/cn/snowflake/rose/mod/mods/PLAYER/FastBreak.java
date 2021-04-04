@@ -15,6 +15,7 @@ public class FastBreak extends Module {
 
     public FastBreak() {
         super("FastBreak","Fast Break", Category.PLAYER);
+        setChinesename("\u5feb\u901f\u7834\u574f");
     }
 
 

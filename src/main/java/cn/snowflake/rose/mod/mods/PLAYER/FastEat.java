@@ -12,6 +12,7 @@ public class FastEat extends Module
 {
     public FastEat() {
         super("FastEat","Fast Eat", Category.PLAYER);
+        setChinesename("\u5feb\u901f\u5403\u4e1c\u897f");
     }
 
     @EventTarget

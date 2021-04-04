@@ -1,20 +1,16 @@
 package cn.snowflake.rose.mod.mods.RENDER;
 
-import java.awt.Color;
-import java.util.ArrayList;
-
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
-
-import com.darkmagician6.eventapi.EventTarget;
-
 import cn.snowflake.rose.Client;
 import cn.snowflake.rose.events.impl.EventRender2D;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.mod.mods.COMBAT.Aimbot;
 import cn.snowflake.rose.utils.Value;
+import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.client.Minecraft;
+
+import java.awt.*;
+import java.util.ArrayList;
 
 public class SimpleHUD extends Module {
 	private ArrayList<Module> mods = new ArrayList<Module>();
@@ -23,6 +19,7 @@ public class SimpleHUD extends Module {
 	
 	public SimpleHUD() {
 		super("SimpleHUD", Category.RENDER);
+		setChinesename("\u7b80\u5355\u754c\u9762");
 	}
 	
 	@Override
