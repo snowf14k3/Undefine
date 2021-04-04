@@ -130,14 +130,18 @@ public class UnicodeFontRenderer extends FontRenderer {
     }
 
     public int getStringWidth(String string) {
-        if (widthMap.containsKey(string)) {
-            return widthMap.get(string).intValue();
-        } else {
-            float width = (float) (this.font.getWidth(string) / 2);
-            widthMap.put(string, width);
-            return (int) width;
+        String[] array;
+        float len = -1.0f;
+        string = "\u00a7r" + string;
+        for (String str : array = string.split("\u00a7")) {
+            if (str.length() < 1) continue;
+            str = str.substring(1, str.length());
+            len += (float)(this.font.getWidth(str) / 2 + 1);
         }
+        return (int)len;
     }
+
+
     public void drawBoldString(String text, float x, float y, int color) {
         this.drawString(text, x, y, color);
     }

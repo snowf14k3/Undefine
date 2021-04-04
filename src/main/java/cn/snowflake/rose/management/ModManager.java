@@ -121,7 +121,18 @@ public class ModManager {
         return modList;
     }
 
-	public static Module getModByClass(Class<? extends Module> cls) {
+    public ArrayList<Module> getModHidden() {
+        ArrayList<Module> Hidden = new ArrayList();
+        for(Module m : this.modList) {
+            if (!(m == getModByClass(HUD.class))) {
+                Hidden.add(m);
+            }
+        }
+        return Hidden;
+    }
+
+
+    public static Module getModByClass(Class<? extends Module> cls) {
 		for (Object m1 : modList) {
 			Module m = (Module) m1;
 		if (m.getClass() != cls)

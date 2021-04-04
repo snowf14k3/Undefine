@@ -14,12 +14,11 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.injection.ClientLoader;
 import org.apache.logging.log4j.LogManager;
 
+
 import java.awt.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.Locale;
+import java.util.*;
+import java.util.List;
 
 public class HUD extends Module {
     public Value<String> text = new Value<>("HUD_Text","","Season");
@@ -35,7 +34,7 @@ public class HUD extends Module {
         this.rainbow.addValue("Green");
         setChinesename("\u529f\u80fd\u663e\u793a");
     }
-    
+
     @EventTarget
     public void on2D(EventRender2D e){
         UnicodeFontRenderer font = Client.instance.fontManager.simpleton12;
@@ -55,7 +54,7 @@ public class HUD extends Module {
             }
             font.drawStringWithColor(xyz, sr.getScaledWidth() - font.getStringWidth(clean(xyz)) - 6, sr.getScaledHeight() - font.FONT_HEIGHT - (mc.currentScreen instanceof GuiChat ? 15 : 0), -1,0);
         }
-        
+
         if (this.logo.getValueState()){
             Date date = new Date();
             SimpleDateFormat sdformat = new SimpleDateFormat("KK:mm a", Locale.ENGLISH);
@@ -129,11 +128,32 @@ public class HUD extends Module {
         return new Color((float)c.getRed() / 255.0F * fade, (float)c.getGreen() / 255.0F * fade, (float)c.getBlue() / 255.0F * fade, (float)c.getAlpha() / 255.0F);
     }
 
+    private List<Module> getSortedModules() {
+        UnicodeFontRenderer fr = Client.chinese ? Client.instance.fontManager.wqy19 :Client.instance.fontManager.robotoregular19;
+        ArrayList<Module> mods = new ArrayList(Client.instance.modManager.getModHidden());
+
+        mods.sort((m, m1) -> {
+            String mName = m.getdisplayName().isEmpty() ? m.getName() : m.getName()+ m.getdisplayName();
+            String m1Name = m1.getdisplayName().isEmpty() ? m1.getName() : m1.getName()+ m1.getdisplayName();
+            return Integer.compare(fr.getStringWidth(m1Name), fr.getStringWidth(mName));
+        });
+
+        return mods;
+    }
+
     private void RenderArraylist() {
         ScaledResolution sr = new ScaledResolution(mc,mc.displayWidth,mc.displayHeight);
         UnicodeFontRenderer arraylistfont = Client.chinese ? Client.instance.fontManager.wqy19 :Client.instance.fontManager.robotoregular19;
-        ArrayList<Module> mods = new ArrayList<>(Client.instance.modManager.getModList());
-        mods.sort(Comparator.comparingDouble(m1 -> - arraylistfont.getStringWidth(m1.getRenderName() + (m1.getdisplayName() == null ? "" : m1.getdisplayName()))));
+        try {
+            List<Module> mods = getSortedModules();
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        List<Module> mods = getSortedModules();
+
+//        mods.sort(Comparator.comparingDouble(m1 -> - arraylistfont.getStringWidth(m1.getRenderName() + (m1.getdisplayName() == null ? "" : m1.getdisplayName()))));
+
         int countMod = 0;
         int color = -1;
         float yAxis = 0;
