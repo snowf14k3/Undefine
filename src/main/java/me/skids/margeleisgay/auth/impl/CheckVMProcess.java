@@ -27,11 +27,10 @@ public class CheckVMProcess implements AuthModule {
 		process = null;
 	}
 
-	@Override
-	public boolean run() {
+	public boolean method1(){
 		try {
-		BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
-		String line;
+			BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
+			String line;
 			while ((line = input.readLine()) != null) {
 				for (String target : targetProcess) {
 					if(line.contains(target)) {
@@ -43,6 +42,11 @@ public class CheckVMProcess implements AuthModule {
 			e.printStackTrace();
 		}
 		return true;
+	}
+
+	@Override
+	public boolean run() {
+		return method1();
 	}
 
 }

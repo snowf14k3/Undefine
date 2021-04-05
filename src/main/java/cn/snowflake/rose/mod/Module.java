@@ -4,6 +4,7 @@ import cn.snowflake.rose.Client;
 import cn.snowflake.rose.utils.Value;
 import com.darkmagician6.eventapi.EventManager;
 import net.minecraft.client.Minecraft;
+import org.apache.logging.log4j.LogManager;
 
 import java.util.ArrayList;
 

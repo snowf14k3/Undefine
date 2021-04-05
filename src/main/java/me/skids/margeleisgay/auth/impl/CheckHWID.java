@@ -27,16 +27,19 @@ public class CheckHWID implements AuthModule {
 	public void onDisable() {
 		
 	}
-
-	@Override
-	public boolean run() {
+	public boolean method1(){
 		if(!targetHWID.contains(selfHWID) &&
-				 !(targetHWID.indexOf(selfHWID.toString()) > -1) &&
-			!ShitUtil.contains(targetHWID,selfHWID)
+				!(targetHWID.indexOf(selfHWID.toString()) > -1) &&
+				!ShitUtil.contains(targetHWID,selfHWID)
 		) {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public boolean run() {
+		return method1();
 	}
 
 }
