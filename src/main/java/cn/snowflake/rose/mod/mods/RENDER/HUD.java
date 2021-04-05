@@ -90,7 +90,7 @@ public class HUD extends Module {
                     rainbow(2800));
 
 
-            Client.instance.fontManager.simpleton11.drawStringWithColor(text, 4 + posX, 5 + posY, -1,0);
+            Client.instance.fontManager.simpleton11.drawStringWithColor(text, 2 + posX, 5 + posY, -1,0);
         }
         RenderArraylist();
     }
