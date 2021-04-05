@@ -94,11 +94,9 @@ public class ModManager {
         addMod(new ResearchGod());
         addMod(new NBTRevise());
 
-
         addMod(new EIOXpGrab());
-
         addMod(new OneWayTicket());
-
+        addMod(new BreakInGui());
         addMod(new FTBSatchelDupe());
 
         ok = true;
