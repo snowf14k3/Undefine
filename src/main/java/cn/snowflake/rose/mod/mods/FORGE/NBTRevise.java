@@ -18,7 +18,7 @@ public class NBTRevise extends Module {
     }
 
     @Override
-    public boolean isEnabled() {
+    public void onEnable() {
         try {
             final Class clazz = Class.forName("com.mcf.davidee.nbtedit.NBTEdit");
             final Object proxy = clazz.getField("proxy").get(null);
@@ -38,11 +38,11 @@ public class NBTRevise extends Module {
                 mc.thePlayer.writeToNBT(compound);
                 clazz2.getMethod("openEditGUI", Integer.TYPE, NBTTagCompound.class).invoke(proxy, mc.thePlayer.getEntityId(), compound);
             }
-            this.set(false, false);
+            this.set(false);
         }
         catch (Throwable ex) {
-            this.set(false, false);
+            this.set(false);
         }
-        return super.isEnabled();
+        super.isEnabled();
     }
 }
