@@ -48,9 +48,9 @@ compileJava {
 }
 compileJava.options.encoding = 'UTF-8'
 
-version = "0.4"
+version = "1.7.10"
 group= "shit.season"
-archivesBaseName = "seasonlite"
+archivesBaseName = "Season"
 
 configurations {
     shade

@@ -315,7 +315,7 @@ public class CSGOGUI extends GuiScreen {
                             :
                             new Color(125, 125, 125).getRGB());
             //mod name
-            font2.drawCenteredStringWithColor(bmod == mod ? "......"  : Client.chinese ? mod.getChinesename() : mod.getName() , x + 44, y + 2 + modscrollY, -1);
+            font2.drawCenteredStringWithColor(bmod == mod ? "......"  : Client.chinese ? mod.getChinesename() : mod.getName() , x + 42, y + 2 + modscrollY, -1);
             // has value
             font2.drawCenteredString(mod.hasValues() ? mod.openValues ? "-" : "+" : "", x + 76 , y + 2 + modscrollY, -1);
 
