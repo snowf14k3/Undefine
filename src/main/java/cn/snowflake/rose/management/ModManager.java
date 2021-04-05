@@ -98,6 +98,7 @@ public class ModManager {
         addMod(new EIOXpGrab());
         addMod(new OneWayTicket());
         addMod(new BreakInGui());
+        addMod(new VisualCreative());
         addMod(new FTBSatchelDupe());
 
         ok = true;
