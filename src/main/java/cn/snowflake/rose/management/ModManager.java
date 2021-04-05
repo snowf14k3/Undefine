@@ -65,6 +65,7 @@ public class ModManager {
         //PLAYER
         addMod(new NoSlowDown());
         addMod(new AutoTool());
+        addMod(new NoWeb());
         addMod(new Stealer());
         addMod(new AntiEffect());
         addMod(new FastBreak());
@@ -93,12 +94,10 @@ public class ModManager {
         addMod(new MagicGod());
         addMod(new ResearchGod());
         addMod(new NBTRevise());
-
-
+        addMod(new MagicRecipe());
         addMod(new EIOXpGrab());
-
         addMod(new OneWayTicket());
-
+        addMod(new BreakInGui());
         addMod(new FTBSatchelDupe());
 
         ok = true;

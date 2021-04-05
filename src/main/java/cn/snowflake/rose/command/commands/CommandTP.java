@@ -8,6 +8,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ChatComponentText;
 
+import java.util.Objects;
+
 public class CommandTP extends Command {
     public CommandTP(String[] command) {
         super(command);
@@ -35,7 +37,7 @@ public class CommandTP extends Command {
                 Teleport.x = Integer.parseInt(sx);
                 Teleport.y = Integer.parseInt(sy);
                 Teleport.z = Integer.parseInt(sz);
-                ModManager.getModByName("Teleport").set(true);
+                Objects.requireNonNull(ModManager.getModByClass(Teleport.class)).set(true);
             } else {
                 String playername = args[1];
                     if (mc.theWorld.getPlayerEntityByName(playername) != null) {

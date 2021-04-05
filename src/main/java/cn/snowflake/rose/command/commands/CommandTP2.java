@@ -4,7 +4,6 @@ import cn.snowflake.rose.command.Command;
 import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.mods.MOVEMENT.TP2;
 import cn.snowflake.rose.utils.client.ChatUtil;
-import com.sun.javafx.tk.Toolkit;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ChatComponentText;
