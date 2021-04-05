@@ -63,8 +63,8 @@ public class Teleport extends Module {
             return;
         }
         for (int i = 0; i < 20; i++) {
-                    mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer(true));
-                }
+             mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer(true));
+        }
         mc.getNetHandler().addToSendQueue(new C0CPacketInput(0.0f, 0.0f, true, true));
         double lastY = mc.thePlayer.posY, downY = 0;
         for (Vec3Util vec3 : TPUtil.computePath(
@@ -73,7 +73,7 @@ public class Teleport extends Module {
             if (vec3.getY() < lastY) {
                 downY += (lastY - vec3.getY());
             }
-            if (downY > 2.5) {
+            if (downY > 4.5) {
                 downY = 0;
                 mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(vec3.getX(),
                         vec3.getY(), vec3.getY(), vec3.getZ(), true));
@@ -90,7 +90,6 @@ public class Teleport extends Module {
         capabilities.isFlying = true;
         mc.thePlayer.sendQueue.addToSendQueue(new C13PacketPlayerAbilities(capabilities));
         mc.thePlayer.setPosition(x, y, z);
-        //mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(x,y,y,z,true));
         ChatUtil.sendClientMessage("传送到"+x+" "+y+" "+z);
         x = 0;
         y = 0;

@@ -93,7 +93,7 @@ public class ModManager {
         addMod(new MagicGod());
         addMod(new ResearchGod());
         addMod(new NBTRevise());
-
+        addMod(new MagicRecipe());
         addMod(new EIOXpGrab());
         addMod(new OneWayTicket());
         addMod(new BreakInGui());

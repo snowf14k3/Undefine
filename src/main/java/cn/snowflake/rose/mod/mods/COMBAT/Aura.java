@@ -368,6 +368,7 @@ public class Aura extends Module {
         int DelayValue = 1000 / aps + this.random.nextInt(50) - 30;
         if ((double) mc.thePlayer.getDistanceToEntity(target) <= this.range.getValueState().floatValue() && this.timer2.isDelayComplete((DelayValue - 20 + this.random.nextInt(50)))) {
             this.atttack();
+            timer2.reset();
         }
     }
     private void atttack() {
