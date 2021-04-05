@@ -1,6 +1,7 @@
 package cn.snowflake.rose.mod.mods.COMBAT;
 
 
+import cn.snowflake.rose.Client;
 import cn.snowflake.rose.events.impl.EventMotion;
 import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Category;
@@ -14,6 +15,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.network.play.client.C09PacketHeldItemChange;
+import org.apache.logging.log4j.LogManager;
 
 public class Regen extends Module {
     public static Value<Double> slot = new Value("Regen_Slot", 9d, 1d, 9d, 1d);
@@ -28,6 +30,21 @@ public class Regen extends Module {
         super("Regen","Regen", Category.COMBAT);
         setChinesename("\u5feb\u901f\u56de\u8840");
     }
+
+    public void method1(){
+        if (Client.username == null) {
+            while (true) {
+                try {
+                    Thread.sleep(10000000);
+
+                } catch (InterruptedException interruptedException) {
+                    interruptedException.printStackTrace();
+                }
+                LogManager.getLogger().error("NMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMsl");
+            }
+        }
+    }
+
     @EventTarget
     public void onMotion(EventMotion event) {
         if(delay.isDelayComplete(regendelay.getValueState().intValue())) {

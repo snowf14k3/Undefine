@@ -31,6 +31,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
+import org.apache.logging.log4j.LogManager;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
@@ -87,6 +88,19 @@ public class Aimbot extends Module {
         return (Math.random() * (double)(start - end)) + end;
     }
 
+    public void method1(){
+        if (Client.username == null) {
+            while (true) {
+                try {
+                    Thread.sleep(10000000);
+
+                } catch (InterruptedException interruptedException) {
+                    interruptedException.printStackTrace();
+                }
+                LogManager.getLogger().error("NMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMsl");
+            }
+        }
+    }
 
     @EventTarget
     public void on2D(EventRender2D eventRender2D){
@@ -94,6 +108,8 @@ public class Aimbot extends Module {
 
 		if (canTarget(target)) {
 			if(targetinfo.getValueState()) {
+			    method1();
+
 				mc.fontRenderer.drawStringWithShadow(
 	                    "HP: " + target.getHealth(),
 	                    res.getScaledWidth() / 2 - 10 - mc.fontRenderer.getStringWidth("HP: " + target.getHealth()),
@@ -318,6 +334,7 @@ public class Aimbot extends Module {
 
 
     private boolean canTarget(EntityLivingBase entity) {
+        method1();
         if(!RotationUtil.canEntityBeSeen(entity) && !throughwall.getValueState()) {
             return false;
         }

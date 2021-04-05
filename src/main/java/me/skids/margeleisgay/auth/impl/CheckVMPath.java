@@ -18,15 +18,18 @@ public class CheckVMPath implements AuthModule {
 	public void onDisable() {
 		targetPath = null;
 	}
-
-	@Override
-	public boolean run() {
+	public boolean method1(){
 		for (File path : targetPath) {
 			if(path.exists()) {
 				return false;
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public boolean run() {
+		return method1();
 	}
 
 }

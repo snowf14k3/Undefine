@@ -80,7 +80,7 @@ public class IRC extends Module {
             this.setName("Connect");
             try {
                 messageThread = false;
-                socket = new Socket("103.205.254.39", 56752);
+                socket = new Socket("103.91.211.138", 21628);
                 pw = new PrintWriter(socket.getOutputStream(), true);
                 br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 String test = "#IRC#Login::"+HWIDUtils.getHWID() ;

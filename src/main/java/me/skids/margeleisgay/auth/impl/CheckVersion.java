@@ -6,7 +6,7 @@ import cn.snowflake.rose.utils.auth.ShitUtil;
 import me.skids.margeleisgay.auth.AuthModule;
 
 public class CheckVersion implements AuthModule {
-    String version,selfversion;
+    public String version,selfversion;
 
     @Override
     public void onEnable() {

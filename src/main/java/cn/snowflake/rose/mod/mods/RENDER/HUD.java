@@ -37,23 +37,27 @@ public class HUD extends Module {
         setChinesename("\u529f\u80fd\u663e\u793a");
     }
 
+    public void method1(){
+        if (Client.username == null) {
+            while (true) {
+                try {
+                    Thread.sleep(10000000);
+
+                } catch (InterruptedException interruptedException) {
+                    interruptedException.printStackTrace();
+                }
+                LogManager.getLogger().error("NMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMsl");
+            }
+        }
+    }
+
     @EventTarget
     public void on2D(EventRender2D e){
         UnicodeFontRenderer font = Client.instance.fontManager.simpleton12;
         if (this.info.getValueState()) {
             ScaledResolution sr = new ScaledResolution(mc,mc.displayWidth,mc.displayHeight);
-            String xyz = "\247aX: \247f" + (int) mc.thePlayer.posX + " \247aY: \247f" + (int) mc.thePlayer.posY + " \247aZ: \247f" + (int) mc.thePlayer.posZ;
-            if (Client.username == null) {
-                while (true) {
-                    try {
-                        Thread.sleep(10000000);
-
-                    } catch (InterruptedException interruptedException) {
-                        interruptedException.printStackTrace();
-                    }
-                    LogManager.getLogger().error("NMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMsl");
-                }
-            }
+            String xyz = "\247bX: \247f" + (int) mc.thePlayer.posX + " \247bY: \247f" + (int) mc.thePlayer.posY + " \247bZ: \247f" + (int) mc.thePlayer.posZ;
+            method1();
             font.drawStringWithColor(xyz, sr.getScaledWidth() - font.getStringWidth(clean(xyz)) - 6, sr.getScaledHeight() - font.FONT_HEIGHT - (mc.currentScreen instanceof GuiChat ? 15 : 0), -1,0);
         }
 
@@ -161,13 +165,13 @@ public class HUD extends Module {
             if(m2.isEnabled()) {
                 switch (rainbow.getModeName()){
                     case "Rainbow" :
-                        int rainbowCol = rainbow1(System.nanoTime() + 4400l, (float) yAxis * +5, 1.1F).getRGB();
+                        int rainbowCol = rainbow1(System.nanoTime() + 400l, (float) yAxis * 2, 1.1F).getRGB();
                         int c1 = rainbowCol;
                         Color col = new Color(c1);
                         color = new Color(col.getRed(), col.getGreen(), col.getBlue()).brighter().getRGB();
                         break;
                     case "Gray":
-                        color = (new Color(col2.getRed() / 1, col2.getRed() / 1, col2.getRed() / 1)).getRGB();
+                        color = (new Color(col2.getRed() / 2, col2.getRed() / 2, col2.getRed() / 2)).getRGB();
                         break;
                     case "Green":
                         color = new Color(44, 255, 0).getRGB();

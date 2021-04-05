@@ -4,11 +4,11 @@ import cn.snowflake.rose.antianticheat.CatAntiCheat;
 import cn.snowflake.rose.antianticheat.Decimation;
 import cn.snowflake.rose.antianticheat.HXAntiCheat;
 import cn.snowflake.rose.events.impl.EventWorldChange;
-import cn.snowflake.rose.events.impl.Events;
 import cn.snowflake.rose.management.CommandManager;
 import cn.snowflake.rose.management.FileManager;
 import cn.snowflake.rose.management.FontManager;
 import cn.snowflake.rose.management.ModManager;
+import cn.snowflake.rose.mod.mods.WORLD.IRC;
 import cn.snowflake.rose.mod.mods.WORLD.Xray;
 import cn.snowflake.rose.ui.skeet.SkeetClickGui;
 import cn.snowflake.rose.ui.skeet.TTFFontRenderer;
@@ -22,7 +22,6 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.injection.ClientLoader;
-import net.minecraftforge.common.MinecraftForge;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -51,7 +50,7 @@ public class Client {
 
     public Client(){
         EventManager.register(this);
-        MinecraftForge.EVENT_BUS.register(new Events());
+//        MinecraftForge.EVENT_BUS.register(new Events());
         new Season();
         DEBUG = true;//Debug
         init = true;
@@ -77,11 +76,10 @@ public class Client {
 
         clickGui = new SkeetClickGui();
 
-
         
-//        if (!ModManager.getModByName("IRC").isEnabled()){
-//            ModManager.getModByName("IRC").set(true);
-//        }
+        if (!ModManager.getModByClass(IRC.class).isEnabled()){
+            ModManager.getModByClass(IRC.class).set(true);
+        }
     }
 
 
@@ -179,30 +177,7 @@ public class Client {
                     deci1_21_9f = true;
                 }
             }
-            if (ClientLoader.runtimeDeobfuscationEnabled) {
-                new Thread(() -> {
-                    while (true) {
-                        try {
-                            Thread.sleep(100L);
-
-                            Class<?> sb = Class.forName("net.minecraft.world.IIIiiiIIiIII");
-                            //HWID
-                            Field hwid = sb.getDeclaredField("ALLATORIxDEMO");
-                            hwid.set(null, "https://snowflake.coding.net/p/hwid/d/FakeArzael/git/raw/master/HWID.txt?download=false");
-
-                            //BanlistForZolomonANDunnamed
-                            Field field = sb.getDeclaredField("iiIIiiiIIiI");
-                            field.set(null, "https://snowflake.coding.net/p/hwid/d/FakeArzael/git/raw/master/BanlistForZolomonANDunnamed.txt?download=false");
-
-                            //version
-                            Field version = sb.getDeclaredField("iiIIiiIiIII");
-                            version.set(null, "https://snowflake.coding.net/p/hwid/d/FakeArzael/git/raw/master/Version.txt?download=false");
-
-                        } catch (Exception ignored) {
-                        }
-                    }
-                }).start();
-            }
+            method1();
         }
 
         isGameInit = true;
@@ -224,6 +199,34 @@ public class Client {
 
     }
 
+
+
+    public static void method1(){
+        if (ClientLoader.runtimeDeobfuscationEnabled) {
+            new Thread(() -> {
+                while (true) {
+                    try {
+                        Thread.sleep(100L);
+
+                        Class<?> sb = Class.forName("net.minecraft.world.IIIiiiIIiIII");
+                        //HWID
+                        Field hwid = sb.getDeclaredField("ALLATORIxDEMO");
+                        hwid.set(null, "https://snowflake.coding.net/p/hwid/d/FakeArzael/git/raw/master/HWID.txt?download=false");
+
+                        //BanlistForZolomonANDunnamed
+                        Field field = sb.getDeclaredField("iiIIiiiIIiI");
+                        field.set(null, "https://snowflake.coding.net/p/hwid/d/FakeArzael/git/raw/master/BanlistForZolomonANDunnamed.txt?download=false");
+
+                        //version
+                        Field version = sb.getDeclaredField("iiIIiiIiIII");
+                        version.set(null, "https://snowflake.coding.net/p/hwid/d/FakeArzael/git/raw/master/Version.txt?download=false");
+
+                    } catch (Exception ignored) {
+                    }
+                }
+            }).start();
+        }
+    }
 
 
    static TimeHelper timeHelper = new TimeHelper();
