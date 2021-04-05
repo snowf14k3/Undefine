@@ -65,6 +65,7 @@ public class ModManager {
         //PLAYER
         addMod(new NoSlowDown());
         addMod(new AutoTool());
+        addMod(new NoWeb());
         addMod(new Stealer());
         addMod(new AntiEffect());
         addMod(new FastBreak());
