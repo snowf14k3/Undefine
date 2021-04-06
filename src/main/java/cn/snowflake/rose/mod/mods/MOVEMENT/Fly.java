@@ -29,7 +29,7 @@ public class Fly extends Module {
         setChinesename("\u98de\u884c");
     }
 
-    @EventTarget
+	@EventTarget(4)
     public void OnUpdate(EventMotion e) {
         this.setDisplayName(this.mode.getModeName());
         if (this.mode.isCurrentMode("Vanilla")) {
@@ -61,7 +61,7 @@ public class Fly extends Module {
 
     }
 
-    @EventTarget
+	@EventTarget(4)
 	   private void onUpdate(EventMotion e) {
     	  if (this.mode.isCurrentMode("Motion")) {
 	      double mspeed = Math.max((double)boost.getValueState(), getBaseMoveSpeed());
@@ -75,7 +75,7 @@ public class Fly extends Module {
     	  }
 	   }
 
-	   @EventTarget
+	   @EventTarget(4)
 	   public void onMove(EventMove e) {
 		 if (this.mode.isCurrentMode("Motion") && e.entity == mc.thePlayer) {
 	      double speed = (double)boost.getValueState();

@@ -6,6 +6,7 @@ import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.mod.mods.RENDER.ClickGui;
+import cn.snowflake.rose.ui.skeet.ui.SkeetMenu;
 import cn.snowflake.rose.utils.Value;
 import cn.snowflake.rose.utils.client.ChatUtil;
 import cn.snowflake.rose.utils.mcutil.GlStateManager;
@@ -56,6 +57,13 @@ public class CSGOGUI extends GuiScreen {
     private float width;
     public float anim = 0;
     int selectedChar;
+
+
+    @Override
+    public boolean doesGuiPauseGame() {
+        return false;
+    }
+
     @Override
     protected void keyTyped(char typedChar, int keyCode)  {
         for(int i = 0; i < getModsInCategory(Category.values()[selectCategory]).size(); ++i  ) {
@@ -131,12 +139,17 @@ public class CSGOGUI extends GuiScreen {
     }
     boolean move;
     private boolean dragging;
+    private boolean drag;
 
+    Value v;
 
     @Override
     public void mouseMovedOrUp(int mouseX, int mouseY, int mouseButton) {
         if(dragging) {
             dragging = false;
+        }
+        if(drag) {
+            drag = false;
         }
     }
 
@@ -173,16 +186,21 @@ public class CSGOGUI extends GuiScreen {
         if (startX > (float)(rs.getScaledWidth() - 304)) {
             startX = rs.getScaledWidth() - 304;
         }
-        if (startX < 24) {
-            startX = 24;
+        if (startX < 22) {
+            startX = 22;
         }
         if (startY > (float)(rs.getScaledHeight() - 202)) {
             startY = rs.getScaledHeight() - 202;
         }
-        if (startY < 12.0f) {
-            startY = 12;
+        if (startY < 11.0f) {
+            startY = 11;
         }
 
+        int CLRed =ClickGui.r.getValueState().intValue();
+        int CLGreen =ClickGui.g.getValueState().intValue();
+        int CLBlue =ClickGui.b.getValueState().intValue();
+
+        int CLcolor = new  Color(ClickGui.r.getValueState().intValue(), ClickGui.g.getValueState().intValue(), ClickGui.b.getValueState().intValue()).getRGB();
 
         GL11.glPushMatrix();
         GL11.glEnable(3089);
@@ -266,17 +284,17 @@ public class CSGOGUI extends GuiScreen {
 
             Client.instance.fontManager.notif.drawBoldString(iconname,startX - 8,
                     startY + 19 + CY,
-                    -1);
+                    (selectCategory == i) ? CLcolor :new Color(151, 151, 151).getRGB());
 
             //Category name
             Client.instance.fontManager.simpleton13.drawString(
                     name.substring(0, 1)+ name.toLowerCase().substring(1, name.length()),
                     startX +4,
                     startY + 20 +CY,
-                    -1);
+                    (selectCategory == i) ? CLcolor :new Color(151, 151, 151).getRGB());
             CY += 18;
         }
-        Client.instance.fontManager.simpleton20.drawCenteredString("S",(startX + 4* 3) - 14,startY,new Color(ClickGui.r.getValueState().intValue(), ClickGui.g.getValueState().intValue(), ClickGui.b.getValueState().intValue()).getRGB());
+        Client.instance.fontManager.simpleton20.drawCenteredString("S",(startX + 4* 3) - 14,startY,CLcolor);
         Client.instance.fontManager.simpleton20.drawCenteredString("eason",(startX + 4* 7+1) - 14,startY,-1);
         //windows title
 //        Client.instance.fontManager.simpleton13.drawCenteredString("ClickGui", startX + 3 * 10, startY - 5, new Color(170, 170, 170).getRGB());
@@ -323,22 +341,44 @@ public class CSGOGUI extends GuiScreen {
             }
 
             //mod backgorund
-            RenderUtil.drawRoundedRect(x,
+            RenderUtil.drawRoundedRectCSGO(x,
                     y - 2+modscrollY,
                     x + 82,
                     y+12 + modscrollY,
-                    1.5f,
-                    mod.isEnabled() ?
-                            new Color(83,83,83).getRGB()
-                            :
-                            new Color(125, 125, 125).getRGB());
+                    new Color(17, 17, 17).getRGB());
+
+            RenderUtil.rectangle((double)(x+4 + 0.6),
+                    y  +3+modscrollY + 0.6,
+                    x + 8 + -0.6,
+                    y+7 + modscrollY + -0.6,
+                    (int)Colors.getColor((int)10));
+
+
+
+            RenderUtil.drawGradient(x+4,
+                    y  +3+modscrollY,
+                    x + 8,
+                    y+7 + modscrollY,
+                    mod.isEnabled() ?  CLcolor:
+                    Colors.getColor(76),
+                    mod.isEnabled() ?  Colors.getColor(CLRed,CLGreen,CLBlue,120):
+                    Colors.getColor(51));
+
+            if(isHovered(startX + 60, startY + 5, startX + 150, startY  + 189, mouseX, mouseY) && isHovered(x, y - 1 + modscrollY , x + 82, y+12 + modscrollY, mouseX, mouseY) && !mod.isEnabled()) {
+                RenderUtil.rectangle(x+4,
+                        y  +3+modscrollY,
+                        x + 8,
+                        y+7 + modscrollY,
+                        Colors.getColor((int)255, (int)40));
+            }
+
             //mod name
-            font2.drawCenteredStringWithColor(bmod == mod ? "......"  : Client.chinese ? mod.getChinesename() : mod.getName() , x + 42, y + 2 + modscrollY, -1);
+            font2.drawCenteredStringWithColor(bmod == mod ? "......"  : Client.chinese ? mod.getChinesename() : mod.getName() , x + 42, y + 2 + modscrollY,  new Color(200, 200, 200).getRGB());
             // has value
-            font2.drawCenteredString(mod.hasValues() ? mod.openValues ? "-" : "+" : "", x + 76 , y + 2 + modscrollY, -1);
+            font2.drawCenteredString(mod.hasValues() ? mod.openValues ? "-" : "+" : "", x + 76 , y + 2 + modscrollY, new Color(200, 200, 200).getRGB());
 
             //binding
-            if(isHovered(startX + 60, startY + 5, startX + 150, startY  + 185, mouseX, mouseY) && isHovered(x, y - 2 + modscrollY, x + 82, y+12 + modscrollY, mouseX, mouseY) && handlerMid.canExcecute()) {
+            if(isHovered(startX + 60, startY + 5, startX + 150, startY  + 185, mouseX, mouseY) && isHovered(x, y - 1 + modscrollY, x + 82, y+12 + modscrollY, mouseX, mouseY) && handlerMid.canExcecute()) {
                 binding = true;
                 bmod = mod;
             }else if (binding && handlerRight.canExcecute()){
@@ -348,13 +388,13 @@ public class CSGOGUI extends GuiScreen {
             }
 
             //mod open
-            if(isHovered(startX + 60, startY + 5, startX + 150, startY  + 185, mouseX, mouseY) && isHovered(x, y - 2 + modscrollY, x + 82, y+12 + modscrollY, mouseX, mouseY) && handler.canExcecute() && mod.working) {
+            if(isHovered(startX + 60, startY + 5, startX + 150, startY  + 189, mouseX, mouseY) && isHovered(x, y - 1 + modscrollY, x + 82, y+12 + modscrollY, mouseX, mouseY) && handler.canExcecute() && mod.working) {
                 mod.set(!mod.isEnabled());
                 Client.instance.fileMgr.saveMods();
             }
             String ValueName;
             //Open Value
-            if(isHovered(startX + 60, startY + 5, startX + 150, startY  + 185, mouseX, mouseY) && isHovered(x, y - 2 + modscrollY , x + 82, y+12 + modscrollY, mouseX, mouseY) && handlerRight.canExcecute()) {
+            if(isHovered(startX + 60, startY + 5, startX + 150, startY  + 189, mouseX, mouseY) && isHovered(x, y - 1 + modscrollY , x + 82, y+12 + modscrollY, mouseX, mouseY) && handlerRight.canExcecute()) {
                 mod.openValues = !mod.openValues;
                 currentMod = mod;
                 this.scrollY = 0.0F;
@@ -389,12 +429,17 @@ public class CSGOGUI extends GuiScreen {
                     if (BBoolean) {
                         if (value.isValueString) {
 
-                            RenderUtil.drawRect(x + 145, vY + scrollY, x + 235, vY + 8 + scrollY, caninput ? new Color(84, 90, 90).getRGB() : new Color(115, 130, 140).getRGB());
-                            font2.drawBoldString(value.getText() + "", x + 147, vY + 1 + scrollY, -1);
+
+                            RenderUtil.drawRoundedRectCSGO(x + 145, vY + scrollY-1, x + 230, vY + 9 + scrollY,
+                                    new Color(32, 32, 32).getRGB());
+
+                            if(value.getText().equals("")){
+                                font2.drawBoldString( "Null", x + 147, vY + 1 + scrollY, new Color(151,151,151).getRGB());
+                            }else
+                                font2.drawBoldString(value.getText() + "", x + 147, vY + 1 + scrollY, new Color(151,151,151).getRGB());
 //                            font2.drawBoldString("_", x + 144 + width, vY + 1 + scrollY, -1);
 
-
-                            if (isHovered(x + 145, vY + scrollY, x + 230, vY + 8 + scrollY, mouseX, mouseY) && Mouse.isButtonDown(0)) {
+                            if (isHovered(x + 145, vY + scrollY, x + 230, vY + 8 + scrollY, mouseX, mouseY) && handler.canExcecute()) {
                                 this.caninput = true;
                             }
                             if (caninput && this.handlerRight.canExcecute()){
@@ -419,33 +464,43 @@ public class CSGOGUI extends GuiScreen {
                             double valuu = (double) value.getValueMin() + valRel;
                             double valu = (x + 145) + 85 * percSlider;
                             //down bar
-                            RenderUtil.drawRect(x + 145, vY + 3 + scrollY, x + 230, vY + 5 + scrollY, new Color(115, 130, 140).getRGB());
-                            //
-                            RenderUtil.drawRect(valu,
-                                    vY + 2 + scrollY,
-                                    valu + 2,
-                                    vY + 6 + scrollY,
-                                    new Color(ClickGui.r.getValueState().intValue(), ClickGui.g.getValueState().intValue(), ClickGui.b.getValueState().intValue()).getRGB());
+                            RenderUtil.rectangle((x + 145 - 0.3),
+                                    (vY + 3 + scrollY- 0.3),
+                                    (x + 230 + 0.3),
+                                    (vY + 5 + scrollY + 0.3),
+                                    Colors.getColor(10));
 
-                            RenderUtil.drawRect(x + 145,
+                            RenderUtil.drawGradient(x + 145, vY + 3 + scrollY, x + 230, vY + 5 + scrollY,
+                                    Colors.getColor((int)46),
+                                    Colors.getColor((int)27));
+
+                            RenderUtil.drawGradient(x + 145,
                                     vY + 3 + scrollY,
-                                    valu + 2,
+                                    valu ,
                                     vY + 5 + scrollY,
-                                    new Color(ClickGui.r.getValueState().intValue(), ClickGui.g.getValueState().intValue(), ClickGui.b.getValueState().intValue()).getRGB());
+                                    (int)Colors.getColor(ClickGui.r.getValueState().intValue(), ClickGui.g.getValueState().intValue(), ClickGui.b.getValueState().intValue()),
+                                    (int)Colors.getColor(ClickGui.r.getValueState().intValue(), ClickGui.g.getValueState().intValue(), ClickGui.b.getValueState().intValue(), (int)120));
+
 
                             font2.drawBoldString("" + (Double) value.getValueState(), x + 145, vY - 4 + scrollY, new Color(153, 153, 169).getRGB());
 
                             font2.drawBoldString(StrValue, x + 90, vY + scrollY, new Color(153, 153, 169).getRGB());
                             //TODO Double Hovered
-                            if (isHovered(startX + 151, startY + 5, startX + 300, startY + 185, mouseX, mouseY) && isHovered(x + 145, vY + 1 + scrollY, x + 230, vY + 7 + scrollY, mouseX, mouseY) && Mouse.isButtonDown(0)) {
-                                lastMouseX = (Math.min(Math.max(x + 155, mouseX), x + 145 + 100) - (float) x + 145) / 100;
+                            if (isHovered(startX + 151, startY + 5, startX + 300, startY + 185, mouseX, mouseY) && isHovered(x + 145, vY + 1 + scrollY, x + 230, vY + 7 + scrollY, mouseX, mouseY) && handler.canExcecute()) {
+                                v = value;
+                                drag=true;
+                            }
+
+                            if(drag && value == v) {
+                                lastMouseX = (Math.min(Math.max(x + 155, mouseX), x + 145 + 100) - (float)x + 145) / 100;
                                 valuu = Math.round(valuu * (1.0 / value.getSteps())) / (1.0 / value.getSteps());
                                 value.setValueState(valuu);
                                 Client.instance.fileMgr.saveValues();
-                            } else {
-                                valuu = Math.round((double) value.getValueState() * (1.0 / value.getSteps())) / (1.0 / value.getSteps());
+                            }else {
+                                valuu = Math.round((double)value.getValueState() * (1.0 / value.getSteps())) / (1.0 / value.getSteps());
                                 value.setValueState(valuu);
                             }
+
                             vY += 15;
                         }
                         //MODE Recode by SuChen
@@ -453,7 +508,23 @@ public class CSGOGUI extends GuiScreen {
                             String modeName = value.getModeAt(value.getCurrentMode());
                             String NameText = String.valueOf((Object) value.getModeTitle());
                             String modeCountText = String.valueOf((int) (value.getCurrentMode() + 1)) + "/" + value.mode.size();
-                            RenderUtil.drawRect(x + 145, vY + scrollY - 1, x + 151, vY + 7 + scrollY, new Color(ClickGui.r.getValueState().intValue(), ClickGui.g.getValueState().intValue(), ClickGui.b.getValueState().intValue()).getRGB());
+
+                            boolean LeftHovered = isHovered(startX + 151, startY + 5, startX + 300, startY + 184, mouseX, mouseY) && isHovered(x + 145, vY + scrollY - 1, x + 151, vY + 7 + scrollY, mouseX, mouseY);
+                            boolean RightHovered = isHovered(startX + 151, startY + 5, startX + 300, startY + 184, mouseX, mouseY) && isHovered(x + 209, vY + scrollY - 1, x + 215, vY + 7 + scrollY, mouseX, mouseY);
+
+                            int Left = LeftHovered ? 1:0;
+                            int Right = RightHovered ? 1:0;
+
+                            RenderUtil.drawRect(x + 145 -0.3,
+                                    (vY + scrollY  - 1 -Left - 0.3),
+                                    (x + 151 + 0.3),
+                                    (vY + 7+Left + scrollY+ 0.3),
+                                    Colors.getColor(10));
+
+                            RenderUtil.drawGradient(x + 145, vY + scrollY - 1 - Left, x + 151, vY + 7+Left + scrollY,
+
+                                    Colors.getColor(LeftHovered? 46+20 : 46),
+                                    Colors.getColor(LeftHovered? 27+10 : 27));
 
                             GlStateManager.pushMatrix();
                             GlStateManager.translate((double) (x + 148.0F), (double) vY + scrollY + 4, 0.0D);
@@ -464,9 +535,20 @@ public class CSGOGUI extends GuiScreen {
                             RenderUtil.rectangle(0.5D, 1.0D, 1.0D, 1.5D, Colors.getColor(151));
                             GlStateManager.popMatrix();
 
-                            RenderUtil.drawRect(x + 152, vY + scrollY - 1, x + 208, vY + 7 + scrollY, Colors.GREY.c);
 
-                            RenderUtil.drawRect(x + 209, vY + scrollY - 1, x + 215, vY + 7 + scrollY, new Color(ClickGui.r.getValueState().intValue(), ClickGui.g.getValueState().intValue(), ClickGui.b.getValueState().intValue()).getRGB());
+                            RenderUtil.drawRoundedRectCSGO(x + 152, vY + scrollY -2, x + 208, vY + 8 + scrollY,
+                                    new Color(32, 32, 32).getRGB());
+
+
+                            RenderUtil.drawRect(x + 209-0.3,
+                                    (vY + scrollY  - 1 -Right- 0.3),
+                                    (x + 215 + 0.3),
+                                    (vY + 7+Right + scrollY+ 0.3),
+                                    Colors.getColor(10));
+
+                            RenderUtil.drawGradient(x + 209, vY + scrollY - 1-Right, x + 215, vY + 7+Right + scrollY,
+                                    Colors.getColor(RightHovered? 46+20 : 46),
+                                    Colors.getColor(RightHovered? 27+10 : 27));
 
                             GlStateManager.pushMatrix();
                             GlStateManager.translate((double) (x + 212.0F), (double) vY + scrollY + 1.8, 0.0D);
@@ -477,7 +559,7 @@ public class CSGOGUI extends GuiScreen {
                             RenderUtil.rectangle(0.5D, 1.0D, 1.0D, 1.5D, Colors.getColor(151));
                             GlStateManager.popMatrix();
 
-                            font2.drawBoldString(modeName, x + 180 - font2.getStringWidth("" + modeName) / 2, vY + scrollY - 1, -1);
+                            font2.drawBoldString(modeName, x + 180 - font2.getStringWidth("" + modeName) / 2, vY + scrollY - 0.5f,  new Color(151, 151, 151).getRGB());
 
                             font2.drawBoldString(NameText, x + 90, vY + scrollY - 1, new Color(153, 153, 169).getRGB());
 
@@ -509,12 +591,30 @@ public class CSGOGUI extends GuiScreen {
 
                         //TODO Boolean
                         if (value.isValueBoolean) {
-                            RenderUtil.drawRect(x + 210, vY + scrollY - 1, x + 230, vY + 7 + scrollY, new Color(115, 130, 140).getRGB());
-                            if ((Boolean) value.getValueState()) {
-                                RenderUtil.drawRect(x + 220, vY + scrollY, x + 229, vY + 6 + scrollY, new Color(ClickGui.r.getValueState().intValue(), ClickGui.g.getValueState().intValue(), ClickGui.b.getValueState().intValue()).getRGB());
-                            } else {
-                                RenderUtil.drawRect(x + 211, vY + scrollY, x + 220, vY + 6 + scrollY, new Color(153, 153, 153).getRGB());
-                            }
+                            RenderUtil.rectangle((x + 210 - 0.3),
+                                    (vY + scrollY - 0.3),
+                                    (x + 230 + 0.3),
+                                    (vY + 6 + scrollY+ 0.3),
+                                    Colors.getColor(10));
+
+                            RenderUtil.drawGradient(x + 210, vY + scrollY , x + 230, vY + 6 + scrollY,
+                                    Colors.getColor((int)46),
+                                    Colors.getColor((int)27));
+
+//                            if ((Boolean) value.getValueState()) {
+//                                RenderUtil.drawRect(x + 220, vY + scrollY, x + 229, vY + 6 + scrollY, new Color(ClickGui.r.getValueState().intValue(), ClickGui.g.getValueState().intValue(), ClickGui.b.getValueState().intValue()).getRGB());
+//                            } else {
+//                                RenderUtil.drawRect(x + 211, vY + scrollY, x + 220, vY + 6 + scrollY, new Color(153, 153, 153).getRGB());
+//                            }
+                            RenderUtil.drawGradient(x + (((Boolean) value.getValueState()) ? 220 :210),
+                                    vY + scrollY,
+                                    x + (((Boolean) value.getValueState()) ? 230 :220),
+                                    vY + 6 + scrollY,
+                                    ((Boolean) value.getValueState()) ?  (int)Colors.getColor(ClickGui.r.getValueState().intValue(), ClickGui.g.getValueState().intValue(), ClickGui.b.getValueState().intValue()) :
+                                            Colors.getColor(76),
+                                    ((Boolean) value.getValueState()) ? (int)Colors.getColor(ClickGui.r.getValueState().intValue(), ClickGui.g.getValueState().intValue(), ClickGui.b.getValueState().intValue(), (int)120):
+                                            Colors.getColor(51));
+
                             //Boolean
                             if (isHovered(x + 210, vY + scrollY - 1, x + 230, vY + 7 + scrollY, mouseX, mouseY) && handler.canExcecute()) {
                                 value.setValueState(!(Boolean) value.getValueState());

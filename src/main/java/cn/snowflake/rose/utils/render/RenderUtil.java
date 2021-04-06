@@ -707,6 +707,15 @@ public enum	 RenderUtil {
         Gui.drawRect((int)(x + round / 2.0f), (int)y, (int)(x2 - round / 2.0f), (int)(y2 + round / 2.0f + 0.5f), color);
     }
 
+    public static void drawRoundedRectCSGO(float x, float y, float x2, float y2, final int color) {
+        rectangle(x, y, x2, y2, new Color(10,10,10).getRGB());
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        rectangle(x+0.5, y+0.5, x2-0.5, y2-0.5, new Color(48,48,48).getRGB());
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        rectangle(x+1, y+1, x2-1, y2-1, color);
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+
+    }
     public static void circle(final float x, final float y, final float radius, final int fill) {
         arc(x, y, 0.0f, 360.0f, radius, fill);
     }

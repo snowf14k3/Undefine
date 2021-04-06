@@ -23,11 +23,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class HUD extends Module {
-    public Value<String> text = new Value<>("HUD_Text","","Season");
-    public Value<Boolean> logo = new Value<>("HUD_Logo",true);
-    public Value<Boolean> info = new Value<>("HUD_Info",false);
-    public Value<String> rainbow = new Value<>("HUD","ColorMode",0);
+    public static Value<String> text = new Value<>("HUD_Text","","Season");
+    public static Value<String> rainbow = new Value<>("HUD","ColorMode",0);
     public static Value<Double> rainbowindex = new Value<Double>("HUD_rainbow", 1.0, 1.0, 20.0, 1.0);
+    public static Value<Boolean> logo = new Value<>("HUD_Logo",true);
+    public static Value<Boolean> info = new Value<>("HUD_Info",false);
+
 
     public HUD() {
         super("HUD","HUD", Category.RENDER);
