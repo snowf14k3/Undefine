@@ -385,6 +385,7 @@ public class CSGOGUI extends GuiScreen {
                 binding = false;
                 bmod.setKey(Keyboard.KEY_NONE);
                 ChatUtil.sendClientMessage("Unbound '" + this.bmod.getName() + "'");
+                bmod = null;
             }
 
             //mod open

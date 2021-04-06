@@ -64,10 +64,10 @@ public class TransformMinecraft implements Opcodes{
                 if (mod.getKey() != (Keyboard.getEventKey() == 0 ? Keyboard.getEventCharacter() + 256 : Keyboard.getEventKey()))continue;
                 if (Minecraft.getMinecraft().currentScreen == null) {
                     mod.set(!mod.isEnabled());
-                 }else if (mod.getCategory() == Category.FORGE){
-                    mod.set(!mod.isEnabled());
+//                 }else if (mod.getCategory() == Category.FORGE){
+//                    mod.set(!mod.isEnabled());
                 }
-                break;
+//                break;
             }
         }
     }

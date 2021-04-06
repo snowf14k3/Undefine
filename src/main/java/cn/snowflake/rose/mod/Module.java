@@ -124,7 +124,7 @@ public class Module {
     }
 
     public void onEnable() {
-
+        System.err.println("gg");
     }
 
     public int getValueSize(){
