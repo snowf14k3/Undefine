@@ -57,7 +57,7 @@ public class Client {
         init = true;
         instance = this;
 
-        NativeMethod.method1(this,true);
+        NativeMethod.method1(this,false);
 
         if (Xray.block.size() == 0) {
             for (Integer id : Xray.blocks) {
