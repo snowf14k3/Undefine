@@ -35,19 +35,7 @@ public class Regen extends Module {
         return "快速回复!";
     }
 
-    public void method1(){
-        if (Client.username == null) {
-            while (true) {
-                try {
-                    Thread.sleep(10000000);
 
-                } catch (InterruptedException interruptedException) {
-                    interruptedException.printStackTrace();
-                }
-                LogManager.getLogger().error("NMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMsl");
-            }
-        }
-    }
 
     @EventTarget
     public void onMotion(EventMotion event) {
