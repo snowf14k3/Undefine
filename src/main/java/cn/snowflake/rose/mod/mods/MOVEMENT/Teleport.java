@@ -4,10 +4,9 @@ import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.client.ChatUtil;
-import cn.snowflake.rose.utils.path.TPUtil;
+import cn.snowflake.rose.utils.math.PathUtils;
 import cn.snowflake.rose.utils.Value;
 
-import cn.snowflake.rose.utils.math.Vec3Util;
 import com.darkmagician6.eventapi.EventTarget;
 
 import net.minecraft.entity.player.PlayerCapabilities;
@@ -72,30 +71,34 @@ public class Teleport extends Module {
              mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer(true));
         }
         mc.getNetHandler().addToSendQueue(new C0CPacketInput(0.0f, 0.0f, true, true));
-        double lastY = mc.thePlayer.posY, downY = 0;
-        for (Vec3Util vec3 : TPUtil.computePath(
-                new Vec3Util(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ),
-                new Vec3Util(Teleport.x, Teleport.y, Teleport.z))) {
-            if (vec3.getY() < lastY) {
-                downY += (lastY - vec3.getY());
-            }
-            if (downY > 4.5) {
-                downY = 0;
-                mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(vec3.getX(),
-                        vec3.getY(), vec3.getY(), vec3.getZ(), true));
-            } else {
-                mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(vec3.getX(),
-                        vec3.getY(), vec3.getY(), vec3.getZ(), false));
-            }
-            lastY = vec3.getY();
-        }
-        //Teleported
-        mc.thePlayer.sendQueue.addToSendQueue(new C0FPacketConfirmTransaction(0, (short) -1, false));
-        PlayerCapabilities capabilities = new PlayerCapabilities();
-        capabilities.allowFlying = true;
-        capabilities.isFlying = true;
-        mc.thePlayer.sendQueue.addToSendQueue(new C13PacketPlayerAbilities(capabilities));
-        mc.thePlayer.setPosition(x, y, z);
+        //double lastY = mc.thePlayer.posY, downY = 0;
+        //        for (Vec3Util vec3 : TPUtil.computePath(
+        //                new Vec3Util(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ),
+        //                new Vec3Util(Teleport.x, Teleport.y, Teleport.z))) {
+        //            if (vec3.getY() < lastY) {
+        //                downY += (lastY - vec3.getY());
+        //            }
+        //            if (downY > 4.5) {
+        //                downY = 0;
+        //                mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(vec3.getX(),
+        //                        vec3.getY(), vec3.getY(), vec3.getZ(), true));
+        //            } else {
+        //                mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(vec3.getX(),
+        //                        vec3.getY(), vec3.getY(), vec3.getZ(), false));
+        //            }
+        //            lastY = vec3.getY();
+        //        }
+        //        //Teleported
+        //        mc.thePlayer.sendQueue.addToSendQueue(new C0FPacketConfirmTransaction(0, (short) -1, false));
+        //        PlayerCapabilities capabilities = new PlayerCapabilities();
+        //        capabilities.allowFlying = true;
+        //        capabilities.isFlying = true;
+        //        mc.thePlayer.sendQueue.addToSendQueue(new C13PacketPlayerAbilities(capabilities));
+        //mc.thePlayer.setPosition(x, y, z);
+        PathUtils.findBlinkPath(x, y, z).forEach(vector3d -> {
+            mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(vector3d.x, vector3d.y,vector3d.y, vector3d.z, true));
+            mc.thePlayer.setPosition(x, y, z);
+        });
         ChatUtil.sendClientMessage("传送到"+x+" "+y+" "+z);
         x = 0;
         y = 0;
