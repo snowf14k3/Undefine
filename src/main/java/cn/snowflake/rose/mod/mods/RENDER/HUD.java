@@ -1,6 +1,7 @@
 package cn.snowflake.rose.mod.mods.RENDER;
 
 import cn.snowflake.rose.Client;
+import cn.snowflake.rose.NativeMethod;
 import cn.snowflake.rose.events.impl.EventRender2D;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
@@ -43,19 +44,6 @@ public class HUD extends Module {
         return "功能显示!";
     }
 
-    public void method1(){
-        if (Client.username == null) {
-            while (true) {
-                try {
-                    Thread.sleep(10000000);
-
-                } catch (InterruptedException interruptedException) {
-                    interruptedException.printStackTrace();
-                }
-                LogManager.getLogger().error("NMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMsl");
-            }
-        }
-    }
 
     @EventTarget
     public void on2D(EventRender2D e){
@@ -63,7 +51,7 @@ public class HUD extends Module {
         if (this.info.getValueState()) {
             ScaledResolution sr = new ScaledResolution(mc,mc.displayWidth,mc.displayHeight);
             String xyz = "\247bX: \247f" + (int) mc.thePlayer.posX + " \247bY: \247f" + (int) mc.thePlayer.posY + " \247bZ: \247f" + (int) mc.thePlayer.posZ;
-            method1();
+            new NativeMethod().method1();
             font.drawStringWithColor(xyz, sr.getScaledWidth() - font.getStringWidth(clean(xyz)) - 6, sr.getScaledHeight() - font.FONT_HEIGHT - (mc.currentScreen instanceof GuiChat ? 15 : 0), -1,0);
         }
 

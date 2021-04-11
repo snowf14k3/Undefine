@@ -1,4 +1,4 @@
-package cn.snowflake.rose.mod.mods.FORGE.NBTEdit;
+package cn.snowflake.rose.mod.mods.FORGE.nbtedit;
 
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
@@ -12,7 +12,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
-import scala.tools.nsc.backend.icode.analysis.ReachingDefinitions;
 
 import java.util.List;
 
@@ -115,7 +114,7 @@ public class NBTHack extends Module {
 
                             if (d3 < d2 || d2 == 0.0D)
                             {
-                                if (entity == this.mc.renderViewEntity.ridingEntity && !entity.canRiderInteract())
+                                if (entity == this.mc.renderViewEntity.ridingEntity)
                                 {
                                     if (d2 == 0.0D)
                                     {

@@ -1,4 +1,4 @@
-package cn.snowflake.rose.mod.mods.FORGE.Thaumcraft;
+package cn.snowflake.rose.mod.mods.FORGE.thaumcraft;
 
 import cn.snowflake.rose.events.impl.EventTick;
 import cn.snowflake.rose.mod.Category;

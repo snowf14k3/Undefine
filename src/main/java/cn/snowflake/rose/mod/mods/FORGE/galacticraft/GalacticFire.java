@@ -1,6 +1,5 @@
-package cn.snowflake.rose.mod.mods.FORGE.Galacticraft;
+package cn.snowflake.rose.mod.mods.FORGE.galacticraft;
 
-import cn.snowflake.rose.events.impl.EventTick;
 import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
@@ -17,8 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.Packet;
 
-import java.lang.reflect.Method;
-import java.util.List;
 import java.util.stream.Stream;
 
 public class GalacticFire extends Module {

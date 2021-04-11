@@ -1,5 +1,6 @@
 package me.skids.margeleisgay.auth.impl;
 
+import cn.snowflake.rose.NativeMethod;
 import me.skids.margeleisgay.auth.AuthModule;
 
 import java.io.BufferedReader;
@@ -22,31 +23,24 @@ public class CheckVMProcess implements AuthModule {
 		}
 	}
 
+	public ArrayList<String> getTargetProcess() {
+		return targetProcess;
+	}
+
+	public Process getProcess() {
+		return process;
+	}
+
 	@Override
 	public void onDisable() {
 		process = null;
 	}
 
-	public boolean method1(){
-		try {
-			BufferedReader input = new BufferedReader(new InputStreamReader(process.getInputStream()));
-			String line;
-			while ((line = input.readLine()) != null) {
-				for (String target : targetProcess) {
-					if(line.contains(target)) {
-						return false;
-					}
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return true;
-	}
+
 
 	@Override
 	public boolean run() {
-		return method1();
+		return NativeMethod.method1(this,false);
 	}
 
 }

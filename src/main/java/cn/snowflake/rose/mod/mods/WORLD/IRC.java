@@ -25,19 +25,18 @@ public class IRC extends Module {
     public IRC() {
         super("IRC","IRC", Category.WORLD);
         new reconnect().start();
-        working = false;
         setChinesename("\u8de8\u670d\u804a\u5929");
     }
 
     @Override
     public String getDescription() {
-        return "和其他使用本客户端玩家聊天!";
+        return "和其他使用本客户端玩家聊天!(跨服聊天)";
     }
 
     public void processMessage(String msg1) {
+        System.out.println(msg1);
         msg1 = msg1.replace("\ufffd", "");//删除傻逼异常字符
         if (msg1.contains(HWIDUtils.getHWID())) {
-            System.out.println(msg1);
             setDisplayName("connected");
             return;
         }
@@ -82,7 +81,6 @@ public class IRC extends Module {
     class connect extends Thread {
         @Override
         public void run() {
-            this.setName("Connect");
             try {
                 messageThread = false;
                 socket = new Socket("103.91.211.138", 21628);
@@ -90,13 +88,11 @@ public class IRC extends Module {
                 br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 String test = "#IRC#Login::"+HWIDUtils.getHWID() ;
                 sendIRCMessage(test,false);
-                connect.sleep(3000L);
+//                connect.sleep(3000L);
                 messageThread = true;
                 new readMessage().start();
-                return;
             }catch (Throwable e) {
                 setDisplayName("disconnected");
-                return;
             }
         }
 

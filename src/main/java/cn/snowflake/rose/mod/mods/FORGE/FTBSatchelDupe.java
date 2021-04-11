@@ -3,22 +3,11 @@ package cn.snowflake.rose.mod.mods.FORGE;
 import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import cn.snowflake.rose.mod.mods.FORGE.AE2.CellViewer;
-import cn.snowflake.rose.utils.client.ChatUtil;
 import com.darkmagician6.eventapi.EventTarget;
 import cpw.mods.fml.common.Loader;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.injection.ClientLoader;
-import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 
 public class FTBSatchelDupe extends Module {
     public FTBSatchelDupe() {

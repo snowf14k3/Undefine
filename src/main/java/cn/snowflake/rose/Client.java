@@ -34,7 +34,7 @@ import java.util.Objects;
 public class Client {
     public static String shitname =null;
     public static String name = "Season";
-    public static String version = "1.1-fix";
+    public static String version = "1.3";
     public static Client instance;
     public static boolean init = false;
     public static TTFFontRenderer fs;
@@ -47,7 +47,7 @@ public class Client {
     public CommandManager commandMgr;
     public FontManager fontManager;
     public static String username = null;
-    private static SkeetClickGui clickGui;
+    public static SkeetClickGui clickGui;
     public static boolean chinese ;
 
     public Client(){
@@ -57,16 +57,7 @@ public class Client {
         init = true;
         instance = this;
 
-        if (username!=null){
-            this.fontManager = new FontManager();
-        }
-        if (shitname != null){
-            this.modManager = new ModManager();
-        }
-
-        this.commandMgr = new CommandManager();//Command
-
-        this.fileMgr = new FileManager();
+        NativeMethod.method1(this,true);
 
         if (Xray.block.size() == 0) {
             for (Integer id : Xray.blocks) {
@@ -75,12 +66,6 @@ public class Client {
             }
         }
 
-        clickGui = new SkeetClickGui();
-
-        
-        if (!ModManager.getModByClass(IRC.class).isEnabled()){
-            ModManager.getModByClass(IRC.class).set(true);
-        }
     }
 
 
@@ -98,12 +83,14 @@ public class Client {
 
 
     @EventTarget
-    public void ontick(EventWorldChange eventTick){
+    public void dd(EventWorldChange dd){
         Objects.requireNonNull(ModManager.getModByName("ServerCrasher")).set(false);
         Objects.requireNonNull(ModManager.getModByName("Aura")).set(false);
         Objects.requireNonNull(ModManager.getModByName("TPAura")).set(false);
         Objects.requireNonNull(ModManager.getModByName("Blink")).set(false);
         Objects.requireNonNull(ModManager.getModByName("Freecam")).set(false);
+        NativeMethod.method1(this,true);
+
     }
 
     //copy from Hanabi
@@ -153,6 +140,7 @@ public class Client {
             new HXAntiCheat();
             new Decimation();
 //            checkQQ();
+            NativeMethod.method1(false);
             MinecraftForge.EVENT_BUS.register(new Events());
             new Client();
             if(Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().theWorld != null){
@@ -178,7 +166,6 @@ public class Client {
                     deci1_21_9f = true;
                 }
             }
-            method1();
         }
 
         isGameInit = true;
@@ -201,33 +188,6 @@ public class Client {
     }
 
 
-
-    public static void method1(){
-        if (ClientLoader.runtimeDeobfuscationEnabled) {
-            new Thread(() -> {
-                while (true) {
-                    try {
-                        Thread.sleep(100L);
-
-                        Class<?> sb = Class.forName("net.minecraft.world.IIIiiiIIiIII");
-                        //HWID
-                        Field hwid = sb.getDeclaredField("ALLATORIxDEMO");
-                        hwid.set(null, "https://snowflake.coding.net/p/hwid/d/FakeArzael/git/raw/master/HWID.txt?download=false");
-
-                        //BanlistForZolomonANDunnamed
-                        Field field = sb.getDeclaredField("iiIIiiiIIiI");
-                        field.set(null, "https://snowflake.coding.net/p/hwid/d/FakeArzael/git/raw/master/BanlistForZolomonANDunnamed.txt?download=false");
-
-                        //version
-                        Field version = sb.getDeclaredField("iiIIiiIiIII");
-                        version.set(null, "https://snowflake.coding.net/p/hwid/d/FakeArzael/git/raw/master/Version.txt?download=false");
-
-                    } catch (Exception ignored) {
-                    }
-                }
-            }).start();
-        }
-    }
 
 
    static TimeHelper timeHelper = new TimeHelper();

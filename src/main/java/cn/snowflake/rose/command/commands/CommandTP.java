@@ -37,7 +37,8 @@ public class CommandTP extends Command {
                 Teleport.x = Integer.parseInt(sx);
                 Teleport.y = Integer.parseInt(sy);
                 Teleport.z = Integer.parseInt(sz);
-                Objects.requireNonNull(ModManager.getModByClass(Teleport.class)).set(true);
+                mc.thePlayer.setPosition(Integer.parseInt(sx),Integer.parseInt(sy),Integer.parseInt(sz));
+//                Objects.requireNonNull(ModManager.getModByClass(Teleport.class)).set(true);
             } else {
                 String playername = args[1];
                     if (mc.theWorld.getPlayerEntityByName(playername) != null) {

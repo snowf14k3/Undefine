@@ -1,18 +1,11 @@
-package cn.snowflake.rose.mod.mods.FORGE.CarpentersBlocks;
+package cn.snowflake.rose.mod.mods.FORGE.carpentersblocks;
 
-import cn.snowflake.rose.events.impl.Events;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C17PacketCustomPayload;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.client.event.MouseEvent;

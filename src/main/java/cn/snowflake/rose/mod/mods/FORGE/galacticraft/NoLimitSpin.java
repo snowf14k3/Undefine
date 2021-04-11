@@ -1,4 +1,4 @@
-package cn.snowflake.rose.mod.mods.FORGE.Galacticraft;
+package cn.snowflake.rose.mod.mods.FORGE.galacticraft;
 
 import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.mod.Category;
@@ -12,7 +12,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.client.C17PacketCustomPayload;
 
-import java.util.List;
 import java.util.Random;
 
 public class NoLimitSpin extends Module {

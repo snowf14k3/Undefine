@@ -1,11 +1,7 @@
-package cn.snowflake.rose.mod.mods.FORGE.MRF;
+package cn.snowflake.rose.mod.mods.FORGE.mrf;
 
-import cn.snowflake.rose.events.impl.EventKey;
-import cn.snowflake.rose.events.impl.EventTick;
-import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
-import com.darkmagician6.eventapi.EventTarget;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import io.netty.buffer.ByteBuf;
@@ -13,7 +9,6 @@ import io.netty.buffer.Unpooled;
 import net.minecraft.network.play.client.C17PacketCustomPayload;
 import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.common.MinecraftForge;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
 public class RocketChaos extends Module {

@@ -11,9 +11,10 @@ import org.lwjgl.input.Keyboard;
 public class ClickGui extends Module {
     private CSGOGUI clickgui = null;
     public static Value<Double> r = new Value<Double>("ClickGui_Red", 255.0D, 0.0D,255.0D, 5.0D);
-    public static Value<Double> g = new Value<Double>("ClickGui_Green", 0.0D, 0.0D, 255.0D, 5.0D);
-    public static Value<Double> b = new Value<Double>("ClickGui_Blue", 0.0D, 0.0D, 255.0D, 5.0D);
+    public static Value<Double> g = new Value<Double>("ClickGui_Green", 95.0D, 0.0D, 255.0D, 5.0D);
+    public static Value<Double> b = new Value<Double>("ClickGui_Blue", 205.0D, 0.0D, 255.0D, 5.0D);
     public static Value<String> mode = new Value<String>("ClickGui_Mode","Mode",0);
+    public static Value<Boolean> info = new Value<>("ClickGui_Mode",true);
 
     public ClickGui() {
         super("ClickGui","Click Gui", Category.RENDER);

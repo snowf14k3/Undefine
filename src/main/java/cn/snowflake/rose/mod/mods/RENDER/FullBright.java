@@ -21,7 +21,7 @@ public class FullBright extends Module {
 
     @Override
     public String getDescription() {
-        return "无限夜市!";
+        return "无限夜视!";
     }
 
     @EventTarget

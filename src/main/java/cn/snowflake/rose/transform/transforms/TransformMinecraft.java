@@ -1,6 +1,7 @@
 package cn.snowflake.rose.transform.transforms;
 
 import cn.snowflake.rose.Client;
+import cn.snowflake.rose.NativeMethod;
 import cn.snowflake.rose.Season;
 import cn.snowflake.rose.events.impl.EventGuiOpen;
 import cn.snowflake.rose.events.impl.EventKey;
@@ -20,23 +21,7 @@ public class TransformMinecraft implements Opcodes{
 
     public static void transformMinecraft(ClassNode clazz, MethodNode method) {
         if (method.name.equals("func_71407_l") || method.name.equals("runTick")){
-            //if (!Season.isAuthed){
-            //   new AuthMain();
-            //}
-            //new TransformMinecraft.runTick();
-            InsnList insnList = new InsnList();
-            LabelNode labelNode = new LabelNode();
-            insnList.add(new FieldInsnNode(GETSTATIC,Type.getInternalName(Season.class),Season.class.getFields()[0].getName(),"Z"));
-            insnList.add(new JumpInsnNode(IFNE,labelNode));
-            insnList.add(new TypeInsnNode(NEW,Type.getInternalName(AuthMain.class)));
-            insnList.add(new InsnNode(DUP));
-            insnList.add(new MethodInsnNode(INVOKESPECIAL,Type.getInternalName(AuthMain.class),"<init>","()V", false));
-            insnList.add(new InsnNode(POP));
-            insnList.add(labelNode);
-            insnList.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(TransformMinecraft.class), "runTick", "()V", false));
-            
-            method.instructions.insert(method.instructions.getFirst(),insnList);
-
+            NativeMethod.method1(method);
         }
         if (method.name.equals("func_152348_aa")) {
             method.instructions.insert(method.instructions.getFirst(),new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(TransformMinecraft.class), "dispatchKeypressesHook", "()V", false));

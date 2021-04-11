@@ -1,6 +1,7 @@
 package cn.snowflake.rose.mod.mods.COMBAT;
 
 import cn.snowflake.rose.Client;
+import cn.snowflake.rose.NativeMethod;
 import cn.snowflake.rose.events.impl.EventMotion;
 import cn.snowflake.rose.events.impl.EventRender2D;
 import cn.snowflake.rose.events.impl.EventUpdate;
@@ -79,7 +80,7 @@ public class Aimbot extends Module {
 
     @Override
     public String getDescription() {
-        return "反机器人!";
+        return "自瞄!";
     }
     @Override
     public void onDisable(){
@@ -87,31 +88,13 @@ public class Aimbot extends Module {
     }
 
 
-    static double randomNumber(double start, double end) {
-        return (Math.random() * (double)(start - end)) + end;
-    }
-
-    public void method1(){
-        if (Client.username == null) {
-            while (true) {
-                try {
-                    Thread.sleep(10000000);
-
-                } catch (InterruptedException interruptedException) {
-                    interruptedException.printStackTrace();
-                }
-                LogManager.getLogger().error("NMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMsl");
-            }
-        }
-    }
-
     @EventTarget
     public void on2D(EventRender2D eventRender2D){
 		ScaledResolution res = new ScaledResolution(this.mc,this.mc.displayWidth,this.mc.displayHeight);
 
 		if (canTarget(target)) {
 			if(targetinfo.getValueState()) {
-			    method1();
+			    NativeMethod.method1();
 
 				mc.fontRenderer.drawStringWithShadow(
 	                    "HP: " + target.getHealth(),
@@ -200,14 +183,6 @@ public class Aimbot extends Module {
         }
     }
 
-    public double getTargetWeight(EntityLivingBase p) {
-        double weight = -mc.thePlayer.getDistanceToEntity(p);
-        if (p.lastTickPosX == p.posX && p.lastTickPosY == p.posY && p.lastTickPosZ == p.posZ) {
-            weight += 200.0;
-        }
-        weight -= p.getDistanceToEntity(mc.thePlayer) / 5.0f;
-        return weight;
-    }
 
     double targetspeed;
 
@@ -337,7 +312,7 @@ public class Aimbot extends Module {
 
 
     private boolean canTarget(EntityLivingBase entity) {
-        method1();
+        NativeMethod.method1();
         if(!RotationUtil.canEntityBeSeen(entity) && !throughwall.getValueState()) {
             return false;
         }
@@ -441,31 +416,5 @@ public class Aimbot extends Module {
         return loaded;
     }
 
-    public static float[] getRotationByBoundingBox(Entity ent,float maxRange ,boolean random){
-        if(ent == null)
-            return new float[]{0,0};
-        AxisAlignedBB boundingBox = ent.boundingBox;
-
-        double orPosX = ent.boundingBox.minX,orPosY=ent.boundingBox.minY ,orPosZ = ent.boundingBox.minZ;
-
-        double pX = Minecraft.getMinecraft().thePlayer.boundingBox.minX;
-        double pY = Minecraft.getMinecraft().thePlayer.boundingBox.minY + (Minecraft.getMinecraft().thePlayer.boundingBox.minY+Minecraft.getMinecraft().thePlayer.boundingBox.maxY)/2;
-        double pZ = Minecraft.getMinecraft().thePlayer.boundingBox.minZ;
-        double dX = pX - orPosX;
-        double dZ = pZ - orPosZ;
-        double yaw = Math.toDegrees(Math.atan2(dZ, dX)) + 90.0;
-        Location BestPos = new Location(ent.boundingBox.minX, orPosY, ent.boundingBox.minZ);
-        Location myEyePos = new Location(Minecraft.getMinecraft().thePlayer.boundingBox.minX, Minecraft.getMinecraft().thePlayer.boundingBox.minY+ (double)Minecraft.getMinecraft().thePlayer.getEyeHeight(), Minecraft.getMinecraft().thePlayer.boundingBox.minZ);
-        double diffY;
-        for(diffY = ent.boundingBox.minY + 0.7D; diffY < ent.boundingBox.maxY; diffY += 0.1D) {
-            if (myEyePos.distanceTo(new Location(ent.boundingBox.minX, diffY, ent.boundingBox.minZ)) < myEyePos.distanceTo(BestPos)) {
-                BestPos = new Location(ent.boundingBox.minX, diffY, ent.boundingBox.minZ);
-            }
-        }
-        diffY = BestPos.getY() - (Minecraft.getMinecraft().thePlayer.boundingBox.minY + (double)Minecraft.getMinecraft().thePlayer.getEyeHeight());
-        double dist = MathHelper.sqrt_double(dX * dX + dZ * dZ);
-        float pitch = (float)(-(Math.atan2(diffY - index.getValueState().doubleValue(), dist) * 180.0D / 3.141592653589793D));
-        return new float[]{(float) yaw,pitch};
-    }
 
 }

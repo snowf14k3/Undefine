@@ -1,7 +1,6 @@
-package cn.snowflake.rose.mod.mods.FORGE.Galacticraft;
+package cn.snowflake.rose.mod.mods.FORGE.galacticraft;
 
 import cn.snowflake.rose.events.impl.EventKey;
-import cn.snowflake.rose.events.impl.EventTick;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import com.darkmagician6.eventapi.EventManager;

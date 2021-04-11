@@ -1,6 +1,5 @@
-package cn.snowflake.rose.mod.mods.FORGE.AE2;
+package cn.snowflake.rose.mod.mods.FORGE.ae2;
 
-import cn.snowflake.rose.events.impl.EventKey;
 import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
@@ -302,8 +301,8 @@ public class CellViewer extends Module {
             if (p_94148_3_ != null) {
                 boolean renderSmall = p_94148_3_.stackTagCompound != null && "ok".equals(p_94148_3_.stackTagCompound.getString("render-cellviewer"));
 
-                if (p_94148_3_.getItem().showDurabilityBar(p_94148_3_)) {
-                    double health = p_94148_3_.getItem().getDurabilityForDisplay(p_94148_3_);
+                if (p_94148_3_.isItemDamaged()) {
+                    double health = (double)p_94148_3_.getItemDamageForDisplay() / (double)p_94148_3_.getMaxDamage();
                     int j1 = (int) Math.round(13.0D - health * 13.0D);
                     int k = (int) Math.round(255.0D - health * 255.0D);
                     GL11.glDisable(GL11.GL_LIGHTING);

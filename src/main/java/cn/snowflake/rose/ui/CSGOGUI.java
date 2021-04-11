@@ -321,7 +321,7 @@ public class CSGOGUI extends GuiScreen {
         int x =  startX + 64;
         int y = startY + 10;
         int vY= startY + 12;
-        String Description = "";
+        String description = "";
         //for head
         for(int i = 0; i < getModsInCategory(Category.values()[selectCategory]).size(); ++i  ) {
             Module mod = (Module)getModsInCategory(Category.values()[selectCategory]).get(i);
@@ -372,7 +372,7 @@ public class CSGOGUI extends GuiScreen {
                         Colors.getColor((int)255, (int)40));
             }
             if(isHovered(startX + 60, startY + 5, startX + 150, startY  + 189, mouseX, mouseY) && isHovered(x, y - 1 + modscrollY , x + 82, y+12 + modscrollY, mouseX, mouseY) ) {
-            Description = mod.getDescription();
+            description = mod.getDescription();
             }
 
             //mod name
@@ -637,9 +637,9 @@ public class CSGOGUI extends GuiScreen {
         RenderUtil.drawRect(startX + 60, startY - 8, startX + 300, startY  + 6,new Color(0, 0, 0).getRGB());
         RenderUtil.drawRect(startX + 60, startY - 8, startX + 300, startY  + 5.5,new Color(48, 48, 48).getRGB());
         RenderUtil.drawRect(startX + 60, startY - 8, startX + 300, startY  + 5,new Color(25, 25, 25).getRGB());
-
-        mc.fontRenderer.drawString(Description,startX+62,startY-4,new Color(180,180,180).getRGB());
-
+        if (ClickGui.info.getValueState()){
+            mc.fontRenderer.drawString(description,startX+62,startY-4,new Color(180,180,180).getRGB());
+        }
         //buttom bar
         RenderUtil.drawRect(startX + 60, startY + 189, startX + 300, startY  + 196,new Color(25, 25, 25).getRGB());
         RenderUtil.drawRect(startX + 60, startY + 189.5, startX + 300, startY  + 196,new Color(48, 48, 48).getRGB());

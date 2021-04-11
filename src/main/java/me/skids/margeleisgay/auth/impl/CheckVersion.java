@@ -1,6 +1,7 @@
 package me.skids.margeleisgay.auth.impl;
 
 import cn.snowflake.rose.Client;
+import cn.snowflake.rose.NativeMethod;
 import cn.snowflake.rose.utils.auth.HttpUtils;
 import cn.snowflake.rose.utils.auth.ShitUtil;
 import me.skids.margeleisgay.auth.AuthModule;
@@ -11,7 +12,7 @@ public class CheckVersion implements AuthModule {
     @Override
     public void onEnable() {
         selfversion = Client.version;
-        version = HttpUtils.httpRequest("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/version.txt?download=false");
+        version = NativeMethod.method1("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/version.txt?download=false");
     }
 
     @Override
