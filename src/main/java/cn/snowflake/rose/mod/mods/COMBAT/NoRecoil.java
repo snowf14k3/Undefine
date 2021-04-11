@@ -17,6 +17,10 @@ public class NoRecoil extends Module {
         setChinesename("\u65e0\u540e\u5ea7");
     }
 
+    @Override
+    public String getDescription() {
+        return "无后坐力!";
+    }
     @EventTarget(Priority.HIGH)
     public void ontick(EventTick e){
         if (!ModManager.getModByName("Aimbot").isEnabled() && NoRecoil.horizontal.getValueState()) {

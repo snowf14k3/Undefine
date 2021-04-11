@@ -8,6 +8,11 @@ public class ScreenProtect extends Module {
     public static Value<String> mode = new Value<String>("ScreenProtect","CatMode",0);
     public static Value<String> mode2 = new Value<String>("ScreenProtect","DeciMode",0);
 
+    @Override
+    public String getDescription() {
+        return "反反作弊保护模式!";
+    }
+
     public ScreenProtect() {
         super("ScreenProtect", "ScreenProtect", Category.FORGE);
 

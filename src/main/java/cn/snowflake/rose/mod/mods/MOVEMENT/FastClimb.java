@@ -14,6 +14,11 @@ public class FastClimb extends Module {
         setChinesename("\u5feb\u901f\u722c\u68af");
     }
 
+    @Override
+    public String getDescription() {
+        return "快速攀爬!";
+    }
+
     @EventTarget
     public void isclimb(EventUpdate eventUpdate){
         if (mc.thePlayer.isOnLadder() && mc.gameSettings.keyBindForward.getIsKeyPressed()){

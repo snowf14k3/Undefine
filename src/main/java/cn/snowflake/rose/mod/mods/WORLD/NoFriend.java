@@ -8,4 +8,10 @@ public class NoFriend extends Module {
         super("NoFriend","No Friend",  Category.WORLD);
         setChinesename("\u65e0\u89c6\u670b\u53cb");
     }
+
+    @Override
+    public String getDescription() {
+        return "无视朋友!";
+    }
+
 }

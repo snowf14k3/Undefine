@@ -20,6 +20,10 @@ public class Stealer extends Module {
     public Value<Boolean> cchest = new Value("ChestStealer_CloseChest", true);
     TimeHelper time = new TimeHelper();
 
+    @Override
+    public String getDescription() {
+        return "自动拿物品!";
+    }
 
     @EventTarget
     public void onUpdate(EventUpdate event) {

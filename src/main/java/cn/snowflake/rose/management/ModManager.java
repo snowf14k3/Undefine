@@ -3,6 +3,16 @@ package cn.snowflake.rose.management;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.mod.mods.COMBAT.*;
 import cn.snowflake.rose.mod.mods.FORGE.*;
+import cn.snowflake.rose.mod.mods.FORGE.AE2.CellViewer;
+import cn.snowflake.rose.mod.mods.FORGE.CarpentersBlocks.CarpenterUse;
+import cn.snowflake.rose.mod.mods.FORGE.Galacticraft.GalacticFire;
+import cn.snowflake.rose.mod.mods.FORGE.Galacticraft.GalaxyTeleport;
+import cn.snowflake.rose.mod.mods.FORGE.Galacticraft.NoLimitSpin;
+import cn.snowflake.rose.mod.mods.FORGE.MRF.RocketChaos;
+import cn.snowflake.rose.mod.mods.FORGE.NBTEdit.NBTHack;
+import cn.snowflake.rose.mod.mods.FORGE.Thaumcraft.MagicGod;
+import cn.snowflake.rose.mod.mods.FORGE.MagicRecipe;
+import cn.snowflake.rose.mod.mods.FORGE.Thaumcraft.ResearchGod;
 import cn.snowflake.rose.mod.mods.MOVEMENT.*;
 import cn.snowflake.rose.mod.mods.PLAYER.*;
 import cn.snowflake.rose.mod.mods.RENDER.*;
@@ -91,15 +101,36 @@ public class ModManager {
         //FORGE
         addMod(new ScreenProtect());
         addMod(new SecretClose());
+
+        //AE2
+        addMod(new CellViewer());
+        //ThaumCraft
         addMod(new MagicGod());
         addMod(new ResearchGod());
-        addMod(new NBTRevise());
+
+        //NBTEdit
+        addMod(new NBTHack());
+
         addMod(new MagicRecipe());
         addMod(new EIOXpGrab());
         addMod(new OneWayTicket());
         addMod(new BreakInGui());
         addMod(new VisualCreative());
         addMod(new FTBSatchelDupe());
+
+        //MRF
+        addMod(new RocketChaos());
+
+        //Galcticraft
+        addMod(new NoLimitSpin());
+        addMod(new GalacticFire());
+        addMod(new GalaxyTeleport());
+
+        //Carpentersblocks
+        addMod(new CarpenterUse());
+
+        //PacketFlood
+        addMod(new PacketFlood());
 
         ok = true;
     }

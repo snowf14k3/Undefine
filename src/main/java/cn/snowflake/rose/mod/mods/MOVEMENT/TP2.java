@@ -23,6 +23,11 @@ public class TP2 extends Module {
         working = false;
     }
 
+    @Override
+    public String getDescription() {
+        return "传送2!";
+    }
+
     @EventTarget
     public void ontick(EventTick event) {
         PlayerCapabilities playerCapabilities = new PlayerCapabilities();

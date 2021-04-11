@@ -43,6 +43,11 @@ public class Scaffold
         setChinesename("\u81ea\u52a8\u642d\u8def");
     }
 
+    @Override
+    public String getDescription() {
+        return "自动搭路!";
+    }
+
     @EventTarget
     public void onPre(EventMotion event) {
         if (event.isPre()) {

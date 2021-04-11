@@ -41,6 +41,11 @@ public class Bot extends Module {
         working = false;
     }
 
+    @Override
+    public String getDescription() {
+        return "机器人!";
+    }
+
     @SubscribeEvent
     public void onRedner(RenderHandEvent e){
         if (this.path.size() > 0) {

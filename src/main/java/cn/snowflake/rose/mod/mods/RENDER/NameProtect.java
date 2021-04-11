@@ -13,4 +13,10 @@ public class NameProtect extends Module {
         super("NameProtect", "Name Protect", Category.RENDER);
         setChinesename("\u533f\u540d");
     }
+
+    @Override
+    public String getDescription() {
+        return "匿名!";
+    }
+
 }

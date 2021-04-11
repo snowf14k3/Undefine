@@ -29,6 +29,12 @@ public class Teleport extends Module {
         modes.addValue("God");
         working = false;
     }
+
+    @Override
+    public String getDescription() {
+        return "传送!";
+    }
+
     @Override
     public void onEnable() {
         //sb disabler

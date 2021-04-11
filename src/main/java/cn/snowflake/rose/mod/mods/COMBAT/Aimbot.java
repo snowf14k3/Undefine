@@ -77,7 +77,10 @@ public class Aimbot extends Module {
         setChinesename("\u81ea\u7784");
     }
 
-
+    @Override
+    public String getDescription() {
+        return "反机器人!";
+    }
     @Override
     public void onDisable(){
         target = null;

@@ -9,7 +9,10 @@ public class VisualCreative extends Module {
         super("VisualCreative", "Visual Creative", Category.FORGE);
     }
 
-
+    @Override
+    public String getDescription() {
+        return "给自己一个假创造(可配合一些mod刷物品)!";
+    }
 
     @Override
     public void onEnable() {

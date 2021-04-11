@@ -22,7 +22,10 @@ public class NoSlowDown extends Module {
         this.mode.addValue("AAC");
         setChinesename("\u4f7f\u7528\u7269\u54c1\u65e0\u51cf\u901f");
     }
-
+    @Override
+    public String getDescription() {
+        return "\u4f7f\u7528\u7269\u54c1\u65e0\u51cf\u901f!";
+    }
     public static boolean no = false;
     @Override
     public void onEnable() {

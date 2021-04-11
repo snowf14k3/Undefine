@@ -52,6 +52,10 @@ public class ESP2D extends Module {
         setChinesename("\u0032\u0044\u900f\u89c6");
     }
 
+    @Override
+    public String getDescription() {
+        return "2D透视!";
+    }
     @EventTarget
     public void onEvent(EventRender3D event) {
         try {

@@ -14,6 +14,11 @@ public class FastPlace extends Module {
         setChinesename("\u5feb\u901f\u653e\u7f6e");
     }
 
+    @Override
+    public String getDescription() {
+        return "快速放置!";
+    }
+
     @EventTarget
     public void OnUpdate(EventUpdate e) {
         JReflectUtility.setRightClickDelayTimer(0);

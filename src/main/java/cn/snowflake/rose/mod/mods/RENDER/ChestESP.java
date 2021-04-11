@@ -33,6 +33,11 @@ public class ChestESP extends Module {
         setChinesename("\u7bb1\u5b50\u900f\u89c6");
     }
 
+    @Override
+    public String getDescription() {
+        return "箱子透视!";
+    }
+
     @EventTarget
     public void onRender(EventRender3D e) throws ClassNotFoundException {
         if (mode.isCurrentMode("ESP")){

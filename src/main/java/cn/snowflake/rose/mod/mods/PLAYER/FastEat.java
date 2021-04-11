@@ -15,6 +15,11 @@ public class FastEat extends Module
         setChinesename("\u5feb\u901f\u5403\u4e1c\u897f");
     }
 
+    @Override
+    public String getDescription() {
+        return "快速吃东西!";
+    }
+
     @EventTarget
     public void onUpdate(EventUpdate e) {
         if (this.mc.thePlayer.isEating()

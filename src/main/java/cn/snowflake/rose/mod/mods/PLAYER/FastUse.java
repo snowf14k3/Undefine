@@ -18,6 +18,11 @@ public class FastUse extends Module {
         setChinesename("\u5feb\u901f\u4f7f\u7528");
     }
 
+    @Override
+    public String getDescription() {
+        return "快速使用!";
+    }
+
     @EventTarget
     public void onUpdate(EventUpdate event) {
         if (allitem.getValueState() && timeHelper.isDelayComplete(delay.getCurrentMode())){

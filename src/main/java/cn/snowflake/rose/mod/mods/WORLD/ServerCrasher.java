@@ -22,6 +22,10 @@ public class ServerCrasher extends Module {
         setChinesename("\u70b8\u670d");
     }
 
+    @Override
+    public String getDescription() {
+        return "炸服!";
+    }
 
     public void onEnable() {
         if (mode.isCurrentMode("C14TabComplete")){

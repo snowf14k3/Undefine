@@ -12,6 +12,11 @@ public class Chams extends Module {
         setChinesename("\u900f\u89c6");
     }
 
+    @Override
+    public String getDescription() {
+        return "透视!";
+    }
+
     public static boolean chams;
 
     @Override

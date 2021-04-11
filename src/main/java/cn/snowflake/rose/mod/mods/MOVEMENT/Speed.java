@@ -16,7 +16,7 @@ import java.util.List;
 
 public class Speed extends Module {
     public static Value<String> mode = new Value("Speed", "Mode", 0);
-    public Value<Double> boost = new Value<Double>("Speed_MoitonBoost", 0.65d, 0d, 7.0, 0.01);
+    public Value<Double> boost = new Value<Double>("Speed_MoitonBoost", 2.15d, 0d, 7.0, 0.01);
     public boolean shouldslow = false;
     boolean collided;
     boolean lessSlow;
@@ -32,6 +32,7 @@ public class Speed extends Module {
     public Speed() {
         super("Speed","Speed",  Category.MOVEMENT);
         mode.mode.add("Vanilla");
+        mode.mode.add("New");
         mode.mode.add("Bhop");
         mode.addValue("Bhop1");
         mode.addValue("Bhop2");
@@ -39,6 +40,11 @@ public class Speed extends Module {
         setChinesename("\u53d8\u901f");
     }
     private int jumps;
+
+    @Override
+    public String getDescription() {
+        return "加速!";
+    }
 
     @EventTarget
     public void onUpdate(EventUpdate e){
@@ -93,9 +99,10 @@ public class Speed extends Module {
 		case "Vanilla": {
 		if (PlayerUtil.Moving()) {
 			switch (this.stage) {
+
 			case 2:
 				if (mc.thePlayer.onGround&& mc.thePlayer.isCollidedVertically) {
-					e.setY(mc.thePlayer.motionY = getJumpBoostModifier(0.4199999));
+					e.setY(mc.thePlayer.motionY = getJumpBoostModifier(0.42));
 					double d = boost.getValueState().doubleValue() + 0.149;
 					this.speed = this.defaultSpeed() * d;
 				}
@@ -119,15 +126,79 @@ public class Speed extends Module {
 			
 			if ((mc.thePlayer.moveForward != 0.0f || mc.thePlayer.moveStrafing != 0.0f)) {
 				setMotion(e, speed);
-				
 			}
 			++this.stage;
 			break;
 				}
 			}
+            case "test": {
+                switch (stage) {
+                    case 0:
+                        ++stage;
+//                        distance = 0.0D;
+                        speed = this.CustomSpeed();
+                        break;
+                    case 2:
+                        distance = 0.0D;
+                        if ((mc.thePlayer.moveForward != 0.0F || mc.thePlayer.moveStrafing != 0.0F) && (mc.thePlayer.onGround && mc.thePlayer.isCollidedVertically)) {
+                                e.setY(mc.thePlayer.motionY = getJumpBoostModifier(0.42));
+                                double d = 2.149;
+                                speed = this.CustomSpeed() * d;
+
+                        }
+                        break;
+                    case 3:
+                        double boost = 0.22D;
+                        speed = distance - boost * (distance - CustomSpeed());
+                        break;
+                    default:
+                        ++stage;
+                        if ((mc.theWorld.getCollidingBoundingBoxes(mc.thePlayer, mc.thePlayer.boundingBox.getOffsetBoundingBox(0.0D, mc.thePlayer.motionY, 0.0D)).size() > 0
+                                || mc.thePlayer.isCollidedVertically) && stage > 0) {
+                            stage = mc.thePlayer.moveForward == 0.0F && mc.thePlayer.moveStrafing == 0.0F ? 0 : 1;
+                        }
+                        speed = distance - distance / 159D;
+                        break;
+                }
+                speed = Math.max(speed, CustomSpeed());
+                if ((mc.thePlayer.moveForward != 0.0f || mc.thePlayer.moveStrafing != 0.0f)) {
+                    setMotion(e, speed);
+                }
+                ++stage;
+                break;
+            }
 		}
-        
-        if (this.mode.isCurrentMode("Bhop1")) {
+
+        if (this.mode.isCurrentMode("New")) {
+            if (!mc.thePlayer.isInWater() && mc.thePlayer.onGround && this.isMoving2()) {
+                if (this.stage >= 0) {
+                    this.stage = 0;
+//                    if (this.stair == 0.0) {
+                        mc.thePlayer.jump();
+
+                    e.setY(mc.thePlayer.motionY = getJumpBoostModifier(0.42));
+
+                }
+            }
+            this.speed = this.getHypixelSpeed(this.stage) + 0.01 + Math.random() / 200.0;
+            this.speed *= boost.getValueState().doubleValue();
+//            if (this.stair > 0.0) {
+//                this.speed *= 0.8 - (double)this.getSpeedEffect() * 0.1;
+//            }
+//            if (this.stage < 0) {
+//                this.speed = defaultSpeed();
+//            }
+//            if (this.lessSlow) {
+//                this.speed *= 1.05;
+//            }
+//            if (mc.thePlayer.isInWater()) {
+//                this.speed = 0.12;
+//            }
+            if (mc.thePlayer.moveForward != 0.0f || mc.thePlayer.moveStrafing != 0.0f) {
+                this.setMotion(e, this.speed);
+                ++this.stage;
+            }
+        } else if (this.mode.isCurrentMode("Bhop1")) {
             if (mc.thePlayer.isCollidedHorizontally) {
                 this.collided = true;
             }
@@ -160,7 +231,7 @@ public class Speed extends Module {
                 }
             }
             this.speed = this.getHypixelSpeed(this.stage) + 0.01 + Math.random() / 200.0;
-            this.speed *= 0.97;
+            this.speed *= 02.97;
             if (this.stair > 0.0) {
                 this.speed *= 0.8 - (double)this.getSpeedEffect() * 0.1;
             }
@@ -306,6 +377,16 @@ public class Speed extends Module {
         }
         return 0;
     }
+
+    public double CustomSpeed() {
+        double baseSpeed = 0.94873;
+        if (mc.thePlayer.isPotionActive(Potion.moveSpeed)) {
+            int amplifier = mc.thePlayer.getActivePotionEffect(Potion.moveSpeed).getAmplifier();
+            baseSpeed *= 1.0 + 0.2 * (double)(amplifier + 1);
+        }
+        return baseSpeed;
+    }
+
 
     public double defaultSpeed() {
         double baseSpeed = 0.2873;

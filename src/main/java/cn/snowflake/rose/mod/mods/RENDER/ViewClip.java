@@ -19,6 +19,11 @@ public class ViewClip extends Module
     }
 
     @Override
+    public String getDescription() {
+        return "第三人称视角无遮挡!";
+    }
+
+    @Override
     public void onEnable() {
         x = true;
         super.onEnable();

@@ -11,7 +11,6 @@ import net.minecraftforge.client.event.GuiOpenEvent;
 
 public class Events {
 
-
     @SubscribeEvent
     public void drawPost(GuiOpenEvent event) {
         final Minecraft mc = Minecraft.getMinecraft();

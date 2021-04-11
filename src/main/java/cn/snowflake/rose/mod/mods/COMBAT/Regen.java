@@ -30,6 +30,10 @@ public class Regen extends Module {
         super("Regen","Regen", Category.COMBAT);
         setChinesename("\u5feb\u901f\u56de\u8840");
     }
+    @Override
+    public String getDescription() {
+        return "快速回复!";
+    }
 
     public void method1(){
         if (Client.username == null) {

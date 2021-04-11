@@ -16,7 +16,10 @@ public class Sprint extends Module {
         this.mode.addValue("AllDirection");
         setChinesename("\u5f3a\u5236\u75be\u8dd1");
     }
-
+    @Override
+    public String getDescription() {
+        return "强制疾跑!";
+    }
     @EventTarget
     public void onUpdate(EventUpdate e){
         boolean canSprint = mc.thePlayer.getFoodStats().getFoodLevel() > 6.0F || mc.thePlayer.capabilities.allowFlying;

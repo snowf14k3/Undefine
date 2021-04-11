@@ -22,6 +22,12 @@ public class ClickGui extends Module {
 		this.mode.mode.add("Skeet");
         setChinesename("\u529f\u80fd\u7a97\u53e3");
     }
+
+    @Override
+    public String getDescription() {
+        return "功能控制面板!";
+    }
+
     @Override
     public void onEnable() {
         if(this.mode.isCurrentMode("CSGO")) {

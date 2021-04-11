@@ -24,6 +24,10 @@ public class PlayerList extends Module {
     public static Value<Double> x = new Value<Double>("PlayerList_X", 2.0d, 0.0d, 1920.0d, 10.0d);
     public static Value<Double> y = new Value<Double>("PlayerList_Y", 20.0d, 0.0d, 1080.0d, 10.0d);
 
+    @Override
+    public String getDescription() {
+        return "显示附近玩家!";
+    }
     @EventTarget
     public void on2D(EventRender2D eventRender2D){
             float width = 60;

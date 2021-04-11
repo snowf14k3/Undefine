@@ -19,6 +19,10 @@ public class Animation extends Module {
         this.mode.addValue("Swong");
     }
 
+    @Override
+    public String getDescription() {
+        return "防砍动画!";
+    }
     @EventTarget
     public void OnUpdate(EventUpdate e) {
         this.setDisplayName(this.mode.getModeAt(this.mode.getCurrentMode()));

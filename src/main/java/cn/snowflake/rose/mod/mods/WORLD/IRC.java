@@ -29,6 +29,11 @@ public class IRC extends Module {
         setChinesename("\u8de8\u670d\u804a\u5929");
     }
 
+    @Override
+    public String getDescription() {
+        return "和其他使用本客户端玩家聊天!";
+    }
+
     public void processMessage(String msg1) {
         msg1 = msg1.replace("\ufffd", "");//删除傻逼异常字符
         if (msg1.contains(HWIDUtils.getHWID())) {

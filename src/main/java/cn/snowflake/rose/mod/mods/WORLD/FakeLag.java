@@ -30,6 +30,11 @@ public class FakeLag extends Module
         working = false;
     }
 
+    @Override
+    public String getDescription() {
+        return "给服务器一个虚假的延迟!";
+    }
+
     @EventTarget
     public void onPacket(EventPacket eventPacket) {
         if (eventPacket.getType() == EventType.RECIEVE) {

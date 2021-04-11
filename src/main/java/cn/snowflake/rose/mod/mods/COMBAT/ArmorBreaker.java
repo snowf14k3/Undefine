@@ -23,6 +23,10 @@ public class ArmorBreaker extends Module {
     }
     TimeHelper time = new TimeHelper();
 
+    @Override
+    public String getDescription() {
+        return "破甲!";
+    }
 
     @EventTarget
     public void onPacket(EventPacket e){

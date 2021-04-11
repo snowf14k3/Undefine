@@ -15,18 +15,26 @@ import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.AxisAlignedBB;
 
+import java.util.Random;
+
 public class Fly extends Module {
     public Value<Double> boost = new Value<Double>("Fly_MoitonBoost", 4.5, 1.0, 7.0, 0.1);
     public Value<String> mode = new Value("Fly_Mode", "Mode", 0);
     public Value<Boolean> antikick = new Value<>("Fly_AntiKick",true);
     private WaitTimer groundTimer = new WaitTimer();
-    
+
+    int ticks = 0;
     public Fly() {
         super("Fly","Fly", Category.MOVEMENT);
         this.mode.addValue("Motion");
         this.mode.addValue("Vanilla");
         this.mode.addValue("Creative");
         setChinesename("\u98de\u884c");
+    }
+
+    @Override
+    public String getDescription() {
+        return "飞行!";
     }
 
 	@EventTarget(4)
@@ -48,16 +56,18 @@ public class Fly extends Module {
             else if (this.mc.gameSettings.keyBindJump.getIsKeyPressed()) {
                 ++this.mc.thePlayer.motionY;
             }
-
+            if (antikick.getValueState() ) {
+                mc.thePlayer.posY -= 0.05d;
+            }
         }
 
         if (this.mode.isCurrentMode("Creative")){
             mc.thePlayer.capabilities.isFlying = true;
+            if (antikick.getValueState() ) {
+                mc.thePlayer.posY -= 0.05d;
+            }
         }
 
-        if (antikick.getValueState() ) {
-            mc.thePlayer.posY -= 0.05d;
-        }
 
     }
 
@@ -65,13 +75,30 @@ public class Fly extends Module {
 	   private void onUpdate(EventMotion e) {
     	  if (this.mode.isCurrentMode("Motion")) {
 	      double mspeed = Math.max((double)boost.getValueState(), getBaseMoveSpeed());
-	      if (this.mc.thePlayer.movementInput.jump) {
-	         this.mc.thePlayer.motionY = mspeed * 0.6D;
-	      } else if (this.mc.thePlayer.movementInput.sneak) {
-	         this.mc.thePlayer.motionY = -mspeed * 0.6D;
-	      } else {
-	         this.mc.thePlayer.motionY = 0.0D;
+              mc.thePlayer.motionY = 0.0D;
+	      if (mc.gameSettings.keyBindJump.getIsKeyPressed()) {
+	          mc.thePlayer.motionY = mspeed * 0.6D;
 	      }
+	      if (mc.gameSettings.keyBindSneak.getIsKeyPressed()) {
+	          mc.thePlayer.motionY = -mspeed * 0.6D;
+	      }
+              if (antikick.getValueState())
+                  if(!mc.thePlayer.onGround){
+                   mc.thePlayer.motionY -= 0.05;
+//                      switch (ticks){
+//                          case 0: e.setY(mc.thePlayer.posY-0.05 - ((new Random().nextInt(6)) / 1000.0D));
+//                              ticks = 1;
+//                          case 1: e.setY(mc.thePlayer.posY-0.10 - ((new Random().nextInt(6)) / 1000.0D));
+//                              ticks = 2;
+//                          case 2: e.setY(mc.thePlayer.posY+ 0.05+((new Random().nextInt(6)) / 1000.0D));
+//                              ticks = 3;
+//                          case 3: e.setY(mc.thePlayer.posY);
+//                              ticks=0;
+//
+//                      }
+                  }
+
+
     	  }
 	   }
 

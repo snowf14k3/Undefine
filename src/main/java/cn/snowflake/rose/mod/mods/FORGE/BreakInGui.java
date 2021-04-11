@@ -16,6 +16,11 @@ public class BreakInGui extends Module {
         setChinesename("gui\u65b9\u5757\u7834\u89e3");
     }
 
+    @Override
+    public String getDescription() {
+        return "打开背包也能挖东西!";
+    }
+
     @EventTarget
     public void onUpdate(EventUpdate update){
         if ((mc.currentScreen != null && !(mc.currentScreen instanceof GuiChat)) &&  Mouse.isButtonDown(0)){

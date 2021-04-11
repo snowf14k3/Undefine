@@ -62,6 +62,11 @@ public class Aimbot2 extends Module
         bone.addValue("Feet");
 
     }
+    @Override
+    public String getDescription() {
+        return "反机器人2!";
+    }
+
 
     @EventTarget
     public void sendPacket(EventPacket e) {

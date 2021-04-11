@@ -2,6 +2,7 @@ package cn.snowflake.rose.transform.transforms;
 
 import cn.snowflake.rose.events.impl.EventFMLChannels;
 import com.darkmagician6.eventapi.EventManager;
+import cpw.mods.fml.common.network.FMLEventChannel;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
@@ -12,7 +13,6 @@ import java.util.EnumMap;
 public class TransformFMLEventChannel implements Opcodes {
     public static void transformFMLEventChannel(ClassNode classNode, MethodNode methodNode) {
         if (methodNode.name.equalsIgnoreCase("sendToServer")) {
-
             InsnList insnList = new InsnList();
             insnList.add(new VarInsnNode(ALOAD,1));//FMLProxyPacket
 

@@ -30,6 +30,12 @@ public class ItemESP extends Module {
     public static Value<Double> g = new Value<Double>("ItemESP_Green", 255.0D, 0.0D, 255.0D, 5.0D);
     public static Value<Double> b = new Value<Double>("ItemESP_Blue", 255.0D, 0.0D, 255.0D, 5.0D);
 
+    @Override
+    public String getDescription() {
+        return "物品透视!";
+    }
+
+
     @EventTarget
     public void onRender2D(EventRender2D event) {
         ScaledResolution scaledRes = new ScaledResolution(this.mc,this.mc.displayWidth,this.mc.displayHeight);

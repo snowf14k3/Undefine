@@ -12,6 +12,11 @@ public class VehicleSpeed extends Module {
     }
     public static Value<Double> speed = new Value("VehicleSpeed_Speed",1.0d,0.0d,50.0d,1.0d);
 
+    @Override
+    public String getDescription() {
+        return "车辆速度控制!";
+    }
+
     @EventTarget
     public void update(EventUpdate e){
         if (mc.thePlayer != null && mc.thePlayer.isRiding() && mc.thePlayer.ridingEntity != null){

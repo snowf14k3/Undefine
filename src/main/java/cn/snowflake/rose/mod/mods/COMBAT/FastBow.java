@@ -15,7 +15,10 @@ public  class FastBow extends Module {
         setChinesename("\u5feb\u901f\u62c9\u5f13");
     }
 
-
+    @Override
+    public String getDescription() {
+        return "快速射弓!";
+    }
     @EventTarget
     public void onUpdate(EventUpdate e) {
         if (this.mc.thePlayer.getHealth() > 0.0f && (this.mc.thePlayer.onGround || this.mc.thePlayer.capabilities.isCreativeMode) && this.mc.thePlayer.inventory.getCurrentItem() != null && this.mc.thePlayer.inventory.getCurrentItem().getItem() instanceof ItemBow && this.mc.gameSettings.keyBindUseItem.getIsKeyPressed()) {

@@ -16,6 +16,11 @@ public class Velocity extends Module {
         setChinesename("\u65e0\u51fb\u9000");
     }
 
+    @Override
+    public String getDescription() {
+        return "无视击退!";
+    }
+
     @EventTarget
     private void onPacket(EventPacket event) {
         if(mc.theWorld != null && mc.thePlayer != null && !mc.thePlayer.isDead) {

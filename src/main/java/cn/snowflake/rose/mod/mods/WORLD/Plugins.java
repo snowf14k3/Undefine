@@ -22,6 +22,11 @@ public class Plugins extends Module {
     }
 
     @Override
+    public String getDescription() {
+        return "查看服务器插件!";
+    }
+
+    @Override
     public void onEnable() {
         if(mc.thePlayer == null)
             return;
@@ -63,7 +68,7 @@ public class Plugins extends Module {
     }
     @EventTarget
     public void update(EventUpdate e){
-        if(time.isDelayComplete(20)) {
+        if(time.isDelayComplete(1000)) {
             ChatUtil.sendClientMessage("\247cPlugins check timed out...");
             time.reset();
             set(false);

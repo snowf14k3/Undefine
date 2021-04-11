@@ -63,7 +63,6 @@ public class Aura extends Module {
     public Value<Double> maxtTargets = new Value<Double>("Aura_MultiMaxTarget", 20.0D, 1.0D, 50.0D, 1.0D);
     public Value<Boolean> Esp = new Value("Aura_Esp", true);
     public Value<Boolean> players = new Value("Aura_Player", true);
-    public Value<Boolean> otherentity = new Value("Aura_Otherentity", true);
     public Value<Boolean> animal = new Value("Aura_Animal", false);
     public Value<Boolean> moster = new Value("Aura_Mob", false);
     public Value<Boolean> village = new Value("Aura_village", false);
@@ -81,6 +80,11 @@ public class Aura extends Module {
         this.sortingMode.addValue("MaxHealth");
         this.sortingMode.addValue("Distance");
         setChinesename("\u6740\u622e\u5149\u73af");
+    }
+
+    @Override
+    public String getDescription() {
+        return "杀戮光环!";
     }
 
     @SubscribeEvent

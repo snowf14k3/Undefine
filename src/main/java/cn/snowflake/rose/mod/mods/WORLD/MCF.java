@@ -17,6 +17,11 @@ public class MCF extends Module {
 
     private final MouseInputHandler handler = new MouseInputHandler(2);
 
+    @Override
+    public String getDescription() {
+        return "鼠标中键玩家添加好友!";
+    }
+
     @EventTarget
     public void onupdate(EventUpdate e){
         if (this.mc.objectMouseOver != null && this.mc.objectMouseOver.entityHit != null && this.mc.objectMouseOver.entityHit instanceof EntityPlayer) {

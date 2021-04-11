@@ -15,6 +15,7 @@ public class Module {
     private final Category category;
     private String displayName;
     public String chinesename;
+    public String description = "unknown";
     private int key;
 
     private boolean isEnabled;
@@ -58,7 +59,7 @@ public class Module {
     }
 
     public String getName() {
-        return working ? name : "\247c"+name;
+        return working ? name : name;
     }
 
     public String getChinesename() {
@@ -76,6 +77,8 @@ public class Module {
     public String getdisplayName() {
         return displayName;
     }
+
+    public String getDescription() { return this.description; }
 
     public void setKey(int key) {
         this.key = key;
@@ -101,10 +104,13 @@ public class Module {
         }
         return false;
     }
+
     public void onToggle() {
     }
 
     public void set(boolean state, boolean save) {
+        if(!this.working)return;
+
         this.isEnabled = state;
         this.onToggle();
         if (state) {
@@ -124,7 +130,6 @@ public class Module {
     }
 
     public void onEnable() {
-        System.err.println("gg");
     }
 
     public int getValueSize(){

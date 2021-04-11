@@ -13,6 +13,11 @@ public class AutoFish extends Module {
         setChinesename("\u81ea\u52a8\u9493\u9c7c");
     }
 
+    @Override
+    public String getDescription() {
+        return "自动钓鱼!";
+    }
+
     @EventTarget
     public void onPacket(EventPacket e){
         S29PacketSoundEffect packet = (S29PacketSoundEffect) e.getPacket();

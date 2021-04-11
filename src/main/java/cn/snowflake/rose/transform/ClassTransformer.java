@@ -60,6 +60,7 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 				"net.minecraft.entity.EntityLivingBase",
 				"net.minecraft.client.gui.GuiScreen",
 				"net.minecraft.client.gui.FontRenderer",
+				"net.minecraft.client.multiplayer.PlayerControllerMP"
 //				"cpw.mods.fml.common.network.simpleimpl.SimpleIndexedCodec"
 		};
 		classNameSet.addAll(Arrays.asList(nameArray));
@@ -80,6 +81,9 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			}
 			else if (name.equals("net.minecraft.client.entity.EntityClientPlayerMP")) {
 				return transformMethods(classByte,TransformEntityClientPlayerMP::transformEntityClientPlayerMP);
+			}
+			else if (name.equals("net.minecraft.client.multiplayer.PlayerControllerMP")) {
+				return transformMethods(classByte,TransformPlayerControllerMP::transformPlayerControllerMP);
 			}
 			else if (name.equalsIgnoreCase("net.minecraft.client.renderer.EntityRenderer")){//3d
 				return transformMethods(classByte, TransformEntityRenderer::transformRenderEntityRenderer);
@@ -126,12 +130,16 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			else if (name.equalsIgnoreCase("net.minecraft.entity.EntityLivingBase")){
 				return this.transformMethods(classByte, TransformEntityLivingBase::transformEntityLivingBase);
 			}
+//			else if (name.equalsIgnoreCase("net.minecraft.client.renderer.Tessellator")){
+//				return this.transformMethods(classByte, TransformTessellator::transformTessellator);
+//			}
 //			else if (name.equalsIgnoreCase("net.minecraft.client.gui.GuiScreen")){
 //				return this.transformMethods(classByte, TransformGuiScreen::transformGuiScreen);
 //			}
 //			else if (name.equalsIgnoreCase("cpw.mods.fml.common.network.simpleimpl.SimpleIndexedCodec")){
 //				return this.transformMethods(classByte, TransformSimpleIndexedCodec::transformSimpleIndexedCodec);
 //			}
+
 		}catch(Exception e) {
 			LogManager.getLogger().log(Level.ERROR, ExceptionUtils.getStackTrace(e));
 

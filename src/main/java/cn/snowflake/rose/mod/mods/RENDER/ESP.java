@@ -40,6 +40,10 @@ public class ESP extends Module {
         this.mode.addValue("Box");
         setChinesename("\u0033\u0044\u900f\u89c6");
     }
+    @Override
+    public String getDescription() {
+        return "3D透视!";
+    }
 
     public void renderBox(Entity entity,double r,double g, double b) {
         if(entity.isInvisible() && !invisible.getValueState().booleanValue()) {

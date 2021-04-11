@@ -14,6 +14,12 @@ public class Notifications extends Module{
 		super("Notifications", Category.RENDER);
 	}
 
+
+	@Override
+	public String getDescription() {
+		return "功能开关通知!";
+	}
+
 	@Override
 	public void onEnable() {
 		super.onEnable();

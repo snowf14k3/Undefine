@@ -15,6 +15,11 @@ public class Step extends Module {
         setChinesename("\u81ea\u52a8\u4e0a\u65b9\u5757");
     }
 
+    @Override
+    public String getDescription() {
+        return "自动上台阶!";
+    }
+
     @EventTarget
     public void OnUpdate(EventUpdate e) {
         mc.thePlayer.stepHeight = height.getValueState().floatValue();

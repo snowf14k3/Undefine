@@ -19,6 +19,11 @@ public class Jesus extends Module {
         setChinesename("\u6c34\u4e0a\u884c\u8d70");
     }
 
+    @Override
+    public String getDescription() {
+        return "水上行走!";
+    }
+
     public static boolean jesus;
 
     @Override

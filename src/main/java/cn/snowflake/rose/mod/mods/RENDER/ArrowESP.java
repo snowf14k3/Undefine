@@ -28,6 +28,10 @@ public class ArrowESP
         setChinesename("\u7bad\u5934\u663e\u793a");
     }
 
+    @Override
+    public String getDescription() {
+        return "箭头显示玩家!";
+    }
     @EventTarget
     public void onGui(EventRender2D e) {
         ScaledResolution sr = new ScaledResolution(this.mc, mc.displayWidth, mc.displayHeight);

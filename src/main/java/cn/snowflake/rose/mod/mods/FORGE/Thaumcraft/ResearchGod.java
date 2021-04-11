@@ -1,4 +1,4 @@
-package cn.snowflake.rose.mod.mods.FORGE;
+package cn.snowflake.rose.mod.mods.FORGE.Thaumcraft;
 
 import cn.snowflake.rose.events.impl.EventTick;
 import cn.snowflake.rose.mod.Category;
@@ -33,12 +33,15 @@ public class ResearchGod extends Module {
             this.working = false;
         }
     }
-    
+
+    @Override
+    public String getDescription() {
+        return "封包解锁神秘所有显示未解锁的笔记!";
+    }
+
     
     @Override
      public void onEnable() {
-
-
      }
 
     @EventTarget 

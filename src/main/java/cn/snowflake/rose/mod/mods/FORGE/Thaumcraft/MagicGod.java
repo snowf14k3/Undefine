@@ -1,4 +1,4 @@
-package cn.snowflake.rose.mod.mods.FORGE;
+package cn.snowflake.rose.mod.mods.FORGE.Thaumcraft;
 
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
@@ -20,8 +20,12 @@ public class MagicGod extends Module {
             this.working = false;
         }
     }
-    
-    
+
+    @Override
+    public String getDescription() {
+        return "封包解锁神秘所有要素!";
+    }
+
     @Override
      public void onEnable() {
 

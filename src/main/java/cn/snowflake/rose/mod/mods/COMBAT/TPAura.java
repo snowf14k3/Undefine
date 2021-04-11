@@ -102,6 +102,11 @@ public class TPAura extends Module
     }
 
     @Override
+    public String getDescription() {
+        return "百米大刀!";
+    }
+
+    @Override
     public void onEnable() {
         TPAura.timer.reset();
 

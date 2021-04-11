@@ -13,7 +13,10 @@ public class SecretClose extends Module {
         setChinesename("\u79d8\u5bc6\u5173\u95ed");
     }
 
-
+    @Override
+    public String getDescription() {
+        return "秘密关闭!";
+    }
     @EventTarget
     public void onpacket(EventPacket ep){
         if (ep.getType() == EventType.SEND) {

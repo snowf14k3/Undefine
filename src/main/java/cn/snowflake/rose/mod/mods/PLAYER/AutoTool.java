@@ -19,6 +19,10 @@ public class AutoTool extends Module {
         setChinesename("\u81ea\u52a8\u5de5\u5177");
     }
 
+    @Override
+    public String getDescription() {
+        return "挖矿自动切换工具!";
+    }
 
     @EventTarget
     public void onClickBlock(EventMotion e) {

@@ -15,6 +15,11 @@ public class VClipUP extends Module {
     }
 
     @Override
+    public String getDescription() {
+        return "向上瞬移(可穿墙)!";
+    }
+
+    @Override
     public void onEnable() {
         mc.thePlayer.setPosition(mc.thePlayer.posX, mc.thePlayer.posY + block.getValueState(), mc.thePlayer.posZ);
         set(false);

@@ -13,6 +13,11 @@ public class NoWeb extends Module {
         super("NoWeb","No Web", Category.PLAYER);
     }
 
+    @Override
+    public String getDescription() {
+        return "无视蜘蛛网!";
+    }
+
     @EventTarget
     public void onUpdate(EventUpdate e)   {
         ReflectionHelper.setPrivateValue(Entity.class,mc.thePlayer, false, ClientLoader.runtimeDeobfuscationEnabled ? "field_70134_J": "isInWeb");

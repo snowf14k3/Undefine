@@ -28,6 +28,11 @@ public class BlockOverlay extends Module {
         setChinesename("\u65b9\u5757\u0049\u0044\u663e\u793a");
     }
 
+    @Override
+    public String getDescription() {
+        return "方块ID显示!";
+    }
+
     @EventTarget
     public void onRender(EventRender2D event) {
         Block block = this.mc.theWorld.getBlock(this.mc.objectMouseOver.blockX,this.mc.objectMouseOver.blockY,this.mc.objectMouseOver.blockZ);

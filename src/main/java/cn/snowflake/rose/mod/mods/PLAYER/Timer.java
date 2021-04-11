@@ -15,7 +15,12 @@ public class Timer extends Module {
 		super("Timer", Category.PLAYER);
 		setChinesename("\u53d8\u901f\u9f7f\u8f6e");
 	}
-    
+
+    @Override
+    public String getDescription() {
+        return "变数齿轮!";
+    }
+
     @Override
     public void onDisable() {
     	super.onDisable();

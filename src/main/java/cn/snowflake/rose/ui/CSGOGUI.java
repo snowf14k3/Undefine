@@ -58,7 +58,6 @@ public class CSGOGUI extends GuiScreen {
     public float anim = 0;
     int selectedChar;
 
-
     @Override
     public boolean doesGuiPauseGame() {
         return false;
@@ -322,6 +321,7 @@ public class CSGOGUI extends GuiScreen {
         int x =  startX + 64;
         int y = startY + 10;
         int vY= startY + 12;
+        String Description = "";
         //for head
         for(int i = 0; i < getModsInCategory(Category.values()[selectCategory]).size(); ++i  ) {
             Module mod = (Module)getModsInCategory(Category.values()[selectCategory]).get(i);
@@ -371,9 +371,12 @@ public class CSGOGUI extends GuiScreen {
                         y+7 + modscrollY,
                         Colors.getColor((int)255, (int)40));
             }
+            if(isHovered(startX + 60, startY + 5, startX + 150, startY  + 189, mouseX, mouseY) && isHovered(x, y - 1 + modscrollY , x + 82, y+12 + modscrollY, mouseX, mouseY) ) {
+            Description = mod.getDescription();
+            }
 
             //mod name
-            font2.drawCenteredStringWithColor(bmod == mod ? "......"  : Client.chinese ? mod.getChinesename() : mod.getName() , x + 42, y + 2 + modscrollY,  new Color(200, 200, 200).getRGB());
+            font2.drawCenteredStringWithColor(bmod == mod ? "......"  : Client.chinese ? mod.getChinesename() : mod.working ? mod.getName() : "\247c"+mod.getName() , x + 42, y + 2 + modscrollY,  new Color(200, 200, 200).getRGB());
             // has value
             font2.drawCenteredString(mod.hasValues() ? mod.openValues ? "-" : "+" : "", x + 76 , y + 2 + modscrollY, new Color(200, 200, 200).getRGB());
 
@@ -389,13 +392,13 @@ public class CSGOGUI extends GuiScreen {
             }
 
             //mod open
-            if(isHovered(startX + 60, startY + 5, startX + 150, startY  + 189, mouseX, mouseY) && isHovered(x, y - 1 + modscrollY, x + 82, y+12 + modscrollY, mouseX, mouseY) && handler.canExcecute() && mod.working) {
+            if(isHovered(startX + 60, startY + 5, startX + 150, startY  + 189, mouseX, mouseY) && isHovered(x, y - 1 + modscrollY, x + 82, y+12 + modscrollY, mouseX, mouseY) && handler.canExcecute()) {
                 mod.set(!mod.isEnabled());
                 Client.instance.fileMgr.saveMods();
             }
             String ValueName;
             //Open Value
-            if(isHovered(startX + 60, startY + 5, startX + 150, startY  + 189, mouseX, mouseY) && isHovered(x, y - 1 + modscrollY , x + 82, y+12 + modscrollY, mouseX, mouseY) && handlerRight.canExcecute()) {
+            if(isHovered(startX + 60, startY + 5, startX + 150, startY  + 189, mouseX, mouseY) && isHovered(x, y - 1 + modscrollY , x + 82, y+12 + modscrollY, mouseX, mouseY) && handlerRight.canExcecute() && !mod.openValues) {
                 mod.openValues = !mod.openValues;
                 currentMod = mod;
                 this.scrollY = 0.0F;
@@ -429,8 +432,6 @@ public class CSGOGUI extends GuiScreen {
                 if(mod.openValues) {
                     if (BBoolean) {
                         if (value.isValueString) {
-
-
                             RenderUtil.drawRoundedRectCSGO(x + 145, vY + scrollY-1, x + 230, vY + 9 + scrollY,
                                     new Color(32, 32, 32).getRGB());
 
@@ -632,21 +633,23 @@ public class CSGOGUI extends GuiScreen {
         }
 
 
-        //buttom bar
-        RenderUtil.drawRect(startX + 60, startY + 189, startX + 300, startY  + 196,new Color(25, 25, 25).getRGB());
-        RenderUtil.drawRect(startX + 60, startY + 189.5, startX + 300, startY  + 196,new Color(48, 48, 48).getRGB());
-        RenderUtil.drawRect(startX + 60, startY + 190, startX + 298, startY  + 196,new Color(25, 25, 25).getRGB());
-
         //top bar
         RenderUtil.drawRect(startX + 60, startY - 8, startX + 300, startY  + 6,new Color(0, 0, 0).getRGB());
         RenderUtil.drawRect(startX + 60, startY - 8, startX + 300, startY  + 5.5,new Color(48, 48, 48).getRGB());
         RenderUtil.drawRect(startX + 60, startY - 8, startX + 300, startY  + 5,new Color(25, 25, 25).getRGB());
 
+        mc.fontRenderer.drawString(Description,startX+62,startY-4,new Color(180,180,180).getRGB());
+
+        //buttom bar
+        RenderUtil.drawRect(startX + 60, startY + 189, startX + 300, startY  + 196,new Color(25, 25, 25).getRGB());
+        RenderUtil.drawRect(startX + 60, startY + 189.5, startX + 300, startY  + 196,new Color(48, 48, 48).getRGB());
+        RenderUtil.drawRect(startX + 60, startY + 190, startX + 298, startY  + 196,new Color(25, 25, 25).getRGB());
 
         RenderUtil.rectangleBordered((double)((double)(startX - 20) - 0.3), (double)((double)(startY - 8) - 0.3-0.5), (double)((double)(startX + 300) + 0.5), (double)((double)(startY + 198) + 0.3+0.5), (double)0.5, (int) Colors.getColor((int)0, (int)0), (int)Colors.getColor((int)10, (int)((int)255)));
         RenderUtil.rectangleBordered((double)(startX - 20), (double)(startY - 8-0.5), (double)(startX + 300), (double)(startY + 198+0.5), (double)0.5, (int)Colors.getColor((int)0, (int)0), (int)Colors.getColor((int)60, (int)((int)255)));
         RenderUtil.rectangleBordered((double)(startX - 20 + 2.0f), (double)(startY - 8 + 2.0f-0.5), (double)(startX + 300 - 2.0f), (double)(startY + 198 - 2.0f+0.5), (double)0.5, (int)Colors.getColor((int)0, (int)0), (int)Colors.getColor((int)60, (int)((int)255)));
         RenderUtil.rectangleBordered((double)((double)(startX - 20) + 0.6), (double)((double)(startY - 8) + 0.6-0.5), (double)((double)(startX + 300) - 0.5), (double)((double)(startY + 198) - 0.6+0.5), (double)1.3, (int)Colors.getColor((int)0, (int)0), (int)Colors.getColor((int)40, (int)((int)255)));
+
 
         GL11.glDisable(3089);
         GL11.glPopMatrix();

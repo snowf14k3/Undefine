@@ -17,6 +17,11 @@ public class NoFall extends Module {
         setChinesename("\u65e0\u6389\u843d\u4f24\u5bb3");
     }
 
+    @Override
+    public String getDescription() {
+        return "无视摔落伤害!";
+    }
+
     @EventTarget
     public void OnPre(EventMotion e) {
         if(mode.isCurrentMode("onGround")) {

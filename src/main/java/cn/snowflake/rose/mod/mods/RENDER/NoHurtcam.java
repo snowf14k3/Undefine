@@ -11,6 +11,11 @@ public class NoHurtcam extends Module {
         setChinesename("\u65e0\u4f24\u5bb3\u663e\u793a");
     }
 
+    @Override
+    public String getDescription() {
+        return "无伤害屏幕抖动!";
+    }
+
     public static boolean no;
 
 

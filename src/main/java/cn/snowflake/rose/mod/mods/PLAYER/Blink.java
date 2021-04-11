@@ -28,6 +28,11 @@ public class Blink extends Module {
         setChinesename("\u5206\u8eab\u77ac\u79fb");
     }
 
+    @Override
+    public String getDescription() {
+        return "分身瞬移!";
+    }
+
     public void onEnable() {
         if (this.mc.thePlayer != null && this.mc.theWorld != null) {
             double x = this.mc.thePlayer.posX;

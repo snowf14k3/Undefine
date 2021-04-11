@@ -11,6 +11,11 @@ public class NoCommand extends Module {
     }
 
     @Override
+    public String getDescription() {
+        return "关闭命令台!";
+    }
+
+    @Override
     public void onDisable() {
         n = false;
         super.onDisable();

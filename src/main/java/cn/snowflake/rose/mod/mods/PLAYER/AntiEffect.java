@@ -14,6 +14,10 @@ public class AntiEffect extends Module {
     }
     private final Potion[] badEffects = new Potion[]{Potion.moveSlowdown, Potion.digSlowdown, Potion.harm, Potion.confusion, Potion.blindness, Potion.hunger, Potion.weakness, Potion.poison, Potion.wither};
 
+    @Override
+    public String getDescription() {
+        return "移除负面药水!";
+    }
     @EventTarget
     public void onUpdate(EventUpdate e){
         setDisplayName("Packet");

@@ -31,6 +31,12 @@ public class MineBot extends Module {
         super("MineBot", "Mine Bot", Category.WORLD );
         setChinesename("\u6316\u77ff\u673a\u5668\u4eba");
     }
+
+    @Override
+    public String getDescription() {
+        return "挖矿机器人";
+    }
+
     private boolean isInventoryFull() {
         int id = 36;
         while (id < 45) {

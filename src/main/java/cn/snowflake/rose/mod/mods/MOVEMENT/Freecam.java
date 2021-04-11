@@ -27,6 +27,11 @@ public class Freecam extends Module {
         setChinesename("\u7075\u9b42\u51fa\u7a8d");
     }
 
+    @Override
+    public String getDescription() {
+        return "灵魂出窍!";
+    }
+
     public EntityOtherPlayerMP oldentity;
     @Override
     public void onEnable() {

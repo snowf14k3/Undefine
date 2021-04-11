@@ -47,6 +47,11 @@ public class AntiAim extends Module {
     }
 
     @Override
+    public String getDescription() {
+        return "自瞄!";
+    }
+
+    @Override
     public void onDisable() {
         this.fake1 = true;
         this.lastAngles = null;

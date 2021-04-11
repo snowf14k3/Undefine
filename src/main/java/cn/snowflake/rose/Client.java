@@ -4,6 +4,7 @@ import cn.snowflake.rose.antianticheat.CatAntiCheat;
 import cn.snowflake.rose.antianticheat.Decimation;
 import cn.snowflake.rose.antianticheat.HXAntiCheat;
 import cn.snowflake.rose.events.impl.EventWorldChange;
+import cn.snowflake.rose.events.impl.Events;
 import cn.snowflake.rose.management.CommandManager;
 import cn.snowflake.rose.management.FileManager;
 import cn.snowflake.rose.management.FontManager;
@@ -22,6 +23,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.injection.ClientLoader;
+import net.minecraftforge.common.MinecraftForge;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -50,7 +52,6 @@ public class Client {
 
     public Client(){
         EventManager.register(this);
-//        MinecraftForge.EVENT_BUS.register(new Events());
         new Season();
         DEBUG = true;//Debug
         init = true;
@@ -145,15 +146,15 @@ public class Client {
     public static void onGameLoop() {
 
         if (!Client.init){
-
+            Client.init = true;
 
 //            new AnotherAntiCheat();
             new CatAntiCheat();
             new HXAntiCheat();
             new Decimation();
 //            checkQQ();
+            MinecraftForge.EVENT_BUS.register(new Events());
             new Client();
-            Client.init = true;
             if(Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().theWorld != null){
                 ChatUtil.sendClientMessage("Injected Successfully !");
             }

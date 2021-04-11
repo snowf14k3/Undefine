@@ -28,6 +28,11 @@ public class Xray extends Module {
     }
 
     @Override
+    public String getDescription() {
+        return "方块透视!";
+    }
+
+    @Override
     public void onEnable() {
         x = true;
         this.mc.renderGlobal.loadRenderers();

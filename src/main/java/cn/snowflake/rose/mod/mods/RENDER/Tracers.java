@@ -16,6 +16,12 @@ public class Tracers extends Module {
         setChinesename("\u73a9\u5bb6\u7ebf\u6761");
     }
 
+
+	@Override
+	public String getDescription() {
+		return "玩家线条!";
+	}
+
     @EventTarget
     public void On3D(EventRender3D e) {
     	try{

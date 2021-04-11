@@ -31,6 +31,10 @@ public class Spammer extends Module {
         setChinesename("\u81ea\u52a8\u804a\u5929");
     }
 
+    @Override
+    public String getDescription() {
+        return "自动刷屏!";
+    }
     public void onDisable() {
         this.state = 0.0D;
         num = 0;

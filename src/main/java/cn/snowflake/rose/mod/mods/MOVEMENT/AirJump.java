@@ -15,6 +15,11 @@ public class AirJump
     }
 
     @Override
+    public String getDescription() {
+        return "踏空跳!";
+    }
+
+    @Override
     public void onEnable() {
         super.onEnable();
     }

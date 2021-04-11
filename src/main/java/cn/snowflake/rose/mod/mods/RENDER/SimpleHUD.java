@@ -21,7 +21,12 @@ public class SimpleHUD extends Module {
 		super("SimpleHUD", Category.RENDER);
 		setChinesename("\u7b80\u5355\u754c\u9762");
 	}
-	
+
+	@Override
+	public String getDescription() {
+		return "简单界面!";
+	}
+
 	@Override
 	public void onEnable() {
 		super.onEnable();

@@ -21,7 +21,10 @@ public class Criticals extends Module {
         modes.addValue("Packet");
         setChinesename("\u5200\u7206");
     }
-
+    @Override
+    public String getDescription() {
+        return "刀刀暴击!";
+    }
     public static  double CodeByLiquidSlowly(){
         // by liquidslowly
         double i = 0.0f;

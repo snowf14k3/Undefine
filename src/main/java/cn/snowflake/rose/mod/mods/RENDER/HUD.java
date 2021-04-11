@@ -35,7 +35,12 @@ public class HUD extends Module {
         this.rainbow.addValue("Gray");
         this.rainbow.addValue("Rainbow");
         this.rainbow.addValue("Green");
-        setChinesename("\u529f\u80fd\u663e\u793a");
+        setChinesename("");
+    }
+
+    @Override
+    public String getDescription() {
+        return "功能显示!";
     }
 
     public void method1(){

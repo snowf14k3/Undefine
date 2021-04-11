@@ -25,7 +25,12 @@ public class CrossHair extends Module{
 		mode.mode.add("Green");
 		setChinesename("\u51c6\u5fc3");
 	}
-	
+
+	@Override
+	public String getDescription() {
+		return "准心!";
+	}
+
 	@EventTarget
 	public void On2d(EventRender2D e) {
 		 double gap = 1.25D;

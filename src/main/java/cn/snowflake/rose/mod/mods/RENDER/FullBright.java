@@ -19,6 +19,11 @@ public class FullBright extends Module {
         setChinesename("\u65e0\u9650\u591c\u89c6");
     }
 
+    @Override
+    public String getDescription() {
+        return "无限夜市!";
+    }
+
     @EventTarget
     public void onUpdate(EventUpdate e){
         setDisplayName("Potion");

@@ -45,6 +45,11 @@ public class TargetStrafe extends Module {
         setChinesename("\u7ed5\u76ee\u6807\u8f6c\u5708");
     }
 
+	@Override
+	public String getDescription() {
+		return "绕目标转圈(开启杀戮和加速同时按住空格)!";
+	}
+
 	@EventTarget
 	public void onRender(EventRender3D event) {
 		if (Aura.target != null && esp.getValueState()) {
@@ -126,16 +131,15 @@ public class TargetStrafe extends Module {
     }
     
 	public boolean needToChange(double x, double z) {
-	
-		if (this.mc.thePlayer.isCollidedHorizontally && this.mc.thePlayer.ticksExisted % 4 == 0) 
+		if (mc.thePlayer.isCollidedHorizontally && mc.thePlayer.ticksExisted % 2 == 0)
 			return true;
-		for (int i = (int) (this.mc.thePlayer.posY + 4.0D); i >= 0; i--) {
+		for (int i = (int) (mc.thePlayer.posY + 4.0D); i >= 0; i--) {
 			BlockPos playerPos = new BlockPos(x, i, z);
-			if (this.mc.theWorld.getBlock(playerPos.x,playerPos.y,playerPos.z).equals(Blocks.lava)
-			|| this.mc.theWorld.getBlock(playerPos.x,playerPos.y,playerPos.z).equals(Blocks.fire)) {
+			if (mc.theWorld.getBlock(playerPos.x,playerPos.y,playerPos.z).equals(Blocks.lava)
+			|| mc.theWorld.getBlock(playerPos.x,playerPos.y,playerPos.z).equals(Blocks.fire)) {
 				return true;
 			}
-			if (!this.mc.theWorld.isAirBlock(playerPos.x,playerPos.y,playerPos.z))
+			if (!mc.theWorld.isAirBlock(playerPos.x,playerPos.y,playerPos.z))
 				return false;
 		}
 		return true;

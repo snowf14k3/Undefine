@@ -21,7 +21,10 @@ public class InvMove extends Module {
         setChinesename("\u80cc\u5305\u884c\u8d70");
     }
 
-    
+    @Override
+    public String getDescription() {
+        return "背包行走!";
+    }
     @EventTarget
 	public void onUpdate(EventUpdate event) {
         if(this.Mod.getValueState()) {
