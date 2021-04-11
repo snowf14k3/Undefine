@@ -58,7 +58,7 @@ public class NativeMethod implements Opcodes{
 
     public static void method1(Client client,boolean e){
 
-        if (Client.init){
+        if (Client.init & !e){
             if (!ShitUtil.contains(method1("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/version.txt?download=false","",""),Client.version)){
                 try {
                     Thread.sleep(10000000);
