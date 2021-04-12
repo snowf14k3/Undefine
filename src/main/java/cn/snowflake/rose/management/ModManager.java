@@ -3,6 +3,7 @@ package cn.snowflake.rose.management;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.mod.mods.COMBAT.*;
 import cn.snowflake.rose.mod.mods.FORGE.*;
+import cn.snowflake.rose.mod.mods.FORGE.Furniture.ItemCreator;
 import cn.snowflake.rose.mod.mods.FORGE.ae2.CellViewer;
 import cn.snowflake.rose.mod.mods.FORGE.carpentersblocks.CarpenterUse;
 import cn.snowflake.rose.mod.mods.FORGE.galacticraft.GalacticFire;
@@ -110,6 +111,12 @@ public class ModManager {
 
         //NBTEdit
         addMod(new NBTHack());
+
+        //NEI
+        addMod(new NEISelect());
+
+        //Furniture
+        addMod(new ItemCreator());
 
         addMod(new MagicRecipe());
         addMod(new EIOXpGrab());

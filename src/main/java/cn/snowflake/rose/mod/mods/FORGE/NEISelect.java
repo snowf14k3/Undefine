@@ -18,7 +18,7 @@ public class NEISelect extends Module {
         try {
             Class.forName("codechicken.nei.guihook.GuiContainerManager");
         } catch (Exception ex) {
-           this.set(false);
+            setWorking(false);
         }
     }
 
@@ -54,7 +54,7 @@ public class NEISelect extends Module {
                     STATIC_ITEMSTACK = item.copy().splitStack(count);
                     STATIC_NBT = STATIC_ITEMSTACK.getTagCompound() == null ? new NBTTagCompound() : STATIC_ITEMSTACK.getTagCompound();
                 }
-                Client.instance.getNotificationManager().addNotification(this,"ItemStack selected", Notification.Type.SUCCESS);
+                Client.instance.getNotificationManager().addNotification(this,"ItemStack selected!", Notification.Type.SUCCESS);
             } catch (Exception ignored) {
 
             }
