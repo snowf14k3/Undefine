@@ -1,11 +1,13 @@
 package cn.snowflake.rose.mod.mods.FORGE.ae2;
 
+import cn.snowflake.rose.Client;
 import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
+import cn.snowflake.rose.notification.Notification;
 import cn.snowflake.rose.utils.client.ChatUtil;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.client.gui.FontRenderer;
@@ -68,19 +70,19 @@ public class CellViewer extends Module {
                             }
                         }
                     } catch (Exception ex) {
-                      ChatUtil.sendClientMessage("\247cError");
+                      Client.instance.getNotificationManager().addNotification(this,"\247cError", Notification.Type.ERROR);
                     }
                 }
                 if (cell == null) {
                     return;
                 }
                 if (!(Class.forName("appeng.items.storage.ItemBasicStorageCell").isInstance(cell.getItem()))) {
-                    ChatUtil.sendClientMessage("\247cNot a cell");
+                    Client.instance.getNotificationManager().addNotification(this,"\247cNot a cell", Notification.Type.ERROR);
                     return;
                 }
                 NBTTagCompound tag = cell.stackTagCompound;
                 if (tag == null) {
-                    ChatUtil.sendClientMessage("\247Cell is empty (new)");
+                    Client.instance.getNotificationManager().addNotification(this,"\247Cell is empty (new)", Notification.Type.INFO);
                     return;
                 }
                 try {
@@ -98,6 +100,7 @@ public class CellViewer extends Module {
                     mc.displayGuiScreen(new CellViewerGui(new CellViewerContainer(stacks.toArray(new ItemStack[stacks.size()]), cell.getDisplayName())));
                 } catch (Exception e) {
                     ChatUtil.sendClientMessage("\247bError");
+                    Client.instance.getNotificationManager().addNotification(this,"\247bError", Notification.Type.ERROR);
                 }
             }
             prevState = newState;

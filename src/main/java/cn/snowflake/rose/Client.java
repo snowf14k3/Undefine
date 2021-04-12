@@ -3,6 +3,7 @@ package cn.snowflake.rose;
 import cn.snowflake.rose.antianticheat.CatAntiCheat;
 import cn.snowflake.rose.antianticheat.Decimation;
 import cn.snowflake.rose.antianticheat.HXAntiCheat;
+import cn.snowflake.rose.events.impl.EventRender2D;
 import cn.snowflake.rose.events.impl.EventWorldChange;
 import cn.snowflake.rose.events.impl.Events;
 import cn.snowflake.rose.management.CommandManager;
@@ -11,19 +12,24 @@ import cn.snowflake.rose.management.FontManager;
 import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.mods.WORLD.IRC;
 import cn.snowflake.rose.mod.mods.WORLD.Xray;
+import cn.snowflake.rose.notification.NotificationManager;
 import cn.snowflake.rose.ui.skeet.SkeetClickGui;
 import cn.snowflake.rose.ui.skeet.TTFFontRenderer;
 import cn.snowflake.rose.utils.client.ChatUtil;
 import cn.snowflake.rose.utils.time.TimeHelper;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
+import com.darkmagician6.eventapi.events.Event;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ModContainer;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiChat;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.injection.ClientLoader;
 import net.minecraftforge.common.MinecraftForge;
+import scala.collection.parallel.ParIterableLike;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -34,7 +40,7 @@ import java.util.Objects;
 public class Client {
     public static String shitname =null;
     public static String name = "Season";
-    public static String version = "1.3";
+    public static String version = "1.1-fix";
     public static Client instance;
     public static boolean init = false;
     public static TTFFontRenderer fs;
@@ -49,6 +55,7 @@ public class Client {
     public static String username = null;
     public static SkeetClickGui clickGui;
     public static boolean chinese ;
+    public NotificationManager notificationmgr = new NotificationManager();
 
     public Client(){
         EventManager.register(this);
@@ -81,7 +88,9 @@ public class Client {
         return clickGui;
     }
 
-
+    public NotificationManager getNotificationManager() {
+        return notificationmgr;
+    }
     @EventTarget
     public void dd(EventWorldChange dd){
         Objects.requireNonNull(ModManager.getModByName("ServerCrasher")).set(false);

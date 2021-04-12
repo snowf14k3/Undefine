@@ -1,9 +1,12 @@
 package cn.snowflake.rose.mod.mods.FORGE.carpentersblocks;
 
+import cn.snowflake.rose.Client;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
+import cn.snowflake.rose.notification.Notification;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.minecraft.network.play.client.C17PacketCustomPayload;
@@ -52,6 +55,7 @@ public class CarpenterUse extends Module {
                     buf.writeInt(position.sideHit);
                     C17PacketCustomPayload packet = new C17PacketCustomPayload("CarpentersBlocks", buf);
                     mc.thePlayer.sendQueue.addToSendQueue(packet);
+                    Client.instance.getNotificationManager().addNotification(this,"Open!", Notification.Type.SUCCESS);
                 }
             } catch (Exception e) {
             }

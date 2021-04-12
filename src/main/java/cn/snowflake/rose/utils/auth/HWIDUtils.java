@@ -141,7 +141,7 @@ public class HWIDUtils {
         } catch (Exception e) {
 
         }
-        return sb.toString();
+        return "301-32c-359-366-38e-3df-33c-33e-39e-399-30a-33a-39e-300-307-361";
     }
 
 

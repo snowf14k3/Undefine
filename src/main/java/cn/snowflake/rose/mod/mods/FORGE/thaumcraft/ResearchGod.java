@@ -29,7 +29,7 @@ public class ResearchGod extends Module {
             Class.forName("thaumcraft.api.research.ResearchItem");
             Class.forName("thaumcraft.common.lib.research.ResearchManager");
             Class.forName("thaumcraft.api.aspects.AspectList");
-        } catch (Exception var2) {
+        } catch (Exception e) {
             this.working = false;
         }
     }
@@ -52,21 +52,21 @@ public class ResearchGod extends Module {
         }
         this.tickId = 0;
         try {
-            final Field f = Class.forName("thaumcraft.client.gui.GuiResearchPopup").getDeclaredField("theResearch");
+            Field f = Class.forName("thaumcraft.client.gui.GuiResearchPopup").getDeclaredField("theResearch");
             f.setAccessible(true);
-            ((Collection)f.get(Class.forName("thaumcraft.client.lib.ClientTickEventsFML").getField("researchPopup").get(null))).clear();
-            final LinkedHashMap<String, Object> researchCategories = (LinkedHashMap<String, Object>)this.getPrivateValue("thaumcraft.api.research.ResearchCategories", "researchCategories", null);
-            for (final Object listObj : researchCategories.values()) {
-                final Map<String, Object> research = (Map<String, Object>)this.getPrivateValue("thaumcraft.api.research.ResearchCategoryList", "research", listObj);
-                for (final Object item : research.values()) {
-                    final String[] parents = (String[])this.getPrivateValue("thaumcraft.api.research.ResearchItem", "parents", item);
-                    final String[] parentsHidden = (String[])this.getPrivateValue("thaumcraft.api.research.ResearchItem", "parentsHidden", item);
-                    final String key = (String)this.getPrivateValue("thaumcraft.api.research.ResearchItem", "key", item);
-                    if (!this.isResearchComplete(key)) {
+            ((Collection) f.get(Class.forName("thaumcraft.client.lib.ClientTickEventsFML").getField("researchPopup").get(null))).clear();
+            LinkedHashMap<String, Object> researchCategories = (LinkedHashMap<String, Object>) getPrivateValue("thaumcraft.api.research.ResearchCategories", "researchCategories", null);
+            for (Object listObj : researchCategories.values()) {
+                Map<String, Object> research = (Map<String, Object>) getPrivateValue("thaumcraft.api.research.ResearchCategoryList", "research", listObj);
+                for (Object item : research.values()) {
+                    String[] parents = (String[]) getPrivateValue("thaumcraft.api.research.ResearchItem", "parents", item);
+                    String[] parentsHidden = (String[]) getPrivateValue("thaumcraft.api.research.ResearchItem", "parentsHidden", item);
+                    String key = (String) getPrivateValue("thaumcraft.api.research.ResearchItem", "key", item);
+                    if (!isResearchComplete(key)) {
                         boolean doIt = true;
                         if (parents != null) {
-                            for (final String parent : parents) {
-                                if (!this.isResearchComplete(parent)) {
+                            for (String parent : parents) {
+                                if (!isResearchComplete(parent)) {
                                     doIt = false;
                                     break;
                                 }
@@ -76,8 +76,8 @@ public class ResearchGod extends Module {
                             continue;
                         }
                         if (parentsHidden != null) {
-                            for (final String parent : parentsHidden) {
-                                if (!this.isResearchComplete(parent)) {
+                            for (String parent : parentsHidden) {
+                                if (!isResearchComplete(parent)) {
                                     doIt = false;
                                     break;
                                 }
@@ -86,7 +86,7 @@ public class ResearchGod extends Module {
                         if (!doIt) {
                             continue;
                         }
-                        for (final Object aObj : this.getAspects(item)) {
+                        for (Object aObj : getAspects(item)) {
                             if (aObj == null) {
                                 doIt = false;
                                 break;
@@ -95,36 +95,36 @@ public class ResearchGod extends Module {
                         if (!doIt) {
                             continue;
                         }
-                        this.doResearch(key);
+                        doResearch(key);
                     }
                 }
             }
+        } catch (Exception ee) {
         }
-        catch (Exception ex) {}
     }
     
     
     private Object getPrivateValue(final String className, final String fieldName, final Object from) throws Exception {
         return ReflectionHelper.findField((Class)Class.forName(className), new String[] { fieldName }).get(from);
     }
-    
-    private boolean isResearchComplete(final String researchId) throws Exception {
-        return (boolean)Class.forName("thaumcraft.common.lib.research.ResearchManager").getMethod("isResearchComplete", String.class, String.class).invoke(null, mc.thePlayer.getCommandSenderName(), researchId);
+
+    private boolean isResearchComplete(String researchId) throws Exception {
+        return (Boolean) Class.forName("thaumcraft.common.lib.research.ResearchManager").getMethod("isResearchComplete", String.class, String.class).invoke(null, mc.thePlayer.getCommandSenderName(), researchId);
     }
-    
-    private Object[] getAspects(final Object item) throws Exception {
-        final Object aspectListObj = this.getPrivateValue("thaumcraft.api.research.ResearchItem", "tags", item);
-        return (Object[])Class.forName("thaumcraft.api.aspects.AspectList").getMethod("getAspects", (Class<?>[])new Class[0]).invoke(aspectListObj, new Object[0]);
+
+    private Object[] getAspects(Object item) throws Exception {
+        Object aspectListObj = getPrivateValue("thaumcraft.api.research.ResearchItem", "tags", item);
+        return (Object[]) Class.forName("thaumcraft.api.aspects.AspectList").getMethod("getAspects").invoke(aspectListObj);
     }
-    
-    private void doResearch(final String researchId) {
-        final ByteBuf buf = Unpooled.buffer(0);
+
+    private void doResearch(String researchId) {
+        ByteBuf buf = Unpooled.buffer(0);
         buf.writeByte(14);
         ByteBufUtils.writeUTF8String(buf, researchId);
         buf.writeInt(mc.thePlayer.dimension);
         ByteBufUtils.writeUTF8String(buf, mc.thePlayer.getCommandSenderName());
         buf.writeByte(0);
-        final C17PacketCustomPayload packet = new C17PacketCustomPayload("thaumcraft", buf);
+        C17PacketCustomPayload packet = new C17PacketCustomPayload("thaumcraft", buf);
         mc.thePlayer.sendQueue.addToSendQueue(packet);
     }
     

@@ -28,22 +28,18 @@ public class MagicGod extends Module {
 
     @Override
      public void onEnable() {
-
         try {
-           ArrayList aspects = (ArrayList)Class.forName("thaumcraft.api.aspects.Aspect").getMethod("getCompoundAspects").invoke((Object)null);
-           Iterator var2 = aspects.iterator();
-
-           while(var2.hasNext()) {
-              Object aspect = var2.next();
-              Object aspect1 = ((Object[])((Object[])Class.forName("thaumcraft.api.aspects.Aspect").getMethod("getComponents").invoke(aspect)))[0];
-              Object aspect2 = ((Object[])((Object[])Class.forName("thaumcraft.api.aspects.Aspect").getMethod("getComponents").invoke(aspect)))[1];
-              String a1 = (String)Class.forName("thaumcraft.api.aspects.Aspect").getMethod("getTag").invoke(aspect1);
-              String a2 = (String)Class.forName("thaumcraft.api.aspects.Aspect").getMethod("getTag").invoke(aspect2);
-              this.doGive(a1, a2);
+            ArrayList aspects = (ArrayList) Class.forName("thaumcraft.api.aspects.Aspect").getMethod("getCompoundAspects").invoke(null);
+            for (Object aspect : aspects) {
+                Object aspect1 = ((Object[]) Class.forName("thaumcraft.api.aspects.Aspect").getMethod("getComponents").invoke(aspect))[0];
+                Object aspect2 = ((Object[]) Class.forName("thaumcraft.api.aspects.Aspect").getMethod("getComponents").invoke(aspect))[1];
+                String a1 = (String) Class.forName("thaumcraft.api.aspects.Aspect").getMethod("getTag").invoke(aspect1);
+                String a2 = (String) Class.forName("thaumcraft.api.aspects.Aspect").getMethod("getTag").invoke(aspect2);
+                doGive(a1, a2);
            }
 
            this.set(false);
-        } catch (Exception var8) {
+        } catch (Exception ignored) {
         }
 
      }
@@ -60,7 +56,7 @@ public class MagicGod extends Module {
         ByteBufUtils.writeUTF8String(buf, a2);
         buf.writeBoolean(true);
         buf.writeBoolean(true);
-        final C17PacketCustomPayload packet = new C17PacketCustomPayload("thaumcraft", buf);
+        C17PacketCustomPayload packet = new C17PacketCustomPayload("thaumcraft", buf);
         mc.thePlayer.sendQueue.addToSendQueue(packet);
     }
     

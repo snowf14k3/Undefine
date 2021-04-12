@@ -3,6 +3,7 @@ package cn.snowflake.rose.mod.mods.RENDER;
 import cn.snowflake.rose.Client;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
+import cn.snowflake.rose.notification.Notification;
 import cn.snowflake.rose.ui.CSGOGUI;
 import cn.snowflake.rose.utils.Value;
 import net.minecraft.client.Minecraft;

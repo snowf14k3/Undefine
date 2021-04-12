@@ -11,7 +11,10 @@ import cn.snowflake.rose.utils.asm.ASMUtil;
 import com.darkmagician6.eventapi.EventManager;
 import me.skids.margeleisgay.AuthMain;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.injection.ClientLoader;
 import org.lwjgl.input.Keyboard;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
@@ -26,6 +29,14 @@ public class TransformMinecraft implements Opcodes{
         if (method.name.equals("func_152348_aa")) {
             method.instructions.insert(method.instructions.getFirst(),new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(TransformMinecraft.class), "dispatchKeypressesHook", "()V", false));
         }
+        if(method.name.equals("func_71411_J") || method.name.equals("runGameLoop")){
+            AbstractInsnNode target = ASMUtil.findMethodInsn(method,INVOKEVIRTUAL,"cpw/mods/fml/common/FMLCommonHandler", "onRenderTickEnd", "(F)V");
+           if(target != null){
+               method.instructions.insert(target,new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(TransformMinecraft.class), "drawgui", "()V", false));
+           }
+
+        }
+
         if (method.name.equals("displayGuiScreen") || method.name.equals("func_147108_a")){
             AbstractInsnNode abstractInsnNode = ASMUtil.findFieldInsnNode(method,GETFIELD, "net/minecraftforge/client/event/GuiOpenEvent", "gui", "Lnet/minecraft/client/gui/GuiScreen;");
             if (abstractInsnNode != null){
@@ -36,6 +47,18 @@ public class TransformMinecraft implements Opcodes{
             }
         }
 
+    }
+
+    public static void drawgui(){
+        ScaledResolution scaledresolution = new ScaledResolution(Minecraft.getMinecraft(),Minecraft.getMinecraft().displayWidth,Minecraft.getMinecraft().displayHeight);
+        float y = scaledresolution.getScaledHeight() - 10;
+        if(Minecraft.getMinecraft().theWorld != null)
+        if(!(Minecraft.getMinecraft().currentScreen instanceof GuiChat))
+            if (Client.instance.getNotificationManager() != null && Client.instance.getNotificationManager().getNotifications() != null)
+                for (int n = 0; n < Client.instance.getNotificationManager().getNotifications().size(); n++) {
+                    Client.instance.getNotificationManager().getNotifications().get(n).draw(y);
+                    y -= 14;
+                }
     }
 
     public static void openGui(GuiScreen guiScreen){
