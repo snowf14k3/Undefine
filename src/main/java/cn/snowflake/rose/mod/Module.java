@@ -1,6 +1,9 @@
 package cn.snowflake.rose.mod;
 
 import cn.snowflake.rose.Client;
+import cn.snowflake.rose.management.ModManager;
+import cn.snowflake.rose.mod.mods.RENDER.Notifications;
+import cn.snowflake.rose.notification.Notification;
 import cn.snowflake.rose.utils.Value;
 import com.darkmagician6.eventapi.EventManager;
 import net.minecraft.client.Minecraft;
@@ -37,6 +40,9 @@ public class Module {
     }
 
     public void onDisable() {
+        if (ModManager.getModByClass(Notifications.class).isEnabled){
+            Client.instance.getNotificationManager().addNotification("Module", "\u00a7c" + this.getName()+" Disabled !", Notification.Type.INFO);
+        }
     }
     public boolean isHidden() {
         return hidden;
@@ -130,6 +136,9 @@ public class Module {
     }
 
     public void onEnable() {
+        if (ModManager.getModByClass(Notifications.class).isEnabled){
+            Client.instance.getNotificationManager().addNotification("Module", "\u00a7a" + this.getName()+" Enabled !", Notification.Type.INFO);
+        }
     }
 
     public int getValueSize(){

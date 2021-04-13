@@ -34,7 +34,6 @@ public class IRC extends Module {
     }
 
     public void processMessage(String msg1) {
-        System.out.println(msg1);
         msg1 = msg1.replace("\ufffd", "");//删除傻逼异常字符
         if (msg1.contains(HWIDUtils.getHWID())) {
             setDisplayName("connected");
@@ -88,7 +87,6 @@ public class IRC extends Module {
                 br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 String test = "#IRC#Login::"+HWIDUtils.getHWID() ;
                 sendIRCMessage(test,false);
-//                connect.sleep(3000L);
                 messageThread = true;
                 new readMessage().start();
             }catch (Throwable e) {
