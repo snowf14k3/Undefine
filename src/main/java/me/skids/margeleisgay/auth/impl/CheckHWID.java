@@ -28,7 +28,10 @@ public class CheckHWID implements AuthModule {
 	public void onDisable() {
 		
 	}
-	public boolean method1(){
+
+
+	@Override
+	public boolean run() {
 		if(!targetHWID.contains(selfHWID) &&
 				!(targetHWID.indexOf(selfHWID.toString()) > -1) &&
 				!ShitUtil.contains(targetHWID,selfHWID)
@@ -36,11 +39,6 @@ public class CheckHWID implements AuthModule {
 			return false;
 		}
 		return true;
-	}
-
-	@Override
-	public boolean run() {
-		return method1();
 	}
 
 }
