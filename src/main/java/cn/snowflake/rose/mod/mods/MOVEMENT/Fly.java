@@ -11,6 +11,7 @@ import cn.snowflake.rose.utils.client.PlayerUtil;
 import cn.snowflake.rose.utils.time.TimeHelper;
 import cn.snowflake.rose.utils.time.WaitTimer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.AxisAlignedBB;
@@ -58,6 +59,10 @@ public class Fly extends Module {
             }
             if (antikick.getValueState() ) {
                 mc.thePlayer.posY -= 0.05d;
+//                if(groundTimer.hasTimeElapsed(1000L,true)){
+//                    this.mc.thePlayer.sendQueue.addToSendQueue((Packet)new C03PacketPlayer(true));
+//                    this.handleVanillaKick();
+//                }
             }
         }
 
@@ -65,6 +70,10 @@ public class Fly extends Module {
             mc.thePlayer.capabilities.isFlying = true;
             if (antikick.getValueState() ) {
                 mc.thePlayer.posY -= 0.05d;
+//                if(groundTimer.hasTimeElapsed(1000L,true)){
+//                    this.mc.thePlayer.sendQueue.addToSendQueue((Packet)new C03PacketPlayer(true));
+//                    this.handleVanillaKick();
+//                }
             }
         }
 
@@ -85,20 +94,11 @@ public class Fly extends Module {
               if (antikick.getValueState())
                   if(!mc.thePlayer.onGround){
                    mc.thePlayer.motionY -= 0.05;
-//                      switch (ticks){
-//                          case 0: e.setY(mc.thePlayer.posY-0.05 - ((new Random().nextInt(6)) / 1000.0D));
-//                              ticks = 1;
-//                          case 1: e.setY(mc.thePlayer.posY-0.10 - ((new Random().nextInt(6)) / 1000.0D));
-//                              ticks = 2;
-//                          case 2: e.setY(mc.thePlayer.posY+ 0.05+((new Random().nextInt(6)) / 1000.0D));
-//                              ticks = 3;
-//                          case 3: e.setY(mc.thePlayer.posY);
-//                              ticks=0;
-//
+//                      if(groundTimer.hasTimeElapsed(1000L,true)){
+//                          this.mc.thePlayer.sendQueue.addToSendQueue((Packet)new C03PacketPlayer(true));
+//                          this.handleVanillaKick();
 //                      }
                   }
-
-
     	  }
 	   }
 
@@ -191,6 +191,39 @@ public class Fly extends Module {
             C03PacketPlayer.C04PacketPlayerPosition packet = new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX,0, y, mc.thePlayer.posZ, true);
             mc.thePlayer.sendQueue.addToSendQueue(packet);
         }
+    }
+
+    private void handleVanillaKick() {
+        double d;
+        double d2 = this.mc.thePlayer.posY - this.mc.thePlayer.boundingBox.minY;
+        if (d2 > 1.65 || d2 < 0.1) {
+            return;
+        }
+        double d3 = this.getPos();
+        if (d3 == 0.0) {
+            return;
+        }
+        for (d = this.mc.thePlayer.posY; d > d3; d -= 8.0) {
+            this.mc.thePlayer.sendQueue.addToSendQueue((Packet)new C03PacketPlayer.C04PacketPlayerPosition(this.mc.thePlayer.posX, d - d2, d, this.mc.thePlayer.posZ, true));
+            if (d - 8.0 < d3) break;
+        }
+        this.mc.thePlayer.sendQueue.addToSendQueue((Packet)new C03PacketPlayer.C04PacketPlayerPosition(this.mc.thePlayer.posX, d3 - d2, d3, this.mc.thePlayer.posZ, true));
+        for (d = d3; d < this.mc.thePlayer.posY; d += 8.0) {
+            this.mc.thePlayer.sendQueue.addToSendQueue((Packet)new C03PacketPlayer.C04PacketPlayerPosition(this.mc.thePlayer.posX, d - d2, d, this.mc.thePlayer.posZ, true));
+            if (d + 8.0 > this.mc.thePlayer.posY) break;
+        }
+        this.mc.thePlayer.sendQueue.addToSendQueue((Packet)new C03PacketPlayer.C04PacketPlayerPosition(this.mc.thePlayer.posX, this.mc.thePlayer.boundingBox.minY, this.mc.thePlayer.posY, this.mc.thePlayer.posZ, true));
+    }
+
+    private double getPos() {
+        AxisAlignedBB axisAlignedBB = this.mc.thePlayer.boundingBox;
+        double d = 0.25;
+        for (double d2 = 0.0; d2 < this.mc.thePlayer.posY; d2 += d) {
+            AxisAlignedBB axisAlignedBB2 = axisAlignedBB.copy().offset(0.0, -d2, 0.0);
+            if (!this.mc.theWorld.checkBlockCollision(axisAlignedBB2)) continue;
+            return this.mc.thePlayer.posY - d2;
+        }
+        return 0.0;
     }
 
 

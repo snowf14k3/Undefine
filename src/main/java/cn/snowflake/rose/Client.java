@@ -10,8 +10,10 @@ import cn.snowflake.rose.management.CommandManager;
 import cn.snowflake.rose.management.FileManager;
 import cn.snowflake.rose.management.FontManager;
 import cn.snowflake.rose.management.ModManager;
+import cn.snowflake.rose.mod.mods.FORGE.PacketFlood;
 import cn.snowflake.rose.mod.mods.WORLD.IRC;
 import cn.snowflake.rose.mod.mods.WORLD.Xray;
+import cn.snowflake.rose.notification.Notification;
 import cn.snowflake.rose.notification.NotificationManager;
 import cn.snowflake.rose.ui.skeet.SkeetClickGui;
 import cn.snowflake.rose.ui.skeet.TTFFontRenderer;
@@ -153,7 +155,7 @@ public class Client {
             MinecraftForge.EVENT_BUS.register(new Events());
             new Client();
             if(Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().theWorld != null){
-                ChatUtil.sendClientMessage("Injected Successfully !");
+                Client.instance.getNotificationManager().addNotification("\u00a7b[Season] " + "\u00a7e" +"Injected Successfully !",4000, Notification.Type.SUCCESS);
             }
             if (!Client.instance.font){
                 Client.fs = new TTFFontRenderer(new Font("Tahoma Bold", 0, 11), true);

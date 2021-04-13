@@ -6,6 +6,7 @@ import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.mod.mods.RENDER.ClickGui;
+import cn.snowflake.rose.notification.Notification;
 import cn.snowflake.rose.ui.skeet.ui.SkeetMenu;
 import cn.snowflake.rose.utils.Value;
 import cn.snowflake.rose.utils.client.ChatUtil;
@@ -633,10 +634,34 @@ public class CSGOGUI extends GuiScreen {
         }
 
 
+        //saveCFG
+        RenderUtil.drawRoundedRectCSGO(startX-14 , startY + 160, startX + 56, startY  + 174,new Color(17, 17, 17).getRGB());
+
+        if(isHovered(startX - 14, startY + 160 , startX + 56, startY + 174, mouseX, mouseY)) {
+            font2.drawCenteredString("Save Config",startX+20 ,startY+164,-1);
+            description = "保存你现在的配置到系统用户里!";
+            if(handler.canExcecute())
+                Client.instance.fileMgr.saveConfig();
+        }else {
+            font2.drawCenteredString("Save Config",startX+20 ,startY+164,new Color(153, 153, 153).getRGB());
+        }
+
+        //loadCFG
+        RenderUtil.drawRoundedRectCSGO(startX-14 , startY + 178, startX + 56, startY  + 192,new Color(17, 17, 17).getRGB());
+        if(isHovered(startX - 14, startY + 178 , startX + 56, startY + 192, mouseX, mouseY)) {
+            font2.drawCenteredString("Load Config",startX+20 ,startY+182,-1);
+            description = "读取你保存在系统用户里的配置!";
+            if(handler.canExcecute())
+                Client.instance.fileMgr.loadConfig();
+        }else {
+            font2.drawCenteredString("Load Config",startX+20 ,startY+182,new Color(153, 153, 153).getRGB());
+        }
+
         //top bar
         RenderUtil.drawRect(startX + 60, startY - 8, startX + 300, startY  + 6,new Color(0, 0, 0).getRGB());
         RenderUtil.drawRect(startX + 60, startY - 8, startX + 300, startY  + 5.5,new Color(48, 48, 48).getRGB());
         RenderUtil.drawRect(startX + 60, startY - 8, startX + 300, startY  + 5,new Color(25, 25, 25).getRGB());
+
         if (ClickGui.info.getValueState()){
             mc.fontRenderer.drawString(description,startX+62,startY-4,new Color(180,180,180).getRGB());
         }
@@ -649,6 +674,7 @@ public class CSGOGUI extends GuiScreen {
         RenderUtil.rectangleBordered((double)(startX - 20), (double)(startY - 8-0.5), (double)(startX + 300), (double)(startY + 198+0.5), (double)0.5, (int)Colors.getColor((int)0, (int)0), (int)Colors.getColor((int)60, (int)((int)255)));
         RenderUtil.rectangleBordered((double)(startX - 20 + 2.0f), (double)(startY - 8 + 2.0f-0.5), (double)(startX + 300 - 2.0f), (double)(startY + 198 - 2.0f+0.5), (double)0.5, (int)Colors.getColor((int)0, (int)0), (int)Colors.getColor((int)60, (int)((int)255)));
         RenderUtil.rectangleBordered((double)((double)(startX - 20) + 0.6), (double)((double)(startY - 8) + 0.6-0.5), (double)((double)(startX + 300) - 0.5), (double)((double)(startY + 198) - 0.6+0.5), (double)1.3, (int)Colors.getColor((int)0, (int)0), (int)Colors.getColor((int)40, (int)((int)255)));
+
 
 
         GL11.glDisable(3089);

@@ -4,12 +4,14 @@ import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.mod.mods.COMBAT.*;
 import cn.snowflake.rose.mod.mods.FORGE.*;
 import cn.snowflake.rose.mod.mods.FORGE.Furniture.ItemCreator;
+import cn.snowflake.rose.mod.mods.FORGE.advancedsolarpanel.ASPCrash;
 import cn.snowflake.rose.mod.mods.FORGE.ae2.CellViewer;
 import cn.snowflake.rose.mod.mods.FORGE.carpentersblocks.CarpenterUse;
 import cn.snowflake.rose.mod.mods.FORGE.galacticraft.GalacticFire;
 import cn.snowflake.rose.mod.mods.FORGE.galacticraft.GalaxyTeleport;
 import cn.snowflake.rose.mod.mods.FORGE.galacticraft.NoLimitSpin;
 import cn.snowflake.rose.mod.mods.FORGE.mrf.RocketChaos;
+import cn.snowflake.rose.mod.mods.FORGE.mtrm.MTRMHack;
 import cn.snowflake.rose.mod.mods.FORGE.nbtedit.NBTHack;
 import cn.snowflake.rose.mod.mods.FORGE.thaumcraft.MagicGod;
 import cn.snowflake.rose.mod.mods.FORGE.MagicRecipe;
@@ -111,7 +113,8 @@ public class ModManager {
 
         //NBTEdit
         addMod(new NBTHack());
-
+        //MTRMHack
+        addMod(new MTRMHack());
         //NEI
         addMod(new NEISelect());
 
@@ -135,6 +138,9 @@ public class ModManager {
 
         //Carpentersblocks
         addMod(new CarpenterUse());
+
+        //advancedsolarpanel
+        addMod(new ASPCrash());
 
         //PacketFlood
         addMod(new PacketFlood());

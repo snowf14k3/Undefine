@@ -28,6 +28,13 @@ public class PacketFlood extends Module {
     }
     private final ArrayList<FakePacket> validPackets = new ArrayList<>();
     private final Rand rand = new Rand();
+
+
+    @Override
+    public String getDescription() {
+        return "给服务器发送各种Mod无用垃圾包服务器后台刷屏";
+    }
+
     public void onEnable() {
         validPackets.clear();
         for (FakePacket packet : FakePacket.values()) {
@@ -35,7 +42,6 @@ public class PacketFlood extends Module {
                 validPackets.add(packet);
             }
         }
-        mc.thePlayer.addChatMessage(new ChatComponentText("Enabled "+ validPackets.size() + "/" + FakePacket.values().length + " packets"));
         Client.instance.getNotificationManager().addNotification(this,"Enabled "+ validPackets.size() + "/" + FakePacket.values().length + " packets", Notification.Type.SUCCESS);
     }
     public boolean checkClass(String clazz) {
@@ -48,6 +54,7 @@ public class PacketFlood extends Module {
     }
     private int tempTimeout = 0;
     private int nextSet = 2;
+
     @EventTarget
     public void onUpdate(EventUpdate event) {
         if (tempTimeout == 0) {

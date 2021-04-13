@@ -3,6 +3,7 @@ package cn.snowflake.rose.notification;
 import cn.snowflake.rose.Client;
 import cn.snowflake.rose.utils.render.Colors;
 import cn.snowflake.rose.utils.render.RenderUtil;
+import cn.snowflake.rose.utils.render.UnicodeFontRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -45,7 +46,7 @@ public class Notification {
 
     public void draw(float prevY) {
         ScaledResolution rs = new ScaledResolution(Minecraft.getMinecraft(),Minecraft.getMinecraft().displayWidth,Minecraft.getMinecraft().displayHeight);
-        FontRenderer font =mc.fontRenderer;
+        UnicodeFontRenderer font = Client.instance.fontManager.simpleton15;
         String text = this.text.replace("%timer"," \2477("+new BigDecimal((stayTime - stayBar )/1000 ).setScale(1, BigDecimal.ROUND_HALF_UP)+"s)");
         final float ySpeed = (rs.getScaledHeight() - prevY) /*/ (Minecraft.getDebugFPS() / 8) Client.delta*/;
         if (width != font.getStringWidth(text) + 8) {
@@ -55,7 +56,7 @@ public class Notification {
 //        drawBorderedRect(0, rs.getScaledHeight() , width, 14, (float) 0.5, new Color(0, 0, 0, 0).getRGB(), new Color(0, 0, 0, 120).getRGB());
 //        if (done()) drawRect(finishedX , finishedY+20, ((width - 1) / stayTime) * stayBar, 1, color);
         RenderUtil.drawRoundedRectCSGO(1,prevY - 4 ,font.getStringWidth(text) + 6,prevY+9,new Color(22,22,22).getRGB());
-        font.drawString(text, 4,  (int)prevY-1, new Color(255, 255, 255, 124).getRGB());
+        font.drawStringWithColor(text, 4,  (int)prevY-1, new Color(255, 255, 255, 124).getRGB());
         if (delete()) Client.instance.getNotificationManager().getNotifications().remove(this);
     }
 

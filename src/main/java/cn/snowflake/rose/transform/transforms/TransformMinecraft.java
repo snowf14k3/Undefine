@@ -51,8 +51,8 @@ public class TransformMinecraft implements Opcodes{
 
     public static void drawgui(){
         ScaledResolution scaledresolution = new ScaledResolution(Minecraft.getMinecraft(),Minecraft.getMinecraft().displayWidth,Minecraft.getMinecraft().displayHeight);
-        float y = scaledresolution.getScaledHeight() - 10;
-        if(Minecraft.getMinecraft().theWorld != null)
+        float y = scaledresolution.getScaledHeight() - 35;
+        if(Minecraft.getMinecraft().theWorld != null && Client.init)
         if(!(Minecraft.getMinecraft().currentScreen instanceof GuiChat))
             if (Client.instance.getNotificationManager() != null && Client.instance.getNotificationManager().getNotifications() != null)
                 for (int n = 0; n < Client.instance.getNotificationManager().getNotifications().size(); n++) {

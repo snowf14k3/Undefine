@@ -12,10 +12,15 @@ public class MagicRecipe extends Module {
     public MagicRecipe() {
         super("MagicRecipe", "Magic Recipe", Category.FORGE);
         try {
-            Class.forName((String)"com.anotherera.magicrecipe.common.network.packet.MinecraftRecipeChangePacket");
+            Class.forName("com.anotherera.magicrecipe.common.network.packet.MinecraftRecipeChangePacket");
         }catch (Throwable ex) {
             working = false;
         }
+    }
+
+    @Override
+    public String getDescription() {
+        return "食谱封包刷OP!";
     }
 
     @Override
