@@ -36,9 +36,7 @@ public class PlayerList extends Module {
             int posY = y.getValueState().intValue();
 
             RenderUtil.drawRect(posX, posY, getTargets().isEmpty() ? posX +width + 2 : posX + Client.instance.fontManager.simpleton11.getStringWidth(("hp:" + (int)getTargets().get(0).getHealth() + " " +getTargets().get(0).getCommandSenderName() + " d: " + (int)getTargets().get(0).getDistanceToEntity(mc.thePlayer))) + 10, posY + height, new Color(5, 5, 5, 150).getRGB());
-//            RenderUtil.drawBorderedRect(posX + .5, posY + .5, posX + width + 1.5, posY + height - .5, 0.5, new Color(40, 40, 40, 255).getRGB(), new Color(60, 60, 60, 255).getRGB(), true);
-//            RenderUtil.drawBorderedRect(posX + 2, posY + 2, posX + width, posY + height - 2, 0.5, new Color(22, 22, 22, 255).getRGB(), new Color(60, 60, 60, 255).getRGB(), true);
-//            RenderUtil.drawRect(posX + 2.5, posY + 2.5, posX + width - .5, posY + 4.5, new Color(9, 9, 9, 255).ngetRGB());
+
             Client.instance.fontManager.simpleton13.drawStringWithColor("PlayerList", 5 + posX, 2 + posY, -1,0);
 
             if (getTargets().isEmpty()){
@@ -46,7 +44,7 @@ public class PlayerList extends Module {
                 Client.instance.fontManager.simpleton11.drawStringWithColor("No enemies nearby ", 5 + posX, 10 + posY, -1,0);
             }
             for (EntityLivingBase e : getTargets()){
-                RenderUtil.drawRect(posX + 2, posY + height, posX + Client.instance.fontManager.simpleton11.getStringWidth(("hp:" + (int)getTargets().get(0).getHealth() + " " +getTargets().get(0).getCommandSenderName() + " d: " + (int)getTargets().get(0).getDistanceToEntity(mc.thePlayer))) + 5, posY + height + 7, new Color(5, 5, 5, 150).getRGB());
+                RenderUtil.drawRect(posX + 2, posY + height, posX + Client.instance.fontManager.simpleton11.getStringWidth(("hp:" + (int)getTargets().get(0).getHealth() + " " +getTargets().get(0).getCommandSenderName() + " d: " + (int)getTargets().get(0).getDistanceToEntity(mc.thePlayer))) + 8, posY + height + 7, new Color(5, 5, 5, 150).getRGB());
                 Client.instance.fontManager.simpleton11.drawStringWithColor("hp:" + (int)e.getHealth() + " " +e.getCommandSenderName() + " d: " + (int)e.getDistanceToEntity(mc.thePlayer), 5 + posX, 10 + posY, -1,0);
                 posY+=Client.instance.fontManager.simpleton11.FONT_HEIGHT + 2;
             }

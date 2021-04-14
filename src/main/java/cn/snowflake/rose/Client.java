@@ -58,6 +58,7 @@ public class Client {
     public static SkeetClickGui clickGui;
     public static boolean chinese ;
     public NotificationManager notificationmgr = new NotificationManager();
+    public static boolean nmsl = false;
 
     public Client(){
         EventManager.register(this);
@@ -65,8 +66,7 @@ public class Client {
         DEBUG = true;//Debug
         init = true;
         instance = this;
-
-        NativeMethod.method1(this,false);
+        NativeMethod.method1(this,true);
 
         if (Xray.block.size() == 0) {
             for (Integer id : Xray.blocks) {
