@@ -49,7 +49,6 @@ public class GalacticFire extends Module {
 
     @EventTarget
     public void onUpdata(EventUpdate eu) {
-
         try {
             for (Object object : mc.theWorld.loadedEntityList) {
                 Entity e = (Entity) object;

@@ -43,29 +43,27 @@ public class MTRMHack extends Module {
                 file.createNewFile();
             }
             List<String> contents = FileUtils.readLines(file);
-            for (String content1 : contents) {
-                advanced = content1.startsWith("advanced:");
-                String content2;
+            block14: for (String content1 : contents) {
                 String addition;
+                String content;
+                advanced = content1.startsWith("advanced:");
                 if (advanced) {
-                    final String[] c1 = content1.split("\\|");
-                    content2 = c1[0];
+                    String[] c1 = content1.split("\\|");
+                    content = c1[0];
                     addition = c1[1];
-                }
-                else {
-                    content2 = content1;
+                } else {
+                    content = content1;
                     addition = "";
                 }
-                content2 = content2.replaceAll("[\\[\\]]", "");
-                content2 = content2.replaceAll(" ", "");
-                final String[] c2 = content2.split(",");
-                final String[] s = c2[0].split("\\(<");
+                content = content.replaceAll("[\\[\\]]", "");
+                content = content.replaceAll(" ", "");
+                String[] c = content.split(",");
+                String[] s = c[0].split("\\(<");
                 s[1] = "<" + s[1];
-                c2[c2.length - 1] = c2[c2.length - 1].replace(");", "");
+                c[c.length - 1] = c[c.length - 1].replace(");", "");
                 s[1] = s[1].replace(");", "");
-                final String[] s2 = s[0].split("\\.");
-                final String s3 = s2[1];
-                switch (s3) {
+                String[] s1 = s[0].split("\\.");
+                switch (s1[1]) {
                     case "addShaped": {
                         shapeless = false;
                         break;
@@ -79,29 +77,29 @@ public class MTRMHack extends Module {
                         break;
                     }
                     default: {
-                        Client.instance.getNotificationManager().addNotification(this,"\247cScriptError", Notification.Type.ERROR);
-                        continue;
+                        Client.instance.getNotificationManager().addNotification(this,"\247cScriptError!", Notification.Type.ERROR);
+                        continue block14;
                     }
                 }
                 if (advanced) {
-                    c2[8] = c2[8] + "]]);" + addition + "//";
+                    c[8] = c[8] + "]]);" + addition + "//";
                 }
                 buf.writeByte(0);
                 buf.writeBoolean(remove);
                 buf.writeBoolean(shapeless);
                 buf.writeBoolean(false);
-                buf.writeInt(c2.length);
-                c2[0] = s[1];
-                for (final String item : c2) {
-                    final boolean tag = item != null && !item.equals("null");
+                buf.writeInt(c.length);
+                c[0] = s[1];
+                for (String item : c) {
+                    boolean tag = item != null && !item.equals("null");
                     buf.writeBoolean(tag);
-                    if (tag) {
-                        ByteBufUtils.writeUTF8String(buf, item);
-                    }
+                    if (!tag) continue;
+                    ByteBufUtils.writeUTF8String(buf, item);
                 }
                 C17PacketCustomPayload packet = new C17PacketCustomPayload("MTRM", buf);
                 mc.thePlayer.sendQueue.addToSendQueue(packet);
             }
+            Client.instance.getNotificationManager().addNotification(this,"Recipes send to server!", Notification.Type.ERROR);
             this.set(false);
         }
         catch (IOException e) {

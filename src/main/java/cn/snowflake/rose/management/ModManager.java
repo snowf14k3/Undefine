@@ -13,6 +13,7 @@ import cn.snowflake.rose.mod.mods.FORGE.galacticraft.NoLimitSpin;
 import cn.snowflake.rose.mod.mods.FORGE.mrf.RocketChaos;
 import cn.snowflake.rose.mod.mods.FORGE.mtrm.MTRMHack;
 import cn.snowflake.rose.mod.mods.FORGE.nbtedit.NBTHack;
+import cn.snowflake.rose.mod.mods.FORGE.taintedmagic.NoLimitAura;
 import cn.snowflake.rose.mod.mods.FORGE.thaumcraft.MagicGod;
 import cn.snowflake.rose.mod.mods.FORGE.MagicRecipe;
 import cn.snowflake.rose.mod.mods.FORGE.thaumcraft.ResearchGod;
@@ -130,6 +131,9 @@ public class ModManager {
 
         //MRF
         addMod(new RocketChaos());
+
+        //taintedmagic
+        addMod(new NoLimitAura());
 
         //Galcticraft
         addMod(new NoLimitSpin());
