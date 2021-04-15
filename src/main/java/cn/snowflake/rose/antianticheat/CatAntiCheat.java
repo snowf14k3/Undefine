@@ -109,7 +109,7 @@ public class CatAntiCheat {
                     field1.getByte(eventFMLChannels.iMessage);
                     salt = field1;
                     fieldlist = field2;
-                }catch(IllegalAccessException e){
+                }catch(IllegalArgumentException | IllegalAccessException e1){
                     salt = field2;
                     fieldlist = field1;
                 }

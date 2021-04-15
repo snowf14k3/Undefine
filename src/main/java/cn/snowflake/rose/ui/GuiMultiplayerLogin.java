@@ -1,4 +1,4 @@
-package cn.snowflake.rose.gui;
+package cn.snowflake.rose.ui;
 
 import java.io.IOException;
 
