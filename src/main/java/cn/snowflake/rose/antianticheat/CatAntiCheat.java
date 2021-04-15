@@ -98,22 +98,35 @@ public class CatAntiCheat {
 
                 Field field1 = fields[0];
                 Field field2 = fields[1];
+                Field field3 = fields[2];
 
-                fieldlist.setAccessible(true);
-                salt.setAccessible(true);
 
                 field1.setAccessible(true);
                 field2.setAccessible(true);
 
                 try{
-                    field1.getByte(eventFMLChannels.iMessage);
-                    salt = field1;
-                    fieldlist = field2;
-                }catch(IllegalArgumentException | IllegalAccessException e1){
-                    salt = field2;
-                    fieldlist = field1;
+                    field1.getBoolean(eventFMLChannels.iMessage);
+                    try{
+                        field2.getByte(eventFMLChannels.iMessage);
+                        salt = field2;
+                        fieldlist = field3;
+                    }catch (Exception e){
+                        salt = field3;
+                        fieldlist = field2;
+                    }
+                }catch(Exception e1){
+                    try{
+                        field1.getByte(eventFMLChannels.iMessage);
+                        salt = field1;
+                        fieldlist = field2;
+                    }catch (Exception e){
+                        salt = field2;
+                        fieldlist = field1;
+                    }
                 }
 
+                fieldlist.setAccessible(true);
+                salt.setAccessible(true);
 
                 if (fieldlist != null){
 
