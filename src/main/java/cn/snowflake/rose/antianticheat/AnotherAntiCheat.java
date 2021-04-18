@@ -27,23 +27,5 @@ public class AnotherAntiCheat {
 //        }
     }
 
-//    @EventTarget
-//    public void frombyte(EventFromByte eventFromByte){
-//        if (eventFromByte.iMessage.toString().contains("AntiCheatSTCPacketMessage") && eventFromByte.getEventType() == EventType.SEND){
-//            System.out.println(Arrays.deepToString(md5s));
-//        }
-//    }
-
-    public byte[][] md5s;
-
-
-    public void getMD5fromNBT(ByteBuf buf,boolean is1122){
-        NBTTagCompound nbt = ByteBufUtils.readTag(buf);
-        NBTTagList md5List = nbt.getTagList("md5s", 7);
-        this.md5s = new byte[md5List.tagCount()][];
-        for (int i = this.md5s.length - 1; i >= 0; --i) {
-            this.md5s[i] = ((NBTTagByteArray)md5List.removeTag(i)).func_150292_c();//func_150292_c GetByteArray
-        }
-    }
 
 }

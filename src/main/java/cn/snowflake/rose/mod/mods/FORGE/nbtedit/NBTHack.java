@@ -38,31 +38,28 @@ public class NBTHack extends Module {
     @Override
     public void onEnable() {
         try {
-            final Class clazz = Class.forName("com.mcf.davidee.nbtedit.NBTEdit");
-            final Object proxy = clazz.getField("proxy").get(null);
-            final Class clazz2 = Class.forName("com.mcf.davidee.nbtedit.forge.ClientProxy");
-            final NBTTagCompound compound = new NBTTagCompound();
+            Class<?> clazz = Class.forName("com.mcf.davidee.nbtedit.NBTEdit");
+            Object proxy = clazz.getField("proxy").get(null);
+            Class<?> clientproxy = Class.forName("com.mcf.davidee.nbtedit.forge.ClientProxy");
+            NBTTagCompound compound = new NBTTagCompound();
             getMouseOver(JReflectUtility.getRenderPartialTicks(), Reach.getValueState());
-            final MovingObjectPosition mop = this.moving;
-            final TileEntity entity = mc.theWorld.getTileEntity(mop.blockX, mop.blockY, mop.blockZ);
+            MovingObjectPosition mop = this.moving;
+            TileEntity entity = mc.theWorld.getTileEntity(mop.blockX, mop.blockY, mop.blockZ);
             if (entity != null) {
                 entity.writeToNBT(compound);
-                clazz2.getMethod("openEditGUI", Integer.TYPE, Integer.TYPE, Integer.TYPE, NBTTagCompound.class).invoke(proxy, entity.xCoord, entity.yCoord, entity.zCoord, compound);
-            }
-            else if (mop.entityHit != null) {
+                clientproxy.getMethod("openEditGUI", int.class, int.class, int.class, NBTTagCompound.class).invoke(proxy, entity.xCoord, entity.yCoord, entity.zCoord, compound);
+            }else if (mop.entityHit != null) {
                 mop.entityHit.writeToNBT(compound);
-                clazz2.getMethod("openEditGUI", Integer.TYPE, NBTTagCompound.class).invoke(proxy, mop.entityHit.getEntityId(), compound);
-            }
-            else {
+                clientproxy.getMethod("openEditGUI", int.class, NBTTagCompound.class).invoke(proxy, mop.entityHit.getEntityId(), compound);
+            }else {
                 mc.thePlayer.writeToNBT(compound);
-                clazz2.getMethod("openEditGUI", Integer.TYPE, NBTTagCompound.class).invoke(proxy, mc.thePlayer.getEntityId(), compound);
+                clientproxy.getMethod("openEditGUI", int.class, NBTTagCompound.class).invoke(proxy, mc.thePlayer.getEntityId(), compound);
             }
             this.set(false);
         }
         catch (Throwable ex) {
             this.set(false);
         }
-        super.isEnabled();
     }
 
 

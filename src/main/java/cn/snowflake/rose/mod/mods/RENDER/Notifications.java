@@ -11,7 +11,7 @@ import cn.snowflake.rose.mod.Module;
 public class Notifications extends Module{
 
 	public Notifications() {
-		super("Notifications", Category.RENDER);
+		super("Notifications","Notifications", Category.RENDER);
 	}
 
 

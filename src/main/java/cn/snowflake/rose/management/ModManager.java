@@ -76,6 +76,7 @@ public class ModManager {
         addMod(new BlockOverlay());
         addMod(new ESP());
         addMod(new Notifications());
+        addMod(new NoRain());
         //PLAYER
         addMod(new NoSlowDown());
         addMod(new AutoTool());

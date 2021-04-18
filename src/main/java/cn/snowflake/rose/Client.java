@@ -29,6 +29,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.multiplayer.WorldClient;
+import net.minecraft.init.Blocks;
 import net.minecraft.injection.ClientLoader;
 import net.minecraftforge.common.MinecraftForge;
 import scala.collection.parallel.ParIterableLike;
@@ -70,8 +71,8 @@ public class Client {
 
         if (Xray.block.size() == 0) {
             for (Integer id : Xray.blocks) {
-                Block block = Block.getBlockById(id);
-                Xray.block.add(block);
+                Block ret = (Block)Block.blockRegistry.getObjectById(id);
+                Xray.block.add(ret);
             }
         }
 

@@ -16,8 +16,10 @@ public class TransformFontRenderer implements Opcodes {
         ){
             InsnList insnList = new InsnList();
             insnList.add(new VarInsnNode(ALOAD,1));
-            insnList.add(new MethodInsnNode(INVOKESTATIC,Type.getInternalName(TransformFontRenderer.class),
-                    "getName",
+
+            insnList.add(new MethodInsnNode(INVOKESTATIC,
+                    Type.getInternalName(TransformFontRenderer.class),
+                    "nameProtectHook",
                     "(Ljava/lang/String;)Ljava/lang/String;",
                     false));
             insnList.add(new VarInsnNode(ASTORE,1));
@@ -26,7 +28,7 @@ public class TransformFontRenderer implements Opcodes {
         }
     }
 
-    public static String getName(String old){
+    public static String nameProtectHook(String old){
         if (Minecraft.getMinecraft().getSession() != null && ModManager.ok){
             return old.replace(
                     Minecraft.getMinecraft().getSession().getUsername(),
