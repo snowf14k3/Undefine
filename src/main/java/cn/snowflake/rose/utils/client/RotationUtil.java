@@ -105,7 +105,34 @@ public class RotationUtil {
         }
         return p_706631 + var4;
     }
+    public static float[] getPlayerRotations(Entity player, double x, double y, double z) {
+        double deltaX = x - player.posX;
+        double deltaY = y - player.posY - player.getEyeHeight() - 0.1;
+        double deltaZ = z - player.posZ;
+        double yawToEntity;
+        if (deltaZ < 0.0 && deltaX < 0.0) {
+            yawToEntity = 90.0 + Math.toDegrees(Math.atan(deltaZ / deltaX));
+        }
+        else if (deltaZ < 0.0 && deltaX > 0.0) {
+            yawToEntity = -90.0 + Math.toDegrees(Math.atan(deltaZ / deltaX));
+        }
+        else {
+            yawToEntity = Math.toDegrees(-Math.atan(deltaX / deltaZ));
+        }
+        double distanceXZ = Math.sqrt(deltaX * deltaX + deltaZ * deltaZ);
+        double pitchToEntity = -Math.toDegrees(Math.atan(deltaY / distanceXZ));
+        yawToEntity = wrapAngleTo180((float)yawToEntity);
+        pitchToEntity = wrapAngleTo180((float)pitchToEntity);
+        return new float[] { (float)yawToEntity, (float)pitchToEntity };
+    }
 
+    private static float wrapAngleTo180(float angle) {
+        for (angle %= 360.0f; angle >= 180.0f; angle -= 360.0f) {}
+        while (angle < -180.0f) {
+            angle += 360.0f;
+        }
+        return angle;
+    }
     public static float[] getRotations(final EntityLivingBase ent) {
         final double x = ent.posX;
         final double z = ent.posZ;

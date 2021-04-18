@@ -19,9 +19,18 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CatAntiCheat {
+    private static final ArrayList<String> modClasses = new ArrayList<String> ();
 
     public CatAntiCheat(){
         EventManager.register(this);
+        modClasses.add("net.minecraft.launchwrapper.LaunchClassLoader");
+        modClasses.add("net.minecraft.launchwrapper.ITweaker");
+        modClasses.add("ic2.core.IC2");
+        modClasses.add("noppes.npcs.CustomNpcs");
+        modClasses.add("slimeknights.tconstruct.TConstruct");
+        modClasses.add("mekanism.common.Mekanism");
+        modClasses.add("com.pixelmonmod.pixelmon.Pixelmon");
+        modClasses.add("cpw.mods.ironchest.IronChest");
     }
 
     Minecraft mc = Minecraft.getMinecraft();
@@ -30,6 +39,7 @@ public class CatAntiCheat {
     public void onFml(EventFMLChannels eventFMLChannels){
         // 1.2.7 以下猫反
         if (eventFMLChannels.iMessage.getClass().toString().contains("luohuayu.anticheat.message")){
+
 
             if (eventFMLChannels.iMessage.getClass().toString().contains("CPacketVanillaData")){
                 eventFMLChannels.setCancelled(true);
@@ -58,7 +68,27 @@ public class CatAntiCheat {
                     e.printStackTrace();
                 }
             }
+            if (eventFMLChannels.iMessage.getClass().toString().contains("CPacketClassFound")){
+                eventFMLChannels.setCancelled(true);
 
+                try {
+                    Field ffoundClassList = eventFMLChannels.iMessage.getClass().getDeclaredField("foundClassList");
+                    ffoundClassList.setAccessible(true);
+                    Field fsalt = eventFMLChannels.iMessage.getClass().getDeclaredField("salt");
+                    fsalt.setAccessible(true);
+
+                    byte salt = fsalt.getByte(eventFMLChannels.iMessage);
+                    List<String> foundClassList = (List<String>) ffoundClassList.get(eventFMLChannels.iMessage);
+
+                    foundClassList.removeIf(clazz ->
+                            !modClasses.contains(clazz)
+                    );
+                    eventFMLChannels.sendToServer(eventFMLChannels.iMessage.getClass().getDeclaredConstructor(List.class,byte.class)
+                            .newInstance(foundClassList,salt));
+                }catch (Exception e2313213){
+
+                }
+            }
             if (eventFMLChannels.iMessage.getClass().toString().contains("CPacketFileHash")){
                 eventFMLChannels.setCancelled(true);
                 try {
@@ -133,7 +163,7 @@ public class CatAntiCheat {
                     try {
                         List<String> list = ((List<String>) fieldlist.get(eventFMLChannels.iMessage));
 
-                        if (list.size() > 20) {
+                        if (list.get(1).contains(".jar")) {
 
                             eventFMLChannels.setCancelled(true);
                             list.removeIf(inject ->
@@ -147,6 +177,18 @@ public class CatAntiCheat {
                                             salt.getByte(eventFMLChannels.iMessage))
                             );
 
+                        }else{//classcheck
+
+                            eventFMLChannels.setCancelled(true);
+                            List<String> foundClassList = (List<String>) (fieldlist.get(eventFMLChannels.iMessage));
+
+                            foundClassList.removeIf(clazz ->
+                                    !modClasses.contains(clazz)
+                            );
+                            eventFMLChannels.sendToServer(
+                                    fwithc.newInstance(new ArrayList<>(foundClassList),
+                                            salt.getByte(eventFMLChannels.iMessage))
+                            );
                         }
                     } catch (Exception e1) {
                         e1.printStackTrace();

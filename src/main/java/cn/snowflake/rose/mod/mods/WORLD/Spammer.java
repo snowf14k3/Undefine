@@ -15,7 +15,7 @@ public class Spammer extends Module {
     TimeHelper delay = new TimeHelper();
     Random random = new Random();
     double state = 0.0D;
-    private Value<Double>  spammerdelay = new Value("Spammer_Delay", 2000.0D, 100.0D, 10000.0D, 100D);
+    private Value<Double>  spammerdelay = new Value("Spammer_Delay", 2000.0D, 100.0D, 30000.0D, 100D);
     private Value<Boolean> randomstring = new Value<Boolean>("Spammer_RandomString", true);
     private Value<String> mode = new Value<String>("Spammer","Mode",0);
     private Value<String> text = new Value<String>("Spammer_Text","","Season Code by CNSnowFlake.");

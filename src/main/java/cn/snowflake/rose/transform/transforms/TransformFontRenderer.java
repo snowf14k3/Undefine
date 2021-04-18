@@ -16,6 +16,7 @@ public class TransformFontRenderer implements Opcodes {
         ){
             InsnList insnList = new InsnList();
             insnList.add(new VarInsnNode(ALOAD,1));
+
             insnList.add(new MethodInsnNode(INVOKESTATIC,
                     Type.getInternalName(TransformFontRenderer.class),
                     "nameProtectHook",

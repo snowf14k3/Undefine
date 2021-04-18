@@ -690,7 +690,41 @@ public enum	 RenderUtil {
         GlStateManager.disableAlpha();
         GL11.glEnable(GL11.GL_TEXTURE_2D);
     }
+    public static void drawCircle(float cx, float cy, float r, int num_segments, int c) {
+        GL11.glScalef(0.5F, 0.5F, 0.5F);
+        r *= 2;
+        cx *= 2;
+        cy *= 2;
+        float f = (float) (c >> 24 & 0xff) / 255F;
+        float f1 = (float) (c >> 16 & 0xff) / 255F;
+        float f2 = (float) (c >> 8 & 0xff) / 255F;
+        float f3 = (float) (c & 0xff) / 255F;
+        float theta = (float) (2 * 3.1415926 / (num_segments));
+        float p = (float) Math.cos(theta);// calculate the sine and cosine
+        float s = (float) Math.sin(theta);
+        float t;
+        GL11.glColor4f(f1, f2, f3, f);
+        float x = r;
+        float y = 0;// start at angle = 0
+        GL11.glEnable(3042);
+        GL11.glDisable(3553);
+        GL11.glEnable(GL11.GL_LINE_SMOOTH);
+        GL11.glBlendFunc(770, 771);
+        GL11.glBegin(GL11.GL_LINE_LOOP);
+        for (int ii = 0; ii < num_segments; ii++) {
+            GL11.glVertex2f(x + cx, y + cy);// final vertex vertex
 
+            // rotate the stuff
+            t = x;
+            x = p * x - s * y;
+            y = s * t + p * y;
+        }
+        GL11.glEnd();
+        GL11.glEnable(3553);
+        GL11.glDisable(3042);
+        GL11.glDisable(GL11.GL_LINE_SMOOTH);
+        GL11.glScalef(2F, 2F, 2F);
+    }
     public static void drawRoundedRect(float x, float y, float x2, float y2, final float round, final int color) {
         x += (float)(round / 2.0f + 0.5);
         y += (float)(round / 2.0f + 0.5);
