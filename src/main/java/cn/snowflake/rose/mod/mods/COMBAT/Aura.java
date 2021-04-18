@@ -62,6 +62,7 @@ public class Aura extends Module {
     public Value<Double> switchdelay= new Value<Double>("Aura_SwitchDelay", 200.0D, 1.0D, 1000.0D,10.0D);
     public Value<Double> maxtTargets = new Value<Double>("Aura_MultiMaxTarget", 20.0D, 1.0D, 50.0D, 1.0D);
     public Value<Boolean> Esp = new Value("Aura_Esp", true);
+    public Value<Boolean> Nowing = new Value<Boolean>("Aura_NoSwing", false);
     public Value<Boolean> players = new Value("Aura_Player", true);
     public Value<Boolean> animal = new Value("Aura_Animal", false);
     public Value<Boolean> moster = new Value("Aura_Mob", false);
@@ -343,6 +344,7 @@ public class Aura extends Module {
         EventManager.call(ea);
 
         if (!mc.thePlayer.isBlocking() && block.getValueState()) {
+            if(!Nowing.getValueState())
         	mc.thePlayer.swingItem();
         	 if (!this.getTargets().isEmpty() ) {
   	           if (this.getTargets().size() > 0) {
@@ -353,6 +355,7 @@ public class Aura extends Module {
   	           }
   		  }
         }else if (!block.getValueState()) {
+            if(!Nowing.getValueState())
         	mc.thePlayer.swingItem();
        	 if (!this.getTargets().isEmpty() ) {
 	           if (this.getTargets().size() > 0) {
@@ -384,9 +387,11 @@ public class Aura extends Module {
         EventManager.call(ea);
 
         if (!mc.thePlayer.isBlocking() && block.getValueState()) {
+            if(!Nowing.getValueState())
             mc.thePlayer.swingItem();
             mc.thePlayer.sendQueue.addToSendQueue(new C02PacketUseEntity(target, C02PacketUseEntity.Action.ATTACK));
         }else if (!block.getValueState()) {
+            if(!Nowing.getValueState())
             mc.thePlayer.swingItem();
             mc.thePlayer.sendQueue.addToSendQueue(new C02PacketUseEntity(target, C02PacketUseEntity.Action.ATTACK));
         }
@@ -421,7 +426,7 @@ public class Aura extends Module {
             }
         }
         if (Client.customnpcs) {
-            if (Objects.requireNonNull(JReflectUtility.getNPCEntity()).isInstance(entity) ){
+            if (Objects.requireNonNull(JReflectUtility.getNPCEntity()).isInstance(entity)){
                 if (!customnpcs.getValueState()){
                     return false;
                 }

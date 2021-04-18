@@ -30,11 +30,10 @@ public class TransformMinecraft implements Opcodes{
             method.instructions.insert(method.instructions.getFirst(),new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(TransformMinecraft.class), "dispatchKeypressesHook", "()V", false));
         }
         if(method.name.equals("func_71411_J") || method.name.equals("runGameLoop")){
-            AbstractInsnNode target = ASMUtil.findMethodInsn(method,INVOKEVIRTUAL,"cpw/mods/fml/common/FMLCommonHandler", "onRenderTickEnd", "(F)V");
+            AbstractInsnNode target = ASMUtil.findMethodInsn(method,INVOKEVIRTUAL, "net/minecraft/client/Minecraft", "func_147120_f", "()V");
            if(target != null){
-               method.instructions.insert(target,new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(TransformMinecraft.class), "drawgui", "()V", false));
+               method.instructions.insert(target.getPrevious(),new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(TransformMinecraft.class), "drawgui", "()V", false));
            }
-
         }
 
         if (method.name.equals("displayGuiScreen") || method.name.equals("func_147108_a")){

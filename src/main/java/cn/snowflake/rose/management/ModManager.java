@@ -11,7 +11,7 @@ import cn.snowflake.rose.mod.mods.FORGE.galacticraft.GalacticFire;
 import cn.snowflake.rose.mod.mods.FORGE.galacticraft.GalaxyTeleport;
 import cn.snowflake.rose.mod.mods.FORGE.galacticraft.NoLimitSpin;
 import cn.snowflake.rose.mod.mods.FORGE.mrf.RocketChaos;
-import cn.snowflake.rose.mod.mods.FORGE.mtrm.MTRMHack;
+import cn.snowflake.rose.mod.mods.FORGE.mtrm.MTRMEdit;
 import cn.snowflake.rose.mod.mods.FORGE.nbtedit.NBTHack;
 import cn.snowflake.rose.mod.mods.FORGE.taintedmagic.NoLimitAura;
 import cn.snowflake.rose.mod.mods.FORGE.thaumcraft.MagicGod;
@@ -115,7 +115,7 @@ public class ModManager {
         //NBTEdit
         addMod(new NBTHack());
         //MTRMHack
-        addMod(new MTRMHack());
+        addMod(new MTRMEdit());
         //NEI
         addMod(new NEISelect());
 
@@ -126,7 +126,7 @@ public class ModManager {
         addMod(new EIOXpGrab());
         addMod(new OneWayTicket());
         addMod(new BreakInGui());
-        addMod(new VisualCreative());
+        addMod(new FakeCreative());
         addMod(new FTBSatchelDupe());
 
         //MRF

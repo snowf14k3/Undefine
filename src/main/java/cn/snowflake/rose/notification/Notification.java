@@ -55,9 +55,15 @@ public class Notification {
 
 //        drawBorderedRect(0, rs.getScaledHeight() , width, 14, (float) 0.5, new Color(0, 0, 0, 0).getRGB(), new Color(0, 0, 0, 120).getRGB());
 //        if (done()) drawRect(finishedX , finishedY+20, ((width - 1) / stayTime) * stayBar, 1, color);
+        GL11.glPushMatrix();
         RenderUtil.drawRoundedRectCSGO(1,prevY - 4 ,font.getStringWidth(text) + 6,prevY+9,new Color(22,22,22).getRGB());
         font.drawStringWithColor(text, 4,  (int)prevY-1, new Color(255, 255, 255, 124).getRGB());
+        GL11.glColor4f(1,1,1,1);
+        GL11.glPopMatrix();
+
         if (delete()) Client.instance.getNotificationManager().getNotifications().remove(this);
+
+
     }
 
     public boolean done() {

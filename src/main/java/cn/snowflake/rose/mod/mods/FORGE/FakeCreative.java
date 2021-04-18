@@ -4,14 +4,14 @@ import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import net.minecraft.world.WorldSettings;
 
-public class VisualCreative extends Module {
-    public VisualCreative() {
-        super("VisualCreative", "Visual Creative", Category.FORGE);
+public class FakeCreative extends Module {
+    public FakeCreative() {
+        super("FakeCreative", "Fake Creative", Category.FORGE);
     }
 
     @Override
     public String getDescription() {
-        return "给自己一个假创造(可配合一些mod刷物品)!";
+        return "给自己一个假创造(可配合一些mod刷物品和卡BUG)!";
     }
 
     @Override
@@ -25,7 +25,7 @@ public class VisualCreative extends Module {
     @Override
     public void onDisable() {
         mc.playerController.setGameType(WorldSettings.GameType.SURVIVAL);
-        WorldSettings.GameType.CREATIVE.configurePlayerCapabilities(mc.thePlayer.capabilities);
+        WorldSettings.GameType.SURVIVAL.configurePlayerCapabilities(mc.thePlayer.capabilities);
         mc.thePlayer.sendPlayerAbilities();
         super.onEnable();
     }

@@ -4,6 +4,7 @@ import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.Value;
+import cn.snowflake.rose.utils.other.JReflectUtility;
 import com.darkmagician6.eventapi.EventTarget;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -12,15 +13,16 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.client.C17PacketCustomPayload;
 
-import java.sql.Wrapper;
+import java.util.Objects;
+
 
 public class NoLimitAura extends Module {
 
     public Value<Double> AuraRadius = new Value<Double>("NoLimitAura_FireRadius", 50.0D, 5.0D, 100.0D,5.0D);
 
     public Value<Boolean> players = new Value("NoLimitAura_Player", true);
-
     public Value<Boolean> otherentity = new Value("NoLimitAura_Otherentity", true);
+    public Value<Boolean> Npc = new Value("NoLimitAura_NPCs", false);
 
     public NoLimitAura() {
         super("NoLimitAura", "NoLimit Aura", Category.FORGE);
@@ -48,7 +50,10 @@ public class NoLimitAura extends Module {
                     if (e instanceof EntityPlayer && !otherentity.getValueState() && players.getValueState()) {
                         killEntity(e.getEntityId());
                     }
-                    if (e instanceof EntityLivingBase && otherentity.getValueState() && players.getValueState()) {
+                    if ( e instanceof EntityLivingBase && otherentity.getValueState() && players.getValueState()) {
+                        killEntity(e.getEntityId());
+                    }
+                    if(Objects.requireNonNull(JReflectUtility.getNPCEntity()).isInstance(e) && Npc.getValueState()){
                         killEntity(e.getEntityId());
                     }
                 }

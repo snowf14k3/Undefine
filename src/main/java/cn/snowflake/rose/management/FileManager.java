@@ -369,6 +369,9 @@ public class FileManager {
                 }
             }
             Client.instance.getNotificationManager().addNotification("Config", "\u00a7a" +"Loaded Successfully !", Notification.Type.SUCCESS);
+            saveMods();
+            saveValues();
+            saveKeys();
         } catch (IOException e) {
             Client.instance.getNotificationManager().addNotification("Config", "\u00a7c" +"You did not save the  !", Notification.Type.ERROR);
 //            e.printStackTrace();

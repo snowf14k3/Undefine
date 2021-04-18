@@ -24,7 +24,7 @@ public class NEISelect extends Module {
 
     @Override
     public String getDescription() {
-        return "从NEI中选择ItemStack储存(打开背包对着物品按小键盘1)";
+        return "从NEI中选择ItemStack储存(打开背包对着物品按TAB)!";
     }
 
     public static NBTTagCompound STATIC_NBT = new NBTTagCompound();

