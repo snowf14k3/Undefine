@@ -68,13 +68,10 @@ public class TransformMinecraft implements Opcodes{
 
     public static void dispatchKeypressesHook(){
         if (Keyboard.getEventKeyState()) {
-
-                EventManager.call(new EventKey(Keyboard.getEventKey() == 0 ? Keyboard.getEventCharacter() + 256 : Keyboard.getEventKey()));
-
+            EventManager.call(new EventKey(Keyboard.getEventKey()));
             for (Module mod : Client.instance.modManager.getModList()) {
                 if (mod.getKey() != (Keyboard.getEventKey() == 0 ? Keyboard.getEventCharacter() + 256 : Keyboard.getEventKey()))continue;
                 if (Minecraft.getMinecraft().currentScreen == null) {
-
                     mod.set(!mod.isEnabled());
 //                 }else if (mod.getCategory() == Category.FORGE){
 //                    mod.set(!mod.isEnabled());

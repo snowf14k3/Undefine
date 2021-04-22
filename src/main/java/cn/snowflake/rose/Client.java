@@ -155,9 +155,7 @@ public class Client {
             NativeMethod.method1(false);
             MinecraftForge.EVENT_BUS.register(new Events());
             new Client();
-            if(Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().theWorld != null){
-                Client.instance.getNotificationManager().addNotification("\u00a7b[Season] " + "\u00a7e" +"Injected Successfully !",4000, Notification.Type.SUCCESS);
-            }
+
             if (!Client.instance.font){
                 Client.fs = new TTFFontRenderer(new Font("Tahoma Bold", 0, 11), true);
                 Client.fss = new TTFFontRenderer(new Font("Tahoma", 0, 10), false);
@@ -177,6 +175,9 @@ public class Client {
                 if (modContainer.getModId().equalsIgnoreCase("deci") && modContainer.getVersion().equalsIgnoreCase("1.21.9f_fix")){
                     deci1_21_9f = true;
                 }
+            }
+            if(Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().theWorld != null){
+                Client.instance.getNotificationManager().addNotification("\u00a7b[Season] " + "\u00a7e" +"Injected Successfully !",4000, Notification.Type.SUCCESS);
             }
         }
 

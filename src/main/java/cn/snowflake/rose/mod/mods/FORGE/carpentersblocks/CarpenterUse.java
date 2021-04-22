@@ -43,7 +43,7 @@ public class CarpenterUse extends Module {
         if (event.button == 1 && event.buttonstate) {
             try {
                 MovingObjectPosition position = mc.objectMouseOver;
-                if (position.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK ) {
+                if (position.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
                     if (event.isCancelable()) {
                         event.setCanceled(true);
                     }

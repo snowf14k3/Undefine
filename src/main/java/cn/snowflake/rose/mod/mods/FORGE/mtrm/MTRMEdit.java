@@ -25,7 +25,6 @@ public class MTRMEdit extends Module {
         }
     }
 
-
     @Override
     public String getDescription() {
         return "修改服务器合成(在.m/MTRMEditScript.cfg写入合成)!";
@@ -33,8 +32,7 @@ public class MTRMEdit extends Module {
 
     @Override
     public void onEnable() {
-        final File file = new File(mc.mcDataDir, "MTRMEditcript.cfg");
-        final ByteBuf buf = Unpooled.buffer();
+        File file = new File(mc.mcDataDir, "MTRMEditcript.cfg");
         boolean shapeless = false;
         boolean remove = false;
         boolean advanced = false;
@@ -42,28 +40,32 @@ public class MTRMEdit extends Module {
             if (!file.exists()) {
                 file.createNewFile();
             }
-            List<String> contents = FileUtils.readLines(file);
-            block14: for (String content1 : contents) {
+            List<String> cfg = FileUtils.readLines(file);
+             for (String recipes : cfg) {
+                if(!recipes.startsWith("recipes."))continue;
+                ByteBuf buf = Unpooled.buffer();
+                advanced = recipes.startsWith("advanced:");
+                String content2;
                 String addition;
-                String content;
-                advanced = content1.startsWith("advanced:");
                 if (advanced) {
-                    String[] c1 = content1.split("\\|");
-                    content = c1[0];
+                    final String[] c1 = recipes.split("\\|");
+                    content2 = c1[0];
                     addition = c1[1];
-                } else {
-                    content = content1;
+                }
+                else {
+                    content2 = recipes;
                     addition = "";
                 }
-                content = content.replaceAll("[\\[\\]]", "");
-                content = content.replaceAll(" ", "");
-                String[] c = content.split(",");
-                String[] s = c[0].split("\\(<");
+                content2 = content2.replaceAll("[\\[\\]]", "");
+                content2 = content2.replaceAll(" ", "");
+                final String[] c2 = content2.split(",");
+                final String[] s = c2[0].split("\\(<");
                 s[1] = "<" + s[1];
-                c[c.length - 1] = c[c.length - 1].replace(");", "");
+                c2[c2.length - 1] = c2[c2.length - 1].replace(");", "");
                 s[1] = s[1].replace(");", "");
-                String[] s1 = s[0].split("\\.");
-                switch (s1[1]) {
+                final String[] s2 = s[0].split("\\.");
+                final String s3 = s2[1];
+                switch (s3) {
                     case "addShaped": {
                         shapeless = false;
                         break;
@@ -77,25 +79,27 @@ public class MTRMEdit extends Module {
                         break;
                     }
                     default: {
-                        Client.instance.getNotificationManager().addNotification(this,"\247cScriptError!", Notification.Type.ERROR);
-                        continue block14;
+                        Client.instance.getNotificationManager().addNotification(this,"\247cScriptError", Notification.Type.ERROR);
+                        continue;
                     }
                 }
                 if (advanced) {
-                    c[8] = c[8] + "]]);" + addition + "//";
+                    c2[8] = c2[8] + "]]);" + addition + "//";
                 }
                 buf.writeByte(0);
                 buf.writeBoolean(remove);
                 buf.writeBoolean(shapeless);
                 buf.writeBoolean(false);
-                buf.writeInt(c.length);
-                c[0] = s[1];
-                for (String item : c) {
-                    boolean tag = item != null && !item.equals("null");
+                buf.writeInt(c2.length);
+                c2[0] = s[1];
+                for (final String item : c2) {
+                    final boolean tag = item != null && !item.equals("null");
                     buf.writeBoolean(tag);
-                    if (!tag) continue;
-                    ByteBufUtils.writeUTF8String(buf, item);
+                    if (tag) {
+                        ByteBufUtils.writeUTF8String(buf, item);
+                    }
                 }
+                 System.err.println(buf);
                 mc.thePlayer.sendQueue.addToSendQueue(new C17PacketCustomPayload("MTRM", buf));
             }
             Client.instance.getNotificationManager().addNotification(this,"Recipes send to server!", Notification.Type.ERROR);

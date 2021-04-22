@@ -1,6 +1,7 @@
 package cn.snowflake.rose.mod.mods.FORGE.Furniture;
 
 import cn.snowflake.rose.Client;
+import cn.snowflake.rose.events.impl.EventKey;
 import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
@@ -35,13 +36,9 @@ public class ItemCreator extends Module {
         return "使用NEISelect储存要刷的物品后(按小键盘0刷取)!";
     }
 
-    private boolean prevState = false;
-
     @EventTarget
-    public void onTicks(EventUpdate eu) {
-        boolean newState = Keyboard.isKeyDown(Keyboard.KEY_NUMPAD0);
-        if (newState && !prevState) {
-            prevState = newState;
+    public void onKey(EventKey ek) {
+        if (ek.getKey() == Keyboard.KEY_NUMPAD0) {
             if (NEISelect.STATIC_ITEMSTACK == null) {
                 Client.instance.getNotificationManager().addNotification(this,"You have not selected an item!", Notification.Type.INFO);
                 return;
@@ -49,7 +46,6 @@ public class ItemCreator extends Module {
             giveItem(NEISelect.STATIC_ITEMSTACK);
             Client.instance.getNotificationManager().addNotification(this,"Gived!", Notification.Type.INFO);
         }
-        prevState = newState;
     }
 
     public void giveItem(ItemStack stack) {

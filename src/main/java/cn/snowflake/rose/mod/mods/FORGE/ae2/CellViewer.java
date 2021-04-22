@@ -1,6 +1,7 @@
 package cn.snowflake.rose.mod.mods.FORGE.ae2;
 
 import cn.snowflake.rose.Client;
+import cn.snowflake.rose.events.impl.EventKey;
 import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
@@ -45,14 +46,11 @@ public class CellViewer extends Module {
         return "查看存储元件(鼠标移动到存储元件按小键盘0)!";
     }
 
-    private boolean prevState = false;
 
-   @EventTarget
-    public void onUpdate(EventUpdate eu) {
+    @EventTarget
+    public void onKey(EventKey ek) {
         try {
-            boolean newState = Keyboard.isKeyDown(Keyboard.KEY_NUMPAD0);
-            if (newState && !prevState) {
-                prevState = newState;
+            if (ek.getKey() == Keyboard.KEY_NUMPAD0) {
                 GuiScreen screen = mc.currentScreen;
                 ItemStack cell = null;
                 if (screen instanceof GuiContainer) {
@@ -70,7 +68,7 @@ public class CellViewer extends Module {
                             }
                         }
                     } catch (Exception ex) {
-                      Client.instance.getNotificationManager().addNotification(this,"\247cError", Notification.Type.ERROR);
+                        Client.instance.getNotificationManager().addNotification(this,"\247cError", Notification.Type.ERROR);
                     }
                 }
                 if (cell == null) {
@@ -103,11 +101,11 @@ public class CellViewer extends Module {
                     Client.instance.getNotificationManager().addNotification(this,"\247bError", Notification.Type.ERROR);
                 }
             }
-            prevState = newState;
         } catch (Exception ignored) {
 
         }
     }
+
 
     private class CellViewerGui extends GuiContainer {
 

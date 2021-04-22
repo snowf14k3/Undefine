@@ -137,7 +137,7 @@ public class PacketFlood extends Module {
     }
 
     public void sendRandomPacket() {
-        String NMSL = "Server Erro!";
+        String NMSL = "Server Error!";
         if (validPackets.isEmpty()) {
             return;
         }

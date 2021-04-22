@@ -1,6 +1,7 @@
 package cn.snowflake.rose.mod.mods.FORGE;
 
 import cn.snowflake.rose.Client;
+import cn.snowflake.rose.events.impl.EventKey;
 import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
@@ -28,35 +29,30 @@ public class FTBSatchelDupe extends Module {
     private boolean prevState = false;
 
     @EventTarget
-    public void onUpdate(EventUpdate eu) {
-            boolean newState = Keyboard.isKeyDown(Keyboard.KEY_NUMPAD0);
-            if (newState && !prevState) {
-                prevState = newState;
-                try {
-                    if (Class.forName("cofh.thermalexpansion.gui.container.ContainerSatchel").isInstance(mc.thePlayer.openContainer)) {
-                        Class.forName("ftb.lib.api.net.MessageLM")
-                                .getMethod("sendToServer")
-                                .invoke(Class.forName("ftb.lib.mod.net.MessageClientItemAction")
-                                        .getConstructor(String.class, NBTTagCompound.class)
-                                        .newInstance("", new NBTTagCompound()));
-                        int dropCount = (int) Class.forName("cofh.thermalexpansion.item.ItemSatchel")
-                                .getMethod("getStorageIndex", ItemStack.class)
-                                .invoke(null, mc.thePlayer.getCurrentEquippedItem());
-
-                        for(int slot = mc.thePlayer.inventory.mainInventory.length;
-                            slot < mc.thePlayer.inventory.mainInventory.length + dropCount * 9;
-                            slot++
-                        ) {
-                            dropSlot(slot, true);
-                        }
-                        mc.thePlayer.closeScreen();
-                        Client.instance.getNotificationManager().addNotification(this,"Dupe!", Notification.Type.SUCCESS);
+    public void onKey(EventKey ek) {
+        if (ek.getKey() == Keyboard.KEY_NUMPAD0) {
+            try {
+                if (Class.forName("cofh.thermalexpansion.gui.container.ContainerSatchel").isInstance(mc.thePlayer.openContainer)) {
+                    Class.forName("ftb.lib.api.net.MessageLM")
+                            .getMethod("sendToServer")
+                            .invoke(Class.forName("ftb.lib.mod.net.MessageClientItemAction")
+                                    .getConstructor(String.class, NBTTagCompound.class)
+                                    .newInstance("", new NBTTagCompound()));
+                    int dropCount = (int) Class.forName("cofh.thermalexpansion.item.ItemSatchel")
+                            .getMethod("getStorageIndex", ItemStack.class)
+                            .invoke(null, mc.thePlayer.getCurrentEquippedItem());
+                    for(int slot = mc.thePlayer.inventory.mainInventory.length;
+                        slot < mc.thePlayer.inventory.mainInventory.length + dropCount * 9;
+                        slot++
+                    ) {
+                        dropSlot(slot, true);
                     }
-                } catch (Exception e) {
-
+                    mc.thePlayer.closeScreen();
+                    Client.instance.getNotificationManager().addNotification(this,"Dupe!", Notification.Type.SUCCESS);
                 }
+                    } catch (Exception e) {
+                     }
             }
-            prevState = newState;
     }
 
 
