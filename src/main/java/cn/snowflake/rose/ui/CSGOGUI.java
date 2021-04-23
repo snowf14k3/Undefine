@@ -294,8 +294,8 @@ public class CSGOGUI extends GuiScreen {
                     (selectCategory == i) ? CLcolor :new Color(151, 151, 151).getRGB());
             CY += 18;
         }
-        Client.instance.fontManager.simpleton20.drawCenteredString("S",(startX + 4* 3) - 14,startY,CLcolor);
-        Client.instance.fontManager.simpleton20.drawCenteredString("eason",(startX + 4* 7+1) - 14,startY,-1);
+        Client.instance.fontManager.simpleton20.drawCenteredString("S",(startX + 4* 3) - 7,startY + 2,CLcolor);
+        Client.instance.fontManager.simpleton20.drawCenteredString("eason",(startX + 4* 7+1) - 7,startY + 2,-1);
         //windows title
 //        Client.instance.fontManager.simpleton13.drawCenteredString("ClickGui", startX + 3 * 10, startY - 5, new Color(170, 170, 170).getRGB());
 
@@ -666,15 +666,15 @@ public class CSGOGUI extends GuiScreen {
             mc.fontRenderer.drawString(description,startX+62,startY-4,new Color(180,180,180).getRGB());
         }
         //buttom bar
+        /*
         RenderUtil.drawRect(startX + 60, startY + 189, startX + 300, startY  + 196,new Color(25, 25, 25).getRGB());
         RenderUtil.drawRect(startX + 60, startY + 189.5, startX + 300, startY  + 196,new Color(48, 48, 48).getRGB());
         RenderUtil.drawRect(startX + 60, startY + 190, startX + 298, startY  + 196,new Color(25, 25, 25).getRGB());
-
+		*/
         RenderUtil.rectangleBordered((double)((double)(startX - 20) - 0.3), (double)((double)(startY - 8) - 0.3-0.5), (double)((double)(startX + 300) + 0.5), (double)((double)(startY + 198) + 0.3+0.5), (double)0.5, (int) Colors.getColor((int)0, (int)0), (int)Colors.getColor((int)10, (int)((int)255)));
         RenderUtil.rectangleBordered((double)(startX - 20), (double)(startY - 8-0.5), (double)(startX + 300), (double)(startY + 198+0.5), (double)0.5, (int)Colors.getColor((int)0, (int)0), (int)Colors.getColor((int)60, (int)((int)255)));
         RenderUtil.rectangleBordered((double)(startX - 20 + 2.0f), (double)(startY - 8 + 2.0f-0.5), (double)(startX + 300 - 2.0f), (double)(startY + 198 - 2.0f+0.5), (double)0.5, (int)Colors.getColor((int)0, (int)0), (int)Colors.getColor((int)60, (int)((int)255)));
         RenderUtil.rectangleBordered((double)((double)(startX - 20) + 0.6), (double)((double)(startY - 8) + 0.6-0.5), (double)((double)(startX + 300) - 0.5), (double)((double)(startY + 198) - 0.6+0.5), (double)1.3, (int)Colors.getColor((int)0, (int)0), (int)Colors.getColor((int)40, (int)((int)255)));
-
 
 
         GL11.glDisable(3089);
