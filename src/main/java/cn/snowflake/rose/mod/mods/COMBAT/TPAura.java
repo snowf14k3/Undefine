@@ -43,11 +43,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class TPAura extends Module
-{
-    private double dashDistance;
+public class TPAura extends Module {
     public Value<String> Mode;
-    //    public Value<Boolean> ESP;
+    private Value<Double> MAXT;
+    private Value<Double> RANGE;
+    private Value<Double> CPS;
     public Value<Boolean> NOSWING;
     public Value<Boolean> Tracers;
     public Value<Boolean> PATHESP;
@@ -56,31 +56,28 @@ public class TPAura extends Module
     public Value<Boolean> INVISIBLES;
     public Value<Boolean> MOB;
     public Value<Boolean> customnpcs;
-
-    private Value<Double> MAXT;
-    private Value<Double> RANGE;
-    private Value<Double> CPS;
-    private Value<Double> TIMER;
-    public Value<Boolean> otherentity;
+    private Value<Boolean> otherentity;
+    private Value<Boolean> block;
+    private Value<Boolean> onground;
+    private Value<Boolean> wall;
+    
     private ArrayList<Vec3Util> path;
     private List<Vec3Util>[] test;
     private List<EntityLivingBase> targets;
     private TimeHelper cps;
     public static TimeHelper timer;
     public static boolean canReach;
-    private Value<Boolean> block;
-    private Value<Boolean> onground;
-    public Value<Boolean> wall = new Value<Boolean>("TPAura_ThroughWall", true);
-
+    private double dashDistance;
+    
     public TPAura() {
         super("TPAura","TP Aura", Category.COMBAT);
         this.dashDistance = 5.0;
         this.Mode = new Value<String>("Tpaura", "Mode", 0);
-//        this.ESP = new Value<Boolean>("Tpaura_ESP", true);
+        this.wall = new Value<Boolean>("TPAura_ThroughWall", true);
         this.Tracers = new Value<Boolean>("Tpaura_Tracers", false);
         this.MOB = new Value<Boolean>("Tpaura_Mob", false);
-        block = new Value("TPAura_AutoBlock", true);
-        onground = new Value("TPAura_OnGround", false);
+        this.block = new Value<Boolean>("TPAura_AutoBlock", true);
+        this.onground = new Value<Boolean>("TPAura_OnGround", false);
         this.PATHESP = new Value<Boolean>("Tpaura_Path", true);
         this.PLAYERS = new Value<Boolean>("Tpaura_Players", true);
         this.ANIMALS = new Value<Boolean>("Tpaura_Animals", false);
@@ -88,7 +85,6 @@ public class TPAura extends Module
         this.MAXT = new Value<Double>("Tpaura_Maxtarget", 5.0, 1.0, 50.0, 1.0);
         this.RANGE = new Value<Double>("Tpaura_Reach", 30.0, 8.0, 100.0, 2.0);
         this.CPS = new Value<Double>("Tpaura_Cps", 8.0, 1.0, 20.0, 1.0);
-        this.TIMER = new Value<Double>("Tpaura_Timer", 2.5, 0.1, 3.0, 0.1);
         this.NOSWING = new Value<Boolean>("TPAura_NoSwing", false);
         this.otherentity = new Value<Boolean>("TPAura_OtherEntity", true);
         this.customnpcs = new Value<Boolean>("TPAura_CustomNPC", true);

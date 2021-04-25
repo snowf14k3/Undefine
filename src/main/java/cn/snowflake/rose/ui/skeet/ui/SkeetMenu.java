@@ -4,6 +4,7 @@ import cn.snowflake.rose.Client;
 import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
+import cn.snowflake.rose.mod.mods.RENDER.ClickGui;
 import cn.snowflake.rose.ui.skeet.SkeetClickGui;
 import cn.snowflake.rose.ui.skeet.components.Button;
 import cn.snowflake.rose.ui.skeet.components.Checkbox;
@@ -32,11 +33,9 @@ import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 
-public class SkeetMenu
-extends UI {
+public class SkeetMenu extends UI {
     public Opacity opacity = new Opacity(255);
     private Minecraft mc = Minecraft.getMinecraft();
-    private ResourceLocation texture = new ResourceLocation("textures/skeetchainmail.png");
     private static int GLwheel = 0;
     
     @Override
@@ -71,19 +70,18 @@ extends UI {
         }
         GlStateManager.pushMatrix();
         this.prepareScissorBox(panel.x + panel.dragX + 3.0f, panel.y + panel.dragY + 4.5f, panel.x + panel.dragX + 40.0f, panel.y + panel.dragY + y + 1.0f);
-        GL11.glEnable((int)3089);
+        GL11.glEnable(GL11.GL_SCISSOR_TEST);
         RenderUtil.rectangleBordered((double)(panel.x + panel.dragX + 2.0f), (double)(panel.y + panel.dragY + 3.0f), (double)(panel.x + panel.dragX + 40.0f), (double)(panel.y + panel.dragY + y), (double)0.5, (int)Colors.getColor((int)0, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)48, (int)((int)this.opacity.getOpacity())));
         RenderUtil.rectangle((double)(panel.x + panel.dragX + 3.0f), (double)(panel.y + panel.dragY + 4.0f), (double)(panel.x + panel.dragX + 39.0f), (double)(panel.y + panel.dragY + y - 1.0f), (int)Colors.getColor((int)12, (int)((int)this.opacity.getOpacity())));
-        GL11.glDisable((int)3089);
+        GL11.glDisable(GL11.GL_SCISSOR_TEST);
         GlStateManager.popMatrix();
         GlStateManager.pushMatrix();
         this.prepareScissorBox(panel.x + panel.dragX + 3.0f, panel.y + panel.dragY + y + 40.0f, panel.x + panel.dragX + 40.0f, panel.y + panel.dragY + 308.0f);
-        GL11.glEnable((int)3089);
+        GL11.glEnable(GL11.GL_SCISSOR_TEST);
         RenderUtil.rectangleBordered((double)(panel.x + panel.dragX + 2.0f), (double)(panel.y + panel.dragY + y + 40.0f), (double)(panel.x + panel.dragX + 40.0f), (double)(panel.y + panel.dragY + 308.0f), (double)0.5, (int)Colors.getColor((int)0, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)48, (int)((int)this.opacity.getOpacity())));
         RenderUtil.rectangle((double)(panel.x + panel.dragX + 3.0f), (double)(panel.y + panel.dragY + y + 41.0f), (double)(panel.x + panel.dragX + 39.0f), (double)((double)(panel.y + panel.dragY) + 307.5), (int)Colors.getColor((int)12, (int)((int)this.opacity.getOpacity())));
-        GL11.glDisable((int)3089);
+        GL11.glDisable(GL11.GL_SCISSOR_TEST);
         GlStateManager.popMatrix();
-
             for (SLButton button : panel.slButtons) {
                 button.draw((float)p0, (float)p1);
             }
@@ -109,11 +107,10 @@ extends UI {
             }
     }
 
-
     private void prepareScissorBox(float x, float y, float x2, float y2) {
         ScaledResolution rs = new ScaledResolution(this.mc,this.mc.displayWidth,this.mc.displayHeight);
         int factor = rs.getScaleFactor();
-        GL11.glScissor((int)((int)(x * (float)factor)), (int)((int)(((float)rs.getScaledHeight() - y2) * (float)factor)), (int)((int)((x2 - x) * (float)factor)), (int)((int)((y2 - y) * (float)factor)));
+        GL11.glScissor((int)(x * factor), (int)((rs.getScaledHeight() - y2) * factor), (int)((x2 - x) * factor), (int)((y2 - y) * factor));
     }
     
     @Override
@@ -331,7 +328,7 @@ extends UI {
                     }
                     x1 = 0.5f;
                     int tY = 0;
-                    ArrayList<Value> sliders = new ArrayList();
+                    ArrayList<Value> sliders = new ArrayList<Value>();
                     for (Value<?> val : Value.list) {
                     	if(val.getValueName().split("_")[0].equalsIgnoreCase(module.getName())) {
                            	if (val.isValueDouble) {
@@ -865,8 +862,8 @@ extends UI {
         for (Slider slider : categoryPanel.sliders) {
             slider.draw(x, y);
         }
-        ArrayList<DropdownBox> list = new ArrayList<DropdownBox>((Collection)categoryPanel.dropdownBoxes);
-        Collections.reverse((List)list);
+        ArrayList<DropdownBox> list = new ArrayList<DropdownBox>(categoryPanel.dropdownBoxes);
+        Collections.reverse(list);
         for (DropdownBox db : list) {
             db.draw(x, y);
         }
@@ -964,13 +961,10 @@ extends UI {
             GlStateManager.popMatrix();
             GlStateManager.popMatrix();
             if (p0.enabled) {
-            	RenderUtil.drawGradient((double)(p0.x + xOff + 1.0f), (double)(p0.y + yOff + 1.0f), (double)(p0.x + xOff + 5.0f), (double)(p0.y + yOff + 5.0f), (int)Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)120));
+            	RenderUtil.drawGradient((double)(p0.x + xOff + 1.0f), (double)(p0.y + yOff + 1.0f), (double)(p0.x + xOff + 5.0f), (double)(p0.y + yOff + 5.0f), (int)Colors.getColor(ClickGui.r.getValueState().intValue(), ClickGui.g.getValueState().intValue(), ClickGui.b.getValueState().intValue(), (int)((int)this.opacity.getOpacity())), (int)Colors.getColor(ClickGui.r.getValueState().intValue(), ClickGui.g.getValueState().intValue(), ClickGui.b.getValueState().intValue(), (int)120));
             }
             if (hovering && !p0.enabled) {
             	RenderUtil.rectangle((double)(p0.x + xOff + 1.0f), (double)(p0.y + yOff + 1.0f), (double)(p0.x + xOff + 5.0f), (double)(p0.y + yOff + 5.0f), (int)Colors.getColor((int)255, (int)40));
-            }
-            if (hovering) {
-//                this.mc.fontRenderer.drawStringWithShadow("ERROR: No Description Found.", panel.categoryButton.panel.x + 2.0f + panel.categoryButton.panel.dragX + 55.0f, panel.categoryButton.panel.y + 9.0f + panel.categoryButton.panel.dragY, Colors.getColor((int)220, (int)((int)this.opacity.getOpacity())));
             }
             GlStateManager.popMatrix();
         }
@@ -1006,7 +1000,6 @@ extends UI {
     @Override
     public void checkBoxDraw(Checkbox p0, float p2, float p3, CategoryPanel panel) {
         if (panel.categoryButton.enabled) {
-            boolean hovering;
             GlStateManager.pushMatrix();
             float xOff = panel.categoryButton.panel.dragX;
             float yOff = panel.categoryButton.panel.dragY;
@@ -1018,20 +1011,17 @@ extends UI {
             RenderUtil.drawGradient((double)(p0.x + xOff + 1.0f), (double)(p0.y + yOff + 1.0f), (double)(p0.x + 6.0f + xOff + -1.0f), (double)(p0.y + 6.0f + yOff + -1.0f), (int)Colors.getColor((int)76), (int)Colors.getColor((int)51, (int)((int)this.opacity.getOpacity())));
             p0.enabled = (Boolean)p0.setting.getValueState();
             int hoverneed = GLwheel; //TODO
-            boolean bl = hovering = p2 >= p0.x + xOff && p3 >= p0.y + yOff +hoverneed && p2 <= p0.x + 35.0f + xOff && p3 <= p0.y + 6.0f + yOff + hoverneed;
+            boolean hovering = p2 >= p0.x + xOff && p3 >= p0.y + yOff +hoverneed && p2 <= p0.x + 35.0f + xOff && p3 <= p0.y + 6.0f + yOff + hoverneed;
             if (p0.enabled) {
-            	RenderUtil.drawGradient((double)(p0.x + xOff + 1.0f), (double)(p0.y + yOff + 1.0f), (double)(p0.x + xOff + 5.0f), (double)(p0.y + yOff + 5.0f), (int)Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)120));
+            	RenderUtil.drawGradient((double)(p0.x + xOff + 1.0f), (double)(p0.y + yOff + 1.0f), (double)(p0.x + xOff + 5.0f), (double)(p0.y + yOff + 5.0f), Colors.getColor(ClickGui.r.getValueState().intValue(), ClickGui.g.getValueState().intValue(), ClickGui.b.getValueState().intValue(), ((int)this.opacity.getOpacity())), (int)Colors.getColor(ClickGui.r.getValueState().intValue(), ClickGui.g.getValueState().intValue(), ClickGui.b.getValueState().intValue(), 120));
             }
             if (hovering && !p0.enabled) {
             	RenderUtil.rectangle((double)(p0.x + xOff + 1.0f), (double)(p0.y + yOff + 1.0f), (double)(p0.x + xOff + 5.0f), (double)(p0.y + yOff + 5.0f), (int)Colors.getColor((int)255, (int)40));
             }
-            if (hovering) {
-            	//Client.fss.drawStringWithShadow("hello! my name is desc!", panel.categoryButton.panel.x + 2.0f + panel.categoryButton.panel.dragX + 55.0f, panel.categoryButton.panel.y + 9.0f + panel.categoryButton.panel.dragY, Colors.getColor((int)255, (int)((int)this.opacity.getOpacity())));
-                //mc.fontRenderer.drawStringWithShadow(this.getDescription(p0.setting), panel.categoryButton.panel.x + 2.0f + panel.categoryButton.panel.dragX + 55.0f, panel.categoryButton.panel.y + 9.0f + panel.categoryButton.panel.dragY, Colors.getColor((int)255, (int)((int)this.opacity.getOpacity())));
-            }
             GlStateManager.popMatrix();
         }
     }
+    
     @Override
     public void dropDownContructor(DropdownBox p0, float p2, float p3, CategoryPanel panel) {
         int y = 10;
@@ -1362,12 +1352,12 @@ extends UI {
             RenderUtil.drawGradient((double)(slider.x + xOff), (double)(slider.y + yOff), (double)(slider.x + xOff + 38.0f), (double)((double)(slider.y + yOff) + 2.5), (int)Colors.getColor((int)46, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)27, (int)((int)this.opacity.getOpacity())));
            if ((double)slider.setting.getValueMin() < 0.0 && (double)slider.setting.getValueMax() > 0.0) {
                 if (value > 0.0) {
-                	RenderUtil.drawGradient((double)(slider.x + xOff + 19.0f), (double)(slider.y + yOff), (double)(slider.x + xOff + sliderX), (double)((double)(slider.y + yOff) + 2.5), (int)Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)120));
+                	RenderUtil.drawGradient((double)(slider.x + xOff + 19.0f), (double)(slider.y + yOff), (double)(slider.x + xOff + sliderX), (double)((double)(slider.y + yOff) + 2.5), (int)Colors.getColor(ClickGui.r.getValueState().intValue(), ClickGui.g.getValueState().intValue(), ClickGui.b.getValueState().intValue(), (int)((int)this.opacity.getOpacity())), (int)Colors.getColor(ClickGui.r.getValueState().intValue(), ClickGui.g.getValueState().intValue(), ClickGui.b.getValueState().intValue(), (int)120));
                 } else {
-                	RenderUtil.drawGradient((double)(slider.x + xOff + sliderX), (double)(slider.y + yOff), (double)(slider.x + xOff + 19.0f), (double)((double)(slider.y + yOff) + 2.5), (int)Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)120));
+                	RenderUtil.drawGradient((double)(slider.x + xOff + sliderX), (double)(slider.y + yOff), (double)(slider.x + xOff + 19.0f), (double)((double)(slider.y + yOff) + 2.5), (int)Colors.getColor(ClickGui.r.getValueState().intValue(), ClickGui.g.getValueState().intValue(), ClickGui.b.getValueState().intValue(), (int)((int)this.opacity.getOpacity())), (int)Colors.getColor(ClickGui.r.getValueState().intValue(), ClickGui.g.getValueState().intValue(), ClickGui.b.getValueState().intValue(), (int)120));
                 }
             } else {
-            	RenderUtil.drawGradient((double)(slider.x + xOff), (double)(slider.y + yOff), (double)(slider.x + xOff + sliderX), (double)((double)(slider.y + yOff) + 2.5), (int)Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)((int)this.opacity.getOpacity())), (int)Colors.getColor((int)ColorManager.hudColor.red, (int)ColorManager.hudColor.green, (int)ColorManager.hudColor.blue, (int)120));
+            	RenderUtil.drawGradient((double)(slider.x + xOff), (double)(slider.y + yOff), (double)(slider.x + xOff + sliderX), (double)((double)(slider.y + yOff) + 2.5), (int)Colors.getColor(ClickGui.r.getValueState().intValue(), ClickGui.g.getValueState().intValue(), ClickGui.b.getValueState().intValue(), (int)((int)this.opacity.getOpacity())), (int)Colors.getColor(ClickGui.r.getValueState().intValue(), ClickGui.g.getValueState().intValue(), ClickGui.b.getValueState().intValue(), (int)120));
            }
            int hoverneed = GLwheel; //TODO
             boolean hoverMinus = x >= panel.x + xOff + slider.x - 3.0f && y >= yOff + panel.y + slider.y + hoverneed && (double)x <= (double)(xOff + panel.x + slider.x) - 0.5 && y <= yOff + panel.y + slider.y + hoverneed + 2.0f;
@@ -1412,32 +1402,10 @@ extends UI {
             if (slider.dragX >= 38.0) {
                 slider.dragX = 38.0;
             }
-            if (x >= xOff + slider.x && y >= yOff + slider.y - 6.0f && x <= xOff + slider.x + 38.0f && y <= yOff + slider.y + 3.0f || slider.dragging) {
-                Client.fss.drawStringWithShadow(this.getDescription(slider.setting) + " Min: " + slider.setting.getValueMin() + " Max: " + slider.setting.getValueMax(), panel.categoryButton.panel.x + 2.0f + panel.categoryButton.panel.dragX + 55.0f, panel.categoryButton.panel.y + 9.0f + panel.categoryButton.panel.dragY, -1);
-            }
             GlStateManager.popMatrix();
         }
     }
 
-    public static boolean isInteger(Double variable) {
-        return variable.doubleValue() == Math.floor(variable.doubleValue()) && !Double.isInfinite(variable.doubleValue());
-    }
-
-    public static boolean isNumeric(String text) {
-        try {
-            Integer.parseInt(text);
-            return true;
-        } catch (NumberFormatException var2) {
-            return false;
-        }
-    }
-    public static Object castNumber(String newValueText, Object currentValue) {
-        if (newValueText.contains(".")) {
-            return newValueText.toLowerCase().contains("f") ? Float.parseFloat(newValueText) : Double.parseDouble(newValueText);
-        } else {
-            return isNumeric(newValueText) ? Integer.parseInt(newValueText) : newValueText;
-        }
-    }
     @Override
     public void SliderMouseClicked(Slider slider, int mouseX, int mouseY, int mouse, CategoryPanel panel) {
         float xOff = panel.categoryButton.panel.dragX;
@@ -1489,16 +1457,29 @@ extends UI {
         float xOff = configList.categoryPanel.categoryButton.panel.dragX;
         float yOff = configList.categoryPanel.categoryButton.panel.dragY;
     }
+    
+    public static boolean isInteger(Double variable) {
+        return variable.doubleValue() == Math.floor(variable.doubleValue()) && !Double.isInfinite(variable.doubleValue());
+    }
 
-
-    private String getDescription(Value setting) {
-       /* if (setting.getDesc() != null && !setting.getDesc().equalsIgnoreCase("")) {
-            return setting.getDesc();
-        }*/
-        return "";
+    public static boolean isNumeric(String text) {
+        try {
+            Integer.parseInt(text);
+            return true;
+        } catch (NumberFormatException var2) {
+            return false;
+        }
     }
     
-    static class Depth {
+    public static Object castNumber(String newValueText, Object currentValue) {
+        if (newValueText.contains(".")) {
+            return newValueText.toLowerCase().contains("f") ? Float.parseFloat(newValueText) : Double.parseDouble(newValueText);
+        } else {
+            return isNumeric(newValueText) ? Integer.parseInt(newValueText) : newValueText;
+        }
+    }
+    
+    private static class Depth {
         private static final List<Integer> depth = Lists.newArrayList();
 
         public static void pre() {
@@ -1530,24 +1511,4 @@ extends UI {
             depth.remove(0);
         }
     }
-    
-    public static class ColorManager {
-    	   private static List colorObjectList = new CopyOnWriteArrayList();
-    	   public static ColorValue hudColor = new ColorValue(0, 192, 255, 255);
-
-
-    	   public static List getColorObjectList() {
-    	      return colorObjectList;
-    	   }
-
-    	   public ColorValue getHudColor() {
-    	      return hudColor;
-    	   }
-
-    	   public ColorManager() {
-    	      colorObjectList.add(hudColor);
-    	   }
-    	}
-
-    
 }
