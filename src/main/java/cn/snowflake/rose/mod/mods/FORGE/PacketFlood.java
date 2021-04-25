@@ -24,7 +24,7 @@ import net.minecraft.util.ChatComponentText;
 
 public class PacketFlood extends Module {
     public PacketFlood() {
-        super("PacketFlood", "PacketFlood", Category.FORGE);
+        super("PacketFlood", "Packet Flood", Category.FORGE);
     }
     private final ArrayList<FakePacket> validPackets = new ArrayList<>();
     private final Rand rand = new Rand();

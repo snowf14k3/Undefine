@@ -1,19 +1,26 @@
 package cn.snowflake.rose.mod.mods.FORGE.thaumcraft;
 
+import cn.snowflake.rose.Client;
 import cn.snowflake.rose.events.impl.EventTick;
+import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
+import cn.snowflake.rose.notification.Notification;
+import cn.snowflake.rose.utils.time.WaitTimer;
 import com.darkmagician6.eventapi.EventTarget;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C17PacketCustomPayload;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class ResearchGod extends Module {
@@ -36,10 +43,16 @@ public class ResearchGod extends Module {
 
     @Override
     public String getDescription() {
-        return "封包解锁神秘所有显示未解锁的笔记!";
+        return "封包解锁神秘未解锁的笔记!"+getanothercommonbugfix();
     }
 
-    
+
+    public String getanothercommonbugfix() {
+        if(Loader.isModLoaded("anothercommonbugfix")){
+            return "(检测到通用修复)";
+        }
+        return "";
+    }
     @Override
      public void onEnable() {
      }
@@ -47,7 +60,8 @@ public class ResearchGod extends Module {
     @EventTarget 
     public void onTicks(EventTick e) {
         ++this.tickId;
-        if (this.tickId % 40 != 0) {
+        if(!(aspectspacket.get(0) == null))return;
+        if (this.tickId % 40 != 0 ) {
             return;
         }
         this.tickId = 0;
@@ -105,7 +119,7 @@ public class ResearchGod extends Module {
     
     
     private Object getPrivateValue(final String className, final String fieldName, final Object from) throws Exception {
-        return ReflectionHelper.findField((Class)Class.forName(className), new String[] { fieldName }).get(from);
+        return ReflectionHelper.findField(Class.forName(className), new String[] { fieldName }).get(from);
     }
 
     private boolean isResearchComplete(String researchId) throws Exception {
@@ -117,6 +131,30 @@ public class ResearchGod extends Module {
         return (Object[]) Class.forName("thaumcraft.api.aspects.AspectList").getMethod("getAspects").invoke(aspectListObj);
     }
 
+
+    private CopyOnWriteArrayList<Packet> aspectspacket = new CopyOnWriteArrayList<Packet>();
+    private WaitTimer time = new WaitTimer();
+    private int index;
+    private Boolean next = false;
+    @EventTarget
+    public void onUpdate(EventUpdate eu){
+        if (time.hasTimeElapsed(200,true)){
+            if(aspectspacket.get(index) != null) {
+                mc.thePlayer.sendQueue.addToSendQueue(aspectspacket.get(index));
+                if (aspectspacket.size() <= index) {
+                    index = 0;
+                    this.aspectspacket.clear();
+                    Client.instance.getNotificationManager().addNotification(this,"Reset!", Notification.Type.SUCCESS);
+//                set(false);
+                    return;
+                }
+                index++;
+            }
+        }
+
+    }
+
+
     private void doResearch(String researchId) {
         ByteBuf buf = Unpooled.buffer(0);
         buf.writeByte(14);
@@ -125,7 +163,8 @@ public class ResearchGod extends Module {
         ByteBufUtils.writeUTF8String(buf, mc.thePlayer.getCommandSenderName());
         buf.writeByte(0);
         C17PacketCustomPayload packet = new C17PacketCustomPayload("thaumcraft", buf);
-        mc.thePlayer.sendQueue.addToSendQueue(packet);
+        this.aspectspacket.add(packet);
+//        mc.thePlayer.sendQueue.addToSendQueue(packet);
     }
     
 }

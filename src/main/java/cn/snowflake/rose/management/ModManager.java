@@ -14,7 +14,7 @@ import cn.snowflake.rose.mod.mods.FORGE.mrf.RocketChaos;
 import cn.snowflake.rose.mod.mods.FORGE.mtrm.MTRMEdit;
 import cn.snowflake.rose.mod.mods.FORGE.nbtedit.NBTHack;
 import cn.snowflake.rose.mod.mods.FORGE.taintedmagic.NoLimitAura;
-import cn.snowflake.rose.mod.mods.FORGE.thaumcraft.MagicGod;
+import cn.snowflake.rose.mod.mods.FORGE.thaumcraft.AspectGod;
 import cn.snowflake.rose.mod.mods.FORGE.MagicRecipe;
 import cn.snowflake.rose.mod.mods.FORGE.thaumcraft.ResearchGod;
 import cn.snowflake.rose.mod.mods.MOVEMENT.*;
@@ -110,7 +110,7 @@ public class ModManager {
         //AE2
         addMod(new CellViewer());
         //ThaumCraft
-        addMod(new MagicGod());
+        addMod(new AspectGod());
         addMod(new ResearchGod());
 
         //NBTEdit

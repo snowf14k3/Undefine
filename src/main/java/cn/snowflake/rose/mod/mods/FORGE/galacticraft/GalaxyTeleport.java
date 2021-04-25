@@ -33,7 +33,6 @@ public class GalaxyTeleport extends Module {
 
     @Override
     public void onEnable() {
-        System.err.println("dd");
         try {
             Class.forName("micdoodle8.mods.galacticraft.core.network.PacketSimple");
             List<Object> objects = new ArrayList<>();
