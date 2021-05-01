@@ -3,6 +3,7 @@ package cn.snowflake.rose.antianticheat;
 import cn.snowflake.rose.events.impl.EventFMLChannels;
 import cn.snowflake.rose.mod.mods.FORGE.ScreenProtect;
 import cn.snowflake.rose.utils.antianticheat.ScreenshotUtil;
+import cn.snowflake.rose.utils.client.ChatUtil;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.EventTarget;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;

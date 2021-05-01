@@ -32,7 +32,6 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.init.Blocks;
 import net.minecraft.injection.ClientLoader;
 import net.minecraftforge.common.MinecraftForge;
-import scala.collection.parallel.ParIterableLike;
 
 import java.awt.*;
 import java.io.BufferedReader;

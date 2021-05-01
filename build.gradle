@@ -8,9 +8,9 @@ buildscript {
         }
         maven {
             name = "forge"
-            url = "https://files.minecraftforge.net/maven"
+//            url = "https://files.minecraftforge.net/maven"
+            url = "http://lss233.littleservice.cn/repositories/minecraft"
         }
-        flatDir { dirs 'lib' }
         maven {
             name = "sonatype"
             url = "https://oss.sonatype.org/content/repositories/snapshots/"
