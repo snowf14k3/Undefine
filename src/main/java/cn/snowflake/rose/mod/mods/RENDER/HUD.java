@@ -77,13 +77,13 @@ public class HUD extends Module {
 //            RenderUtil.drawBorderedRect(posX + 2, posY + 2, posX + width, posY + height - 2, 0.5, new Color(22, 22, 22, 255).getRGB(), new Color(60, 60, 60, 255).getRGB(), true);
 //            RenderUtil.drawRect(posX + 2.5, posY + 2.5, posX + width - .5, posY + 4.5, new Color(9, 9, 9, 255).getRGB());
 
-            RenderUtil.drawGradientSideways(4, posY + 3, 4 + (width / 3), posY + 4,
+            RenderUtil.drawGradientRect(4, posY + 3, 4 + (width / 3), posY + 4,true,
                     rainbow(100),
                     rainbow(1000));
-            RenderUtil.drawGradientSideways(4 + (width / 3), posY + 3, 4 + ((width / 3) * 2), posY + 4,
+            RenderUtil.drawGradientRect(4 + (width / 3), posY + 3, 4 + ((width / 3) * 2), posY + 4,true,
                     rainbow(1000),
                     rainbow(1900));
-            RenderUtil.drawGradientSideways(4 + ((width / 3) * 2), posY + 3, ((width / 3) * 3) + 1, posY + 4,
+            RenderUtil.drawGradientRect(4 + ((width / 3) * 2), posY + 3, ((width / 3) * 3) + 1, posY + 4,true,
                     rainbow(1900),
                     rainbow(2800));
 
