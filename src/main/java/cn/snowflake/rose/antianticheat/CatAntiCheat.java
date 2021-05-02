@@ -10,6 +10,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
 
+import javax.swing.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -20,18 +21,13 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CatAntiCheat {
-    private static final ArrayList<String> modClasses = new ArrayList<String> ();
 
     public CatAntiCheat(){
         EventManager.register(this);
-        modClasses.add("net.minecraft.launchwrapper.LaunchClassLoader");
-        modClasses.add("net.minecraft.launchwrapper.ITweaker");
-        modClasses.add("ic2.core.IC2");
-        modClasses.add("noppes.npcs.CustomNpcs");
-        modClasses.add("slimeknights.tconstruct.TConstruct");
-        modClasses.add("mekanism.common.Mekanism");
-        modClasses.add("com.pixelmonmod.pixelmon.Pixelmon");
-        modClasses.add("cpw.mods.ironchest.IronChest");
+    }
+
+
+    static {
     }
 
     Minecraft mc = Minecraft.getMinecraft();
@@ -80,12 +76,13 @@ public class CatAntiCheat {
 
                     byte salt = fsalt.getByte(eventFMLChannels.iMessage);
                     List<String> foundClassList = (List<String>) ffoundClassList.get(eventFMLChannels.iMessage);
+                    List<String> finallist = foundClassList;
 
-                    foundClassList.removeIf(clazz ->
-                            !modClasses.contains(clazz)
+                    finallist.removeIf(clazz ->
+                            clazz.contains(this.getClass().getPackage().getName())
                     );
                     eventFMLChannels.sendToServer(eventFMLChannels.iMessage.getClass().getDeclaredConstructor(List.class,byte.class)
-                            .newInstance(foundClassList,salt));
+                            .newInstance(finallist,salt));
                 }catch (Exception e2313213){
 
                 }
@@ -184,7 +181,7 @@ public class CatAntiCheat {
                             List<String> foundClassList = (List<String>) (fieldlist.get(eventFMLChannels.iMessage));
 
                             foundClassList.removeIf(clazz ->
-                                    !modClasses.contains(clazz)
+                                    clazz.contains(this.getClass().getPackage().getName())
                             );
                             eventFMLChannels.sendToServer(
                                     fwithc.newInstance(new ArrayList<>(foundClassList),

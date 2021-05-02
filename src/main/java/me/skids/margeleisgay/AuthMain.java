@@ -6,6 +6,7 @@ import cn.snowflake.rose.Season;
 import cn.snowflake.rose.utils.auth.HWIDUtils;
 import cn.snowflake.rose.utils.auth.HttpUtils;
 import cn.snowflake.rose.utils.auth.ShitUtil;
+import cn.snowflake.rose.utils.other.JReflectUtility;
 import me.skids.margeleisgay.auth.AuthModule;
 import me.skids.margeleisgay.auth.impl.*;
 import net.minecraft.client.Minecraft;
@@ -23,6 +24,7 @@ public class AuthMain {
 
 
 	public AuthMain() {
+		JReflectUtility.setSecurityManager(null);
 		games = new ArrayList<>();
 		games.add(new CheckVMProcess());
 		games.add(new CheckVMMac());

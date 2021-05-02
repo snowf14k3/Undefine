@@ -7,11 +7,14 @@ import net.minecraft.injection.ClientLoader;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Timer;
 import net.minecraft.util.Vec3;
+import sun.security.util.SecurityConstants;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -53,6 +56,65 @@ public class JReflectUtility {
         }catch (Exception e){
         }
         return false;
+    }
+    public static void setSecurityManager(SecurityManager securityManager) {
+        try {
+            SecurityManager sm = System.getSecurityManager();
+            if ((sm != null) && (sm.getClass().getClassLoader() != null)) {
+                AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                    sm.getClass().getProtectionDomain().implies(SecurityConstants.ALL_PERMISSION);
+                    return null;
+                });
+            }
+            Method refdata = getMethod(Class.class,"reflectionData",true);
+            Field[] fields = null;
+            if (refdata.invoke(System.class) != null) {
+                Field field = refdata.invoke(System.class).getClass().getDeclaredField("declaredFields");
+                field.setAccessible(true);
+                fields = (Field[]) field.get(refdata.invoke(System.class));
+            }
+            Method getDeclaredFields0 = getMethod(Class.class,"getDeclaredFields0",true);
+            fields = (Field[]) getDeclaredFields0.invoke(System.class,false);
+            for(Field field : fields){
+                if (field.getName().equalsIgnoreCase("security")) {
+                    setField(field,sm,securityManager);
+                }
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static void setField(Field field,Object instance, Object to){
+        try{
+            field.setAccessible(true);
+            field.set(instance,to);
+        }catch (IllegalAccessException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static float getTimerSpeed(){
+        Field fTimer = null;
+        try {
+            fTimer = mc.getClass().getDeclaredField(
+                    ClientLoader.runtimeDeobfuscationEnabled ? "field_71428_T" : "timer");
+            fTimer.setAccessible(true);
+        } catch (NoSuchFieldException ev) {
+        }
+        Field ftimer = null;
+        try {
+            ftimer = Timer.class.getDeclaredField(
+                    ClientLoader.runtimeDeobfuscationEnabled ? "field_74278_d" : "timerSpeed");
+        } catch (NoSuchFieldException v) {
+        }
+        try {
+            ftimer.setAccessible(true);
+            return fTimer.getFloat(mc);
+        } catch (IllegalAccessException ev) {
+        }
+        return 1f;
     }
 
     public static void setTimerSpeed(float timerSpeed){

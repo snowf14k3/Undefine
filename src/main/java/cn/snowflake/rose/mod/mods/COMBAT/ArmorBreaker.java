@@ -11,7 +11,7 @@ import net.minecraft.network.play.client.C0APacketAnimation;
 
 /**
  *
- *  Author : Kody ?
+ *  Author :
  *  From Sakura Client
  *
  *

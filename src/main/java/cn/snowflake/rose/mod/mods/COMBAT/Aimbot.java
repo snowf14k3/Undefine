@@ -63,6 +63,7 @@ public class Aimbot extends Module {
     public double targetspeed;
 
     public Value<String> sortingMode = new Value<String>("Aimbot","SortingMode", 0);
+    public Value<String> predictmode = new Value<String>("Aimbot","PredictionMode", 0);
 
     public static EntityLivingBase target;
 
@@ -74,7 +75,8 @@ public class Aimbot extends Module {
         super("Aimbot","Aim Bot", Category.COMBAT);
         this.sortingMode.addValue("Health");
         this.sortingMode.addValue("Distance");
-
+        this.predictmode.addValue("Manual");
+        this.predictmode.addValue("Auto");
         this.playerPositions = new HashMap<>();
         this.buffer = 10;
         setChinesename("\u81ea\u7784");
@@ -163,7 +165,7 @@ public class Aimbot extends Module {
             if (target != null) {
                 Entity ey = null;
                 if (target instanceof EntityPlayer) {
-                    ey = this.predict(((EntityPlayer) target), predict.getValueState().intValue());
+                    ey = this.predict(((EntityPlayer) target), predictmode.isCurrentMode("Auto") ? (int) (targetspeed) :  predict.getValueState().intValue());
                 } else {
                     ey = target;
                 }
