@@ -1,7 +1,9 @@
 package cn.snowflake.rose.utils.render;
 
+import cn.snowflake.rose.utils.math.MathUtils;
 import cn.snowflake.rose.utils.mcutil.AltAxisAlignedBB;
 import cn.snowflake.rose.utils.mcutil.GlStateManager;
+import cn.snowflake.rose.utils.other.JReflectUtility;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -13,6 +15,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.injection.ClientLoader;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import org.lwjgl.BufferUtils;
@@ -27,12 +30,65 @@ import java.nio.IntBuffer;
 
 public enum	 RenderUtil {
     INSTANCE;
+	
+    public static double linearAnimation(double now, double desired, double speed) {
+        double dif = Math.abs(now - desired);
+        int fps = 0;
+		try {
+			fps = JReflectUtility.getField(Minecraft.getMinecraft().getClass(), ClientLoader.runtimeDeobfuscationEnabled ? "field_71470_ab": "debugFPS",true).getInt(Minecraft.getMinecraft());
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+        if (dif > 0.0) {
+            double animationSpeed = MathUtils.roundToDecimalPlace(Math.min(10.0, Math.max(0.005, 144.0 / fps * speed)), 0.005);
+            if (dif != 0.0 && dif < animationSpeed) {
+                animationSpeed = dif;
+            }
+            if (now < desired) {
+                return now + animationSpeed;
+            }
+            if (now > desired) {
+                return now - animationSpeed;
+            }
+        }
+        return now;
+    }
+    
+    public static int reAlpha(int color, int alpha) {
+        Color c = new Color(color);
+        return new Color(c.getRed(), c.getGreen(), c.getBlue(), alpha).getRGB();
+    }
+    
     public static int reAlpha(int color, float alpha) {
         Color c = new Color(color);
-        float r = ((float) 1 / 255) * c.getRed();
-        float g = ((float) 1 / 255) * c.getGreen();
-        float b = ((float) 1 / 255) * c.getBlue();
-        return new Color(r, g, b, alpha).getRGB();
+        return new Color(c.getRed(), c.getGreen(), c.getBlue(), alpha).getRGB();
+    }
+    
+    public static void drawGradientRect(double left, double top, double right, double bottom, boolean sideways, int startColor, int endColor) {
+    	GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glShadeModel(GL11.GL_SMOOTH);
+        GL11.glBegin(GL11.GL_QUADS);
+        color(startColor);
+        if (sideways) {
+            GL11.glVertex2d(left, top);
+            GL11.glVertex2d(left, bottom);
+            color(endColor);
+            GL11.glVertex2d(right, bottom);
+            GL11.glVertex2d(right, top);
+        } else {
+            GL11.glVertex2d(left, top);
+            color(endColor);
+            GL11.glVertex2d(left, bottom);
+            GL11.glVertex2d(right, bottom);
+            color(startColor);
+            GL11.glVertex2d(right, top);
+        }
+        GL11.glEnd();
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glShadeModel(GL11.GL_FLAT);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
     }
     
     public static void drawGradient(double x, double y, double x2, double y2, int col1, int col2) {
@@ -742,9 +798,10 @@ public enum	 RenderUtil {
     }
 
     public static void drawRoundedRectCSGO(float x, float y, float x2, float y2, final int color) {
-        rectangle(x, y, x2, y2, new Color(10,10,10).getRGB());
+    	Color tempcolor = new Color(color);
+        rectangle(x, y, x2, y2, new Color(10,10,10,tempcolor.getAlpha()).getRGB());
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        rectangle(x+0.5, y+0.5, x2-0.5, y2-0.5, new Color(48,48,48).getRGB());
+        rectangle(x+0.5, y+0.5, x2-0.5, y2-0.5, new Color(48,48,48,tempcolor.getAlpha()).getRGB());
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         rectangle(x+1, y+1, x2-1, y2-1, color);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
