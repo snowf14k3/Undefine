@@ -7,6 +7,7 @@ import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.utils.Value;
 import cn.snowflake.rose.utils.client.PlayerUtil;
+import cn.snowflake.rose.utils.other.JReflectUtility;
 import cn.snowflake.rose.utils.time.TimeHelper;
 import com.darkmagician6.eventapi.EventTarget;
 import net.minecraft.potion.Potion;
@@ -15,8 +16,11 @@ import net.minecraft.util.MathHelper;
 import java.util.List;
 
 public class Speed extends Module {
+    public Value<Boolean> bypass = new Value<>("Speed_Bypass",true);
     public static Value<String> mode = new Value("Speed", "Mode", 0);
     public Value<Double> boost = new Value<Double>("Speed_MoitonBoost", 2.15d, 0d, 7.0, 0.01);
+    public Value<Double> speedtimer = new Value<Double>("Speed_SpeedTimer", 0.2d, 0d, 1.0, 0.01);
+
     public boolean shouldslow = false;
     boolean collided;
     boolean lessSlow;
@@ -37,6 +41,7 @@ public class Speed extends Module {
         mode.addValue("Bhop1");
         mode.addValue("Bhop2");
         mode.addValue("YportNCP");
+        mode.addValue("OnGround");
         setChinesename("\u53d8\u901f");
     }
     private int jumps;
@@ -84,6 +89,7 @@ public class Speed extends Module {
 
                 PlayerUtil.strafe();
             }
+
         }
     }
 
@@ -168,6 +174,18 @@ public class Speed extends Module {
                 break;
             }
 		}
+        final double yaw = Math.toRadians(mc.thePlayer.rotationYaw);
+        if (mode.isCurrentMode("OnGround")){
+            if (bypass.getValueState()){
+                JReflectUtility.setTimerSpeed(speedtimer.getValueState().floatValue());
+            }
+            if (mc.gameSettings.keyBindForward.getIsKeyPressed()
+                    || mc.gameSettings.keyBindLeft.getIsKeyPressed()
+                    || mc.gameSettings.keyBindRight.getIsKeyPressed()
+                    || mc.gameSettings.keyBindBack.getIsKeyPressed()) {
+                setMotion(e, boost.getValueState());
+            }
+        }
 
         if (this.mode.isCurrentMode("New")) {
             if (!mc.thePlayer.isInWater() && mc.thePlayer.onGround && this.isMoving2()) {
@@ -353,6 +371,7 @@ public class Speed extends Module {
     public void onDisable() {
     	this.mc.thePlayer.motionX *= 1.0;
 		this.mc.thePlayer.motionZ *= 1.0;
+		JReflectUtility.setTimerSpeed(1f);
         super.onDisable();
     }
 

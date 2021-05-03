@@ -89,8 +89,8 @@ public class Fly extends Module {
                 }
 
                 if (this.mode.isCurrentMode("Bypass")){
+                    mc.thePlayer.capabilities.isFlying = true;
                     JReflectUtility.setTimerSpeed(0.6f);
-
                     ticktimer.update();
                 }
 
@@ -112,17 +112,23 @@ public class Fly extends Module {
               }
 		      if (this.mode.isCurrentMode("Bypass")){
                   final double yaw = Math.toRadians(mc.thePlayer.rotationYaw);
-
-                  if (ticktimer.hasTimePassed(2)) {
-                      e.setX(-Math.sin(yaw) * 2.4D);
-                      e.setZ(Math.cos(yaw) * 2.4D);
-                      if (mc.gameSettings.keyBindJump.getIsKeyPressed()){
-                          e.setY(2d);
+                  if (mc.gameSettings.keyBindForward.getIsKeyPressed()){
+                      if (ticktimer.hasTimePassed(2)) {
+                          if (mc.gameSettings.keyBindForward.getIsKeyPressed()
+                                  || mc.gameSettings.keyBindLeft.getIsKeyPressed()
+                                  || mc.gameSettings.keyBindRight.getIsKeyPressed()
+                                  || mc.gameSettings.keyBindBack.getIsKeyPressed()) {
+                              e.setX(-Math.sin(yaw) * this.boost.getValueState());
+                              e.setZ(Math.cos(yaw) * this.boost.getValueState());
+                          }
+                          if (mc.gameSettings.keyBindJump.getIsKeyPressed()){
+                              e.setY(2d);
+                          }
+                          ticktimer.reset();
+                      } else {
+                          e.setX(-Math.sin(yaw) * 0.2D);
+                          e.setZ(Math.cos(yaw) * 0.2D);
                       }
-                      ticktimer.reset();
-                  } else {
-                      e.setX(-Math.sin(yaw) * 0.2D);
-                      e.setZ(Math.cos(yaw) * 0.2D);
                   }
               }
 		  }
@@ -173,6 +179,8 @@ public class Fly extends Module {
         if (!mode.isCurrentMode("Bypass")) {
             mc.thePlayer.motionX = 0;
             mc.thePlayer.motionZ = 0;
+        }else {
+            mc.thePlayer.capabilities.isFlying = false;
         }
         JReflectUtility.setTimerSpeed(1f);
         if (this.mode.isCurrentMode("Creative")){

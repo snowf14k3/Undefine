@@ -70,9 +70,9 @@ public class CatAntiCheat {
 
                 try {
                     Field ffoundClassList = eventFMLChannels.iMessage.getClass().getDeclaredField("foundClassList");
-                    ffoundClassList.setAccessible(true);
                     Field fsalt = eventFMLChannels.iMessage.getClass().getDeclaredField("salt");
                     fsalt.setAccessible(true);
+                    ffoundClassList.setAccessible(true);
 
                     byte salt = fsalt.getByte(eventFMLChannels.iMessage);
                     List<String> foundClassList = (List<String>) ffoundClassList.get(eventFMLChannels.iMessage);

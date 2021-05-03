@@ -90,6 +90,7 @@ public class IRC extends Module {
                 messageThread = true;
                 new readMessage().start();
             }catch (Throwable e) {
+                e.printStackTrace();
                 setDisplayName("disconnected");
             }
         }
