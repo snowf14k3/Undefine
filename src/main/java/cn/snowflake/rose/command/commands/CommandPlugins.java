@@ -12,7 +12,7 @@ public class CommandPlugins extends Command {
 
     @Override
     public void onCmd(String[] args) {
-    	ModManager.getModByName("Plugins").set(true);
+        ModManager.getModByName("Plugins").set(true);
         super.onCmd(args);
     }
 }

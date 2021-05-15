@@ -34,9 +34,8 @@ repositories {
         name = 'sponge'
         url = 'https://repo.spongepowered.org/maven/'
     }
-
+    flatDir{dirs 'libs'}
 }
-
 
 apply plugin: 'java'
 apply plugin: 'forge'
@@ -72,30 +71,29 @@ processResources {
     }
 }
 
-
-
-
-
 minecraft {
     version = "1.7.10-10.13.4.1614-1.7.10"
     runDir = "eclipse"
-
-
 }
 
-dependencies {
-}
-
+//dependencies {
+//	compile files('libs/auw.jar')
+//}
 
 jar {
     configurations.shade.copyRecursive().setTransitive(false).each { artifact ->
         from(zipTree(artifact))
     }
-
+//    configurations.compile.copyRecursive().setTransitive(false).each { artifact ->
+//        from(zipTree(artifact))
+//    }
     manifest.attributes(
             "Agent-Class": 'cn.snowflake.rose.Agent',
             "Can-Retransform-Classes": true,
             "Can-Redefine-Classes": true,
+            "FMLCorePlugin" : 'net.minecraft.injection.ClientLoader',
             "FMLCorePluginContainsFMLMod": 'true'
     )
+
+
 }

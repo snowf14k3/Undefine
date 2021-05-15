@@ -6,6 +6,7 @@ import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.notification.Notification;
+import cn.snowflake.rose.utils.Value;
 import cn.snowflake.rose.utils.time.WaitTimer;
 import com.darkmagician6.eventapi.EventTarget;
 import cpw.mods.fml.common.Loader;
@@ -17,6 +18,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C17PacketCustomPayload;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -24,12 +26,18 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 
 public class ResearchGod extends Module {
-	
-    public int tickId;
-    
+
+    private CopyOnWriteArrayList<Packet> doResearchpacket = new CopyOnWriteArrayList<Packet>();
+    private WaitTimer time = new WaitTimer();
+    private WaitTimer findtimer = new WaitTimer();
+    private int index;
+
+    public Value<Double> bypass_aph_delay = new Value<Double>("ResearchGod_Bypass Delay", 130d, 0d, 500.0, 10);
+
+    public Value<Boolean> Notes = new Value<Boolean> ("ResearchGod_Notes", false);
+
     public ResearchGod() {
         super("ResearchGod", "Research God", Category.FORGE);
-        this.tickId = -1;
         try {
             Class.forName("thaumcraft.api.research.ResearchCategories");
             Class.forName("thaumcraft.api.research.ResearchCategoryList");
@@ -37,7 +45,7 @@ public class ResearchGod extends Module {
             Class.forName("thaumcraft.common.lib.research.ResearchManager");
             Class.forName("thaumcraft.api.aspects.AspectList");
         } catch (Exception e) {
-            this.working = false;
+            setWorking(false);
         }
     }
 
@@ -53,68 +61,99 @@ public class ResearchGod extends Module {
         }
         return "";
     }
+
     @Override
      public void onEnable() {
+        index = 0;
+        this.doResearchpacket.clear();
      }
 
     @EventTarget 
     public void onTicks(EventTick e) {
-        ++this.tickId;
-        if(!(aspectspacket.get(0) == null))return;
-        if (this.tickId % 40 != 0 ) {
-            return;
-        }
-        this.tickId = 0;
-        try {
-            Field f = Class.forName("thaumcraft.client.gui.GuiResearchPopup").getDeclaredField("theResearch");
-            f.setAccessible(true);
-            ((Collection) f.get(Class.forName("thaumcraft.client.lib.ClientTickEventsFML").getField("researchPopup").get(null))).clear();
-            LinkedHashMap<String, Object> researchCategories = (LinkedHashMap<String, Object>) getPrivateValue("thaumcraft.api.research.ResearchCategories", "researchCategories", null);
-            for (Object listObj : researchCategories.values()) {
-                Map<String, Object> research = (Map<String, Object>) getPrivateValue("thaumcraft.api.research.ResearchCategoryList", "research", listObj);
-                for (Object item : research.values()) {
-                    String[] parents = (String[]) getPrivateValue("thaumcraft.api.research.ResearchItem", "parents", item);
-                    String[] parentsHidden = (String[]) getPrivateValue("thaumcraft.api.research.ResearchItem", "parentsHidden", item);
-                    String key = (String) getPrivateValue("thaumcraft.api.research.ResearchItem", "key", item);
-                    if (!isResearchComplete(key)) {
-                        boolean doIt = true;
-                        if (parents != null) {
-                            for (String parent : parents) {
-                                if (!isResearchComplete(parent)) {
+        if(doResearchpacket.isEmpty()) {
+            try {
+                Field f = Class.forName("thaumcraft.client.gui.GuiResearchPopup").getDeclaredField("theResearch");
+                f.setAccessible(true);
+                ((Collection) f.get(Class.forName("thaumcraft.client.lib.ClientTickEventsFML").getField("researchPopup").get(null))).clear();
+                LinkedHashMap<String, Object> researchCategories = (LinkedHashMap<String, Object>) getPrivateValue("thaumcraft.api.research.ResearchCategories", "researchCategories", null);
+                for (Object listObj : researchCategories.values()) {
+                    Map<String, Object> research = (Map<String, Object>) getPrivateValue("thaumcraft.api.research.ResearchCategoryList", "research", listObj);
+                    for (Object item : research.values()) {
+                        String[] parents = (String[]) getPrivateValue("thaumcraft.api.research.ResearchItem", "parents", item);
+                        String[] parentsHidden = (String[]) getPrivateValue("thaumcraft.api.research.ResearchItem", "parentsHidden", item);
+                        String key = (String) getPrivateValue("thaumcraft.api.research.ResearchItem", "key", item);
+                        if (!isResearchComplete(key)) {
+                            boolean doIt = true;
+                            if (parents != null) {
+                                for (String parent : parents) {
+                                    if (!isResearchComplete(parent)) {
+                                        doIt = false;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (!doIt) {
+                                continue;
+                            }
+                            if (parentsHidden != null) {
+                                for (String parent : parentsHidden) {
+                                    if (!isResearchComplete(parent)) {
+                                        doIt = false;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (!doIt) {
+                                continue;
+                            }
+                            for (Object aObj : getAspects(item)) {
+                                if (aObj == null) {
                                     doIt = false;
                                     break;
                                 }
                             }
-                        }
-                        if (!doIt) {
-                            continue;
-                        }
-                        if (parentsHidden != null) {
-                            for (String parent : parentsHidden) {
-                                if (!isResearchComplete(parent)) {
-                                    doIt = false;
-                                    break;
-                                }
+                            if (!doIt) {
+                                continue;
                             }
+                            doResearch(key);
                         }
-                        if (!doIt) {
-                            continue;
-                        }
-                        for (Object aObj : getAspects(item)) {
-                            if (aObj == null) {
-                                doIt = false;
-                                break;
-                            }
-                        }
-                        if (!doIt) {
-                            continue;
-                        }
-                        doResearch(key);
                     }
                 }
+                if(doResearchpacket.isEmpty()){
+                    Client.instance.getNotificationManager().addNotification(this,"All studies have been completed !",2000, Notification.Type.WARNING);
+                    set(false);
+                    Client.instance.getNotificationManager().addNotification(this,"\247c OFF !",2000, Notification.Type.WARNING);
+                }else {
+                    Client.instance.getNotificationManager().addNotification(this,"Find \247c" + doResearchpacket.size() +"\247e not research complete ! Waiting %timer",2000, Notification.Type.WARNING);
+                    findtimer.reset();
+
+                }
+            } catch (Exception ee) {
+                
             }
-        } catch (Exception ee) {
+        } else if(findtimer.hasTimeElapsed(2000,false)){
+            int delay = bypass_aph_delay.getValueState().intValue();
+            if (time.hasTimeElapsed(delay,true)){
+                mc.thePlayer.sendQueue.addToSendQueue(doResearchpacket.get(index));
+                C17PacketCustomPayload packet = (C17PacketCustomPayload) doResearchpacket.get(index);
+                ByteBuf buffer = Unpooled.wrappedBuffer(packet.func_149558_e());
+                byte bytes= buffer.readByte();
+                String Key = ByteBufUtils.readUTF8String(buffer);
+                int dim = buffer.readInt();
+                String name= ByteBufUtils.readUTF8String(buffer);
+                byte bytess = buffer.readByte();
+
+                Client.instance.getNotificationManager().addNotification(this,"Do research \247cKey \2477: \247a"+ Key,delay, Notification.Type.SUCCESS);
+                index++;
+                if (doResearchpacket.size() <= index) {
+                    index = 0;
+                    this.doResearchpacket.clear();
+                    Client.instance.getNotificationManager().addNotification(this,"Re check not research complete!",2000, Notification.Type.INFO);
+//                set(false);
+                }
+            }
         }
+
     }
     
     
@@ -131,40 +170,34 @@ public class ResearchGod extends Module {
         return (Object[]) Class.forName("thaumcraft.api.aspects.AspectList").getMethod("getAspects").invoke(aspectListObj);
     }
 
-
-    private CopyOnWriteArrayList<Packet> aspectspacket = new CopyOnWriteArrayList<Packet>();
-    private WaitTimer time = new WaitTimer();
-    private int index;
-    private Boolean next = false;
-    @EventTarget
-    public void onUpdate(EventUpdate eu){
-        if (time.hasTimeElapsed(200,true)){
-            if(aspectspacket.get(index) != null) {
-                mc.thePlayer.sendQueue.addToSendQueue(aspectspacket.get(index));
-                if (aspectspacket.size() <= index) {
-                    index = 0;
-                    this.aspectspacket.clear();
-                    Client.instance.getNotificationManager().addNotification(this,"Reset!", Notification.Type.SUCCESS);
-//                set(false);
-                    return;
-                }
-                index++;
-            }
-        }
-
-    }
-
-
     private void doResearch(String researchId) {
         ByteBuf buf = Unpooled.buffer(0);
         buf.writeByte(14);
         ByteBufUtils.writeUTF8String(buf, researchId);
         buf.writeInt(mc.thePlayer.dimension);
         ByteBufUtils.writeUTF8String(buf, mc.thePlayer.getCommandSenderName());
-        buf.writeByte(0);
-        C17PacketCustomPayload packet = new C17PacketCustomPayload("thaumcraft", buf);
-        this.aspectspacket.add(packet);
+        buf.writeByte(Notes.getValueState() ? 1:0);
+
+        ArrayList<Byte> bytes = new ArrayList<Byte>();
+        for (byte b : buf.array()) {
+            bytes.add(b);
+        }
+        bytes.remove(63);
+
+        C17PacketCustomPayload packet = new C17PacketCustomPayload("thaumcraft", this.toPrimitives(bytes.toArray(new Byte[0])));
+
+//        C17PacketCustomPayload packet = new C17PacketCustomPayload("thaumcraft", buf);
+        this.doResearchpacket.add(packet);
 //        mc.thePlayer.sendQueue.addToSendQueue(packet);
     }
-    
+
+
+    public byte[] toPrimitives(Byte[] oBytes) {
+        byte[] bytes = new byte[oBytes.length];
+        for (int i = 0; i < oBytes.length; ++i) {
+            bytes[i] = oBytes[i];
+        }
+        return bytes;
+    }
+
 }

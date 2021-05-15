@@ -97,7 +97,7 @@ public class AspectGod extends Module {
                      if (aspectspacket.isEmpty()){
                          try {
                              if(Auto_close()){
-                                 Client.instance.getNotificationManager().addNotification(this, "AspectGod Auto Close!", Notification.Type.SUCCESS);
+                                 Client.instance.getNotificationManager().addNotification(this,"\247c OFF !",2000, Notification.Type.WARNING);
                                  set(false);
                              }
                              ArrayList aspects = (ArrayList) Class.forName("thaumcraft.api.aspects.Aspect").getMethod("getCompoundAspects").invoke(null);
@@ -124,7 +124,7 @@ public class AspectGod extends Module {
                              if(!Auto_close()){
                                  Client.instance.getNotificationManager().addNotification(this, "Repeat get aspect!", Notification.Type.SUCCESS);
                              }else {
-                                 Client.instance.getNotificationManager().addNotification(this, "AspectGod Auto Close!", Notification.Type.SUCCESS);
+                                 Client.instance.getNotificationManager().addNotification(this,"\247c OFF !",2000, Notification.Type.WARNING);
                                  set(false);
                              }
                          }
@@ -163,7 +163,7 @@ public class AspectGod extends Module {
                              if(!Auto_close()){
                                  Client.instance.getNotificationManager().addNotification(this, "Repeat get aspect!", Notification.Type.SUCCESS);
                              }else {
-                                 Client.instance.getNotificationManager().addNotification(this, "AspectGod Auto Close!", Notification.Type.SUCCESS);
+                                 Client.instance.getNotificationManager().addNotification(this,"\247c OFF !",2000, Notification.Type.WARNING);
                                  set(false);
                              }
                          }

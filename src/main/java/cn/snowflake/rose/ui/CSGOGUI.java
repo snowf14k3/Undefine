@@ -384,6 +384,7 @@ public class CSGOGUI extends GuiScreen {
                 bmod.setKey(Keyboard.KEY_NONE);
                 ChatUtil.sendClientMessage("Unbound '" + this.bmod.getName() + "'");
                 bmod = null;
+                Client.instance.fileMgr.saveKeys();
             }
 
             //mod open
@@ -516,11 +517,12 @@ public class CSGOGUI extends GuiScreen {
                                     (vY + scrollY  - 1 -Left - 0.3),
                                     (x + 151 + 0.3),
                                     (vY + 7+Left + scrollY+ 0.3),
-                                    RenderUtil.reAlpha(Colors.getColor(10), alpha));
+                                    Colors.getColor(10));
 
                             RenderUtil.drawGradient(x + 145, vY + scrollY - 1 - Left, x + 151, vY + 7+Left + scrollY,
-                            		RenderUtil.reAlpha(Colors.getColor(LeftHovered? 46+20 : 46), alpha),
-                            		RenderUtil.reAlpha(Colors.getColor(LeftHovered? 27+10 : 46),alpha));
+
+                                    Colors.getColor(LeftHovered? 46+20 : 46),
+                                    Colors.getColor(LeftHovered? 27+10 : 27));
 
                             GlStateManager.pushMatrix();
                             GlStateManager.translate((double) (x + 148.0F), (double) vY + scrollY + 4, 0.0D);
@@ -533,18 +535,18 @@ public class CSGOGUI extends GuiScreen {
 
 
                             RenderUtil.drawRoundedRectCSGO(x + 152, vY + scrollY -2, x + 208, vY + 8 + scrollY,
-                                    new Color(32, 32, 32,alpha).getRGB());
+                                    new Color(32, 32, 32).getRGB());
 
 
                             RenderUtil.drawRect(x + 209-0.3,
                                     (vY + scrollY  - 1 -Right- 0.3),
                                     (x + 215 + 0.3),
                                     (vY + 7+Right + scrollY+ 0.3),
-                                    RenderUtil.reAlpha(Colors.getColor(10), alpha));
+                                    Colors.getColor(10));
 
                             RenderUtil.drawGradient(x + 209, vY + scrollY - 1-Right, x + 215, vY + 7+Right + scrollY,
-                            		RenderUtil.reAlpha(Colors.getColor(LeftHovered? 46+20 : 46), alpha),
-                            		RenderUtil.reAlpha(Colors.getColor(LeftHovered? 27+10 : 46),alpha));
+                                    Colors.getColor(RightHovered? 46+20 : 46),
+                                    Colors.getColor(RightHovered? 27+10 : 27));
 
                             GlStateManager.pushMatrix();
                             GlStateManager.translate((double) (x + 212.0F), (double) vY + scrollY + 1.8, 0.0D);
@@ -555,11 +557,11 @@ public class CSGOGUI extends GuiScreen {
                             RenderUtil.rectangle(0.5D, 1.0D, 1.0D, 1.5D, Colors.getColor(151));
                             GlStateManager.popMatrix();
 
-                            font2.drawBoldString(modeName, x + 180 - font2.getStringWidth("" + modeName) / 2, vY + scrollY - 0.5f,  new Color(151, 151, 151,alpha).getRGB());
+                            font2.drawBoldString(modeName, x + 180 - font2.getStringWidth("" + modeName) / 2, vY + scrollY - 0.5f,  new Color(151, 151, 151).getRGB());
 
-                            font2.drawBoldString(NameText, x + 90, vY + scrollY - 1, new Color(153, 153, 169,alpha).getRGB());
+                            font2.drawBoldString(NameText, x + 90, vY + scrollY - 1, new Color(153, 153, 169).getRGB());
 
-                            font2.drawBoldString(modeCountText, x + 230 - font2.getStringWidth(modeCountText), vY + scrollY, new Color(153, 153, 169,alpha).getRGB());
+                            font2.drawBoldString(modeCountText, x + 230 - font2.getStringWidth(modeCountText), vY + scrollY, new Color(153, 153, 169).getRGB());
 
                             if (isHovered(startX + 151, startY + 5, startX + 300, startY + 184, mouseX, mouseY) && isHovered(x + 145, vY + scrollY - 1, x + 151, vY + 7 + scrollY, mouseX, mouseY) && handler.canExcecute()) {
 

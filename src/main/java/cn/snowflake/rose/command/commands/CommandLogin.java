@@ -4,6 +4,9 @@ import cn.snowflake.rose.Client;
 import cn.snowflake.rose.command.Command;
 import cn.snowflake.rose.utils.client.ChatUtil;
 import cn.snowflake.rose.utils.auth.LoginUtil;
+import cpw.mods.fml.common.network.ByteBufUtils;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import net.minecraft.client.Minecraft;
 
 public class CommandLogin extends Command {

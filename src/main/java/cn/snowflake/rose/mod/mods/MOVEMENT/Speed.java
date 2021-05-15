@@ -53,6 +53,7 @@ public class Speed extends Module {
 
     @EventTarget
     public void onUpdate(EventUpdate e){
+        JReflectUtility.setjumpticks(4);
         if (mode.isCurrentMode("Bhop")){
             if(PlayerUtil.MovementInput()) {
                 if(this.mc.thePlayer.onGround) {

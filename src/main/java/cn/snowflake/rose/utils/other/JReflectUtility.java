@@ -1,9 +1,12 @@
 package cn.snowflake.rose.utils.other;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.multiplayer.PlayerControllerMP;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.injection.ClientLoader;
+import net.minecraft.inventory.Slot;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Timer;
 import net.minecraft.util.Vec3;
@@ -349,7 +352,7 @@ public class JReflectUtility {
                 mc.getClass().getDeclaredField(ClientLoader.runtimeDeobfuscationEnabled
                         ? "field_71467_ac" : "rightClickDelayTimer");//field_71467_ac
         rightClickDelayTimer.setAccessible(true);
-        rightClickDelayTimer.setInt(mc, 0);
+        rightClickDelayTimer.setInt(mc, i);
     }catch(ReflectiveOperationException e)
     {
         throw new RuntimeException(e);
@@ -358,11 +361,11 @@ public class JReflectUtility {
 
     public static void setjumpticks(int i) {
         try{
-          Field jumpTicks =
-                  mc.getClass().getDeclaredField(ClientLoader.runtimeDeobfuscationEnabled
+          Field jumpTicks = EntityLivingBase.class.getDeclaredField(ClientLoader.runtimeDeobfuscationEnabled
                           ? "field_70773_bE" : "jumpTicks");//field_70773_bE
           jumpTicks.setAccessible(true);
-          jumpTicks.setInt(mc, i);
+          jumpTicks.setInt(mc.thePlayer, i);
+
       }catch(ReflectiveOperationException e){
           throw new RuntimeException(e);
       }

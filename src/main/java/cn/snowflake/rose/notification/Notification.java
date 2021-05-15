@@ -47,6 +47,7 @@ public class Notification {
     public void draw(float prevY) {
         ScaledResolution rs = new ScaledResolution(Minecraft.getMinecraft(),Minecraft.getMinecraft().displayWidth,Minecraft.getMinecraft().displayHeight);
         UnicodeFontRenderer font = Client.instance.fontManager.simpleton15;
+        stayBar = timer.time();
         String text = this.text.replace("%timer"," \2477("+new BigDecimal((stayTime - stayBar )/1000 ).setScale(1, BigDecimal.ROUND_HALF_UP)+"s)");
         final float ySpeed = (rs.getScaledHeight() - prevY) /*/ (Minecraft.getDebugFPS() / 8) Client.delta*/;
         if (width != font.getStringWidth(text) + 8) {

@@ -2,7 +2,6 @@ package cn.snowflake.rose.mod.mods.FORGE;
 
 import cn.snowflake.rose.Client;
 import cn.snowflake.rose.events.impl.EventKey;
-import cn.snowflake.rose.events.impl.EventUpdate;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
 import cn.snowflake.rose.notification.Notification;

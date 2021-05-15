@@ -16,6 +16,7 @@ import cn.snowflake.rose.mod.mods.FORGE.nbtedit.NBTHack;
 import cn.snowflake.rose.mod.mods.FORGE.taintedmagic.NoLimitAura;
 import cn.snowflake.rose.mod.mods.FORGE.thaumcraft.AspectGod;
 import cn.snowflake.rose.mod.mods.FORGE.MagicRecipe;
+import cn.snowflake.rose.mod.mods.FORGE.thaumcraft.ForceScanned;
 import cn.snowflake.rose.mod.mods.FORGE.thaumcraft.ResearchGod;
 import cn.snowflake.rose.mod.mods.MOVEMENT.*;
 import cn.snowflake.rose.mod.mods.PLAYER.*;
@@ -112,6 +113,7 @@ public class ModManager {
         //ThaumCraft
         addMod(new AspectGod());
         addMod(new ResearchGod());
+        addMod(new ForceScanned());
 
         //NBTEdit
         addMod(new NBTHack());

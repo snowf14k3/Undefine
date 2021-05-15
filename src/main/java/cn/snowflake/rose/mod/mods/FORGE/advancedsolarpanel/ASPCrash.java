@@ -1,7 +1,9 @@
 package cn.snowflake.rose.mod.mods.FORGE.advancedsolarpanel;
 
+import cn.snowflake.rose.Client;
 import cn.snowflake.rose.mod.Category;
 import cn.snowflake.rose.mod.Module;
+import cn.snowflake.rose.notification.Notification;
 
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
@@ -70,10 +72,11 @@ public class ASPCrash extends Module {
             this.clazz.getDeclaredField("z").set(object, z);
             this.clazz.getDeclaredField("dimID").set(object, dim);
             this.clazz1.getMethod("sendToServer", this.clazz2).invoke(null, object);
-        }
-        catch (Throwable e) {
+            Client.instance.getNotificationManager().addNotification(this, (String) object, Notification.Type.WARNING);
+        } catch (Throwable e) {
             e.printStackTrace();
         }
+
     }
 
 }

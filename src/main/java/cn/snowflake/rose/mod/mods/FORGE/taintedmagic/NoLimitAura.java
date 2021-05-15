@@ -18,11 +18,10 @@ import java.util.Objects;
 
 public class NoLimitAura extends Module {
 
-    public Value<Double> AuraRadius = new Value<Double>("NoLimitAura_FireRadius", 50.0D, 5.0D, 100.0D,5.0D);
-
+    public Value<Double> AuraRadius = new Value<Double>("NoLimitAura_AuraRadius", 50.0D, 5.0D, 100.0D,5.0D);
+    public Value<Boolean> leech = new Value("NoLimitAura_Leech", false);
     public Value<Boolean> players = new Value("NoLimitAura_Player", true);
     public Value<Boolean> otherentity = new Value("NoLimitAura_Otherentity", true);
-    public Value<Boolean> Npc = new Value("NoLimitAura_NPCs", false);
 
     public NoLimitAura() {
         super("NoLimitAura", "NoLimit Aura", Category.FORGE);
@@ -43,7 +42,8 @@ public class NoLimitAura extends Module {
         try {
             for (Object object : mc.theWorld.loadedEntityList) {
                 Entity e = (Entity) object;
-                if(mc.thePlayer.getDistanceToEntity(e) <= AuraRadius.getValueState().floatValue() && e != mc.thePlayer){
+                if(mc.thePlayer.getDistanceToEntity(e) <= AuraRadius.getValueState().floatValue() && e != mc.thePlayer && !Objects.requireNonNull(JReflectUtility.getNPCEntity()).isInstance(e)){
+
                     if (e instanceof EntityLivingBase && !(e instanceof EntityPlayer) && otherentity.getValueState() && !players.getValueState()) {
                         killEntity(e.getEntityId());
                     }
@@ -51,9 +51,6 @@ public class NoLimitAura extends Module {
                         killEntity(e.getEntityId());
                     }
                     if ( e instanceof EntityLivingBase && otherentity.getValueState() && players.getValueState()) {
-                        killEntity(e.getEntityId());
-                    }
-                    if(Objects.requireNonNull(JReflectUtility.getNPCEntity()).isInstance(e) && Npc.getValueState()){
                         killEntity(e.getEntityId());
                     }
                 }
@@ -71,7 +68,7 @@ public class NoLimitAura extends Module {
         buf.writeInt(playerId);
         buf.writeInt(dimensionId);
         buf.writeFloat(Float.MAX_VALUE);
-        buf.writeBoolean(false);
+        buf.writeBoolean(leech.getValueState());
         C17PacketCustomPayload packet = new C17PacketCustomPayload("taintedmagic", buf);
         mc.thePlayer.sendQueue.addToSendQueue(packet);
     }

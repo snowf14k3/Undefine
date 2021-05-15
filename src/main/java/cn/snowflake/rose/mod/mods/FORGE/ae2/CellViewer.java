@@ -97,7 +97,6 @@ public class CellViewer extends Module {
                     }
                     mc.displayGuiScreen(new CellViewerGui(new CellViewerContainer(stacks.toArray(new ItemStack[stacks.size()]), cell.getDisplayName())));
                 } catch (Exception e) {
-                    ChatUtil.sendClientMessage("\247bError");
                     Client.instance.getNotificationManager().addNotification(this,"\247bError", Notification.Type.ERROR);
                 }
             }

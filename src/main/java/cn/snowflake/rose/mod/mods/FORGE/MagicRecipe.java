@@ -25,7 +25,7 @@ public class MagicRecipe extends Module {
 
     @Override
     public String getDescription() {
-        return "食谱封包刷OP(按小键盘0)!";
+        return "另一个合成修改(打开工作台按0)!";
     }
 
     @EventTarget
