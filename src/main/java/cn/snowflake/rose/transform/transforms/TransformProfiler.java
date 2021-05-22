@@ -2,6 +2,7 @@ package cn.snowflake.rose.transform.transforms;
 
 import cn.snowflake.rose.events.impl.EventRender2D;
 import cn.snowflake.rose.events.impl.EventRender3D;
+import cn.snowflake.rose.utils.asm.ASMUtil;
 import cn.snowflake.rose.utils.render.GLUProjection;
 import cn.snowflake.rose.utils.mcutil.GlStateManager;
 import com.darkmagician6.eventapi.EventManager;
@@ -22,7 +23,7 @@ public class TransformProfiler implements Opcodes
         if (methodNode.name.equalsIgnoreCase("startSection") || methodNode.name.equalsIgnoreCase("func_76320_a")){
             InsnList insnList = new InsnList();
             insnList.add(new VarInsnNode(ALOAD,1));
-            insnList.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(TransformProfiler.class), "startSectionHook", "(Ljava/lang/String;)V", false));
+            insnList.add(ASMUtil.newInstance(INVOKESTATIC, Type.getInternalName(TransformProfiler.class), "startSectionHook", "(Ljava/lang/String;)V"));
             methodNode.instructions.insert(insnList);
         }
     }

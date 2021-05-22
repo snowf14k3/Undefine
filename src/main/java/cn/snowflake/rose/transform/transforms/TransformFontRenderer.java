@@ -2,6 +2,7 @@ package cn.snowflake.rose.transform.transforms;
 
 import cn.snowflake.rose.management.ModManager;
 import cn.snowflake.rose.mod.mods.RENDER.NameProtect;
+import cn.snowflake.rose.utils.asm.ASMUtil;
 import net.minecraft.client.Minecraft;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
@@ -17,11 +18,11 @@ public class TransformFontRenderer implements Opcodes {
             InsnList insnList = new InsnList();
             insnList.add(new VarInsnNode(ALOAD,1));
 
-            insnList.add(new MethodInsnNode(INVOKESTATIC,
+            insnList.add(ASMUtil.newInstance(INVOKESTATIC,
                     Type.getInternalName(TransformFontRenderer.class),
                     "nameProtectHook",
-                    "(Ljava/lang/String;)Ljava/lang/String;",
-                    false));
+                    "(Ljava/lang/String;)Ljava/lang/String;"
+            ));
             insnList.add(new VarInsnNode(ASTORE,1));
 
             methodInsnNode.instructions.insert(methodInsnNode.instructions.getFirst(),insnList);

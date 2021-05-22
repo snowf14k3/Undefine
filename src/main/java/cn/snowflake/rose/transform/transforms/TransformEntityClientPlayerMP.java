@@ -19,19 +19,19 @@ public class TransformEntityClientPlayerMP implements Opcodes {
 
     public static void transformEntityClientPlayerMP(ClassNode clazz, MethodNode method) {
         if (method.name.equals("onUpdate") || method.name.equals("func_70071_h_") ) {
-            method.instructions.insert(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(TransformEntityClientPlayerMP.class), "onUpdate", "()V", false));
+            method.instructions.insert(ASMUtil.newInstance(Opcodes.INVOKESTATIC, Type.getInternalName(TransformEntityClientPlayerMP.class), "onUpdate", "()V"));
         }
         if (method.name.equalsIgnoreCase("sendMotionUpdates") || method.name.equalsIgnoreCase("func_71166_b")){
             //replace the shit of old
 
             InsnList preInsn = new InsnList();
             preInsn.add(new FieldInsnNode(GETSTATIC, Type.getInternalName(EventType.class), "PRE", "Lcom/darkmagician6/eventapi/types/EventType;"));
-            preInsn.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(TransformEntityClientPlayerMP.class), "onUpdateWalkingPlayerHook","(Lcom/darkmagician6/eventapi/types/EventType;)V", false));
+            preInsn.add(ASMUtil.newInstance(INVOKESTATIC, Type.getInternalName(TransformEntityClientPlayerMP.class), "onUpdateWalkingPlayerHook","(Lcom/darkmagician6/eventapi/types/EventType;)V"));
             method.instructions.insert(preInsn);
 
             InsnList postInsn = new InsnList();
             postInsn.add(new FieldInsnNode(GETSTATIC, Type.getInternalName(EventType.class), "POST", "Lcom/darkmagician6/eventapi/types/EventType;"));
-            postInsn.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(TransformEntityClientPlayerMP.class), "onUpdateWalkingPlayerHook","(Lcom/darkmagician6/eventapi/types/EventType;)V", false));
+            postInsn.add(ASMUtil.newInstance(INVOKESTATIC, Type.getInternalName(TransformEntityClientPlayerMP.class), "onUpdateWalkingPlayerHook","(Lcom/darkmagician6/eventapi/types/EventType;)V"));
             method.instructions.insertBefore(ASMUtil.bottom(method), postInsn);
 
 
@@ -73,11 +73,11 @@ public class TransformEntityClientPlayerMP implements Opcodes {
 
             final InsnList insnList = new InsnList();
             insnList.add(new VarInsnNode(Opcodes.ALOAD, 1));
-            insnList.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(TransformEntityClientPlayerMP.class), "sendMessageHook", "(Ljava/lang/String;)V", false));
+            insnList.add(ASMUtil.newInstance(Opcodes.INVOKESTATIC, Type.getInternalName(TransformEntityClientPlayerMP.class), "sendMessageHook", "(Ljava/lang/String;)V"));
 
             insnList.add(new VarInsnNode(Opcodes.ALOAD, 1));
             insnList.add(new LdcInsnNode("-"));
-            insnList.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(TransformEntityClientPlayerMP.class), "isNoCommandEnabled", "(Ljava/lang/String;Ljava/lang/String;)Z", false));
+            insnList.add(ASMUtil.newInstance(Opcodes.INVOKESTATIC, Type.getInternalName(TransformEntityClientPlayerMP.class), "isNoCommandEnabled", "(Ljava/lang/String;Ljava/lang/String;)Z"));
 
             final LabelNode jmp = new LabelNode();
             insnList.add(new JumpInsnNode(Opcodes.IFEQ, jmp));

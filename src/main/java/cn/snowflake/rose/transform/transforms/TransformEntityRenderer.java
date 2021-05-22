@@ -24,7 +24,7 @@ public class TransformEntityRenderer implements Opcodes {
     public static void transformRenderEntityRenderer(ClassNode classNode, MethodNode method) {
         if (method.name.equalsIgnoreCase("hurtCameraEffect") || method.name.equalsIgnoreCase("func_78482_e")){
             InsnList insnList = new InsnList();
-            insnList.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(TransformEntityRenderer.class), "isNohurtcamEnable", "()Z", false));
+            insnList.add(ASMUtil.newInstance(INVOKESTATIC, Type.getInternalName(TransformEntityRenderer.class), "isNohurtcamEnable", "()Z"));
             LabelNode labelNode = new LabelNode();
             insnList.add(new JumpInsnNode(IFEQ, labelNode));
             insnList.add(new InsnNode(RETURN));
@@ -37,7 +37,7 @@ public class TransformEntityRenderer implements Opcodes {
                 InsnList insnList2 = new InsnList();
 
                 InsnList insnList = new InsnList();
-                insnList.add(new MethodInsnNode(INVOKESTATIC,Type.getInternalName(TransformEntityRenderer.class),"isViewClipEnabled","()Z",false));
+                insnList.add(ASMUtil.newInstance(INVOKESTATIC,Type.getInternalName(TransformEntityRenderer.class),"isViewClipEnabled","()Z"));
                 LabelNode labelNode = new LabelNode();
                 insnList.add(new JumpInsnNode(IFNE,labelNode));
                 method.instructions.insertBefore(ASMUtil.forward(target,8),insnList);

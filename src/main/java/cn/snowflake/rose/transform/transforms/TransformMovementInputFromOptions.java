@@ -16,7 +16,7 @@ public class TransformMovementInputFromOptions implements Opcodes {
             AbstractInsnNode target = ASMUtil.findFieldInsnNode(methodNode, GETFIELD, "net/minecraft/util/MovementInputFromOptions", ClientLoader.runtimeDeobfuscationEnabled ? "field_78899_d" : "sneak", "Z");
             if (target != null) {
                 final InsnList insnList = new InsnList();
-                insnList.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(TransformMovementInputFromOptions.class), "isDownEnabled", "()Z", false));
+                insnList.add(ASMUtil.newInstance(INVOKESTATIC, Type.getInternalName(TransformMovementInputFromOptions.class), "isDownEnabled", "()Z"));
                 LabelNode jmp = new LabelNode();
                 insnList.add(new JumpInsnNode(IFEQ,jmp));
                 insnList.add(new InsnNode(RETURN));

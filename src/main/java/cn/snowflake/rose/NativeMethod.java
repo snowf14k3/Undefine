@@ -340,6 +340,7 @@ public class NativeMethod implements Opcodes{
 
 
     public static String method1(String string){
+
         try {
             HttpURLConnection connection = (HttpURLConnection)new URL(string).openConnection();
             connection.setRequestMethod("GET");

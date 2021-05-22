@@ -1,6 +1,7 @@
 package cn.snowflake.rose.transform.transforms;
 
 import cn.snowflake.rose.mod.mods.WORLD.Xray;
+import cn.snowflake.rose.utils.asm.ASMUtil;
 import net.minecraft.block.Block;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
@@ -22,12 +23,12 @@ public class TransformBlock implements Opcodes {
     public static void transformBlock(ClassNode classNode, MethodNode methodNode) {
         if (methodNode.name.equalsIgnoreCase("shouldSideBeRendered") || methodNode.name.equalsIgnoreCase("func_149646_a")){
             final InsnList insnList = new InsnList();
-            insnList.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(TransformBlock.class), "isXrayEnabled", "()Z", false));
+            insnList.add(ASMUtil.newInstance(INVOKESTATIC, Type.getInternalName(TransformBlock.class), "isXrayEnabled", "()Z"));
             LabelNode jmp = new LabelNode();
             insnList.add(new JumpInsnNode(IFEQ,jmp));
             insnList.add(new FieldInsnNode(GETSTATIC, Type.getInternalName(Xray.class), "block", "Ljava/util/ArrayList;"));
             insnList.add(new VarInsnNode(ALOAD,0));// == this
-            insnList.add(new MethodInsnNode(INVOKEVIRTUAL, "java/util/ArrayList", "contains", "(Ljava/lang/Object;)Z", false));
+            insnList.add(ASMUtil.newInstance(INVOKEVIRTUAL, "java/util/ArrayList", "contains", "(Ljava/lang/Object;)Z"));
             insnList.add(new InsnNode(IRETURN));
             insnList.add(jmp);
             insnList.add(new FrameNode(F_SAME, 0, null, 0, null));
@@ -40,7 +41,7 @@ public class TransformBlock implements Opcodes {
 //			insnList.add(new JumpInsnNode(IFNE,jmp1));
 //			LabelNode jmp2 = new LabelNode();
 //			insnList.add(new VarInsnNode(ALOAD,0));// == this
-//			insnList.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(TransformBlock.class), "getRenderBlockPass", "(Lnet/minecraft/block/Block;)Z", false));
+//			insnList.add(ASMUtil.newInstance(INVOKESTATIC, Type.getInternalName(TransformBlock.class), "getRenderBlockPass", "(Lnet/minecraft/block/Block;)Z", false));
 //			insnList.add(new JumpInsnNode(IFEQ,jmp2));
 //			insnList.add(new InsnNode(ICONST_1));
 //			insnList.add(new InsnNode(IRETURN));

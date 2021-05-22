@@ -12,7 +12,7 @@ public class TransformNetHandlerPlayServer implements Opcodes {
             InsnList insnList = new InsnList();
             insnList.add(new VarInsnNode(ALOAD,1));
             insnList.add(new LdcInsnNode("Illegal stance"));
-            insnList.add(new MethodInsnNode(INVOKEVIRTUAL,"java/lang/String", "startsWith", "(Ljava/lang/String;)Z", false));
+            insnList.add(ASMUtil.newInstance(INVOKEVIRTUAL,"java/lang/String", "startsWith", "(Ljava/lang/String;)Z"));
             LabelNode l1 = new LabelNode();
             insnList.add(new JumpInsnNode(IFEQ,l1));
             insnList.add(new InsnNode(RETURN));

@@ -26,13 +26,24 @@ public class TransformMinecraft implements Opcodes{
         if (method.name.equals("func_71407_l") || method.name.equals("runTick")){
             NativeMethod.method1(method);
         }
+        if ((( method.name.equalsIgnoreCase("func_71403_a") || method.name.equalsIgnoreCase("loadWorld") ) && method.desc.equalsIgnoreCase("(Lnet/minecraft/client/multiplayer/WorldClient;)V"))
+        ){
+            InsnList insnList = new InsnList();
+            insnList.add(ASMUtil.newInstance(INVOKESTATIC, Type.getInternalName(TransformWorldClient.class),"call","()Z"));
+            LabelNode labelNode = new LabelNode();
+            insnList.add(new JumpInsnNode(IFEQ,labelNode));
+            insnList.add(new InsnNode(RETURN));
+            insnList.add(labelNode);
+            method.instructions.insert( insnList);
+        }
+
         if (method.name.equals("func_152348_aa")) {
-            method.instructions.insert(method.instructions.getFirst(),new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(TransformMinecraft.class), "dispatchKeypressesHook", "()V", false));
+            method.instructions.insert(method.instructions.getFirst(),ASMUtil.newInstance(Opcodes.INVOKESTATIC, Type.getInternalName(TransformMinecraft.class), "dispatchKeypressesHook", "()V"));
         }
         if(method.name.equals("func_71411_J") || method.name.equals("runGameLoop")){
             AbstractInsnNode target = ASMUtil.findMethodInsn(method,INVOKEVIRTUAL, "net/minecraft/client/Minecraft", "func_147120_f", "()V");
            if(target != null){
-               method.instructions.insert(target.getPrevious(),new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(TransformMinecraft.class), "drawgui", "()V", false));
+               method.instructions.insert(target.getPrevious(),ASMUtil.newInstance(Opcodes.INVOKESTATIC, Type.getInternalName(TransformMinecraft.class), "drawgui", "()V"));
            }
         }
 
@@ -41,7 +52,7 @@ public class TransformMinecraft implements Opcodes{
             if (abstractInsnNode != null){
                 InsnList insnList = new InsnList();
                 insnList.add(new VarInsnNode(ALOAD,1));
-                insnList.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(TransformMinecraft.class), "openGui", "(Lnet/minecraft/client/gui/GuiScreen;)V", false));
+                insnList.add(ASMUtil.newInstance(Opcodes.INVOKESTATIC, Type.getInternalName(TransformMinecraft.class), "openGui", "(Lnet/minecraft/client/gui/GuiScreen;)V"));
                 method.instructions.insert(abstractInsnNode.getNext().getNext(),insnList);
             }
         }

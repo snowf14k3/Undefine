@@ -24,6 +24,18 @@ import static org.objectweb.asm.ClassWriter.COMPUTE_MAXS;
  */
 public final class ASMUtil {
 
+    public static MethodInsnNode newInstance(final int opcode, final String owner,final String name, final String desc){
+        try{
+            Opcodes.class.getField("ASM5");
+            return new MethodInsnNode(  opcode,   owner,
+              name,   desc,   false);
+        }catch (Exception e){
+            return new MethodInsnNode(  opcode,   owner,
+                    name,   desc);
+        }
+    }
+
+
     public static AbstractInsnNode findPattern(AbstractInsnNode start, int[] pattern, char[] mask) {
         if (pattern.length != mask.length) {
             throw new IllegalArgumentException("Mask must be same length as pattern");

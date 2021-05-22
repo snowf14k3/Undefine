@@ -2,6 +2,7 @@ package cn.snowflake.rose.transform.transforms;
 
 import cn.snowflake.rose.Client;
 import cn.snowflake.rose.events.impl.EventPacket;
+import cn.snowflake.rose.utils.asm.ASMUtil;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.types.EventType;
 import net.minecraft.network.play.server.S05PacketSpawnPosition;
@@ -18,7 +19,7 @@ public class TransformNetworkManager implements Opcodes {
             final InsnList preInsn = new InsnList();
             preInsn.add(new VarInsnNode(Opcodes.ALOAD, 1));//方法的第一个参数
             preInsn.add(new FieldInsnNode(Opcodes.GETSTATIC, "com/darkmagician6/eventapi/types/EventType", "SEND", "Lcom/darkmagician6/eventapi/types/EventType;"));
-            preInsn.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(TransformNetworkManager.class), "channelRead0Hook","(Ljava/lang/Object;Lcom/darkmagician6/eventapi/types/EventType;)Z", false));
+            preInsn.add(ASMUtil.newInstance(Opcodes.INVOKESTATIC, Type.getInternalName(TransformNetworkManager.class), "channelRead0Hook","(Ljava/lang/Object;Lcom/darkmagician6/eventapi/types/EventType;)Z"));
             final LabelNode jmp = new LabelNode();
             preInsn.add(new JumpInsnNode(Opcodes.IFEQ, jmp));
             preInsn.add(new InsnNode(Opcodes.RETURN));
@@ -30,7 +31,7 @@ public class TransformNetworkManager implements Opcodes {
             final InsnList preInsn = new InsnList();
             preInsn.add(new VarInsnNode(Opcodes.ALOAD, 2));
             preInsn.add(new FieldInsnNode(Opcodes.GETSTATIC, "com/darkmagician6/eventapi/types/EventType", "RECIEVE", "Lcom/darkmagician6/eventapi/types/EventType;"));
-            preInsn.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(TransformNetworkManager.class), "channelRead0Hook","(Ljava/lang/Object;Lcom/darkmagician6/eventapi/types/EventType;)Z", false));
+            preInsn.add(ASMUtil.newInstance(Opcodes.INVOKESTATIC, Type.getInternalName(TransformNetworkManager.class), "channelRead0Hook","(Ljava/lang/Object;Lcom/darkmagician6/eventapi/types/EventType;)Z"));
             final LabelNode jmp = new LabelNode();
             preInsn.add(new JumpInsnNode(Opcodes.IFEQ, jmp));
             preInsn.add(new InsnNode(Opcodes.RETURN));

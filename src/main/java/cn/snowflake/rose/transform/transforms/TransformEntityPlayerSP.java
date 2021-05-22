@@ -3,6 +3,7 @@ package cn.snowflake.rose.transform.transforms;
 import cn.snowflake.rose.events.impl.EventPushOut;
 import cn.snowflake.rose.events.impl.EventStep;
 import cn.snowflake.rose.mod.mods.PLAYER.NoSlowDown;
+import cn.snowflake.rose.utils.asm.ASMUtil;
 import com.darkmagician6.eventapi.EventManager;
 import com.darkmagician6.eventapi.types.EventType;
 import net.minecraft.client.Minecraft;
@@ -22,17 +23,17 @@ public class TransformEntityPlayerSP implements Opcodes {
                 if (insn.getOpcode() == Opcodes.INVOKEVIRTUAL) {
                     MethodInsnNode methodInsn = (MethodInsnNode) insn;
                     if (methodInsn.name.equals("updatePlayerMoveState") || methodInsn.name.equals("func_78898_a")) {
-                        method.instructions.insert(insn, new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(TransformEntityPlayerSP.class), "onNoSlowEnable", "()V", false));
+                        method.instructions.insert(insn, ASMUtil.newInstance(Opcodes.INVOKESTATIC, Type.getInternalName(TransformEntityPlayerSP.class), "onNoSlowEnable", "()V"));
                     }
                     if (methodInsn.name.equals("func_145771_j")) {
-                        method.instructions.insertBefore(insn, new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(TransformEntityPlayerSP.class), "onToggledTimerZero", "()V", false));
+                        method.instructions.insertBefore(insn, ASMUtil.newInstance(Opcodes.INVOKESTATIC, Type.getInternalName(TransformEntityPlayerSP.class), "onToggledTimerZero", "()V"));
                     }
                 }
             }
         }
         if (method.name.equalsIgnoreCase("isSneaking") || method.name.equalsIgnoreCase("func_70093_af")) {
             final InsnList insnList = new InsnList();
-            insnList.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(TransformMovementInputFromOptions.class), "isDownEnabled", "()Z", false));
+            insnList.add(ASMUtil.newInstance(INVOKESTATIC, Type.getInternalName(TransformMovementInputFromOptions.class), "isDownEnabled", "()Z"));
             LabelNode jmp = new LabelNode();
             insnList.add(new JumpInsnNode(IFEQ,jmp));
             insnList.add(new InsnNode(ICONST_0));
@@ -44,7 +45,7 @@ public class TransformEntityPlayerSP implements Opcodes {
         }
         if (method.name.equalsIgnoreCase("func_145771_j")){
             final InsnList insnList = new InsnList();
-            insnList.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(TransformEntityPlayerSP.class), "pushOutOfBlocksHooks","()Z", false));
+            insnList.add(ASMUtil.newInstance(INVOKESTATIC, Type.getInternalName(TransformEntityPlayerSP.class), "pushOutOfBlocksHooks","()Z"));
             final LabelNode jmp = new LabelNode();
             insnList.add(new JumpInsnNode(Opcodes.IFEQ, jmp));
             insnList.add(new InsnNode(ICONST_0));

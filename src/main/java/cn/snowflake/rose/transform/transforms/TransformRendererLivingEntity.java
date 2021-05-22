@@ -22,7 +22,7 @@ public class TransformRendererLivingEntity implements Opcodes {
 //				InsnList insnList = new InsnList();
 //				LabelNode labelNode = new LabelNode();
 //				insnList.add(new VarInsnNode(ALOAD,1));
-//				insnList.add(new MethodInsnNode(INVOKESTATIC,
+//				insnList.add(ASMUtil.newInstance(INVOKESTATIC,
 //						Type.getInternalName(TransformRendererLivingEntity.class),
 //						"eventrenderplayer",
 //						"(Ljava/lang/Object;)Z",

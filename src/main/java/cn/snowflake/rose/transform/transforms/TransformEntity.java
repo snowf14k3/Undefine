@@ -1,6 +1,7 @@
 package cn.snowflake.rose.transform.transforms;
 
 import cn.snowflake.rose.events.impl.EventMove;
+import cn.snowflake.rose.utils.asm.ASMUtil;
 import com.darkmagician6.eventapi.EventManager;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
@@ -17,19 +18,19 @@ public class TransformEntity {
             insnList.add(new VarInsnNode(Opcodes.DLOAD, 1));
             insnList.add(new VarInsnNode(Opcodes.DLOAD, 3));
             insnList.add(new VarInsnNode(Opcodes.DLOAD, 5));
-            insnList.add(new MethodInsnNode(Opcodes.INVOKESPECIAL, Type.getInternalName(EventMove.class), "<init>","(Ljava/lang/Object;DDD)V", false));
+            insnList.add(ASMUtil.newInstance(Opcodes.INVOKESPECIAL, Type.getInternalName(EventMove.class), "<init>","(Ljava/lang/Object;DDD)V"));
             insnList.add(new VarInsnNode(Opcodes.ASTORE, 11));
             insnList.add(new VarInsnNode(Opcodes.ALOAD, 11));
-            insnList.add(new MethodInsnNode(Opcodes.INVOKESTATIC, Type.getInternalName(EventManager.class), "call", "(Lcom/darkmagician6/eventapi/events/Event;)Lcom/darkmagician6/eventapi/events/Event;", false));
+            insnList.add(ASMUtil.newInstance(Opcodes.INVOKESTATIC, Type.getInternalName(EventManager.class), "call", "(Lcom/darkmagician6/eventapi/events/Event;)Lcom/darkmagician6/eventapi/events/Event;"));
             insnList.add(new InsnNode(Opcodes.POP));
             insnList.add(new VarInsnNode(Opcodes.ALOAD, 11));
-            insnList.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, Type.getInternalName(EventMove.class), "getX", "()D", false));
+            insnList.add(ASMUtil.newInstance(Opcodes.INVOKEVIRTUAL, Type.getInternalName(EventMove.class), "getX", "()D"));
             insnList.add(new VarInsnNode(Opcodes.DSTORE, 1));
             insnList.add(new VarInsnNode(Opcodes.ALOAD, 11));
-            insnList.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, Type.getInternalName(EventMove.class), "getY", "()D", false));
+            insnList.add(ASMUtil.newInstance(Opcodes.INVOKEVIRTUAL, Type.getInternalName(EventMove.class), "getY", "()D"));
             insnList.add(new VarInsnNode(Opcodes.DSTORE, 3));
             insnList.add(new VarInsnNode(Opcodes.ALOAD, 11));
-            insnList.add(new MethodInsnNode(Opcodes.INVOKEVIRTUAL, Type.getInternalName(EventMove.class), "getZ", "()D", false));
+            insnList.add(ASMUtil.newInstance(Opcodes.INVOKEVIRTUAL, Type.getInternalName(EventMove.class), "getZ", "()D"));
             insnList.add(new VarInsnNode(Opcodes.DSTORE, 5));
             methodNode.instructions.insert(insnList);
         }

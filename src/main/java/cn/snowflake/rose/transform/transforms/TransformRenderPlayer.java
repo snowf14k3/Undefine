@@ -15,11 +15,11 @@ public class TransformRenderPlayer implements Opcodes {
             InsnList insnList1 = new InsnList();
             InsnList insnList2 = new InsnList();
             insnList1.add(new VarInsnNode(ALOAD,1));
-            insnList1.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(TransformRenderPlayer.class), "chamsHook1", "(Ljava/lang/Object;)V", false));
+            insnList1.add(ASMUtil.newInstance(INVOKESTATIC, Type.getInternalName(TransformRenderPlayer.class), "chamsHook1", "(Ljava/lang/Object;)V"));
             method.instructions.insert(insnList1);
 
             insnList2.add(new VarInsnNode(ALOAD,1));
-            insnList2.add(new MethodInsnNode(INVOKESTATIC, Type.getInternalName(TransformRenderPlayer.class), "chamsHook2", "(Ljava/lang/Object;)V", false));
+            insnList2.add(ASMUtil.newInstance(INVOKESTATIC, Type.getInternalName(TransformRenderPlayer.class), "chamsHook2", "(Ljava/lang/Object;)V"));
             method.instructions.insertBefore(ASMUtil.bottom(method),insnList2);
         }
     }

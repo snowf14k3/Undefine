@@ -44,7 +44,7 @@ public class Agent {
 				instrumentation.retransformClasses(clazz);
 			}
 			catch (UnmodifiableClassException e) {
-				LogManager.getLogger().log(Level.ERROR, ExceptionUtils.getStackTrace((Throwable)e));
+				LogManager.getLogger().log(Level.ERROR, ExceptionUtils.getStackTrace(e));
 			}
 		}
 		instrumentation.removeTransformer(ct);

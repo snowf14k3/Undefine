@@ -23,7 +23,7 @@ public class FakeLag extends Module
     C03PacketPlayer lastPacket;
 
     public FakeLag() {
-        super("FakeLag", "Fake Lag", Category.WORLD);
+        super("FakeLag", "Fake Lag", Category.COMBAT);
         this.lagValue = new Value<Double>("FakeLag_Delay", 3000.0, 300.0, 5000.0);
         this.packetList = new CopyOnWriteArrayList<C03PacketPlayer>();
         this.lagHelper = new TimeHelper();
@@ -32,12 +32,12 @@ public class FakeLag extends Module
 
     @Override
     public String getDescription() {
-        return "给服务器一个虚假的延迟!";
+        return "假身 , 给服务器一个虚假的延迟!";
     }
 
     @EventTarget
     public void onPacket(EventPacket eventPacket) {
-        if (eventPacket.getType() == EventType.RECIEVE) {
+        if (eventPacket.getType() == EventType.SEND) {
             Packet packet = eventPacket.getPacket();
             if (packet instanceof C03PacketPlayer) {
                 C03PacketPlayer c03PacketPlayer = (C03PacketPlayer) packet;
@@ -61,7 +61,9 @@ public class FakeLag extends Module
                 this.lastPacket = c03PacketPlayer;
             }
             if (this.lastPacket != null && this.mc.gameSettings.thirdPersonView != 0) {
-                ChatUtil.sendClientMessage("\247a[FakeLag] \247e Lagging !!! ");
+                setDisplayName("lagging");
+            }else {
+                setDisplayName("");
             }
             this.lagHelper.reset();
         }

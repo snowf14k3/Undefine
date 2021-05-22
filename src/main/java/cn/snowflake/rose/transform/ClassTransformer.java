@@ -60,7 +60,8 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 				"net.minecraft.entity.EntityLivingBase",
 				"net.minecraft.client.gui.GuiScreen",
 				"net.minecraft.client.gui.FontRenderer",
-				"net.minecraft.client.multiplayer.PlayerControllerMP"
+				"net.minecraft.client.multiplayer.PlayerControllerMP",
+				"net.minecraft.client.multiplayer.WorldClient"
 //				"cpw.mods.fml.common.network.simpleimpl.SimpleIndexedCodec"
 		};
 		classNameSet.addAll(Arrays.asList(nameArray));
@@ -87,6 +88,9 @@ public class ClassTransformer implements IClassTransformer, ClassFileTransformer
 			}
 			else if (name.equalsIgnoreCase("net.minecraft.client.renderer.EntityRenderer")){//3d
 				return transformMethods(classByte, TransformEntityRenderer::transformRenderEntityRenderer);
+			}
+			else if (name.equalsIgnoreCase("net.minecraft.client.multiplayer.WorldClient")){
+				return transformMethods(classByte,TransformWorldClient::transform);
 			}
 			else if (name.equalsIgnoreCase("net.minecraft.client.gui.FontRenderer")){
 				return transformMethods(classByte,TransformFontRenderer::transformFontRenderer);
