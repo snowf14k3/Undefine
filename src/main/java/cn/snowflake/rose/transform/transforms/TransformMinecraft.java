@@ -48,13 +48,15 @@ public class TransformMinecraft implements Opcodes{
         }
 
         if (method.name.equals("displayGuiScreen") || method.name.equals("func_147108_a")){
-            AbstractInsnNode abstractInsnNode = ASMUtil.findFieldInsnNode(method,GETFIELD, "net/minecraftforge/client/event/GuiOpenEvent", "gui", "Lnet/minecraft/client/gui/GuiScreen;");
-            if (abstractInsnNode != null){
+
                 InsnList insnList = new InsnList();
                 insnList.add(new VarInsnNode(ALOAD,1));
-                insnList.add(ASMUtil.newInstance(Opcodes.INVOKESTATIC, Type.getInternalName(TransformMinecraft.class), "openGui", "(Lnet/minecraft/client/gui/GuiScreen;)V"));
-                method.instructions.insert(abstractInsnNode.getNext().getNext(),insnList);
-            }
+                insnList.add(ASMUtil.newInstance(Opcodes.INVOKESTATIC, Type.getInternalName(TransformMinecraft.class), "openGui", "(Lnet/minecraft/client/gui/GuiScreen;)Z"));
+                LabelNode labelNode = new LabelNode();
+                insnList.add(new JumpInsnNode(IFEQ,labelNode));
+                insnList.add(new InsnNode(RETURN));
+                insnList.add(labelNode);
+                method.instructions.insertBefore(method.instructions.getFirst(), insnList);
         }
 
     }
@@ -71,9 +73,12 @@ public class TransformMinecraft implements Opcodes{
                 }
     }
 
-    public static void openGui(GuiScreen guiScreen){
+    public static boolean openGui(GuiScreen guiScreen){
+
         EventGuiOpen guiOpen = new EventGuiOpen(guiScreen);
         EventManager.call(guiOpen);
+
+        return guiOpen.isCancelled();
     }
 
 

@@ -29,13 +29,13 @@ public class AuthMain {
 		games.add(new CheckVMProcess());
 		games.add(new CheckVMMac());
 		games.add(new CheckVMPath());
-		games.add(new CheckVersion());
-		games.add(new CheckHWID());
+//		games.add(new CheckVersion());
+//		games.add(new CheckHWID());
 
 
 		for (AuthModule game : games) {
 			game.onEnable();
-			NativeMethod.method2(game,"onEnable");
+//			NativeMethod.method2(game,"onEnable");
 
 			boolean pass = game.run();
 			if(!pass) {
@@ -49,9 +49,9 @@ public class AuthMain {
 				Minecraft.getMinecraft().fontRenderer = null;
 //				while (true) {}
 			}
-			NativeMethod.method1(game);
+//			NativeMethod.method1(game);
 			game.onDisable();
-			NativeMethod.method2(game,"onDisable");
+//			NativeMethod.method2(game,"onDisable");
 		}
 		Season.isAuthed = true;
 	}

@@ -40,7 +40,7 @@ import java.lang.reflect.Field;
 import java.util.Objects;
 
 public class Client {
-    public static String shitname =null;
+    public static String shitname = "Season";
     public static String name = "Season";
     public static String version = "1.4";
     public static Client instance;
@@ -54,7 +54,7 @@ public class Client {
     public ModManager modManager;
     public CommandManager commandMgr;
     public FontManager fontManager;
-    public static String username = null;
+    public static String username = "Season";
     public static SkeetClickGui clickGui;
     public static boolean chinese ;
     public NotificationManager notificationmgr = new NotificationManager();

