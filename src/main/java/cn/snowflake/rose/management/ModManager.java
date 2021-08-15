@@ -100,7 +100,7 @@ public class ModManager {
         addMod(new Spammer());
         addMod(new MCF());
         addMod(new FakeLag());
-        addMod(new IRC());
+//        addMod(new IRC());
         addMod(new NoCommand());
         addMod(new Plugins());
 

@@ -18,7 +18,7 @@ public class CommandManager {
         add(new CommandHidden(new String[] {"hidden"}));
         add(new CommandScreenshot(new String[]{"screenshot","ss"}));
         add(new CommandPlugins(new String[] {"plugins"}));
-        add(new CommandIRC(new String[] {"irc",""}));
+//        add(new CommandIRC(new String[] {"irc",""}));
         add(new CommandLogin(new String[]{"login","l"}));
         add(new CommandVClip(new String[]{"vclip","v"}));
         add(new CommandSpammer(new String[]{"sp","spammer"}));
